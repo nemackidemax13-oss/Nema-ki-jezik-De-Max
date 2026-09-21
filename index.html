@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="sr">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>De-Max A1 Testovi</title>
+<style>
+:root{--r:#d71920;--d:#101114;--g:#f3f5f7;--b:#e5e7eb}
+*{box-sizing:border-box}body{margin:0;font-family:Arial,system-ui,sans-serif;background:var(--g);color:#111}
+.wrap{max-width:900px;margin:auto;padding:18px 14px 70px}
+.hero{background:var(--d);color:white;border-radius:24px;padding:25px;margin-bottom:18px}
+.brand{font-weight:900;font-size:23px}.brand span{display:inline-grid;place-items:center;width:36px;height:36px;background:var(--r);border-radius:10px;margin-right:8px}
+h1{margin:18px 0 5px;font-size:34px}.muted{color:#cbd5e1}
+.home,.card{background:#fff;border:1px solid var(--b);border-radius:18px;padding:18px;margin:13px 0}
+.lesson-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+.lesson{border:0;border-radius:16px;padding:22px;background:#111;color:#fff;text-align:left;cursor:pointer}
+.lesson strong{font-size:22px;display:block}.lesson small{color:#d1d5db}.lesson.red{background:var(--r)}
+.qn{font-size:13px;font-weight:900;color:var(--r);text-transform:uppercase}.qt{font-size:18px;font-weight:800;line-height:1.4;margin:6px 0 13px}
+.opts{display:grid;gap:9px}.opt{display:flex;gap:9px;align-items:center;border:1px solid var(--b);padding:11px;border-radius:12px;cursor:pointer}
+.opt input{accent-color:var(--r)}
+.words,.answer{min-height:52px;display:flex;gap:8px;flex-wrap:wrap;padding:9px;border:1px dashed #bbb;border-radius:12px}
+.answer{margin-top:9px;border-style:solid;background:#fafafa}
+.word{border:0;background:#111;color:#fff;border-radius:9px;padding:9px 11px;font-weight:700;cursor:pointer}
+.actions{display:flex;gap:10px;position:sticky;bottom:10px;padding:10px;background:#f3f5f7e8;backdrop-filter:blur(8px);border-radius:16px}
+.btn{flex:1;border:0;border-radius:12px;padding:13px;font-weight:900;font-size:16px;cursor:pointer}.primary{background:var(--r);color:#fff}.secondary{background:#fff;border:1px solid var(--b)}
+.correct{border-color:#86efac!important;background:#f0fdf4!important}.wrong{border-color:#fecaca!important;background:#fef2f2!important}
+#result{display:none;background:#111;color:#fff;border-radius:18px;padding:20px;margin-top:15px}.score{font-size:38px;font-weight:900}
+input.name{width:100%;padding:12px;border:1px solid #ccc;border-radius:11px;font-size:16px}
+.back{border:0;background:transparent;color:var(--r);font-weight:800;cursor:pointer;padding:0;margin-bottom:6px}
+@media(max-width:600px){.lesson-grid{grid-template-columns:1fr}h1{font-size:28px}}
+</style>
+</head>
+<body><div class="wrap">
+<section class="hero"><div class="brand"><span>D</span>DE-MAX</div><h1>A1 interaktivni testovi</h1><div class="muted">Vežbaj nemački po lekcijama. Odmah dobijaš rezultat.</div></section>
+<div id="home" class="home">
+<h2>Izaberi test</h2>
+<div class="lesson-grid">
+<button class="lesson red" onclick="startLesson(1)"><strong>Lekcija 1</strong><small>Predstavljanje, zamenice, W-pitanja</small></button>
+<button class="lesson" onclick="startLesson(2)"><strong>Lekcija 2</strong><small>Familie i glagol haben</small></button>
+</div></div>
+<div id="app" style="display:none">
+<button class="back" onclick="goHome()">← Nazad na lekcije</button>
+<div class="card"><b>Ime i prezime učenika</b><input id="student" class="name" placeholder="Upiši ime i prezime"></div>
+<div id="quiz"></div>
+<div class="actions"><button class="btn primary" onclick="finish()">Završi test</button><button class="btn secondary" onclick="restart()">Počni ponovo</button></div>
+<div id="result"><div id="score" class="score"></div><div id="resText"></div></div>
+</div>
+</div>
+<script>
+const lessons={
+1:{
+ title:"Lekcija 1",
+ qs:[
+ {t:"mc",q:"Kako pravilno odgovaramo na „Wie heißen Sie?“",o:["Ich heiße Amir.","Ich heißt Amir.","Ich heißen Amir.","Ich bist Amir."],a:0},
+ {t:"mc",q:"„Wer sind Sie?“ – označi tačan odgovor.",o:["Ich habe Jasmin.","Ich bin Jasmin.","Ich heiße aus Jasmin.","Mein Jasmin ist."],a:1},
+ {t:"mc",q:"Koji odgovor je tačan za „Wie ist Ihr Name?“",o:["Mein Name ist Sara.","Ich Name Sara.","Meine Name ist Sara.","Mein Name sind Sara."],a:0},
+ {t:"mc",q:"Koja lična zamenica znači „ti“?",o:["ich","du","er","wir"],a:1},
+ {t:"mc",q:"Koja lična zamenica znači „mi“?",o:["wir","ihr","sie","du"],a:0},
+ {t:"mc",q:"Koje pitanje koristimo da pitamo odakle neko dolazi?",o:["Wie heißen Sie?","Wer sind Sie?","Woher kommen Sie?","Wie geht es Ihnen?"],a:2},
+ {t:"ord",q:"Sastavi rečenicu.",w:["heiße","Ich","Amina."],a:"Ich heiße Amina."},
+ {t:"ord",q:"Sastavi rečenicu: „Dolazim iz Srbije.“",w:["Serbien.","komme","aus","Ich"],a:"Ich komme aus Serbien."},
+ {t:"ord",q:"Sastavi pravilno pitanje.",w:["Sie?","heißen","Wie"],a:"Wie heißen Sie?"},
+ {t:"ord",q:"Sastavi pitanje: „Odakle dolazite?“",w:["kommen","Sie?","Woher"],a:"Woher kommen Sie?"}
+ ]},
+2:{
+ title:"Lekcija 2",
+ qs:[
+ {t:"mc",q:"Šta znači nemačka reč „die Mutter“?",o:["otac","majka","sestra","baka"],a:1},
+ {t:"mc",q:"Koja reč znači „brat“?",o:["die Schwester","der Vater","der Bruder","der Sohn"],a:2},
+ {t:"mc",q:"Dopuni rečenicu: „Ich ___ eine Schwester.“",o:["habe","hast","hat","haben"],a:0},
+ {t:"mc",q:"Dopuni pitanje: „___ du Kinder?“",o:["Habe","Hast","Hat","Haben"],a:1},
+ {t:"mc",q:"Dopuni rečenicu: „Er ___ zwei Kinder.“",o:["habe","hast","hat","habt"],a:2},
+ {t:"mc",q:"Kako kažemo „Nemam dece“?",o:["Ich bin keine Kinder.","Ich habe ein Kinder.","Ich hast keine Kinder.","Ich habe keine Kinder."],a:3},
+ {t:"ord",q:"Sastavi rečenicu.",w:["Bruder.","habe","einen","Ich"],a:"Ich habe einen Bruder."},
+ {t:"ord",q:"Sastavi pitanje: „Imaš li braću ili sestre?“",w:["Geschwister?","du","Hast"],a:"Hast du Geschwister?"},
+ {t:"ord",q:"Sastavi: „Moja majka se zove Amina.“",w:["Amina.","Mutter","heißt","Meine"],a:"Meine Mutter heißt Amina."},
+ {t:"ord",q:"Sastavi: „Mi imamo dvoje dece.“",w:["Kinder.","Wir","zwei","haben"],a:"Wir haben zwei Kinder."}
+ ]}
+};
+let active=1;
+function startLesson(n){active=n;document.getElementById("home").style.display="none";document.getElementById("app").style.display="block";render()}
+function goHome(){document.getElementById("app").style.display="none";document.getElementById("home").style.display="block";document.getElementById("result").style.display="none"}
+function render(){
+ const qz=document.getElementById("quiz");qz.innerHTML="";
+ lessons[active].qs.forEach((x,i)=>{
+  const d=document.createElement("div");d.className="card question";d.dataset.i=i;
+  d.innerHTML='<div class="qn">Pitanje '+(i+1)+'</div><div class="qt">'+x.q+'</div>';
+  if(x.t==="mc"){
+   const op=document.createElement("div");op.className="opts";
+   x.o.forEach((v,j)=>{const l=document.createElement("label");l.className="opt";l.innerHTML='<input type="radio" name="q'+i+'" value="'+j+'">'+String.fromCharCode(65+j)+') '+v;op.appendChild(l)});d.appendChild(op)
+  }else{
+   const b=document.createElement("div");b.className="words";
+   x.w.forEach(v=>{const bt=document.createElement("button");bt.type="button";bt.className="word";bt.textContent=v;bt.onclick=()=>ans.appendChild(bt);b.appendChild(bt)});
+   const ans=document.createElement("div");ans.className="answer";ans.onclick=e=>{if(e.target.classList.contains("word"))b.appendChild(e.target)};
+   d.appendChild(b);d.appendChild(ans)
+  }
+  qz.appendChild(d)
+ })
+}
+function finish(){
+ let s=0,wrong=[];
+ lessons[active].qs.forEach((x,i)=>{
+  const d=document.querySelector('.question[data-i="'+i+'"]');d.classList.remove("correct","wrong");
+  d.querySelectorAll(".opt").forEach(e=>e.classList.remove("correct","wrong"));
+  if(x.t==="mc"){
+   const c=d.querySelector("input:checked");
+   if(c && +c.value===x.a){s++;d.classList.add("correct");c.closest(".opt").classList.add("correct")}
+   else{d.classList.add("wrong");wrong.push(i+1);if(c)c.closest(".opt").classList.add("wrong");d.querySelector('input[value="'+x.a+'"]').closest(".opt").classList.add("correct")}
+  }else{
+   const built=[...d.querySelectorAll(".answer .word")].map(e=>e.textContent).join(" ").replace(/\s+/g," ").trim();
+   if(built===x.a){s++;d.classList.add("correct")}else{d.classList.add("wrong");wrong.push(i+1)}
+  }
+ });
+ const name=document.getElementById("student").value.trim()||"Učenik",pct=s*10;
+ document.getElementById("score").textContent=s+"/10";
+ let m=pct===100?"Odlično! Sve je tačno. 🎉":pct>=80?"Veoma dobro!":pct>=60?"Dobro, ponovi greške.":"Potrebno je još vežbe.";
+ if(wrong.length)m+=" Netačna/neodgovorena pitanja: "+wrong.join(", ")+".";
+ document.getElementById("resText").textContent=name+" — "+pct+"%. "+m;
+ const r=document.getElementById("result");r.style.display="block";r.scrollIntoView({behavior:"smooth"})
+}
+function restart(){document.getElementById("student").value="";document.getElementById("result").style.display="none";render();window.scrollTo({top:0,behavior:"smooth"})}
+</script></body></html>
