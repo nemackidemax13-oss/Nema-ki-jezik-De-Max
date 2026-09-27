@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="sr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<title>DE-MAX • Zweiteilige Konjunktionen</title>
+<style>
+:root{
+  --blue:#0b43c9;
+  --blue2:#1460ff;
+  --navy:#08266f;
+  --sky:#eaf3ff;
+  --line:#b9d2ff;
+  --good:#138a55;
+  --bad:#c93434;
+  --text:#10204a;
+  --muted:#60709a;
+  --white:#fff;
+  --shadow:0 18px 45px rgba(12,49,132,.14);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;
+  font-family:Inter,ui-rounded,"Segoe UI",Arial,sans-serif;
+  color:var(--text);
+  background:
+   radial-gradient(circle at 10% 0%, rgba(20,96,255,.12), transparent 34%),
+   radial-gradient(circle at 100% 15%, rgba(64,163,255,.13), transparent 30%),
+   linear-gradient(180deg,#f8fbff 0,#eef5ff 100%);
+  min-height:100vh;
+}
+button,input{font:inherit}
+button{cursor:pointer}
+.shell{width:min(1160px,100%);margin:auto;padding:18px}
+.hero{
+  position:relative;overflow:hidden;
+  background:linear-gradient(135deg,#082a83,#0d55dd 60%,#1d77ff);
+  color:#fff;border-radius:30px;padding:28px;
+  box-shadow:0 25px 70px rgba(11,67,201,.27);
+}
+.hero:after{
+  content:"";position:absolute;right:-80px;top:-90px;width:280px;height:280px;
+  border-radius:50%;background:rgba(255,255,255,.1)
+}
+.brand{display:flex;align-items:center;gap:12px;font-weight:900;letter-spacing:.08em;font-size:.92rem}
+.logo{
+  width:46px;height:46px;border-radius:15px;background:#fff;color:var(--blue);
+  display:grid;place-items:center;font-weight:1000;box-shadow:0 8px 24px rgba(0,0,0,.15)
+}
+.hero h1{font-size:clamp(2rem,5vw,4.3rem);line-height:.96;margin:22px 0 12px;letter-spacing:-.04em}
+.hero p{margin:0;max-width:760px;font-size:clamp(1rem,2.1vw,1.25rem);line-height:1.55;color:#eaf2ff}
+.hero-stats{display:flex;gap:10px;flex-wrap:wrap;margin-top:22px}
+.pill{background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.24);padding:9px 13px;border-radius:999px;font-weight:800}
+.progress-wrap{margin-top:18px;background:rgba(255,255,255,.18);height:12px;border-radius:999px;overflow:hidden}
+.progress-bar{height:100%;width:0;background:#fff;border-radius:999px;transition:.35s}
+.topnav{
+  position:sticky;top:8px;z-index:10;margin:14px 0 20px;padding:9px;
+  display:flex;gap:8px;overflow:auto;background:rgba(255,255,255,.82);
+  border:1px solid #d9e6ff;border-radius:18px;backdrop-filter:blur(16px);
+  box-shadow:0 8px 28px rgba(24,60,130,.10)
+}
+.navbtn{
+  border:0;background:transparent;color:var(--navy);font-weight:900;
+  padding:11px 14px;border-radius:12px;white-space:nowrap
+}
+.navbtn.active,.navbtn:hover{background:var(--sky);color:var(--blue)}
+.section{
+  margin:20px 0;background:rgba(255,255,255,.93);border:1px solid #dce9ff;
+  border-radius:26px;padding:24px;box-shadow:var(--shadow)
+}
+.section-title{display:flex;align-items:center;gap:12px;margin-bottom:18px}
+.icon{
+  width:50px;height:50px;border-radius:16px;display:grid;place-items:center;
+  color:#fff;font-size:1.35rem;background:linear-gradient(135deg,var(--blue),#2785ff);
+  box-shadow:0 10px 24px rgba(20,96,255,.23)
+}
+h2{margin:0;font-size:clamp(1.5rem,3vw,2.25rem);color:var(--navy)}
+h3{margin:0 0 8px}
+.subtitle{color:var(--muted);margin:3px 0 0}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.card{
+  border:1px solid #d6e5ff;background:linear-gradient(180deg,#fff,#f8fbff);
+  border-radius:22px;padding:18px;transition:.2s;position:relative;overflow:hidden
+}
+.card:hover{transform:translateY(-3px);box-shadow:0 14px 34px rgba(19,65,160,.12)}
+.card .num{font-weight:1000;color:#7da4ed;font-size:.86rem;letter-spacing:.08em}
+.pair{font-size:clamp(1.35rem,2.8vw,2rem);font-weight:1000;color:var(--blue);margin:7px 0}
+.meaning{font-weight:850;margin-bottom:10px}
+.rule{color:#40547e;line-height:1.52;font-size:.96rem}
+.example{margin-top:12px;border-top:1px dashed #bdd0f6;padding-top:12px}
+.de{font-weight:900;line-height:1.45}
+.sr{color:#5f6f91;margin-top:4px;line-height:1.45}
+.highlight{color:var(--blue2)}
+.speak{
+  border:0;background:#eaf2ff;color:var(--blue);width:38px;height:38px;border-radius:12px;
+  float:right;font-size:1rem
+}
+.speak:hover{background:#dbe9ff}
+.quick-rule{
+  display:grid;grid-template-columns:auto 1fr;gap:13px;align-items:start;
+  padding:16px;border-radius:18px;background:#f2f7ff;border:1px solid #d6e6ff;margin:14px 0
+}
+.quick-rule strong{color:var(--blue)}
+.exercise-tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:18px}
+.ex-tab{
+  border:1px solid #cddfff;background:#fff;color:var(--navy);padding:10px 13px;
+  border-radius:12px;font-weight:900
+}
+.ex-tab.active{background:var(--blue);color:#fff;border-color:var(--blue)}
+.exercise{display:none}
+.exercise.active{display:block}
+.qbox{padding:20px;border:1px solid #d6e5ff;border-radius:20px;background:#fbfdff}
+.qmeta{display:flex;justify-content:space-between;gap:10px;color:#6b7da7;font-weight:800;font-size:.92rem}
+.question{font-size:clamp(1.18rem,2.6vw,1.6rem);font-weight:950;line-height:1.45;margin:18px 0}
+.answers{display:grid;gap:10px}
+.answer{
+  text-align:left;border:2px solid #d9e6ff;background:#fff;color:var(--text);
+  padding:13px 15px;border-radius:14px;font-weight:800;transition:.15s
+}
+.answer:hover{border-color:#8fb4ff;background:#f6f9ff}
+.answer.correct{border-color:#6bd0a1;background:#effcf5;color:#0b7043}
+.answer.wrong{border-color:#ef8e8e;background:#fff3f3;color:#a82424}
+.feedback{min-height:28px;margin:14px 0 0;font-weight:900}
+.controls{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px}
+.btn{
+  border:0;border-radius:14px;padding:12px 16px;font-weight:950;
+  background:var(--blue);color:#fff;box-shadow:0 8px 20px rgba(11,67,201,.18)
+}
+.btn.secondary{background:#edf4ff;color:var(--blue);box-shadow:none;border:1px solid #ccddff}
+.btn:disabled{opacity:.5;cursor:not-allowed}
+.fillrow{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.input{
+  flex:1;min-width:220px;border:2px solid #cfddfa;border-radius:14px;padding:13px 14px;
+  outline:none;background:#fff
+}
+.input:focus{border-color:#69a1ff;box-shadow:0 0 0 4px rgba(20,96,255,.08)}
+.wordbank{display:flex;gap:8px;flex-wrap:wrap;margin:14px 0}
+.word{
+  border:1px solid #cbdcff;background:#fff;color:var(--navy);padding:10px 12px;border-radius:12px;font-weight:850
+}
+.word.used{opacity:.36}
+.build{
+  min-height:58px;padding:12px;border-radius:14px;border:2px dashed #a9c7ff;background:#f8fbff;
+  display:flex;align-items:center;gap:8px;flex-wrap:wrap
+}
+.token{background:var(--blue);color:#fff;padding:9px 11px;border-radius:10px;font-weight:850}
+.scoreboard{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:16px}
+.stat{background:#f4f8ff;border:1px solid #dbe7ff;padding:13px;border-radius:16px;text-align:center}
+.stat b{display:block;font-size:1.45rem;color:var(--blue)}
+.tablewrap{overflow:auto;border-radius:18px;border:1px solid #dce7fb}
+table{width:100%;border-collapse:collapse;min-width:680px;background:#fff}
+th,td{padding:13px 14px;border-bottom:1px solid #e4ecfb;text-align:left}
+th{background:#eef5ff;color:var(--navy);font-size:.9rem}
+tr:last-child td{border-bottom:0}
+.footer{text-align:center;color:#7181a4;padding:10px 0 30px;font-weight:700}
+.hidden{display:none!important}
+@media(max-width:800px){
+ .shell{padding:10px}
+ .hero{border-radius:22px;padding:22px 18px}
+ .section{padding:18px 14px;border-radius:22px}
+ .grid3{grid-template-columns:1fr}
+ .scoreboard{grid-template-columns:1fr 1fr 1fr}
+ .qbox{padding:16px}
+}
+</style>
+</head>
+<body>
+<div class="shell">
+  <header class="hero">
+    <div class="brand"><div class="logo">DM</div> DE-MAX • NEMAČKI JEZIK</div>
+    <h1>Zweiteilige<br>Konjunktionen</h1>
+    <p>Dvodelni veznici kroz jasna pravila, primere, izbor odgovora, dopunjavanje, slaganje rečenica i prevod.</p>
+    <div class="hero-stats">
+      <span class="pill">B1 nivo</span>
+      <span class="pill">3 para veznika</span>
+      <span class="pill">40+ zadataka</span>
+      <span class="pill">🔊 nemački izgovor</span>
+    </div>
+    <div class="progress-wrap"><div class="progress-bar" id="progressBar"></div></div>
+  </header>
+
+  <nav class="topnav">
+    <button class="navbtn active" onclick="go('ucenje',this)">📘 Učenje</button>
+    <button class="navbtn" onclick="go('vezbe',this)">✍️ Vežbe</button>
+    <button class="navbtn" onclick="go('pregled',this)">🧠 Pregled</button>
+  </nav>
+
+  <section class="section" id="ucenje">
+    <div class="section-title">
+      <div class="icon">📘</div><div><h2>Tri važna para</h2><p class="subtitle">Prvo nauči značenje i logiku para, zatim vežbaj.</p></div>
+    </div>
+    <div class="quick-rule">
+      <div class="icon" style="width:42px;height:42px">💡</div>
+      <div><strong>Važno:</strong> članovi para pripadaju zajedno. Koji par biraš zavisi od značenja rečenice, a ne samo od oblika.</div>
+    </div>
+
+    <div class="grid3">
+      <article class="card">
+        <button class="speak" onclick="say('Er ist nicht nur freundlich, sondern auch hilfsbereit.')">🔊</button>
+        <div class="num">01</div>
+        <div class="pair">nicht nur … sondern auch</div>
+        <div class="meaning">ne samo … nego i</div>
+        <div class="rule">Prva informacija važi, a druga joj dodaje još jednu važnu informaciju.</div>
+        <div class="example">
+          <div class="de">Er ist <span class="highlight">nicht nur</span> freundlich, <span class="highlight">sondern auch</span> hilfsbereit.</div>
+          <div class="sr">On nije samo ljubazan, nego je i spreman da pomogne.</div>
+        </div>
+      </article>
+
+      <article class="card">
+        <button class="speak" onclick="say('Er ist zwar müde, aber er lernt weiter.')">🔊</button>
+        <div class="num">02</div>
+        <div class="pair">zwar … aber</div>
+        <div class="meaning">doduše … ali</div>
+        <div class="rule">Prva informacija je tačna, ali druga pokazuje suprotnost, ograničenje ili važnu dopunu.</div>
+        <div class="example">
+          <div class="de">Er ist <span class="highlight">zwar</span> müde, <span class="highlight">aber</span> er lernt weiter.</div>
+          <div class="sr">On je doduše umoran, ali nastavlja da uči.</div>
+        </div>
+      </article>
+
+      <article class="card">
+        <button class="speak" onclick="say('Entweder wir gehen ins Kino, oder wir bleiben zu Hause.')">🔊</button>
+        <div class="num">03</div>
+        <div class="pair">entweder … oder</div>
+        <div class="meaning">ili … ili</div>
+        <div class="rule">Koristi se kada postoje dve mogućnosti ili dve alternative.</div>
+        <div class="example">
+          <div class="de"><span class="highlight">Entweder</span> wir gehen ins Kino, <span class="highlight">oder</span> wir bleiben zu Hause.</div>
+          <div class="sr">Ili idemo u bioskop, ili ostajemo kod kuće.</div>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <section class="section" id="vezbe">
+    <div class="section-title">
+      <div class="icon">✍️</div><div><h2>Vežbe</h2><p class="subtitle">Radi redom ili izaberi tip zadatka.</p></div>
+    </div>
+
+    <div class="exercise-tabs">
+      <button class="ex-tab active" onclick="showEx('choice',this)">1. Izaberi par</button>
+      <button class="ex-tab" onclick="showEx('fill',this)">2. Dopuni</button>
+      <button class="ex-tab" onclick="showEx('order',this)">3. Složi rečenicu</button>
+      <button class="ex-tab" onclick="showEx('translate',this)">4. Prevod</button>
+    </div>
+
+    <div class="exercise active" id="choice">
+      <div class="qbox">
+        <div class="qmeta"><span>Izaberi odgovarajući dvodelni veznik.</span><span id="choiceCount"></span></div>
+        <div class="question" id="choiceQ"></div>
+        <div class="answers" id="choiceA"></div>
+        <div class="feedback" id="choiceF"></div>
+        <div class="controls">
+          <button class="btn" id="choiceNext" onclick="nextChoice()" disabled>Sledeće →</button>
+          <button class="btn secondary" onclick="restartChoice()">Ponovi</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="exercise" id="fill">
+      <div class="qbox">
+        <div class="qmeta"><span>Upiši oba dela veznika.</span><span id="fillCount"></span></div>
+        <div class="question" id="fillQ"></div>
+        <div class="fillrow">
+          <input class="input" id="fill1" placeholder="prvi deo" autocomplete="off">
+          <input class="input" id="fill2" placeholder="drugi deo" autocomplete="off">
+        </div>
+        <div class="feedback" id="fillF"></div>
+        <div class="controls">
+          <button class="btn" onclick="checkFill()">Proveri</button>
+          <button class="btn secondary" onclick="nextFill()">Sledeće →</button>
+          <button class="btn secondary" onclick="speakFill()">🔊 Rečenica</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="exercise" id="order">
+      <div class="qbox">
+        <div class="qmeta"><span>Klikći reči pravilnim redom.</span><span id="orderCount"></span></div>
+        <div class="question" id="orderHint"></div>
+        <div class="build" id="build"></div>
+        <div class="wordbank" id="wordbank"></div>
+        <div class="feedback" id="orderF"></div>
+        <div class="controls">
+          <button class="btn" onclick="checkOrder()">Proveri</button>
+          <button class="btn secondary" onclick="resetBuild()">Obriši</button>
+          <button class="btn secondary" onclick="nextOrder()">Sledeće →</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="exercise" id="translate">
+      <div class="qbox">
+        <div class="qmeta"><span>Prevedi na nemački.</span><span id="trCount"></span></div>
+        <div class="question" id="trQ"></div>
+        <input class="input" id="trInput" style="width:100%" placeholder="Napiši nemačku rečenicu…" autocomplete="off">
+        <div class="feedback" id="trF"></div>
+        <div class="controls">
+          <button class="btn" onclick="checkTr()">Proveri</button>
+          <button class="btn secondary" onclick="showTr()">Prikaži rešenje</button>
+          <button class="btn secondary" onclick="nextTr()">Sledeće →</button>
+          <button class="btn secondary" onclick="speakTr()">🔊 Rešenje</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="scoreboard">
+      <div class="stat"><b id="correctStat">0</b>tačno</div>
+      <div class="stat"><b id="attemptStat">0</b>odgovora</div>
+      <div class="stat"><b id="percentStat">0%</b>uspeh</div>
+    </div>
+  </section>
+
+  <section class="section" id="pregled">
+    <div class="section-title">
+      <div class="icon">🧠</div><div><h2>Brzi pregled</h2><p class="subtitle">Tabela za brzo ponavljanje pred čas ili test.</p></div>
+    </div>
+    <div class="tablewrap">
+      <table>
+        <thead><tr><th>Par</th><th>Značenje</th><th>Kada ga koristiš?</th><th>Primer</th></tr></thead>
+        <tbody>
+          <tr><td><b>nicht nur … sondern auch</b></td><td>ne samo … nego i</td><td>dodavanje druge važne informacije</td><td>Sie spricht nicht nur Deutsch, sondern auch Englisch.</td></tr>
+          <tr><td><b>zwar … aber</b></td><td>doduše … ali</td><td>suprotnost / ograničenje</td><td>Der Film ist zwar lang, aber spannend.</td></tr>
+          <tr><td><b>entweder … oder</b></td><td>ili … ili</td><td>izbor između dve mogućnosti</td><td>Entweder du kommst mit, oder du bleibst hier.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <div class="footer">DE-MAX • Zweiteilige Konjunktionen • interaktivna B1 vežba</div>
+</div>
+
+<script>
+const choiceData=[
+ ["Er ist ___ freundlich, ___ hilfsbereit.","nicht nur … sondern auch"],
+ ["Das Hotel ist ___ teuer, ___ sehr sauber.","zwar … aber"],
+ ["___ du rufst mich an, ___ du schreibst mir.","entweder … oder"],
+ ["Sie kann ___ gut kochen, ___ sehr gut backen.","nicht nur … sondern auch"],
+ ["Der Weg ist ___ weit, ___ wunderschön.","zwar … aber"],
+ ["___ wir fahren mit dem Bus, ___ wir nehmen ein Taxi.","entweder … oder"],
+ ["Mein Bruder spielt ___ Fußball, ___ Tennis.","nicht nur … sondern auch"],
+ ["Die Prüfung war ___ schwierig, ___ ich habe sie bestanden.","zwar … aber"],
+ ["___ du lernst heute, ___ du lernst morgen.","entweder … oder"],
+ ["Die Wohnung ist ___ groß, ___ sehr hell.","nicht nur … sondern auch"],
+ ["Er hat ___ wenig Zeit, ___ er hilft uns trotzdem.","zwar … aber"],
+ ["___ wir essen zu Hause, ___ wir gehen ins Restaurant.","entweder … oder"]
+];
+const opts=["nicht nur … sondern auch","zwar … aber","entweder … oder"];
+let ci=0;
+
+const fillData=[
+ {q:"Ich lerne ___ Deutsch, ___ Englisch.",a:["nicht nur","sondern auch"],full:"Ich lerne nicht nur Deutsch, sondern auch Englisch."},
+ {q:"Er ist ___ müde, ___ er arbeitet weiter.",a:["zwar","aber"],full:"Er ist zwar müde, aber er arbeitet weiter."},
+ {q:"___ wir gehen spazieren, ___ wir bleiben zu Hause.",a:["entweder","oder"],full:"Entweder wir gehen spazieren, oder wir bleiben zu Hause."},
+ {q:"Maria ist ___ intelligent, ___ fleißig.",a:["nicht nur","sondern auch"],full:"Maria ist nicht nur intelligent, sondern auch fleißig."},
+ {q:"Das Auto ist ___ alt, ___ sehr zuverlässig.",a:["zwar","aber"],full:"Das Auto ist zwar alt, aber sehr zuverlässig."},
+ {q:"Du kannst ___ anrufen, ___ eine Nachricht schicken.",a:["entweder","oder"],full:"Du kannst entweder anrufen, oder eine Nachricht schicken."},
+ {q:"Wir haben ___ Berlin besucht, ___ Hamburg.",a:["nicht nur","sondern auch"],full:"Wir haben nicht nur Berlin besucht, sondern auch Hamburg."},
+ {q:"Der Kurs ist ___ intensiv, ___ sehr interessant.",a:["zwar","aber"],full:"Der Kurs ist zwar intensiv, aber sehr interessant."},
+ {q:"___ ihr kommt pünktlich, ___ ihr wartet draußen.",a:["entweder","oder"],full:"Entweder ihr kommt pünktlich, oder ihr wartet draußen."}
+];
+let fi=0;
+
+const orderData=[
+ {sr:"On ne samo da čita, nego i mnogo piše.", words:["Er","liest","nicht","nur","viel,","sondern","schreibt","auch","viel."], answer:"Er liest nicht nur viel, sondern schreibt auch viel."},
+ {sr:"Film je doduše dug, ali je veoma zanimljiv.", words:["Der","Film","ist","zwar","lang,","aber","sehr","interessant."], answer:"Der Film ist zwar lang, aber sehr interessant."},
+ {sr:"Ili ćemo ostati ovde, ili ćemo ići kući.", words:["Entweder","bleiben","wir","hier,","oder","wir","gehen","nach","Hause."], answer:"Entweder bleiben wir hier, oder wir gehen nach Hause."},
+ {sr:"Ona ne samo da radi brzo, nego i veoma precizno.", words:["Sie","arbeitet","nicht","nur","schnell,","sondern","auch","sehr","genau."], answer:"Sie arbeitet nicht nur schnell, sondern auch sehr genau."},
+ {sr:"Vreme je doduše hladno, ali sunčano.", words:["Das","Wetter","ist","zwar","kalt,","aber","sonnig."], answer:"Das Wetter ist zwar kalt, aber sonnig."},
+ {sr:"Ili ti kuvaš, ili ja naručujem picu.", words:["Entweder","du","kochst,","oder","ich","bestelle","Pizza."], answer:"Entweder du kochst, oder ich bestelle Pizza."}
+];
+let oi=0, built=[];
+
+const trData=[
+ {sr:"Ona ne govori samo nemački, nego i francuski.", de:"Sie spricht nicht nur Deutsch, sondern auch Französisch."},
+ {sr:"Stan je doduše mali, ali veoma udoban.", de:"Die Wohnung ist zwar klein, aber sehr gemütlich."},
+ {sr:"Ili ideš sa nama, ili ostaješ kod kuće.", de:"Entweder du kommst mit uns, oder du bleibst zu Hause."},
+ {sr:"On ne samo da je ljubazan, nego je i strpljiv.", de:"Er ist nicht nur freundlich, sondern auch geduldig."},
+ {sr:"Knjiga je doduše skupa, ali veoma korisna.", de:"Das Buch ist zwar teuer, aber sehr nützlich."},
+ {sr:"Ili danas učimo, ili sutra pišemo test.", de:"Entweder wir lernen heute, oder wir schreiben morgen den Test."}
+];
+let ti=0;
+
+let correct=0, attempts=0, answeredChoice=false;
+
+function norm(s){
+ return s.toLowerCase().trim()
+  .replace(/[.,!?]/g,"")
+  .replace(/\s+/g," ")
+  .replace(/ß/g,"ss");
+}
+function stat(ok){
+ attempts++; if(ok) correct++;
+ document.getElementById("correctStat").textContent=correct;
+ document.getElementById("attemptStat").textContent=attempts;
+ document.getElementById("percentStat").textContent=Math.round(correct/attempts*100)+"%";
+ document.getElementById("progressBar").style.width=Math.min(100,(attempts/30)*100)+"%";
+}
+function say(text){
+ if(!("speechSynthesis" in window)) return alert("Izgovor nije podržan u ovom pregledaču.");
+ speechSynthesis.cancel();
+ const u=new SpeechSynthesisUtterance(text);u.lang="de-DE";u.rate=.9;speechSynthesis.speak(u);
+}
+function go(id,el){document.getElementById(id).scrollIntoView({behavior:"smooth"});document.querySelectorAll(".navbtn").forEach(x=>x.classList.remove("active"));el.classList.add("active")}
+function showEx(id,el){document.querySelectorAll(".exercise").forEach(x=>x.classList.remove("active"));document.getElementById(id).classList.add("active");document.querySelectorAll(".ex-tab").forEach(x=>x.classList.remove("active"));el.classList.add("active")}
+
+function renderChoice(){
+ answeredChoice=false;
+ let d=choiceData[ci]; choiceQ.textContent=d[0]; choiceCount.textContent=(ci+1)+" / "+choiceData.length; choiceF.textContent=""; choiceNext.disabled=true;
+ choiceA.innerHTML="";
+ opts.forEach(o=>{
+  let b=document.createElement("button");b.className="answer";b.textContent=o;
+  b.onclick=()=>{ if(answeredChoice)return; answeredChoice=true; const ok=o===d[1]; stat(ok); [...choiceA.children].forEach(x=>{x.disabled=true;if(x.textContent===d[1])x.classList.add("correct")}); if(!ok)b.classList.add("wrong"); choiceF.textContent=ok?"✓ Tačno!":"✗ Tačan odgovor: "+d[1]; choiceF.style.color=ok?"var(--good)":"var(--bad)"; choiceNext.disabled=false; };
+  choiceA.appendChild(b);
+ });
+}
+function nextChoice(){ci=(ci+1)%choiceData.length;renderChoice()}
+function restartChoice(){ci=0;renderChoice()}
+
+function renderFill(){let d=fillData[fi];fillQ.textContent=d.q;fillCount.textContent=(fi+1)+" / "+fillData.length;fill1.value="";fill2.value="";fillF.textContent=""}
+function checkFill(){let d=fillData[fi];let ok=norm(fill1.value)===norm(d.a[0]) && norm(fill2.value)===norm(d.a[1]);stat(ok);fillF.textContent=ok?"✓ Odlično! "+d.full:"✗ Rešenje: "+d.a[0]+" … "+d.a[1];fillF.style.color=ok?"var(--good)":"var(--bad)"}
+function nextFill(){fi=(fi+1)%fillData.length;renderFill()}
+function speakFill(){say(fillData[fi].full)}
+
+function shuffle(a){let x=[...a];for(let i=x.length-1;i>0;i--){let j=Math.floor(Math.random()*(i+1));[x[i],x[j]]=[x[j],x[i]]}return x}
+function renderOrder(){
+ built=[];let d=orderData[oi];orderHint.textContent=d.sr;orderCount.textContent=(oi+1)+" / "+orderData.length;orderF.textContent="";build.innerHTML="";wordbank.innerHTML="";
+ shuffle(d.words).forEach((w,idx)=>{let b=document.createElement("button");b.className="word";b.textContent=w;b.dataset.id=idx;b.onclick=()=>{if(b.classList.contains("used"))return;b.classList.add("used");built.push({word:w,el:b});renderBuilt()};wordbank.appendChild(b)})
+}
+function renderBuilt(){build.innerHTML="";built.forEach((o,i)=>{let s=document.createElement("button");s.className="token";s.textContent=o.word;s.title="Klikni da ukloniš";s.onclick=()=>{o.el.classList.remove("used");built.splice(i,1);renderBuilt()};build.appendChild(s)})}
+function resetBuild(){built.forEach(o=>o.el.classList.remove("used"));built=[];renderBuilt();orderF.textContent=""}
+function checkOrder(){let ans=built.map(x=>x.word).join(" ");let ok=norm(ans)===norm(orderData[oi].answer);stat(ok);orderF.textContent=ok?"✓ Tačno!":"✗ Rešenje: "+orderData[oi].answer;orderF.style.color=ok?"var(--good)":"var(--bad)";if(ok)say(orderData[oi].answer)}
+function nextOrder(){oi=(oi+1)%orderData.length;renderOrder()}
+
+function renderTr(){let d=trData[ti];trQ.textContent=d.sr;trCount.textContent=(ti+1)+" / "+trData.length;trInput.value="";trF.textContent=""}
+function checkTr(){let d=trData[ti];let ok=norm(trInput.value)===norm(d.de);stat(ok);trF.textContent=ok?"✓ Tačno!":"✗ Još jednom. Klikni „Prikaži rešenje“ ako treba.";trF.style.color=ok?"var(--good)":"var(--bad)";if(ok)say(d.de)}
+function showTr(){trF.textContent="Rešenje: "+trData[ti].de;trF.style.color="var(--blue)"}
+function nextTr(){ti=(ti+1)%trData.length;renderTr()}
+function speakTr(){say(trData[ti].de)}
+
+renderChoice();renderFill();renderOrder();renderTr();
+</script>
+</body>
+</html>
