@@ -1,0 +1,652 @@
+<!DOCTYPE html>
+<html lang="sr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DE-MAX • Konjunktiv II Wünsche Trainer</title>
+<style>
+:root{
+  --navy:#062760;
+  --blue:#0758c9;
+  --blue2:#1687f8;
+  --sky:#edf7ff;
+  --line:#c9e2fb;
+  --white:#fff;
+  --text:#102f60;
+  --muted:#6787ad;
+  --red:#ed2f32;
+  --green:#0aa15d;
+  --gold:#ffd23f;
+  --shadow:0 18px 48px rgba(5,43,105,.14);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;
+  font-family:Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Arial, sans-serif;
+  color:var(--text);
+  background:
+    radial-gradient(circle at 8% 0%, rgba(22,135,248,.18), transparent 27%),
+    radial-gradient(circle at 95% 15%, rgba(7,88,201,.12), transparent 30%),
+    linear-gradient(180deg,#fbfdff,#edf6ff 54%,#f9fcff);
+}
+button,input{font:inherit}
+.app{width:min(1220px,100%);margin:auto;padding:14px 12px 64px}
+.hero{
+  position:relative;overflow:hidden;
+  background:linear-gradient(135deg,#05245b 0%,#0758c9 58%,#1687f8 100%);
+  border-radius:30px;padding:27px 24px;color:#fff;box-shadow:var(--shadow);
+}
+.hero:before,.hero:after{
+  content:"";position:absolute;border-radius:999px;background:rgba(255,255,255,.09)
+}
+.hero:before{width:300px;height:300px;right:-95px;top:-130px}
+.hero:after{width:170px;height:170px;left:-60px;bottom:-80px}
+.brandline{position:relative;z-index:2;display:flex;justify-content:space-between;align-items:center;gap:16px}
+.brand{display:flex;align-items:center;gap:11px;font-weight:1000;letter-spacing:.5px}
+.logo{
+  width:55px;height:55px;border-radius:17px;background:#fff;color:var(--blue);
+  display:grid;place-items:center;font-weight:1000;box-shadow:0 8px 25px rgba(0,0,0,.14)
+}
+.brand small{display:block;font-weight:750;opacity:.83;letter-spacing:1.7px;font-size:11px}
+.pill{
+  background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.23);
+  border-radius:999px;padding:10px 14px;font-size:13px;font-weight:900
+}
+.hero h1{
+  position:relative;z-index:2;margin:24px 0 8px;
+  font-size:clamp(37px,7vw,72px);line-height:.98;letter-spacing:-2px
+}
+.hero h1 span{color:#d5ecff}
+.hero p{position:relative;z-index:2;margin:0;max-width:920px;font-size:clamp(15px,2vw,20px);line-height:1.58}
+.hero-stats{position:relative;z-index:2;display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:23px}
+.hstat{background:rgba(255,255,255,.13);border:1px solid rgba(255,255,255,.19);border-radius:18px;padding:14px 16px}
+.hstat b{display:block;font-size:24px}.hstat span{font-size:12px;opacity:.9}
+.tabs{display:flex;gap:8px;overflow:auto;padding:16px 1px 6px;scrollbar-width:none}
+.tabs::-webkit-scrollbar{display:none}
+.tabs button{
+  border:1px solid var(--line);background:#fff;color:var(--text);font-weight:900;
+  padding:11px 15px;border-radius:14px;cursor:pointer;white-space:nowrap;box-shadow:0 7px 20px rgba(5,43,105,.06)
+}
+.tabs button.active{background:var(--blue);color:#fff;border-color:var(--blue)}
+.section{display:none;margin-top:16px}.section.active{display:block}
+.card{
+  background:rgba(255,255,255,.97);border:1px solid var(--line);border-radius:27px;
+  padding:22px;box-shadow:var(--shadow)
+}
+.card+.card{margin-top:15px}
+.head{display:flex;justify-content:space-between;gap:12px;align-items:flex-start;margin-bottom:17px}
+.kicker{
+  display:inline-flex;align-items:center;gap:7px;background:#e8f4ff;color:var(--blue);
+  padding:8px 11px;border-radius:999px;font-size:12px;font-weight:950;text-transform:uppercase;letter-spacing:.8px
+}
+.head h2{margin:8px 0 0;font-size:clamp(25px,4vw,35px);letter-spacing:-.6px}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.verbcard{
+  border:1px solid var(--line);border-radius:22px;overflow:hidden;background:linear-gradient(180deg,#fbfdff,#eff7ff)
+}
+.verbcard h3{margin:0;padding:15px 17px;text-align:center;background:linear-gradient(90deg,var(--navy),var(--blue));color:#fff;font-size:27px}
+.conj{padding:10px 15px}
+.crow{display:flex;justify-content:space-between;gap:10px;padding:9px 0;border-bottom:1px dashed #d6e8fa;font-weight:800}
+.crow:last-child{border-bottom:0}
+.form{color:var(--red);font-weight:1000}
+.note{
+  margin-top:15px;background:#fff8d5;border:1px solid #f3dd7e;color:#5d4c00;
+  border-radius:18px;padding:14px 16px;font-weight:750;line-height:1.55
+}
+.examples{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.ex{
+  border:1px solid var(--line);border-radius:17px;padding:14px;background:linear-gradient(180deg,#fff,#f5faff)
+}
+.ex b{color:var(--blue)}.ex .de{font-size:18px;font-weight:850}.ex .sr{margin-top:5px;color:#6886aa;font-size:14px}
+.exercise{display:grid;grid-template-columns:1fr 290px;gap:16px}
+.qbox{
+  min-height:305px;border:1px solid var(--line);border-radius:24px;padding:22px;
+  background:linear-gradient(180deg,#fff,#f4faff);display:flex;flex-direction:column;justify-content:center
+}
+.qtop{font-size:13px;font-weight:950;text-transform:uppercase;letter-spacing:.9px;color:var(--muted)}
+.question{font-size:clamp(26px,4.5vw,42px);line-height:1.28;font-weight:950;margin:12px 0 19px}
+.blank{display:inline-block;min-width:120px;text-align:center;color:var(--red);border-bottom:4px solid var(--blue);padding:0 8px}
+.options{display:flex;flex-wrap:wrap;gap:10px}
+.opt{
+  border:2px solid var(--line);background:#fff;color:var(--text);border-radius:15px;
+  padding:13px 17px;font-weight:950;cursor:pointer;transition:.18s
+}
+.opt:hover{transform:translateY(-2px);border-color:var(--blue);box-shadow:0 8px 20px rgba(7,88,201,.12)}
+.opt.correct{background:#e9fff2;border-color:#50cf91;color:#07864d}
+.opt.wrong{background:#fff0f0;border-color:#ef9595;color:#ca2c2c}
+.feedback{min-height:30px;margin-top:14px;font-weight:900}.feedback.ok{color:var(--green)}.feedback.no{color:var(--red)}
+.actions{display:flex;flex-wrap:wrap;gap:9px;margin-top:14px}
+.btn{border:0;border-radius:14px;padding:12px 16px;font-weight:950;cursor:pointer}
+.btn.primary{background:linear-gradient(90deg,var(--navy),var(--blue));color:#fff}
+.btn.ghost{background:#edf6ff;color:var(--blue);border:1px solid var(--line)}
+.btn.audio{background:#fff6d8;color:#655000;border:1px solid #f1dc82}
+.side{border:1px solid var(--line);border-radius:24px;padding:16px;background:linear-gradient(180deg,#edf7ff,#fff)}
+.ring{
+  width:120px;height:120px;border-radius:50%;margin:5px auto 13px;display:grid;place-items:center;
+  position:relative;background:conic-gradient(var(--blue) 0deg,#dcecff 0deg)
+}
+.ring:after{content:"";position:absolute;width:88px;height:88px;border-radius:50%;background:#fff}
+.ring span{position:relative;z-index:1;font-size:24px;font-weight:1000}
+.side h3{text-align:center;margin:0 0 12px}
+.mini{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.mini div{text-align:center;background:#fff;border:1px solid var(--line);border-radius:14px;padding:10px}
+.mini b{display:block;font-size:20px}
+.answerline{
+  min-height:78px;border:2px dashed #a8d1f7;background:#f7fbff;border-radius:18px;padding:12px;
+  display:flex;flex-wrap:wrap;gap:9px;align-items:center
+}
+.wordbank{display:flex;flex-wrap:wrap;gap:9px;margin-top:12px}
+.word{border:2px solid var(--line);background:#fff;border-radius:13px;padding:10px 13px;font-weight:900;cursor:pointer}
+.word.used{opacity:.33;pointer-events:none}
+.token{background:var(--blue);color:#fff;border-radius:12px;padding:9px 12px;font-weight:900;cursor:pointer}
+.translate{
+  background:#f5faff;border:1px solid var(--line);border-radius:18px;padding:14px 16px;margin-top:12px
+}
+.translate .label{font-size:12px;text-transform:uppercase;letter-spacing:.7px;color:var(--muted);font-weight:900}
+.translate .text{margin-top:5px;font-weight:850;font-size:17px}
+.wish-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+.wish-card{
+  border:1px solid var(--line);background:linear-gradient(160deg,#fff,#edf7ff);border-radius:19px;padding:15px
+}
+.wish-card .q{font-weight:950;color:var(--blue);margin-bottom:8px}.wish-card .a{font-size:18px;font-weight:850}
+.search{width:100%;border:1px solid var(--line);border-radius:16px;padding:13px 15px;font:inherit;font-weight:750;outline:none}
+.search:focus{border-color:var(--blue);box-shadow:0 0 0 4px rgba(7,88,201,.08)}
+.tablewrap{overflow:auto;margin-top:12px}
+table{width:100%;border-collapse:separate;border-spacing:0 9px}
+th{text-align:left;color:var(--muted);font-size:12px;text-transform:uppercase;letter-spacing:.7px;padding:0 12px 4px}
+td{background:#f7fbff;border-top:1px solid #d9ebfb;border-bottom:1px solid #d9ebfb;padding:12px;font-weight:750}
+td:first-child{border-left:1px solid #d9ebfb;border-radius:14px 0 0 14px}
+td:last-child{border-right:1px solid #d9ebfb;border-radius:0 14px 14px 0}
+.tag{display:inline-block;background:#e5f2ff;color:var(--blue);border-radius:999px;padding:4px 8px;font-size:11px;font-weight:950}
+.footer{text-align:center;color:#6e8dad;font-size:13px;margin-top:25px}
+@media(max-width:850px){
+  .app{padding:10px 10px 52px}.hero{padding:22px 17px;border-radius:24px}.pill{display:none}
+  .hero-stats,.grid3,.examples,.exercise,.wish-grid{grid-template-columns:1fr}
+  .side{order:-1}.card{padding:16px;border-radius:22px}.question{font-size:29px}
+  .ring{width:96px;height:96px}.ring:after{width:68px;height:68px}.ring span{font-size:20px}
+}
+</style>
+</head>
+<body>
+<div class="app">
+<header class="hero">
+  <div class="brandline">
+    <div class="brand"><div class="logo">DM</div><div>DE-MAX<small>KONJUNKTIV II TRAINER</small></div></div>
+    <div class="pill">A2–B1 • Wünsche & Vorstellungen</div>
+  </div>
+  <h1>Konjunktiv II: <span>wäre • hätte • würde</span></h1>
+  <p>Vežbaj izražavanje želja, maštanja i hipotetičkih situacija uz <b>sein → wäre</b>, <b>haben → hätte</b> i <b>werden → würde + Infinitiv</b>. Aplikacija automatski proverava odgovor i čita tačnu nemačku rečenicu.</p>
+  <div class="hero-stats">
+    <div class="hstat"><b id="allDone">0</b><span>urađenih zadataka</span></div>
+    <div class="hstat"><b id="allGood">0</b><span>tačnih odgovora</span></div>
+    <div class="hstat"><b id="allRate">0%</b><span>ukupna uspešnost</span></div>
+  </div>
+</header>
+
+<nav class="tabs">
+  <button class="active" data-tab="pravilo">📘 Pravilo</button>
+  <button data-tab="formen">✅ Izaberi oblik</button>
+  <button data-tab="wahl">🎯 wäre / hätte / würde</button>
+  <button data-tab="satz">🧩 Složi rečenicu</button>
+  <button data-tab="prevod">🌍 Prevod</button>
+  <button data-tab="wunsche">💭 40 želja</button>
+  <button data-tab="test">🏁 Završni test</button>
+</nav>
+
+<section id="pravilo" class="section active">
+  <div class="card">
+    <div class="head"><div><div class="kicker">Konjugacija</div><h2>Tri najvažnija oblika</h2></div></div>
+    <div class="grid3">
+      <div class="verbcard">
+        <h3>sein → wäre</h3>
+        <div class="conj">
+          <div class="crow"><span>ich</span><span class="form">wäre</span></div>
+          <div class="crow"><span>du</span><span class="form">wärest</span></div>
+          <div class="crow"><span>er / sie / es</span><span class="form">wäre</span></div>
+          <div class="crow"><span>wir</span><span class="form">wären</span></div>
+          <div class="crow"><span>ihr</span><span class="form">wäret</span></div>
+          <div class="crow"><span>sie / Sie</span><span class="form">wären</span></div>
+        </div>
+      </div>
+      <div class="verbcard">
+        <h3>haben → hätte</h3>
+        <div class="conj">
+          <div class="crow"><span>ich</span><span class="form">hätte</span></div>
+          <div class="crow"><span>du</span><span class="form">hättest</span></div>
+          <div class="crow"><span>er / sie / es</span><span class="form">hätte</span></div>
+          <div class="crow"><span>wir</span><span class="form">hätten</span></div>
+          <div class="crow"><span>ihr</span><span class="form">hättet</span></div>
+          <div class="crow"><span>sie / Sie</span><span class="form">hätten</span></div>
+        </div>
+      </div>
+      <div class="verbcard">
+        <h3>werden → würde</h3>
+        <div class="conj">
+          <div class="crow"><span>ich</span><span class="form">würde</span></div>
+          <div class="crow"><span>du</span><span class="form">würdest</span></div>
+          <div class="crow"><span>er / sie / es</span><span class="form">würde</span></div>
+          <div class="crow"><span>wir</span><span class="form">würden</span></div>
+          <div class="crow"><span>ihr</span><span class="form">würdet</span></div>
+          <div class="crow"><span>sie / Sie</span><span class="form">würden</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="note"><b>Brzo pravilo:</b> <b>wäre</b> = „bio/bila bih“, <b>hätte</b> = „imao/imala bih“, a <b>würde + infinitiv</b> koristimo za mnoge druge želje: <i>Ich würde gern reisen.</i></div>
+  </div>
+
+  <div class="card">
+    <div class="head"><div><div class="kicker">Primeri</div><h2>Kako zvuče želje u praksi?</h2></div></div>
+    <div class="examples">
+      <div class="ex"><div class="de">Ich <b>wäre</b> gern in Berlin.</div><div class="sr">Ja bih rado bio/bila u Berlinu.</div></div>
+      <div class="ex"><div class="de">Du <b>wärest</b> gern am Meer.</div><div class="sr">Ti bi rado bio/bila na moru.</div></div>
+      <div class="ex"><div class="de">Ich <b>hätte</b> gern ein neues Auto.</div><div class="sr">Ja bih voleo/la da imam nov auto.</div></div>
+      <div class="ex"><div class="de">Wir <b>hätten</b> gern mehr Zeit.</div><div class="sr">Mi bismo voleli da imamo više vremena.</div></div>
+      <div class="ex"><div class="de">Ich <b>würde</b> gern Deutsch lernen.</div><div class="sr">Ja bih rado učio/la nemački.</div></div>
+      <div class="ex"><div class="de">Sie <b>würden</b> gern reisen.</div><div class="sr">Oni bi rado putovali.</div></div>
+    </div>
+  </div>
+</section>
+
+<section id="formen" class="section">
+  <div class="card">
+    <div class="head"><div><div class="kicker">Vežba 1</div><h2>Izaberi pravilan oblik</h2></div></div>
+    <div class="exercise">
+      <div class="qbox">
+        <div class="qtop" id="formNo"></div>
+        <div class="question" id="formQ"></div>
+        <div class="options" id="formOpts"></div>
+        <div class="feedback" id="formFb"></div>
+        <div class="translate" id="formTr"></div>
+        <div class="actions">
+          <button class="btn primary" id="formNext">Sledeće →</button>
+          <button class="btn audio" id="formSpeak">🔊 Izgovor</button>
+        </div>
+      </div>
+      <div class="side">
+        <div class="ring" id="formRing"><span id="formPct">0%</span></div>
+        <h3>Napredak</h3>
+        <div class="mini"><div><b id="formDone">0</b><span>urađeno</span></div><div><b id="formGood">0</b><span>tačno</span></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="wahl" class="section">
+  <div class="card">
+    <div class="head"><div><div class="kicker">Vežba 2</div><h2>Da li ide wäre, hätte ili würde?</h2></div></div>
+    <div class="exercise">
+      <div class="qbox">
+        <div class="qtop" id="pickNo"></div>
+        <div class="question" id="pickQ"></div>
+        <div class="options" id="pickOpts"></div>
+        <div class="feedback" id="pickFb"></div>
+        <div class="translate" id="pickTr"></div>
+        <div class="actions"><button class="btn primary" id="pickNext">Sledeće →</button><button class="btn audio" id="pickSpeak">🔊 Izgovor</button></div>
+      </div>
+      <div class="side">
+        <div class="ring" id="pickRing"><span id="pickPct">0%</span></div>
+        <h3>Napredak</h3>
+        <div class="mini"><div><b id="pickDone">0</b><span>urađeno</span></div><div><b id="pickGood">0</b><span>tačno</span></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="satz" class="section">
+  <div class="card">
+    <div class="head"><div><div class="kicker">Vežba 3</div><h2>Složi rečenicu od ispreturanih reči</h2></div></div>
+    <div class="qbox">
+      <div class="qtop" id="orderNo"></div>
+      <div class="question" style="font-size:25px" id="orderHint"></div>
+      <div class="answerline" id="answerLine"></div>
+      <div class="wordbank" id="wordBank"></div>
+      <div class="feedback" id="orderFb"></div>
+      <div class="translate" id="orderTr"></div>
+      <div class="actions">
+        <button class="btn primary" id="orderCheck">Proveri</button>
+        <button class="btn ghost" id="orderReset">Ponovo</button>
+        <button class="btn ghost" id="orderShow">Rešenje</button>
+        <button class="btn audio" id="orderSpeak">🔊 Izgovor</button>
+        <button class="btn primary" id="orderNext">Sledeće →</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="prevod" class="section">
+  <div class="card">
+    <div class="head"><div><div class="kicker">Vežba 4</div><h2>Izaberi tačan nemački prevod</h2></div></div>
+    <div class="exercise">
+      <div class="qbox">
+        <div class="qtop" id="transNo"></div>
+        <div class="question" id="transQ"></div>
+        <div class="options" id="transOpts"></div>
+        <div class="feedback" id="transFb"></div>
+        <div class="actions"><button class="btn primary" id="transNext">Sledeće →</button><button class="btn audio" id="transSpeak">🔊 Izgovor</button></div>
+      </div>
+      <div class="side">
+        <div class="ring" id="transRing"><span id="transPct">0%</span></div>
+        <h3>Napredak</h3>
+        <div class="mini"><div><b id="transDone">0</b><span>urađeno</span></div><div><b id="transGood">0</b><span>tačno</span></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="wunsche" class="section">
+  <div class="card">
+    <div class="head"><div><div class="kicker">Baza primera</div><h2>40 korisnih želja i pitanja</h2></div></div>
+    <input id="wishSearch" class="search" placeholder="Pretraži npr. Berlin, Auto, reisen, Zeit..." />
+    <div class="wish-grid" id="wishGrid" style="margin-top:13px"></div>
+  </div>
+</section>
+
+<section id="test" class="section">
+  <div class="card">
+    <div class="head"><div><div class="kicker">Završni test</div><h2>20 pitanja • mešovito</h2></div></div>
+    <div class="exercise">
+      <div class="qbox">
+        <div class="qtop" id="testNo"></div>
+        <div class="question" id="testQ"></div>
+        <div class="options" id="testOpts"></div>
+        <div class="feedback" id="testFb"></div>
+        <div class="translate" id="testTr"></div>
+        <div class="actions"><button class="btn primary" id="testNext">Sledeće →</button><button class="btn audio" id="testSpeak">🔊 Izgovor</button></div>
+      </div>
+      <div class="side">
+        <div class="ring" id="testRing"><span id="testPct">0%</span></div>
+        <h3>Rezultat</h3>
+        <div class="mini"><div><b id="testDone">0</b><span>od 20</span></div><div><b id="testGood">0</b><span>tačno</span></div></div>
+        <div class="note" id="testResult">Odgovori na svih 20 pitanja.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="footer">DE-MAX • Konjunktiv II Wünsche Trainer • wäre • hätte • würde + Infinitiv</div>
+</div>
+
+<script>
+const $=id=>document.getElementById(id);
+const shuffle=a=>[...a].sort(()=>Math.random()-.5);
+let total={done:0,good:0};
+
+function updateAll(){
+  $("allDone").textContent=total.done;
+  $("allGood").textContent=total.good;
+  $("allRate").textContent=total.done?Math.round(total.good/total.done*100)+"%":"0%";
+}
+function ring(id,pct){ $(id).style.background=`conic-gradient(var(--blue) ${pct*3.6}deg,#dcecff 0deg)`; }
+function speak(text){
+  if(!("speechSynthesis" in window)) return;
+  speechSynthesis.cancel();
+  const u=new SpeechSynthesisUtterance(text);
+  u.lang="de-DE"; u.rate=.88;
+  speechSynthesis.speak(u);
+}
+document.querySelectorAll(".tabs button").forEach(b=>b.onclick=()=>{
+  document.querySelectorAll(".tabs button").forEach(x=>x.classList.remove("active"));
+  document.querySelectorAll(".section").forEach(x=>x.classList.remove("active"));
+  b.classList.add("active"); $(b.dataset.tab).classList.add("active");
+});
+
+const formData=[
+["Ich ___ gern in Berlin.","wäre",["wäre","wärst","wären","wäret"],"Ich wäre gern in Berlin.","Ja bih rado bio/bila u Berlinu."],
+["Du ___ gern am Meer.","wärst",["wäre","wärst","wären","wäret"],"Du wärst gern am Meer.","Ti bi rado bio/bila na moru."],
+["Er ___ gern Pilot.","wäre",["wäre","wärst","wären","wäret"],"Er wäre gern Pilot.","On bi rado bio pilot."],
+["Wir ___ gern im Urlaub.","wären",["wäre","wären","wäret","wärst"],"Wir wären gern im Urlaub.","Mi bismo rado bili na odmoru."],
+["Ihr ___ gern zu Hause.","wäret",["wäre","wären","wäret","wärst"],"Ihr wäret gern zu Hause.","Vi biste rado bili kod kuće."],
+["Sie ___ gern in Deutschland.","wären",["wäre","wärst","wären","wäret"],"Sie wären gern in Deutschland.","Oni bi rado bili u Nemačkoj."],
+["Ich ___ gern mehr Zeit.","hätte",["hätte","hättest","hätten","hättet"],"Ich hätte gern mehr Zeit.","Ja bih voleo/la da imam više vremena."],
+["Du ___ gern ein Fahrrad.","hättest",["hätte","hättest","hätten","hättet"],"Du hättest gern ein Fahrrad.","Ti bi voleo/la da imaš bicikl."],
+["Sie ___ gern ein neues Handy.","hätte",["hätte","hättest","hätten","hättet"],"Sie hätte gern ein neues Handy.","Ona bi volela da ima nov telefon."],
+["Wir ___ gern Urlaub.","hätten",["hätte","hättest","hätten","hättet"],"Wir hätten gern Urlaub.","Mi bismo voleli odmor."],
+["Ihr ___ gern mehr Geld.","hättet",["hätte","hättest","hätten","hättet"],"Ihr hättet gern mehr Geld.","Vi biste voleli da imate više novca."],
+["Sie ___ gern ein Haus.","hätten",["hätte","hättest","hätten","hättet"],"Sie hätten gern ein Haus.","Oni bi voleli da imaju kuću."],
+["Ich ___ gern reisen.","würde",["würde","würdest","würden","würdet"],"Ich würde gern reisen.","Ja bih rado putovao/la."],
+["Du ___ gern Deutsch lernen.","würdest",["würde","würdest","würden","würdet"],"Du würdest gern Deutsch lernen.","Ti bi rado učio/la nemački."],
+["Er ___ gern Fußball spielen.","würde",["würde","würdest","würden","würdet"],"Er würde gern Fußball spielen.","On bi rado igrao fudbal."],
+["Wir ___ gern Freunde treffen.","würden",["würde","würdest","würden","würdet"],"Wir würden gern Freunde treffen.","Mi bismo rado sreli prijatelje."],
+["Ihr ___ gern Musik hören.","würdet",["würde","würdest","würden","würdet"],"Ihr würdet gern Musik hören.","Vi biste rado slušali muziku."],
+["Sie ___ gern länger schlafen.","würden",["würde","würdest","würden","würdet"],"Sie würden gern länger schlafen.","Oni bi rado duže spavali."]
+];
+
+const pickData=[
+["Ich ___ gern in Wien.","wäre",["wäre","hätte","würde"],"Ich wäre gern in Wien.","Ja bih rado bio/bila u Beču."],
+["Ich ___ gern ein Auto.","hätte",["wäre","hätte","würde"],"Ich hätte gern ein Auto.","Ja bih voleo/la da imam auto."],
+["Ich ___ gern Musik hören.","würde",["wäre","hätte","würde"],"Ich würde gern Musik hören.","Ja bih rado slušao/la muziku."],
+["Wir ___ gern mehr Zeit.","hätten",["wären","hätten","würden"],"Wir hätten gern mehr Zeit.","Mi bismo voleli da imamo više vremena."],
+["Wir ___ gern am Meer.","wären",["wären","hätten","würden"],"Wir wären gern am Meer.","Mi bismo rado bili na moru."],
+["Wir ___ gern nach Berlin fahren.","würden",["wären","hätten","würden"],"Wir würden gern nach Berlin fahren.","Mi bismo rado išli u Berlin."],
+["Du ___ gern Lehrer.","wärst",["wärst","hättest","würdest"],"Du wärst gern Lehrer.","Ti bi rado bio nastavnik."],
+["Du ___ gern einen Hund.","hättest",["wärst","hättest","würdest"],"Du hättest gern einen Hund.","Ti bi voleo/la da imaš psa."],
+["Du ___ gern Fahrrad fahren.","würdest",["wärst","hättest","würdest"],"Du würdest gern Fahrrad fahren.","Ti bi rado vozio/la bicikl."],
+["Sie ___ gern in der Schweiz.","wäre",["wäre","hätte","würde"],"Sie wäre gern in der Schweiz.","Ona bi rado bila u Švajcarskoj."],
+["Sie ___ gern eine größere Wohnung.","hätte",["wäre","hätte","würde"],"Sie hätte gern eine größere Wohnung.","Ona bi volela veći stan."],
+["Sie ___ gern mehr Sport machen.","würde",["wäre","hätte","würde"],"Sie würde gern mehr Sport machen.","Ona bi rado više vežbala."]
+];
+
+const orderData=[
+{sr:"Ja bih rado bio u Berlinu.", words:["Ich","wäre","gern","in","Berlin."], ans:"Ich wäre gern in Berlin."},
+{sr:"Ja bih voleo da imam nov auto.", words:["Ich","hätte","gern","ein","neues","Auto."], ans:"Ich hätte gern ein neues Auto."},
+{sr:"Ja bih rado učio nemački.", words:["Ich","würde","gern","Deutsch","lernen."], ans:"Ich würde gern Deutsch lernen."},
+{sr:"Ti bi rado bio na moru.", words:["Du","wärst","gern","am","Meer."], ans:"Du wärst gern am Meer."},
+{sr:"Ti bi voleo da imaš više vremena.", words:["Du","hättest","gern","mehr","Zeit."], ans:"Du hättest gern mehr Zeit."},
+{sr:"Ti bi rado vozio bicikl.", words:["Du","würdest","gern","Fahrrad","fahren."], ans:"Du würdest gern Fahrrad fahren."},
+{sr:"Mi bismo rado bili u Nemačkoj.", words:["Wir","wären","gern","in","Deutschland."], ans:"Wir wären gern in Deutschland."},
+{sr:"Mi bismo voleli da imamo kuću.", words:["Wir","hätten","gern","ein","Haus."], ans:"Wir hätten gern ein Haus."},
+{sr:"Mi bismo rado igrali fudbal.", words:["Wir","würden","gern","Fußball","spielen."], ans:"Wir würden gern Fußball spielen."},
+{sr:"Oni bi rado bili kod kuće.", words:["Sie","wären","gern","zu","Hause."], ans:"Sie wären gern zu Hause."},
+{sr:"Oni bi voleli da imaju više novca.", words:["Sie","hätten","gern","mehr","Geld."], ans:"Sie hätten gern mehr Geld."},
+{sr:"Oni bi rado putovali.", words:["Sie","würden","gern","reisen."], ans:"Sie würden gern reisen."},
+{sr:"Vi biste rado slušali muziku.", words:["Ihr","würdet","gern","Musik","hören."], ans:"Ihr würdet gern Musik hören."},
+{sr:"Ona bi rado bila u Frankfurtu.", words:["Sie","wäre","gern","in","Frankfurt."], ans:"Sie wäre gern in Frankfurt."},
+{sr:"On bi voleo nov računar.", words:["Er","hätte","gern","einen","neuen","Computer."], ans:"Er hätte gern einen neuen Computer."}
+];
+
+const transData=[
+["Ja bih rado bio u Berlinu.","Ich wäre gern in Berlin.",["Ich wäre gern in Berlin.","Ich hätte gern Berlin.","Ich würde Berlin gern." ]],
+["Ja bih voleo da imam auto.","Ich hätte gern ein Auto.",["Ich wäre gern ein Auto.","Ich hätte gern ein Auto.","Ich würde gern ein Auto."]],
+["Ja bih rado slušao muziku.","Ich würde gern Musik hören.",["Ich hätte gern Musik hören.","Ich wäre gern Musik.","Ich würde gern Musik hören."]],
+["Mi bismo rado bili na moru.","Wir wären gern am Meer.",["Wir wären gern am Meer.","Wir hätten gern am Meer.","Wir würden gern am Meer."]],
+["Mi bismo voleli više vremena.","Wir hätten gern mehr Zeit.",["Wir wären gern mehr Zeit.","Wir hätten gern mehr Zeit.","Wir würden gern mehr Zeit."]],
+["Mi bismo rado igrali fudbal.","Wir würden gern Fußball spielen.",["Wir wären gern Fußball.","Wir hätten gern Fußball spielen.","Wir würden gern Fußball spielen."]],
+["Ti bi rado bio u Beču.","Du wärst gern in Wien.",["Du wärst gern in Wien.","Du hättest gern in Wien.","Du würdest in Wien gern."]],
+["Ti bi voleo psa.","Du hättest gern einen Hund.",["Du wärst gern einen Hund.","Du hättest gern einen Hund.","Du würdest gern einen Hund."]],
+["Ti bi rado učio nemački.","Du würdest gern Deutsch lernen.",["Du wärst gern Deutsch.","Du hättest gern Deutsch lernen.","Du würdest gern Deutsch lernen."]],
+["Ona bi rado bila kod kuće.","Sie wäre gern zu Hause.",["Sie wäre gern zu Hause.","Sie hätte gern zu Hause.","Sie würde zu Hause gern."]],
+["Ona bi volela veći stan.","Sie hätte gern eine größere Wohnung.",["Sie wäre gern eine Wohnung.","Sie hätte gern eine größere Wohnung.","Sie würde gern eine Wohnung."]],
+["Ona bi rado više putovala.","Sie würde gern mehr reisen.",["Sie wäre gern mehr reisen.","Sie hätte gern mehr reisen.","Sie würde gern mehr reisen."]]
+];
+
+const wishes=[
+["Wo wären Sie jetzt gern?","Ich wäre jetzt gern am Meer.","Gde biste sada rado bili?"],
+["Wer wärst du gern?","Ich wäre gern Musiker.","Ko bi ti rado bio?"],
+["Wo wärst du gern im Sommer?","Ich wäre gern in Spanien.","Gde bi rado bio leti?"],
+["Wären Sie gern in Berlin?","Ja, ich wäre gern in Berlin.","Da li biste rado bili u Berlinu?"],
+["Was hättest du gern?","Ich hätte gern ein neues Auto.","Šta bi voleo da imaš?"],
+["Was hätten Sie gern?","Ich hätte gern einen Kaffee.","Šta biste želeli?"],
+["Hättest du gern mehr Zeit?","Ja, ich hätte gern mehr Zeit.","Da li bi voleo više vremena?"],
+["Was würde er gern machen?","Er würde gern Fußball spielen.","Šta bi on rado radio?"],
+["Was würdest du gern lernen?","Ich würde gern Deutsch lernen.","Šta bi ti rado učio?"],
+["Was würden Sie gern machen?","Ich würde gern reisen.","Šta biste rado radili?"],
+["Würdest du gern Musik hören?","Ja, ich würde gern Musik hören.","Da li bi rado slušao muziku?"],
+["Würdet ihr gern schwimmen?","Ja, wir würden gern schwimmen.","Da li biste rado plivali?"],
+["Wo wären deine Eltern gern?","Sie wären gern am Meer.","Gde bi tvoji roditelji rado bili?"],
+["Was hätte Anna gern?","Sie hätte gern ein Fahrrad.","Šta bi Ana volela da ima?"],
+["Was würde Marko gern spielen?","Er würde gern Tennis spielen.","Šta bi Marko rado igrao?"],
+["Ich wäre gern in München.","Ich wäre gern in München.","Rado bih bio u Minhenu."],
+["Ich wäre gern Lehrer.","Ich wäre gern Lehrer.","Rado bih bio nastavnik."],
+["Ich wäre gern zu Hause.","Ich wäre gern zu Hause.","Rado bih bio kod kuće."],
+["Ich wäre gern am Strand.","Ich wäre gern am Strand.","Rado bih bio na plaži."],
+["Ich wäre gern im Urlaub.","Ich wäre gern im Urlaub.","Rado bih bio na odmoru."],
+["Ich hätte gern ein Haus.","Ich hätte gern ein Haus.","Voleo bih kuću."],
+["Ich hätte gern einen Hund.","Ich hätte gern einen Hund.","Voleo bih psa."],
+["Ich hätte gern mehr Freizeit.","Ich hätte gern mehr Freizeit.","Voleo bih više slobodnog vremena."],
+["Ich hätte gern ein neues Handy.","Ich hätte gern ein neues Handy.","Voleo bih nov telefon."],
+["Ich hätte gern eine größere Wohnung.","Ich hätte gern eine größere Wohnung.","Voleo bih veći stan."],
+["Ich würde gern Musik hören.","Ich würde gern Musik hören.","Rado bih slušao muziku."],
+["Ich würde gern Sport machen.","Ich würde gern Sport machen.","Rado bih se bavio sportom."],
+["Ich würde gern E-Mails schreiben.","Ich würde gern E-Mails schreiben.","Rado bih pisao mejlove."],
+["Ich würde gern Fahrrad fahren.","Ich würde gern Fahrrad fahren.","Rado bih vozio bicikl."],
+["Ich würde gern Wörter lernen.","Ich würde gern Wörter lernen.","Rado bih učio reči."],
+["Ich würde gern Freunde treffen.","Ich würde gern Freunde treffen.","Rado bih se video s prijateljima."],
+["Ich würde gern Fragen stellen.","Ich würde gern Fragen stellen.","Rado bih postavljao pitanja."],
+["Ich würde gern Dialoge üben.","Ich würde gern Dialoge üben.","Rado bih vežbao dijaloge."],
+["Ich würde gern Briefe schreiben.","Ich würde gern Briefe schreiben.","Rado bih pisao pisma."],
+["Ich würde gern Englisch lernen.","Ich würde gern Englisch lernen.","Rado bih učio engleski."],
+["Wir würden gern länger schlafen.","Wir würden gern länger schlafen.","Rado bismo duže spavali."],
+["Wir würden gern nach Deutschland fahren.","Wir würden gern nach Deutschland fahren.","Rado bismo išli u Nemačku."],
+["Sie würden gern im Restaurant essen.","Sie würden gern im Restaurant essen.","Rado bi jeli u restoranu."],
+["Du würdest gern im Park laufen.","Du würdest gern im Park laufen.","Rado bi trčao u parku."],
+["Ihr würdet gern zusammen lernen.","Ihr würdet gern zusammen lernen.","Rado biste zajedno učili."]
+];
+
+function buildMC(prefix,data){
+  let i=0,done=0,good=0,locked=false,current="";
+  function render(){
+    locked=false;
+    let row=data[i]; current=row[3]||row[1];
+    $(prefix+"No").textContent=`Zadatak ${i+1} / ${data.length}`;
+    $(prefix+"Q").innerHTML=row[0].replace("___",'<span class="blank">?</span>');
+    $(prefix+"Fb").textContent=""; $(prefix+"Fb").className="feedback";
+    if($(prefix+"Tr")) $(prefix+"Tr").innerHTML=`<div class="label">Prevod</div><div class="text">${row[4]||""}</div>`;
+    let opts=row[2];
+    const box=$(prefix+"Opts"); box.innerHTML="";
+    shuffle(opts).forEach(op=>{
+      let b=document.createElement("button"); b.className="opt"; b.textContent=op;
+      b.onclick=()=>{
+        if(locked)return; locked=true; done++; total.done++;
+        $(prefix+"Q").innerHTML=row[0].replace("___",`<span class="blank">${op}</span>`);
+        if(op===row[1]){
+          b.classList.add("correct"); good++; total.good++;
+          $(prefix+"Fb").textContent="✓ Tačno!"; $(prefix+"Fb").className="feedback ok"; speak(current);
+        }else{
+          b.classList.add("wrong");
+          $(prefix+"Fb").textContent=`✗ Tačno je: ${row[1]}`; $(prefix+"Fb").className="feedback no";
+        }
+        $(prefix+"Done").textContent=done; $(prefix+"Good").textContent=good;
+        let pct=Math.round(done/data.length*100); $(prefix+"Pct").textContent=pct+"%"; ring(prefix+"Ring",pct); updateAll();
+      };
+      box.appendChild(b);
+    });
+  }
+  $(prefix+"Next").onclick=()=>{i=(i+1)%data.length;render()};
+  $(prefix+"Speak").onclick=()=>speak(current);
+  render();
+}
+buildMC("form",formData);
+buildMC("pick",pickData);
+
+let oi=0,sel=[];
+function renderOrder(){
+  sel=[];
+  let row=orderData[oi];
+  $("orderNo").textContent=`Zadatak ${oi+1} / ${orderData.length}`;
+  $("orderHint").textContent=row.sr;
+  $("orderFb").textContent=""; $("orderFb").className="feedback";
+  $("orderTr").innerHTML=`<div class="label">Zadatak</div><div class="text">Složi nemačku rečenicu.</div>`;
+  $("answerLine").innerHTML=""; $("wordBank").innerHTML="";
+  shuffle(row.words.map((w,i)=>({w,i}))).forEach(o=>{
+    let b=document.createElement("button"); b.className="word"; b.textContent=o.w;
+    b.onclick=()=>{sel.push({w:o.w,el:b});b.classList.add("used");drawOrder()};
+    $("wordBank").appendChild(b);
+  });
+}
+function drawOrder(){
+  $("answerLine").innerHTML="";
+  sel.forEach((o,i)=>{
+    let t=document.createElement("span");t.className="token";t.textContent=o.w;
+    t.onclick=()=>{o.el.classList.remove("used");sel.splice(i,1);drawOrder()};
+    $("answerLine").appendChild(t);
+  });
+}
+$("orderCheck").onclick=()=>{
+  let user=sel.map(x=>x.w).join(" "),ans=orderData[oi].ans;
+  total.done++;
+  if(user===ans){$("orderFb").textContent="✓ Tačno!";$("orderFb").className="feedback ok";total.good++;speak(ans)}
+  else{$("orderFb").textContent="✗ Pokušaj još jednom.";$("orderFb").className="feedback no"}
+  updateAll();
+};
+$("orderReset").onclick=renderOrder;
+$("orderShow").onclick=()=>{$("orderFb").textContent="Rešenje: "+orderData[oi].ans;$("orderFb").className="feedback ok"};
+$("orderSpeak").onclick=()=>speak(orderData[oi].ans);
+$("orderNext").onclick=()=>{oi=(oi+1)%orderData.length;renderOrder()};
+renderOrder();
+
+let tri=0,trd=0,trg=0,trlocked=false,trcurrent="";
+function renderTrans(){
+  trlocked=false;let row=transData[tri];trcurrent=row[1];
+  $("transNo").textContent=`Zadatak ${tri+1} / ${transData.length}`;$("transQ").textContent=row[0];
+  $("transFb").textContent="";$("transFb").className="feedback";$("transOpts").innerHTML="";
+  shuffle(row[2]).forEach(op=>{
+    let b=document.createElement("button");b.className="opt";b.textContent=op;
+    b.onclick=()=>{
+      if(trlocked)return;trlocked=true;trd++;total.done++;
+      if(op===row[1]){b.classList.add("correct");trg++;total.good++;$("transFb").textContent="✓ Tačno!";$("transFb").className="feedback ok";speak(row[1])}
+      else{b.classList.add("wrong");$("transFb").textContent="✗ Tačno: "+row[1];$("transFb").className="feedback no"}
+      $("transDone").textContent=trd;$("transGood").textContent=trg;let p=Math.round(trd/transData.length*100);$("transPct").textContent=p+"%";ring("transRing",p);updateAll();
+    };$("transOpts").appendChild(b);
+  });
+}
+$("transNext").onclick=()=>{tri=(tri+1)%transData.length;renderTrans()};
+$("transSpeak").onclick=()=>speak(trcurrent);
+renderTrans();
+
+function renderWishes(filter=""){
+  $("wishGrid").innerHTML="";
+  wishes.filter(x=>x.join(" ").toLowerCase().includes(filter.toLowerCase())).forEach(x=>{
+    let d=document.createElement("div");d.className="wish-card";
+    d.innerHTML=`<div class="q">${x[0]}</div><div class="a">${x[1]}</div><div style="margin-top:6px;color:#6f8cac;font-size:13px">${x[2]}</div><button class="btn audio" style="margin-top:10px">🔊 Slušaj</button>`;
+    d.querySelector("button").onclick=()=>speak(x[1]);
+    $("wishGrid").appendChild(d);
+  });
+}
+$("wishSearch").oninput=e=>renderWishes(e.target.value);
+renderWishes();
+
+const testData=[
+formData[0],formData[4],formData[7],formData[10],formData[13],formData[16],
+pickData[0],pickData[1],pickData[2],pickData[3],pickData[5],pickData[8],
+["Er ___ gern Arzt.","wäre",["wäre","hätte","würde"],"Er wäre gern Arzt.","On bi rado bio lekar."],
+["Ihr ___ gern mehr Freizeit.","hättet",["wäret","hättet","würdet"],"Ihr hättet gern mehr Freizeit.","Vi biste voleli više slobodnog vremena."],
+["Sie ___ gern nach Österreich fahren.","würde",["wäre","hätte","würde"],"Sie würde gern nach Österreich fahren.","Ona bi rado išla u Austriju."],
+["Wir ___ gern in München.","wären",["wären","hätten","würden"],"Wir wären gern in München.","Mi bismo rado bili u Minhenu."],
+["Du ___ gern einen Kaffee.","hättest",["wärst","hättest","würdest"],"Du hättest gern einen Kaffee.","Ti bi rado kafu."],
+["Ich ___ gern länger schlafen.","würde",["wäre","hätte","würde"],"Ich würde gern länger schlafen.","Ja bih rado duže spavao."],
+["Sie ___ gern mehr Geld.","hätten",["wären","hätten","würden"],"Sie hätten gern mehr Geld.","Oni bi voleli više novca."],
+["Ihr ___ gern am Meer.","wäret",["wäret","hättet","würdet"],"Ihr wäret gern am Meer.","Vi biste rado bili na moru."]
+];
+let ti=0,td=0,tg=0,tlock=false,tcur="";
+function renderTest(){
+  if(ti>=20){
+    $("testNo").textContent="Rezultat";$("testQ").textContent="Test je završen.";$("testOpts").innerHTML="";
+    let p=Math.round(tg/20*100);$("testPct").textContent=p+"%";ring("testRing",p);
+    $("testResult").innerHTML=`Rezultat: <b>${tg}/20</b> (${p}%). ${p>=85?"Odlično!":p>=65?"Vrlo dobro — ponovi još nekoliko primera.":"Ponovi pravilo i probaj ponovo."}`;
+    $("testTr").innerHTML="";return;
+  }
+  tlock=false;let row=testData[ti];tcur=row[3];
+  $("testNo").textContent=`Pitanje ${ti+1} / 20`;
+  $("testQ").innerHTML=row[0].replace("___",'<span class="blank">?</span>');
+  $("testFb").textContent="";$("testFb").className="feedback";
+  $("testTr").innerHTML=`<div class="label">Prevod</div><div class="text">${row[4]}</div>`;
+  $("testOpts").innerHTML="";
+  shuffle(row[2]).forEach(op=>{
+    let b=document.createElement("button");b.className="opt";b.textContent=op;
+    b.onclick=()=>{
+      if(tlock)return;tlock=true;td++;total.done++;
+      $("testQ").innerHTML=row[0].replace("___",`<span class="blank">${op}</span>`);
+      if(op===row[1]){b.classList.add("correct");tg++;total.good++;$("testFb").textContent="✓ Tačno!";$("testFb").className="feedback ok";speak(row[3])}
+      else{b.classList.add("wrong");$("testFb").textContent="✗ Tačno: "+row[1];$("testFb").className="feedback no"}
+      $("testDone").textContent=td;$("testGood").textContent=tg;let p=Math.round(td/20*100);$("testPct").textContent=p+"%";ring("testRing",p);updateAll();
+    };$("testOpts").appendChild(b);
+  });
+}
+$("testNext").onclick=()=>{if(!tlock&&ti<20)return;ti++;renderTest()};
+$("testSpeak").onclick=()=>speak(tcur);
+renderTest();
+updateAll();
+</script>
+</body>
+</html>
