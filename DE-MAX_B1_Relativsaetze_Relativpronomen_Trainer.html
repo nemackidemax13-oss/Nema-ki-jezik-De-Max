@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="sr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<title>DE-MAX B1 – Relativsätze & Relativpronomen</title>
+<style>
+  :root{
+    --bg:#f4f8ff;
+    --card:#ffffff;
+    --ink:#10213c;
+    --muted:#66758b;
+    --blue:#1769e0;
+    --blue2:#0d4fb5;
+    --line:#dce7f6;
+    --good:#168653;
+    --goodbg:#eaf8f1;
+    --bad:#c43e3e;
+    --badbg:#fff0f0;
+    --shadow:0 16px 40px rgba(28,69,125,.10);
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0;
+    font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+    color:var(--ink);
+    background:
+      radial-gradient(circle at top right, rgba(23,105,224,.10), transparent 35%),
+      var(--bg);
+    min-height:100vh;
+  }
+  button,input{font:inherit}
+  .app{width:min(100%,760px);margin:0 auto;padding:14px 14px 44px}
+  .hero{
+    background:linear-gradient(135deg,#0e4eaa,#2177ee);
+    color:white;border-radius:28px;padding:22px 20px 20px;
+    box-shadow:0 18px 50px rgba(23,105,224,.24);
+    position:relative;overflow:hidden;
+  }
+  .hero:after{
+    content:"";position:absolute;width:170px;height:170px;border-radius:50%;
+    right:-70px;top:-70px;background:rgba(255,255,255,.12);
+  }
+  .brand{display:flex;justify-content:space-between;align-items:center;gap:12px}
+  .logo{
+    width:54px;height:54px;border-radius:16px;background:#fff;color:var(--blue2);
+    display:grid;place-items:center;font-weight:900;letter-spacing:-1px;
+    box-shadow:0 8px 25px rgba(0,0,0,.13);
+  }
+  .badge{
+    font-size:12px;font-weight:800;background:rgba(255,255,255,.18);
+    padding:8px 11px;border-radius:999px;border:1px solid rgba(255,255,255,.23)
+  }
+  h1{font-size:clamp(25px,5vw,38px);line-height:1.05;margin:18px 0 8px;letter-spacing:-.8px}
+  .lead{margin:0;color:rgba(255,255,255,.88);font-size:14px;line-height:1.55;max-width:570px}
+  .topstats{
+    display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-top:18px
+  }
+  .stat{background:rgba(255,255,255,.13);border:1px solid rgba(255,255,255,.15);padding:10px;border-radius:16px}
+  .stat b{display:block;font-size:18px}
+  .stat span{font-size:11px;color:rgba(255,255,255,.82)}
+  .nav{
+    display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:14px 0;
+    position:sticky;top:8px;z-index:20;padding:7px;background:rgba(244,248,255,.92);
+    backdrop-filter:blur(12px);border-radius:18px;border:1px solid rgba(220,231,246,.9)
+  }
+  .nav button{
+    border:0;background:white;color:var(--ink);padding:10px 7px;border-radius:12px;
+    font-size:11px;font-weight:800;box-shadow:0 4px 12px rgba(30,60,100,.05);cursor:pointer
+  }
+  .nav button.active{background:var(--blue);color:#fff}
+  .panel{display:none}.panel.active{display:block}
+  .card{
+    background:var(--card);border:1px solid var(--line);border-radius:24px;
+    box-shadow:var(--shadow);padding:18px;margin-top:12px
+  }
+  .eyebrow{font-size:12px;font-weight:900;color:var(--blue);text-transform:uppercase;letter-spacing:.8px}
+  h2{font-size:22px;margin:5px 0 8px}
+  .desc{font-size:13px;color:var(--muted);line-height:1.5;margin:0}
+  .rulegrid{display:grid;grid-template-columns:1fr;gap:10px;margin-top:15px}
+  .rule{border:1px solid var(--line);border-radius:18px;padding:14px;background:#fbfdff}
+  .rule b{color:var(--blue2)}
+  .rule .de{font-weight:800;margin:6px 0 3px}
+  .rule .sr{font-size:12px;color:var(--muted)}
+  table{width:100%;border-collapse:collapse;margin-top:14px;font-size:13px;overflow:hidden;border-radius:16px}
+  th,td{padding:10px;border-bottom:1px solid var(--line);text-align:center}
+  th{background:#edf4ff;color:var(--blue2)}
+  th:first-child,td:first-child{text-align:left;font-weight:800}
+  .qtop{display:flex;justify-content:space-between;align-items:center;gap:10px}
+  .counter{font-size:12px;font-weight:800;color:var(--blue);background:#edf4ff;padding:7px 10px;border-radius:999px}
+  .question{font-size:20px;line-height:1.45;font-weight:800;margin:18px 0 10px}
+  .hint{font-size:13px;color:var(--muted);margin-bottom:12px}
+  .options{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+  .opt{
+    border:1.5px solid var(--line);background:white;color:var(--ink);padding:12px 10px;
+    border-radius:15px;font-weight:800;cursor:pointer;min-height:48px;
+    transition:.15s transform,.15s border-color,.15s background
+  }
+  .opt:hover{transform:translateY(-1px);border-color:#a8c9f7}
+  .opt.selected{border-color:var(--blue);background:#eef5ff;color:var(--blue2)}
+  .opt.correct{border-color:var(--good);background:var(--goodbg);color:var(--good)}
+  .opt.wrong{border-color:var(--bad);background:var(--badbg);color:var(--bad)}
+  .feedback{margin-top:13px;border-radius:15px;padding:12px 13px;display:none;font-size:13px;line-height:1.45}
+  .feedback.good{display:block;background:var(--goodbg);color:#0f7044;border:1px solid #bce7d1}
+  .feedback.bad{display:block;background:var(--badbg);color:#a22f2f;border:1px solid #f0c2c2}
+  .translation{display:block;margin-top:5px;color:var(--muted)}
+  .actions{display:flex;gap:9px;margin-top:14px;flex-wrap:wrap}
+  .btn{
+    border:0;border-radius:14px;padding:12px 16px;font-weight:900;cursor:pointer;
+    background:var(--blue);color:#fff;flex:1;min-width:120px
+  }
+  .btn.secondary{background:#edf4ff;color:var(--blue2)}
+  .btn.ghost{background:white;color:var(--ink);border:1px solid var(--line)}
+  .wordbank{display:flex;flex-wrap:wrap;gap:8px;margin:15px 0}
+  .word{
+    border:1px solid #cfe0f6;background:#f8fbff;color:var(--ink);
+    border-radius:12px;padding:10px 12px;font-weight:750;cursor:pointer
+  }
+  .word.used{opacity:.28;pointer-events:none}
+  .answerbox{
+    min-height:70px;border:2px dashed #c9daf1;border-radius:16px;background:#fbfdff;
+    padding:10px;display:flex;align-items:flex-start;align-content:flex-start;flex-wrap:wrap;gap:7px
+  }
+  .chip{background:#eaf3ff;color:#0f58bd;border-radius:10px;padding:9px 10px;font-weight:800;cursor:pointer}
+  .sentencePair{
+    background:#f8fbff;border:1px solid var(--line);padding:13px;border-radius:16px;
+    margin:13px 0;font-size:15px;line-height:1.55
+  }
+  .textrow{display:flex;gap:8px;margin-top:12px}
+  input{
+    width:100%;border:1.5px solid #cedcf0;border-radius:14px;padding:13px 14px;outline:none;
+    color:var(--ink);background:white
+  }
+  input:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(23,105,224,.09)}
+  .progresswrap{margin-top:14px}
+  .progresshead{display:flex;justify-content:space-between;font-size:12px;color:var(--muted);font-weight:800}
+  .bar{height:9px;background:#e6edf7;border-radius:999px;overflow:hidden;margin-top:7px}
+  .bar > div{height:100%;width:0;background:linear-gradient(90deg,#2e81ee,#0f55bc);transition:.3s width}
+  .mini{font-size:11px;color:var(--muted)}
+  .finalScore{text-align:center;padding:18px}
+  .scoreCircle{
+    width:126px;height:126px;margin:12px auto;border-radius:50%;
+    background:conic-gradient(var(--blue) 0deg,#e5eefb 0deg);
+    display:grid;place-items:center
+  }
+  .scoreInner{width:98px;height:98px;border-radius:50%;background:white;display:grid;place-items:center;font-size:25px;font-weight:900}
+  .hide{display:none!important}
+  @media(min-width:620px){
+    .rulegrid{grid-template-columns:1fr 1fr}
+    .nav button{font-size:12px}
+  }
+  @media(max-width:430px){
+    .app{padding:8px 9px 28px}
+    .hero{border-radius:22px;padding:18px 16px}
+    .logo{width:48px;height:48px}
+    .nav{gap:5px}
+    .nav button{padding:10px 4px;font-size:10px}
+    .card{padding:15px;border-radius:20px}
+    .question{font-size:18px}
+    .options{grid-template-columns:1fr}
+    .topstats{gap:6px}
+    .stat{padding:8px}
+  }
+</style>
+</head>
+<body>
+<div class="app">
+  <section class="hero">
+    <div class="brand">
+      <div class="logo">DE<br>MAX</div>
+      <div class="badge">B1 • Deutsch</div>
+    </div>
+    <h1>Relativsätze<br>& Relativpronomen</h1>
+    <p class="lead">Vežbaj odnosne rečenice i odnosne zamenice kroz kratke, jasne zadatke sa prevodom i nemačkim izgovorom.</p>
+    <div class="topstats">
+      <div class="stat"><b id="heroDone">0</b><span>urađeno</span></div>
+      <div class="stat"><b id="heroCorrect">0</b><span>tačno</span></div>
+      <div class="stat"><b id="heroPct">0%</b><span>uspeh</span></div>
+    </div>
+  </section>
+
+  <div class="nav">
+    <button class="active" data-panel="rules">Pravilo</button>
+    <button data-panel="choose">Zamenica</button>
+    <button data-panel="order">Red reči</button>
+    <button data-panel="combine">Spoji</button>
+  </div>
+
+  <section id="rules" class="panel active">
+    <div class="card">
+      <div class="eyebrow">Brzo objašnjenje</div>
+      <h2>Kako radi relativna rečenica?</h2>
+      <p class="desc">Relativna rečenica dodatno opisuje imenicu. Počinje odnosnom zamenicom, a glagol ide na kraj zavisne rečenice.</p>
+
+      <div class="rulegrid">
+        <div class="rule">
+          <b>Nominativ</b>
+          <div class="de">Der Mann, <u>der</u> dort steht, ist mein Lehrer.</div>
+          <div class="sr">Čovek koji tamo stoji je moj nastavnik.</div>
+        </div>
+        <div class="rule">
+          <b>Akkusativ</b>
+          <div class="de">Das Buch, <u>das</u> ich lese, ist spannend.</div>
+          <div class="sr">Knjiga koju čitam je uzbudljiva.</div>
+        </div>
+        <div class="rule">
+          <b>Dativ</b>
+          <div class="de">Die Frau, <u>der</u> ich helfe, ist nett.</div>
+          <div class="sr">Žena kojoj pomažem je ljubazna.</div>
+        </div>
+        <div class="rule">
+          <b>Genitiv</b>
+          <div class="de">Der Mann, <u>dessen</u> Auto neu ist, wohnt hier.</div>
+          <div class="sr">Čovek čiji je auto nov stanuje ovde.</div>
+        </div>
+      </div>
+
+      <table>
+        <tr><th></th><th>m.</th><th>f.</th><th>n.</th><th>Pl.</th></tr>
+        <tr><td>Nominativ</td><td>der</td><td>die</td><td>das</td><td>die</td></tr>
+        <tr><td>Akkusativ</td><td>den</td><td>die</td><td>das</td><td>die</td></tr>
+        <tr><td>Dativ</td><td>dem</td><td>der</td><td>dem</td><td>denen</td></tr>
+        <tr><td>Genitiv</td><td>dessen</td><td>deren</td><td>dessen</td><td>deren</td></tr>
+      </table>
+
+      <div class="actions">
+        <button class="btn" onclick="openPanel('choose')">Počni vežbanje</button>
+      </div>
+    </div>
+  </section>
+
+  <section id="choose" class="panel">
+    <div class="card">
+      <div class="qtop">
+        <div>
+          <div class="eyebrow">Vežba 1</div>
+          <h2>Izaberi zamenicu</h2>
+        </div>
+        <div class="counter" id="chooseCounter">1 / 20</div>
+      </div>
+      <div class="question" id="chooseQ"></div>
+      <div class="hint" id="chooseHint"></div>
+      <div class="options" id="chooseOptions"></div>
+      <div class="feedback" id="chooseFeedback"></div>
+      <div class="actions">
+        <button class="btn secondary" onclick="speakCurrentChoose()">🔊 Slušaj</button>
+        <button class="btn" id="chooseNext" onclick="nextChoose()">Sledeće</button>
+      </div>
+      <div class="progresswrap">
+        <div class="progresshead"><span>Napredak</span><span id="chooseProgressText">0%</span></div>
+        <div class="bar"><div id="chooseBar"></div></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="order" class="panel">
+    <div class="card">
+      <div class="qtop">
+        <div>
+          <div class="eyebrow">Vežba 2</div>
+          <h2>Složi rečenicu</h2>
+        </div>
+        <div class="counter" id="orderCounter">1 / 12</div>
+      </div>
+      <div class="question" id="orderPrompt"></div>
+      <div class="hint">Klikni reči pravilnim redom. Glagol u relativnoj rečenici ide na kraj.</div>
+      <div class="answerbox" id="orderAnswer"></div>
+      <div class="wordbank" id="orderWords"></div>
+      <div class="feedback" id="orderFeedback"></div>
+      <div class="actions">
+        <button class="btn ghost" onclick="resetOrder()">Poništi</button>
+        <button class="btn" onclick="checkOrder()">Proveri</button>
+        <button class="btn secondary" onclick="nextOrder()">Sledeće</button>
+      </div>
+      <div class="progresswrap">
+        <div class="progresshead"><span>Napredak</span><span id="orderProgressText">0%</span></div>
+        <div class="bar"><div id="orderBar"></div></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="combine" class="panel">
+    <div class="card">
+      <div class="qtop">
+        <div>
+          <div class="eyebrow">Vežba 3</div>
+          <h2>Spoji dve rečenice</h2>
+        </div>
+        <div class="counter" id="combineCounter">1 / 12</div>
+      </div>
+      <div class="sentencePair" id="combinePair"></div>
+      <div class="hint">Napiši jednu rečenicu sa odnosnom zamenicom. Velika/mala slova i završna tačka nisu presudni.</div>
+      <div class="textrow">
+        <input id="combineInput" autocomplete="off" placeholder="Napiši relativnu rečenicu..." />
+      </div>
+      <div class="feedback" id="combineFeedback"></div>
+      <div class="actions">
+        <button class="btn" onclick="checkCombine()">Proveri</button>
+        <button class="btn secondary" onclick="showCombine()">Rešenje</button>
+        <button class="btn ghost" onclick="nextCombine()">Sledeće</button>
+      </div>
+      <div class="progresswrap">
+        <div class="progresshead"><span>Napredak</span><span id="combineProgressText">0%</span></div>
+        <div class="bar"><div id="combineBar"></div></div>
+      </div>
+    </div>
+
+    <div class="card finalScore">
+      <div class="eyebrow">Ukupni rezultat</div>
+      <h2>Tvoj napredak</h2>
+      <div class="scoreCircle" id="scoreCircle"><div class="scoreInner" id="scoreInner">0%</div></div>
+      <p class="desc" id="scoreText">Reši zadatke da bi video rezultat.</p>
+      <div class="actions">
+        <button class="btn ghost" onclick="resetAll()">Resetuj napredak</button>
+      </div>
+    </div>
+  </section>
+</div>
+
+<script>
+const chooseData = [
+ {q:"Das ist der Mann, ___ jeden Morgen hier Kaffee trinkt.",a:"der",opts:["der","den","dem","dessen"],hint:"Subjekat relativne rečenice • muški rod • Nominativ",tr:"To je čovek koji ovde svako jutro pije kafu."},
+ {q:"Die Kollegin, ___ ich gestern angerufen habe, arbeitet in Berlin.",a:"die",opts:["der","die","deren","denen"],hint:"Objekat • ženski rod • Akkusativ",tr:"Koleginica koju sam juče pozvao radi u Berlinu."},
+ {q:"Das Handy, ___ ich gekauft habe, war sehr teuer.",a:"das",opts:["das","dem","dessen","den"],hint:"Objekat • srednji rod • Akkusativ",tr:"Telefon koji sam kupio bio je veoma skup."},
+ {q:"Der Schüler, ___ ich geholfen habe, hat die Prüfung bestanden.",a:"dem",opts:["der","den","dem","dessen"],hint:"helfen + Dativ • muški rod",tr:"Učenik kome sam pomogao položio je ispit."},
+ {q:"Die Frau, mit ___ ich gesprochen habe, ist Ärztin.",a:"der",opts:["die","der","deren","denen"],hint:"mit + Dativ • ženski rod",tr:"Žena sa kojom sam razgovarao je lekarka."},
+ {q:"Die Kinder, ___ im Garten spielen, sind meine Nachbarn.",a:"die",opts:["die","denen","deren","das"],hint:"Subjekat • množina • Nominativ",tr:"Deca koja se igraju u bašti su moje komšije."},
+ {q:"Die Freunde, mit ___ wir reisen, kommen aus Österreich.",a:"denen",opts:["die","denen","deren","dem"],hint:"mit + Dativ • množina",tr:"Prijatelji sa kojima putujemo dolaze iz Austrije."},
+ {q:"Der Nachbar, ___ Auto vor dem Haus steht, ist im Urlaub.",a:"dessen",opts:["der","den","dessen","deren"],hint:"čiji auto • muški rod • Genitiv",tr:"Komšija čiji auto stoji ispred kuće je na odmoru."},
+ {q:"Die Studentin, ___ Bruder in München studiert, kommt aus Novi Pazar.",a:"deren",opts:["die","der","deren","dessen"],hint:"čiji brat • ženski rod • Genitiv",tr:"Studentkinja čiji brat studira u Minhenu dolazi iz Novog Pazara."},
+ {q:"Das ist das Restaurant, in ___ wir gestern gegessen haben.",a:"dem",opts:["das","dem","dessen","den"],hint:"in + Dativ • mesto • srednji rod",tr:"To je restoran u kojem smo juče jeli."},
+ {q:"Der Film, über ___ alle sprechen, läuft heute Abend.",a:"den",opts:["der","den","dem","dessen"],hint:"über + Akkusativ • muški rod",tr:"Film o kojem svi govore prikazuje se večeras."},
+ {q:"Die Firma, bei ___ ich arbeite, hat 200 Mitarbeiter.",a:"der",opts:["die","der","deren","denen"],hint:"bei + Dativ • ženski rod",tr:"Firma u kojoj radim ima 200 zaposlenih."},
+ {q:"Das Kind, ___ Fahrrad kaputt ist, weint.",a:"dessen",opts:["das","dem","dessen","deren"],hint:"čiji bicikl • srednji rod • Genitiv",tr:"Dete čiji je bicikl pokvaren plače."},
+ {q:"Die Bücher, ___ auf dem Tisch liegen, gehören mir.",a:"die",opts:["die","denen","deren","das"],hint:"Subjekat • množina",tr:"Knjige koje leže na stolu pripadaju meni."},
+ {q:"Die Leute, ___ wir die Einladung geschickt haben, kommen morgen.",a:"denen",opts:["die","denen","deren","dem"],hint:"jemandem etwas schicken • Dativ • množina",tr:"Ljudi kojima smo poslali pozivnicu dolaze sutra."},
+ {q:"Das Problem, ___ wir lösen müssen, ist kompliziert.",a:"das",opts:["das","dem","dessen","den"],hint:"Objekat • srednji rod • Akkusativ",tr:"Problem koji moramo da rešimo je komplikovan."},
+ {q:"Der Chef, für ___ ich arbeite, ist sehr korrekt.",a:"den",opts:["der","den","dem","dessen"],hint:"für + Akkusativ • muški rod",tr:"Šef za kojeg radim je veoma korektan."},
+ {q:"Die Wohnung, in ___ sie wohnt, ist sehr hell.",a:"der",opts:["die","der","deren","denen"],hint:"in + Dativ • ženski rod",tr:"Stan u kojem ona živi je veoma svetao."},
+ {q:"Der Kurs, an ___ ich teilnehme, endet im Oktober.",a:"dem",opts:["der","den","dem","dessen"],hint:"teilnehmen an + Dativ • muški rod",tr:"Kurs na kojem učestvujem završava se u oktobru."},
+ {q:"Das sind die Kollegen, auf ___ ich mich verlassen kann.",a:"die",opts:["die","denen","deren","das"],hint:"sich verlassen auf + Akkusativ • množina",tr:"To su kolege na koje mogu da se oslonim."}
+];
+
+const orderData = [
+ {prompt:"Složi: Ovo je čovek koji radi u banci.",words:["Das","ist","der","Mann,","der","in","einer","Bank","arbeitet."],answer:"Das ist der Mann, der in einer Bank arbeitet.",tr:"Ovo je čovek koji radi u banci."},
+ {prompt:"Složi: Poznajem ženu koja živi u Beču.",words:["Ich","kenne","die","Frau,","die","in","Wien","wohnt."],answer:"Ich kenne die Frau, die in Wien wohnt.",tr:"Poznajem ženu koja živi u Beču."},
+ {prompt:"Složi: Auto koji sam kupio je veoma pouzdan.",words:["Das","Auto,","das","ich","gekauft","habe,","ist","sehr","zuverlässig."],answer:"Das Auto, das ich gekauft habe, ist sehr zuverlässig.",tr:"Auto koji sam kupio je veoma pouzdan."},
+ {prompt:"Složi: Čovek kome pomažem je moj komšija.",words:["Der","Mann,","dem","ich","helfe,","ist","mein","Nachbar."],answer:"Der Mann, dem ich helfe, ist mein Nachbar.",tr:"Čovek kome pomažem je moj komšija."},
+ {prompt:"Složi: Ovo je knjiga o kojoj smo govorili.",words:["Das","ist","das","Buch,","über","das","wir","gesprochen","haben."],answer:"Das ist das Buch, über das wir gesprochen haben.",tr:"Ovo je knjiga o kojoj smo govorili."},
+ {prompt:"Složi: Učenica čiji je otac lekar danas nije tu.",words:["Die","Schülerin,","deren","Vater","Arzt","ist,","ist","heute","nicht","da."],answer:"Die Schülerin, deren Vater Arzt ist, ist heute nicht da.",tr:"Učenica čiji je otac lekar danas nije tu."},
+ {prompt:"Složi: Ljudi sa kojima radim su ljubazni.",words:["Die","Leute,","mit","denen","ich","arbeite,","sind","freundlich."],answer:"Die Leute, mit denen ich arbeite, sind freundlich.",tr:"Ljudi sa kojima radim su ljubazni."},
+ {prompt:"Složi: Firma u kojoj radi moja sestra je velika.",words:["Die","Firma,","in","der","meine","Schwester","arbeitet,","ist","groß."],answer:"Die Firma, in der meine Schwester arbeitet, ist groß.",tr:"Firma u kojoj radi moja sestra je velika."},
+ {prompt:"Složi: Film koji smo juče gledali bio je odličan.",words:["Der","Film,","den","wir","gestern","gesehen","haben,","war","toll."],answer:"Der Film, den wir gestern gesehen haben, war toll.",tr:"Film koji smo juče gledali bio je odličan."},
+ {prompt:"Složi: To je nastavnik od kojeg sam mnogo naučio.",words:["Das","ist","der","Lehrer,","von","dem","ich","viel","gelernt","habe."],answer:"Das ist der Lehrer, von dem ich viel gelernt habe.",tr:"To je nastavnik od kojeg sam mnogo naučio."},
+ {prompt:"Složi: Grad u kojem sam rođen nije veliki.",words:["Die","Stadt,","in","der","ich","geboren","bin,","ist","nicht","groß."],answer:"Die Stadt, in der ich geboren bin, ist nicht groß.",tr:"Grad u kojem sam rođen nije veliki."},
+ {prompt:"Složi: Dete čija majka čeka napolju je u učionici.",words:["Das","Kind,","dessen","Mutter","draußen","wartet,","ist","im","Klassenzimmer."],answer:"Das Kind, dessen Mutter draußen wartet, ist im Klassenzimmer.",tr:"Dete čija majka čeka napolju je u učionici."}
+];
+
+const combineData = [
+ {a:"Das ist ein Mann. Der Mann arbeitet bei Siemens.",ans:"Das ist ein Mann, der bei Siemens arbeitet.",tr:"To je čovek koji radi u Siemensu."},
+ {a:"Ich suche die Jacke. Ich habe die Jacke gestern gekauft.",ans:"Ich suche die Jacke, die ich gestern gekauft habe.",tr:"Tražim jaknu koju sam juče kupio."},
+ {a:"Das ist das Hotel. Wir haben in dem Hotel übernachtet.",ans:"Das ist das Hotel, in dem wir übernachtet haben.",tr:"To je hotel u kojem smo prenoćili."},
+ {a:"Die Frau ist meine Nachbarin. Ich habe der Frau geholfen.",ans:"Die Frau, der ich geholfen habe, ist meine Nachbarin.",tr:"Žena kojoj sam pomogao je moja komšinica."},
+ {a:"Der Kollege kommt morgen. Sein Büro ist neben meinem.",ans:"Der Kollege, dessen Büro neben meinem ist, kommt morgen.",tr:"Kolega čija je kancelarija pored moje dolazi sutra."},
+ {a:"Die Kinder spielen draußen. Ihre Eltern sind im Café.",ans:"Die Kinder, deren Eltern im Café sind, spielen draußen.",tr:"Deca čiji su roditelji u kafiću igraju se napolju."},
+ {a:"Das ist der Bus. Wir warten auf den Bus.",ans:"Das ist der Bus, auf den wir warten.",tr:"To je autobus koji čekamo."},
+ {a:"Ich besuche Freunde. Ich habe mit den Freunden studiert.",ans:"Ich besuche Freunde, mit denen ich studiert habe.",tr:"Posećujem prijatelje sa kojima sam studirao."},
+ {a:"Der Kurs ist sehr interessant. Ich nehme an dem Kurs teil.",ans:"Der Kurs, an dem ich teilnehme, ist sehr interessant.",tr:"Kurs na kojem učestvujem je veoma zanimljiv."},
+ {a:"Das Buch liegt hier. Du hast mir das Buch empfohlen.",ans:"Das Buch, das du mir empfohlen hast, liegt hier.",tr:"Knjiga koju si mi preporučio nalazi se ovde."},
+ {a:"Die Wohnung ist teuer. Wir interessieren uns für die Wohnung.",ans:"Die Wohnung, für die wir uns interessieren, ist teuer.",tr:"Stan za koji smo zainteresovani je skup."},
+ {a:"Der Arzt ist sehr freundlich. Ich habe mit dem Arzt gesprochen.",ans:"Der Arzt, mit dem ich gesprochen habe, ist sehr freundlich.",tr:"Lekar sa kojim sam razgovarao je veoma ljubazan."}
+];
+
+let chooseIndex=0, orderIndex=0, combineIndex=0;
+let selectedChoose=null, orderSelected=[];
+let stats = JSON.parse(localStorage.getItem("demax_rel_stats")||'{"done":0,"correct":0}');
+
+function saveStats(){
+  localStorage.setItem("demax_rel_stats",JSON.stringify(stats));
+  document.getElementById("heroDone").textContent=stats.done;
+  document.getElementById("heroCorrect").textContent=stats.correct;
+  let pct=stats.done?Math.round(stats.correct/stats.done*100):0;
+  document.getElementById("heroPct").textContent=pct+"%";
+  document.getElementById("scoreInner").textContent=pct+"%";
+  document.getElementById("scoreCircle").style.background=`conic-gradient(var(--blue) ${pct*3.6}deg,#e5eefb 0deg)`;
+  document.getElementById("scoreText").textContent=stats.done?`Tačno ${stats.correct} od ${stats.done} proverenih zadataka.`:"Reši zadatke da bi video rezultat.";
+}
+function norm(s){
+  return s.toLowerCase().replace(/[.,!?;:]/g,"").replace(/\s+/g," ").trim();
+}
+function speak(text){
+  if(!("speechSynthesis" in window)) return;
+  speechSynthesis.cancel();
+  const u=new SpeechSynthesisUtterance(text.replace(/_/g,""));
+  u.lang="de-DE"; u.rate=.9;
+  speechSynthesis.speak(u);
+}
+function openPanel(id){
+  document.querySelectorAll(".panel").forEach(x=>x.classList.remove("active"));
+  document.querySelectorAll(".nav button").forEach(x=>x.classList.toggle("active",x.dataset.panel===id));
+  document.getElementById(id).classList.add("active");
+  window.scrollTo({top:document.querySelector(".nav").offsetTop-4,behavior:"smooth"});
+}
+document.querySelectorAll(".nav button").forEach(b=>b.addEventListener("click",()=>openPanel(b.dataset.panel)));
+
+function renderChoose(){
+  const d=chooseData[chooseIndex];
+  selectedChoose=null;
+  chooseCounter.textContent=`${chooseIndex+1} / ${chooseData.length}`;
+  chooseQ.textContent=d.q;
+  chooseHint.textContent=d.hint;
+  chooseFeedback.className="feedback"; chooseFeedback.innerHTML="";
+  chooseOptions.innerHTML="";
+  d.opts.forEach(o=>{
+    const b=document.createElement("button");
+    b.className="opt";b.textContent=o;
+    b.onclick=()=>selectChoose(b,o);
+    chooseOptions.appendChild(b);
+  });
+  updateProgress("choose",chooseIndex,chooseData.length);
+}
+function selectChoose(btn,val){
+  if(selectedChoose!==null) return;
+  selectedChoose=val;
+  const d=chooseData[chooseIndex];
+  [...chooseOptions.children].forEach(b=>{
+    if(b.textContent===d.a) b.classList.add("correct");
+    else if(b===btn) b.classList.add("wrong");
+  });
+  stats.done++;
+  if(val===d.a){
+    stats.correct++;
+    chooseFeedback.className="feedback good";
+    chooseFeedback.innerHTML=`✓ Tačno! <span class="translation">${d.tr}</span>`;
+    speak(d.q.replace("___",d.a));
+  }else{
+    chooseFeedback.className="feedback bad";
+    chooseFeedback.innerHTML=`✗ Tačan odgovor je <b>${d.a}</b>.<span class="translation">${d.tr}</span>`;
+  }
+  saveStats();
+}
+function nextChoose(){
+  chooseIndex=(chooseIndex+1)%chooseData.length;
+  renderChoose();
+}
+function speakCurrentChoose(){
+  const d=chooseData[chooseIndex];
+  speak(d.q.replace("___",selectedChoose||d.a));
+}
+
+function shuffle(a){
+  let arr=[...a];
+  for(let i=arr.length-1;i>0;i--){
+    let j=Math.floor(Math.random()*(i+1));[arr[i],arr[j]]=[arr[j],arr[i]];
+  }
+  return arr;
+}
+function renderOrder(){
+  const d=orderData[orderIndex];
+  orderCounter.textContent=`${orderIndex+1} / ${orderData.length}`;
+  orderPrompt.textContent=d.prompt;
+  orderFeedback.className="feedback";orderFeedback.innerHTML="";
+  orderSelected=[];
+  orderAnswer.innerHTML="";
+  orderWords.innerHTML="";
+  shuffle(d.words.map((w,i)=>({w,i}))).forEach(obj=>{
+    let b=document.createElement("button");
+    b.className="word";b.textContent=obj.w;b.dataset.idx=obj.i;
+    b.onclick=()=>pickWord(b,obj);
+    orderWords.appendChild(b);
+  });
+  updateProgress("order",orderIndex,orderData.length);
+}
+function pickWord(btn,obj){
+  btn.classList.add("used");
+  orderSelected.push({w:obj.w,src:btn});
+  let c=document.createElement("span");
+  c.className="chip";c.textContent=obj.w;
+  c.onclick=()=>{
+    let ix=[...orderAnswer.children].indexOf(c);
+    if(ix>-1){orderSelected[ix].src.classList.remove("used");orderSelected.splice(ix,1);c.remove();}
+  };
+  orderAnswer.appendChild(c);
+}
+function resetOrder(){ renderOrder(); }
+function checkOrder(){
+  const d=orderData[orderIndex];
+  const user=orderSelected.map(x=>x.w).join(" ");
+  stats.done++;
+  if(norm(user)===norm(d.answer)){
+    stats.correct++;
+    orderFeedback.className="feedback good";
+    orderFeedback.innerHTML=`✓ Odlično! <span class="translation">${d.tr}</span>`;
+    speak(d.answer);
+  }else{
+    orderFeedback.className="feedback bad";
+    orderFeedback.innerHTML=`✗ Rešenje: <b>${d.answer}</b><span class="translation">${d.tr}</span>`;
+  }
+  saveStats();
+}
+function nextOrder(){orderIndex=(orderIndex+1)%orderData.length;renderOrder();}
+
+function renderCombine(){
+  const d=combineData[combineIndex];
+  combineCounter.textContent=`${combineIndex+1} / ${combineData.length}`;
+  combinePair.innerHTML=d.a.replace(". ",".<br>");
+  combineInput.value="";
+  combineFeedback.className="feedback";combineFeedback.innerHTML="";
+  updateProgress("combine",combineIndex,combineData.length);
+}
+function checkCombine(){
+  const d=combineData[combineIndex];
+  const user=combineInput.value;
+  stats.done++;
+  if(norm(user)===norm(d.ans)){
+    stats.correct++;
+    combineFeedback.className="feedback good";
+    combineFeedback.innerHTML=`✓ Tačno! <span class="translation">${d.tr}</span>`;
+    speak(d.ans);
+  }else{
+    combineFeedback.className="feedback bad";
+    combineFeedback.innerHTML=`✗ Uporedi sa rešenjem: <b>${d.ans}</b><span class="translation">${d.tr}</span>`;
+  }
+  saveStats();
+}
+function showCombine(){
+  const d=combineData[combineIndex];
+  combineInput.value=d.ans;
+  combineFeedback.className="feedback good";
+  combineFeedback.innerHTML=`Rešenje prikazano. <span class="translation">${d.tr}</span>`;
+  speak(d.ans);
+}
+function nextCombine(){combineIndex=(combineIndex+1)%combineData.length;renderCombine();}
+
+function updateProgress(prefix,index,total){
+  const pct=Math.round(index/total*100);
+  document.getElementById(prefix+"ProgressText").textContent=pct+"%";
+  document.getElementById(prefix+"Bar").style.width=pct+"%";
+}
+function resetAll(){
+  stats={done:0,correct:0};
+  localStorage.setItem("demax_rel_stats",JSON.stringify(stats));
+  saveStats(); chooseIndex=orderIndex=combineIndex=0;
+  renderChoose();renderOrder();renderCombine();
+}
+combineInput.addEventListener("keydown",e=>{if(e.key==="Enter")checkCombine();});
+
+renderChoose();renderOrder();renderCombine();saveStats();
+</script>
+</body>
+</html>
