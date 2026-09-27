@@ -1,0 +1,759 @@
+<!DOCTYPE html>
+<html lang="sr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<title>De-Max | Wechselpräpositionen – Wohin?</title>
+<style>
+:root{
+  --blue:#0a2f86;
+  --red:#d61111;
+  --orange:#ff7a00;
+  --orange2:#ff9a1f;
+  --ink:#17212f;
+  --muted:#6f7884;
+  --line:#ebd8cb;
+  --soft:#fff7f0;
+  --good:#138847;
+  --bad:#c62c3c;
+  --shadow:0 14px 36px rgba(92,38,0,.12);
+}
+*{box-sizing:border-box}
+body{
+  margin:0;
+  font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+  color:var(--ink);
+  background:
+    radial-gradient(circle at 0% 0%, rgba(255,122,0,.12), transparent 26rem),
+    linear-gradient(180deg,#fff,#fff8f2 55%,#fff);
+  min-height:100vh;
+}
+button,select{font:inherit}
+button{cursor:pointer}
+.app{
+  width:min(100%,990px);
+  margin:auto;
+  padding:12px 12px 42px;
+}
+.hero{
+  position:relative;
+  overflow:hidden;
+  border-radius:28px;
+  background:linear-gradient(135deg,var(--blue),#173d9c 40%, #0b245f 100%);
+  color:#fff;
+  padding:24px 20px;
+  box-shadow:var(--shadow);
+  border:3px solid #fff;
+}
+.hero:before,.hero:after{
+  content:"";
+  position:absolute;border-radius:50%;
+  background:rgba(255,255,255,.09);
+}
+.hero:before{width:180px;height:180px;right:-70px;top:-75px}
+.hero:after{width:230px;height:230px;right:50px;bottom:-160px}
+.brand{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  padding:7px 12px;
+  background:#fff;
+  color:var(--red);
+  font-weight:900;
+  border-radius:12px;
+  box-shadow:0 6px 16px rgba(0,0,0,.18);
+  margin-bottom:12px;
+}
+.hero h1{
+  margin:0;
+  font-size:clamp(30px,6vw,56px);
+  line-height:1.02;
+  letter-spacing:-1.3px;
+  position:relative;
+  z-index:2;
+}
+.hero h1 .sub{
+  display:block;
+  color:#ffd9c1;
+  font-size:clamp(22px,4.8vw,42px);
+  margin-top:6px;
+}
+.hero p{
+  margin:12px 0 0;
+  max-width:760px;
+  font-size:clamp(15px,2.4vw,19px);
+  line-height:1.45;
+  position:relative;
+  z-index:2;
+}
+.hero p b{color:#ffd382}
+.stats{
+  position:sticky;
+  top:8px;
+  z-index:50;
+  margin:12px 0;
+  padding:10px 12px;
+  border-radius:18px;
+  background:rgba(255,255,255,.94);
+  backdrop-filter:blur(12px);
+  border:1px solid #f0ddcf;
+  box-shadow:0 10px 26px rgba(90,49,6,.08);
+}
+.statrow{display:flex;align-items:center;gap:10px}
+.progress{flex:1;height:10px;border-radius:999px;background:#efe4db;overflow:hidden}
+.progress > span{
+  display:block;height:100%;width:0%;
+  background:linear-gradient(90deg,var(--orange),#ffb04f);
+  border-radius:inherit;
+  transition:.25s ease;
+}
+.stattext{font-size:13px;font-weight:850;color:var(--blue);white-space:nowrap}
+.tabs{
+  display:grid;
+  grid-template-columns:repeat(5,1fr);
+  gap:8px;
+  margin:12px 0 16px;
+}
+.tab{
+  border:1px solid #efd9c6;
+  background:white;
+  color:var(--blue);
+  border-radius:14px;
+  padding:11px 8px;
+  font-weight:900;
+  min-height:48px;
+  transition:.18s ease;
+}
+.tab:hover,.tab.active{
+  background:linear-gradient(135deg,var(--orange),var(--orange2));
+  color:#fff;
+  border-color:var(--orange);
+  transform:translateY(-1px);
+}
+.panel{display:none}
+.panel.active{display:block}
+.card{
+  background:#fff;
+  border:1px solid #f1ddd0;
+  border-radius:24px;
+  padding:20px;
+  box-shadow:var(--shadow);
+}
+.section-title{
+  display:flex;gap:12px;align-items:center;
+  margin-bottom:16px;
+}
+.badge{
+  width:46px;height:46px;flex:0 0 auto;
+  display:grid;place-items:center;
+  border-radius:14px;
+  color:#fff;font-weight:1000;
+  background:linear-gradient(135deg,var(--orange),#ff8d20);
+  box-shadow:0 6px 14px rgba(255,122,0,.25);
+}
+.section-title h2{margin:0;color:var(--blue);font-size:clamp(22px,4vw,34px)}
+.section-title p{margin:4px 0 0;color:var(--muted);font-weight:650}
+.quick-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:10px;
+}
+.prep{
+  border:1px solid #efd7c6;
+  border-radius:18px;
+  background:linear-gradient(#fff,#fff8f0);
+  padding:14px 10px;
+  text-align:center;
+}
+.prep strong{display:block;font-size:24px;color:var(--blue)}
+.prep span{display:block;margin-top:2px;font-weight:850;color:var(--red)}
+.prep small{display:block;margin-top:5px;color:var(--muted);font-size:12px}
+.dual-box{
+  margin-top:14px;
+  display:grid;grid-template-columns:1fr 1fr;
+  gap:10px;
+}
+.info{
+  border-radius:16px;
+  padding:14px;
+  background:var(--soft);
+  border:1px solid #f2d3b8;
+}
+.info h3{
+  margin:0 0 8px;
+  font-size:19px;color:var(--blue)
+}
+.info p{margin:0;line-height:1.45;font-weight:700}
+.info b.red{color:var(--red)}
+.info b.orange{color:var(--orange)}
+.note{
+  margin-top:12px;
+  background:#fff6db;
+  border:1px solid #f3d87c;
+  border-left:5px solid #f0ba00;
+  border-radius:14px;
+  padding:12px 14px;
+  line-height:1.45;
+  font-weight:650;
+}
+.table-mini{
+  margin-top:14px;
+  width:100%;
+  border-collapse:collapse;
+  overflow:hidden;
+  border-radius:16px;
+  border:1px solid #f0ddd1;
+}
+.table-mini th,.table-mini td{
+  padding:10px 8px;
+  border-bottom:1px solid #f0e2d7;
+  text-align:center;
+  font-weight:800;
+}
+.table-mini th{
+  background:linear-gradient(135deg,var(--blue),#11357f);
+  color:#fff;
+}
+.table-mini td:nth-child(1){color:var(--blue)}
+.qtop{
+  display:flex;justify-content:space-between;align-items:center;gap:12px;
+  margin-bottom:16px;
+}
+.qcount{
+  color:var(--orange);font-weight:950;font-size:14px;
+  background:#fff7ef;padding:7px 11px;border-radius:999px;border:1px solid #f3d8c0;
+}
+.speak{
+  border:1px solid #f1d4be;
+  background:#fff;
+  color:var(--orange);
+  border-radius:12px;
+  width:42px;height:42px;
+  font-size:20px;
+}
+.prompt{
+  font-size:clamp(24px,5vw,38px);
+  line-height:1.36;
+  color:var(--blue);
+  font-weight:900;
+  letter-spacing:-.3px;
+  margin:6px 0 18px;
+}
+.blank{
+  display:inline-block;
+  min-width:120px;
+  border-bottom:4px solid var(--orange);
+  color:var(--red);
+  text-align:center;
+  padding:0 7px 2px;
+}
+.options{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+.options.multi{grid-template-columns:repeat(3,1fr)}
+.option{
+  border:2px solid #efd5c4;
+  background:#fff;
+  color:var(--blue);
+  border-radius:16px;
+  padding:14px 12px;
+  font-weight:900;
+  font-size:18px;
+  transition:.17s;
+}
+.option:hover{border-color:var(--orange);transform:translateY(-1px)}
+.option.correct{background:#eaf8ef;border-color:#55ad74;color:#0c6a34}
+.option.wrong{background:#fff0f2;border-color:#ea7883;color:#ae1322}
+.option:disabled{cursor:default}
+.feedback{
+  min-height:74px;
+  margin-top:14px;
+  border-radius:16px;
+  padding:12px 14px;
+  background:#f8f8f8;
+  border:1px solid #ececec;
+  display:none;
+  line-height:1.45;
+}
+.feedback.show{display:block}
+.feedback.ok{background:#eef9f1;border-color:#bce1c8}
+.feedback.bad{background:#fff1f2;border-color:#f3bdc1}
+.feedback strong{color:var(--blue)}
+.translation{margin-top:4px;color:#66717c;font-weight:700}
+.controls{
+  display:flex;gap:10px;justify-content:space-between;
+  margin-top:14px;
+}
+.ctrl{
+  border:none;border-radius:14px;
+  padding:12px 16px;font-weight:900;
+}
+.ctrl.primary{background:linear-gradient(135deg,var(--orange),#ff9727);color:#fff}
+.ctrl.secondary{background:#f2f2f2;color:#2d3945}
+.ctrl:disabled{opacity:.45;cursor:not-allowed}
+.wordbank,.sentence{
+  display:flex;gap:8px;flex-wrap:wrap;
+  min-height:64px;
+  padding:11px;
+  border-radius:16px;
+}
+.wordbank{
+  border:2px dashed #efcbb1;
+  background:#fffaf4;
+}
+.sentence{
+  border:2px solid #ead7cb;
+  background:#fff;
+  margin-bottom:10px;
+}
+.word{
+  border:none;border-radius:12px;
+  background:linear-gradient(135deg,var(--orange),#ff9b30);
+  color:#fff;
+  padding:10px 13px;
+  font-weight:850;
+  box-shadow:0 4px 10px rgba(140,59,0,.15);
+}
+.sentence .word{
+  background:#fff3ea;color:#b84d00;border:1px solid #efc8aa;box-shadow:none
+}
+.minihelp{font-size:13px;color:var(--muted);font-weight:650;margin:8px 0 10px}
+.result-big{text-align:center;padding:28px 14px}
+.result-big .circle{
+  margin:0 auto 12px;
+  width:112px;height:112px;border-radius:50%;
+  display:grid;place-items:center;
+  background:linear-gradient(135deg,var(--orange),#ff9c2d);
+  color:#fff;font-size:30px;font-weight:1000;
+  box-shadow:0 12px 28px rgba(255,122,0,.22);
+}
+.result-big h3{font-size:30px;color:var(--blue);margin:6px 0}
+.result-big p{color:var(--muted);font-weight:650}
+.footer{
+  margin-top:18px;
+  text-align:center;color:#8a9298;font-size:12px;font-weight:700;
+}
+@media(max-width:700px){
+  .app{padding:8px 8px 30px}
+  .hero{padding:22px 16px;border-radius:22px}
+  .tabs{grid-template-columns:repeat(2,1fr)}
+  .tabs .tab:first-child{grid-column:1/-1}
+  .card{padding:16px;border-radius:20px}
+  .quick-grid{grid-template-columns:repeat(2,1fr)}
+  .quick-grid .prep:last-child{grid-column:1/-1}
+  .dual-box{grid-template-columns:1fr}
+  .options.multi{grid-template-columns:repeat(2,1fr)}
+}
+@media(max-width:420px){
+  .options,.options.multi{grid-template-columns:1fr 1fr}
+  .option{padding:13px 8px;font-size:16px}
+  .prep strong{font-size:21px}
+}
+</style>
+</head>
+<body>
+<div class="app">
+  <header class="hero">
+    <div class="brand">De-Max®</div>
+    <h1>Wechselpräpositionen
+      <span class="sub">Promenljivi predlozi – <b>Wohin?</b></span>
+    </h1>
+    <p>Vežbaj pitanje <b>Wohin?</b> – kada postoji kretanje, koristimo <b>akkusativ</b>. Aplikacija sadrži pravilo, primere, vežbe i slaganje rečenica.</p>
+  </header>
+
+  <div class="stats">
+    <div class="statrow">
+      <div class="progress"><span id="globalBar"></span></div>
+      <div class="stattext"><span id="globalDone">0</span>/<span id="globalTotal">38</span> završeno • <span id="globalScore">0</span> tačno</div>
+    </div>
+  </div>
+
+  <nav class="tabs">
+    <button class="tab active" data-panel="rules">Pravilo</button>
+    <button class="tab" data-panel="ex1">Vežba 1</button>
+    <button class="tab" data-panel="ex2">Vežba 2</button>
+    <button class="tab" data-panel="ex3">Vežba 3</button>
+    <button class="tab" data-panel="ex4">Složi rečenicu</button>
+  </nav>
+
+  <section id="rules" class="panel active">
+    <div class="card">
+      <div class="section-title">
+        <div class="badge">9</div>
+        <div><h2>Predlozi za Wohin?</h2><p>Na pitanje <b>Wohin?</b> odgovaramo uz <b>akkusativ</b>.</p></div>
+      </div>
+
+      <div class="quick-grid">
+        <div class="prep"><strong>an</strong><span>na, uz</span><small>an den Tisch</small></div>
+        <div class="prep"><strong>auf</strong><span>na</span><small>auf das Bett</small></div>
+        <div class="prep"><strong>hinter</strong><span>iza</span><small>hinter den Schrank</small></div>
+        <div class="prep"><strong>in</strong><span>u</span><small>in die Tasche</small></div>
+        <div class="prep"><strong>neben</strong><span>pored</span><small>neben das Sofa</small></div>
+        <div class="prep"><strong>über</strong><span>iznad</span><small>über den Tisch</small></div>
+        <div class="prep"><strong>unter</strong><span>ispod</span><small>unter die Lampe</small></div>
+        <div class="prep"><strong>vor</strong><span>ispred</span><small>vor das Haus</small></div>
+        <div class="prep"><strong>zwischen</strong><span>između</span><small>zwischen die Stühle</small></div>
+      </div>
+
+      <div class="dual-box">
+        <div class="info">
+          <h3>Pravilo</h3>
+          <p><b class="orange">Glagol kretanja</b> + <b class="red">Wohin?</b> = <b class="red">AKKUSATIV</b></p>
+        </div>
+        <div class="info">
+          <h3>Primer</h3>
+          <p>Maria legt das Buch <b class="red">auf den</b> Tisch.<br>Marija stavlja knjigu na sto.</p>
+        </div>
+      </div>
+
+      <table class="table-mini">
+        <tr><th>Rod</th><th>Nominativ</th><th>Akkusativ (Wohin?)</th></tr>
+        <tr><td>muški</td><td>der</td><td><b>den</b></td></tr>
+        <tr><td>ženski</td><td>die</td><td><b>die</b></td></tr>
+        <tr><td>srednji</td><td>das</td><td><b>das</b></td></tr>
+        <tr><td>množina</td><td>die</td><td><b>die</b></td></tr>
+      </table>
+
+      <div class="note">💡 <b>Wohin?</b> = kretanje ka nekom mestu. Najčešći glagoli: <i>legen, stellen, setzen, hängen</i>.</div>
+    </div>
+  </section>
+
+  <section id="ex1" class="panel">
+    <div class="card">
+      <div class="section-title">
+        <div class="badge">1</div>
+        <div><h2>Izaberi predlog</h2><p>Samo jedan predlog je tačan za značenje rečenice.</p></div>
+      </div>
+      <div id="ex1box"></div>
+    </div>
+  </section>
+
+  <section id="ex2" class="panel">
+    <div class="card">
+      <div class="section-title">
+        <div class="badge">2</div>
+        <div><h2>Akkusativ člana</h2><p>Izaberi odgovarajući član: <b>den / die / das</b>.</p></div>
+      </div>
+      <div id="ex2box"></div>
+    </div>
+  </section>
+
+  <section id="ex3" class="panel">
+    <div class="card">
+      <div class="section-title">
+        <div class="badge">3</div>
+        <div><h2>Wohin ili Wo?</h2><p>Izaberi tačan oblik: kretanje ili mirovanje.</p></div>
+      </div>
+      <div id="ex3box"></div>
+    </div>
+  </section>
+
+  <section id="ex4" class="panel">
+    <div class="card">
+      <div class="section-title">
+        <div class="badge">4</div>
+        <div><h2>Složi rečenicu</h2><p>Klikni reči pravilnim redosledom.</p></div>
+      </div>
+      <div id="ex4box"></div>
+    </div>
+  </section>
+
+  <div class="footer">De-Max • Nemački jezik • Interaktivna vežba za A1/A2 • Wohin?</div>
+</div>
+
+<script>
+const ex1 = [
+  {s:"Maria legt das Buch ___ den Tisch.", a:"auf", o:["auf","unter"], t:"Marija stavlja knjigu na sto."},
+  {s:"Der Junge stellt die Tasche ___ den Stuhl.", a:"neben", o:["neben","über"], t:"Dečak stavlja torbu pored stolice."},
+  {s:"Ich hänge das Bild ___ die Wand.", a:"an", o:["an","in"], t:"Kačim sliku na zid."},
+  {s:"Sie legt das Handy ___ die Tasche.", a:"in", o:["in","vor"], t:"Ona stavlja telefon u torbu."},
+  {s:"Wir stellen den Ball ___ den Tisch.", a:"unter", o:["unter","zwischen"], t:"Stavljamo loptu ispod stola."},
+  {s:"Er setzt sich ___ das Sofa.", a:"auf", o:["auf","hinter"], t:"On seda na sofu."},
+  {s:"Die Mutter stellt die Vase ___ den Schrank und das Fenster.", a:"zwischen", o:["zwischen","vor"], t:"Majka stavlja vazu između ormara i prozora."},
+  {s:"Der Mann legt die Zeitung ___ das Bett.", a:"auf", o:["auf","an"], t:"Muškarac stavlja novine na krevet."},
+  {s:"Das Kind läuft ___ das Haus.", a:"vor", o:["vor","unter"], t:"Dete trči ispred kuće."},
+  {s:"Die Katze springt ___ den Tisch.", a:"auf", o:["auf","neben"], t:"Mačka skače na sto."},
+  {s:"Ich stelle den Stuhl ___ den Schrank.", a:"hinter", o:["hinter","über"], t:"Stavljam stolicu iza ormara."},
+  {s:"Sie legt den Teppich ___ das Bett.", a:"vor", o:["vor","in"], t:"Ona stavlja tepih ispred kreveta."},
+  {s:"Wir hängen die Lampe ___ den Tisch.", a:"über", o:["über","auf"], t:"Kačimo lampu iznad stola."},
+  {s:"Er legt das Heft ___ die Bücher.", a:"zwischen", o:["zwischen","unter"], t:"Stavlja svesku između knjiga."}
+];
+
+const ex2 = [
+  {s:"Maria legt das Buch auf ___ Tisch.", a:"den", o:["den","die","das"], t:"Marija stavlja knjigu na sto."},
+  {s:"Sie legt die Jacke in ___ Tasche.", a:"die", o:["den","die","das"], t:"Ona stavlja jaknu u torbu."},
+  {s:"Er stellt den Ball unter ___ Bett.", a:"das", o:["den","die","das"], t:"On stavlja loptu ispod kreveta."},
+  {s:"Wir hängen das Bild an ___ Wand.", a:"die", o:["den","die","das"], t:"Kačimo sliku na zid."},
+  {s:"Ich setze das Kind auf ___ Stuhl.", a:"den", o:["den","die","das"], t:"Stavljam dete na stolicu."},
+  {s:"Die Mutter legt die Zeitung neben ___ Lampe.", a:"die", o:["den","die","das"], t:"Majka stavlja novine pored lampe."},
+  {s:"Er legt das Handy zwischen ___ Bücher.", a:"die", o:["den","die","das"], t:"On stavlja telefon između knjiga."},
+  {s:"Wir stellen die Pflanze vor ___ Fenster.", a:"das", o:["den","die","das"], t:"Stavljamo biljku ispred prozora."},
+  {s:"Sie hängt den Kalender über ___ Sofa.", a:"das", o:["den","die","das"], t:"Ona kači kalendar iznad sofe."},
+  {s:"Ich lege den Schlüssel hinter ___ Tür.", a:"die", o:["den","die","das"], t:"Stavljam ključ iza vrata."}
+];
+
+const ex3 = [
+  {s:"Maria legt das Buch ___ Tisch.", a:"auf den", o:["auf den","auf dem"], t:"Marija stavlja knjigu na sto. (kretanje)"},
+  {s:"Das Buch liegt ___ Tisch.", a:"auf dem", o:["auf den","auf dem"], t:"Knjiga leži na stolu. (mirovanje)"},
+  {s:"Ich hänge das Bild ___ Wand.", a:"an die", o:["an die","an der"], t:"Kačim sliku na zid. (kretanje)"},
+  {s:"Das Bild hängt ___ Wand.", a:"an der", o:["an die","an der"], t:"Slika visi na zidu. (mirovanje)"},
+  {s:"Sie legt das Handy ___ Tasche.", a:"in die", o:["in die","in der"], t:"Ona stavlja telefon u torbu. (kretanje)"},
+  {s:"Das Handy ist ___ Tasche.", a:"in der", o:["in die","in der"], t:"Telefon je u torbi. (mirovanje)"},
+  {s:"Wir stellen die Schuhe ___ Bett.", a:"unter das", o:["unter das","unter dem"], t:"Stavljamo cipele ispod kreveta. (kretanje)"},
+  {s:"Die Schuhe stehen ___ Bett.", a:"unter dem", o:["unter das","unter dem"], t:"Cipele su ispod kreveta. (mirovanje)"},
+  {s:"Er setzt sich ___ Sofa.", a:"auf das", o:["auf das","auf dem"], t:"On seda na sofu. (kretanje)"},
+  {s:"Er sitzt ___ Sofa.", a:"auf dem", o:["auf das","auf dem"], t:"On sedi na sofi. (mirovanje)"}
+];
+
+const ex4 = [
+  {a:"Maria legt das Buch auf den Tisch.", t:"Marija stavlja knjigu na sto."},
+  {a:"Ich hänge das Bild an die Wand.", t:"Kačim sliku na zid."},
+  {a:"Sie legt das Handy in die Tasche.", t:"Ona stavlja telefon u torbu."},
+  {a:"Wir stellen den Ball unter das Bett.", t:"Stavljamo loptu ispod kreveta."},
+  {a:"Er setzt sich auf das Sofa.", t:"On seda na sofu."},
+  {a:"Die Mutter stellt die Vase zwischen die Bücher.", t:"Majka stavlja vazu između knjiga."},
+  {a:"Ich lege den Schlüssel hinter die Tür.", t:"Stavljam ključ iza vrata."},
+  {a:"Wir hängen die Lampe über den Tisch.", t:"Kačimo lampu iznad stola."}
+];
+
+const total = ex1.length + ex2.length + ex3.length + ex4.length;
+document.getElementById("globalTotal").textContent = total;
+
+let globalDone=0, globalScore=0;
+const scored = new Set();
+const correctness = new Map();
+
+function rawUpdateGlobal(key, correct){
+  if(scored.has(key)) return;
+  scored.add(key);
+  correctness.set(key, correct);
+  globalDone++;
+  if(correct) globalScore++;
+  document.getElementById("globalDone").textContent = globalDone;
+  document.getElementById("globalScore").textContent = globalScore;
+  document.getElementById("globalBar").style.width = (globalDone/total*100) + "%";
+}
+function scoreCorrect(key){ return correctness.get(key) === true; }
+
+function speak(text, rate=0.92){
+  if(!("speechSynthesis" in window)) return;
+  speechSynthesis.cancel();
+  const u = new SpeechSynthesisUtterance(text);
+  u.lang = "de-DE";
+  u.rate = rate;
+  const voices = speechSynthesis.getVoices();
+  const v = voices.find(x => x.lang && x.lang.toLowerCase().startsWith("de"));
+  if(v) u.voice = v;
+  speechSynthesis.speak(u);
+}
+
+function showPanel(id){
+  document.querySelectorAll(".panel").forEach(p => p.classList.toggle("active", p.id===id));
+  document.querySelectorAll(".tab").forEach(t => t.classList.toggle("active", t.dataset.panel===id));
+  window.scrollTo({top:0, behavior:"smooth"});
+}
+document.querySelectorAll(".tab").forEach(b=>b.addEventListener("click", ()=>showPanel(b.dataset.panel)));
+
+function mcqRenderer(containerId, data, prefix){
+  const el = document.getElementById(containerId);
+  let i = 0;
+
+  function render(){
+    const q = data[i];
+    el.innerHTML = `
+      <div class="qtop">
+        <span class="qcount">${i+1} / ${data.length}</span>
+        <button class="speak" title="Poslušaj rečenicu">🔊</button>
+      </div>
+      <div class="prompt">${q.s.replace("___", '<span class="blank">?</span>')}</div>
+      <div class="options ${q.o.length===3?'multi':''}">
+        ${q.o.map(x=>`<button class="option" data-v="${x}">${x}</button>`).join("")}
+      </div>
+      <div class="feedback" id="${containerId}feedback"></div>
+      <div class="controls">
+        <button class="ctrl secondary" id="${containerId}prev" ${i===0?'disabled':''}>← Nazad</button>
+        <button class="ctrl primary" id="${containerId}next">${i===data.length-1?'Završi':'Sledeće →'}</button>
+      </div>
+    `;
+    el.querySelector(".speak").onclick = ()=>speak(q.s.replace("___", q.a));
+
+    if(scored.has(prefix+i)) revealExisting();
+
+    el.querySelectorAll(".option").forEach(btn=>{
+      btn.onclick = ()=>{
+        if(scored.has(prefix+i)) return;
+        const val = btn.dataset.v;
+        const ok = val === q.a;
+        rawUpdateGlobal(prefix+i, ok);
+        showAnswer(val, ok);
+        if(ok) speak(q.s.replace("___", q.a));
+      };
+    });
+
+    el.querySelector(`#${containerId}prev`).onclick = ()=>{ if(i>0){ i--; render(); } };
+    el.querySelector(`#${containerId}next`).onclick = ()=>{
+      if(i < data.length-1){ i++; render(); }
+      else showSummary();
+    };
+
+    function showAnswer(val, ok){
+      el.querySelectorAll(".option").forEach(b=>{
+        b.disabled = true;
+        if(b.dataset.v === q.a) b.classList.add("correct");
+        else if(b.dataset.v === val && !ok) b.classList.add("wrong");
+      });
+      const f = el.querySelector(`#${containerId}feedback`);
+      f.className = "feedback show " + (ok ? "ok":"bad");
+      f.innerHTML = `<strong>${ok ? "✓ Tačno!" : "✗ Nije tačno."}</strong> Rešenje: <b>${q.a}</b><div class="translation">${q.t}</div>`;
+    }
+    function revealExisting(){
+      el.querySelectorAll(".option").forEach(b=>{
+        b.disabled = true;
+        if(b.dataset.v === q.a) b.classList.add("correct");
+      });
+      const f = el.querySelector(`#${containerId}feedback`);
+      f.className = "feedback show ok";
+      f.innerHTML = `<strong>Rešenje:</strong> <b>${q.a}</b><div class="translation">${q.t}</div>`;
+    }
+    function showSummary(){
+      const answered = data.filter((_,idx)=>scored.has(prefix+idx)).length;
+      const correct = data.filter((_,idx)=>scoreCorrect(prefix+idx)).length;
+      el.innerHTML = `
+        <div class="result-big">
+          <div class="circle">${correct}/${data.length}</div>
+          <h3>Vežba završena</h3>
+          <p>Odgovoreno: ${answered}/${data.length}. Možeš da se vratiš na kartice i ponavljaš.</p>
+          <button class="ctrl primary" id="backFirst">Ponovo pregledaj</button>
+        </div>
+      `;
+      el.querySelector("#backFirst").onclick = ()=>{ i=0; render(); };
+    }
+  }
+  render();
+}
+
+mcqRenderer("ex1box", ex1, "a");
+mcqRenderer("ex2box", ex2, "b");
+mcqRenderer("ex3box", ex3, "c");
+
+(function orderExercise(){
+  const el = document.getElementById("ex4box");
+  let i = 0, selected = [];
+
+  function shuffle(arr){
+    const a = [...arr];
+    for(let j=a.length-1;j>0;j--){
+      const k = (j*5+2)%(j+1);
+      [a[j],a[k]] = [a[k],a[j]];
+    }
+    return a;
+  }
+  function tokensFor(sentence){
+    return shuffle(sentence.replace(".","").split(" "));
+  }
+
+  function render(){
+    const q = ex4[i];
+    selected = [];
+    let bank = tokensFor(q.a);
+
+    el.innerHTML = `
+      <div class="qtop">
+        <span class="qcount">${i+1} / ${ex4.length}</span>
+        <button class="speak" title="Poslušaj rešenje">🔊</button>
+      </div>
+      <div class="minihelp">Složi nemačku rečenicu:</div>
+      <div class="translation" style="font-size:18px;margin-bottom:10px">${q.t}</div>
+      <div class="sentence" id="built"></div>
+      <div class="wordbank" id="bank"></div>
+      <div class="feedback" id="orderFeedback"></div>
+      <div class="controls">
+        <button class="ctrl secondary" id="clearBtn">Obriši</button>
+        <button class="ctrl primary" id="checkBtn">Proveri</button>
+      </div>
+      <div class="controls">
+        <button class="ctrl secondary" id="orderPrev" ${i===0?'disabled':''}>← Nazad</button>
+        <button class="ctrl primary" id="orderNext">${i===ex4.length-1?'Završi':'Sledeće →'}</button>
+      </div>
+    `;
+
+    el.querySelector(".speak").onclick = ()=>speak(q.a);
+
+    const bankEl = el.querySelector("#bank");
+    const built = el.querySelector("#built");
+
+    function draw(){
+      bankEl.innerHTML = "";
+      built.innerHTML = "";
+      bank.forEach((w, idx)=>{
+        const b = document.createElement("button");
+        b.className = "word";
+        b.textContent = w;
+        b.onclick = ()=>{
+          selected.push(w);
+          bank.splice(idx,1);
+          draw();
+        };
+        bankEl.appendChild(b);
+      });
+      selected.forEach((w, idx)=>{
+        const b = document.createElement("button");
+        b.className = "word";
+        b.textContent = w;
+        b.onclick = ()=>{
+          bank.push(w);
+          selected.splice(idx,1);
+          draw();
+        };
+        built.appendChild(b);
+      });
+    }
+    draw();
+
+    el.querySelector("#clearBtn").onclick = ()=>{
+      bank = tokensFor(q.a);
+      selected = [];
+      draw();
+      el.querySelector("#orderFeedback").className = "feedback";
+    };
+
+    el.querySelector("#checkBtn").onclick = ()=>{
+      if(scored.has("d"+i)) return;
+      const made = selected.join(" ") + ".";
+      const ok = made === q.a;
+      rawUpdateGlobal("d"+i, ok);
+      const f = el.querySelector("#orderFeedback");
+      f.className = "feedback show " + (ok ? "ok":"bad");
+      f.innerHTML = ok
+        ? `<strong>✓ Tačno!</strong><div class="translation">${q.a}</div>`
+        : `<strong>✗ Pokušaj ponovo.</strong> Rešenje je: <b>${q.a}</b>`;
+      if(ok) speak(q.a);
+    };
+
+    el.querySelector("#orderPrev").onclick = ()=>{ if(i>0){ i--; render(); } };
+    el.querySelector("#orderNext").onclick = ()=>{
+      if(i < ex4.length-1){ i++; render(); }
+      else {
+        const answered = ex4.filter((_,idx)=>scored.has("d"+idx)).length;
+        const correct = ex4.filter((_,idx)=>scoreCorrect("d"+idx)).length;
+        el.innerHTML = `
+          <div class="result-big">
+            <div class="circle">${correct}/${ex4.length}</div>
+            <h3>Odlično!</h3>
+            <p>Složene rečenice: ${answered}/${ex4.length}.</p>
+            <button class="ctrl primary" id="restartOrder">Ponovo pregledaj</button>
+          </div>
+        `;
+        el.querySelector("#restartOrder").onclick = ()=>{ i=0; render(); };
+      }
+    };
+
+    if(scored.has("d"+i)){
+      const f = el.querySelector("#orderFeedback");
+      f.className = "feedback show ok";
+      f.innerHTML = `<strong>Rešenje:</strong> <b>${q.a}</b>`;
+    }
+  }
+  render();
+})();
+</script>
+</body>
+</html>
