@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html lang="sr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>DE-MAX – Lokacioni predlozi</title>
+<style>
+:root{
+  --blue:#0c59b5;
+  --blue2:#1c76de;
+  --blue3:#edf5ff;
+  --red:#d7181f;
+  --red2:#ff474d;
+  --yellow:#ffbf00;
+  --green:#148849;
+  --green2:#eaf8ef;
+  --text:#163453;
+  --muted:#6c7f93;
+  --line:#d5e3f6;
+  --bg:#f7fbff;
+  --white:#fff;
+  --shadow:0 16px 42px rgba(17,67,148,.12);
+}
+*{box-sizing:border-box}
+body{
+  margin:0;
+  font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;
+  color:var(--text);
+  background:
+    radial-gradient(circle at 10% 0%,rgba(28,118,222,.12),transparent 28%),
+    radial-gradient(circle at 95% 18%,rgba(215,24,31,.08),transparent 22%),
+    linear-gradient(180deg,#fbfdff,#eef5ff);
+  min-height:100vh;
+}
+.app{max-width:1120px;margin:0 auto;padding:14px 12px 36px}
+.hero{
+  background:linear-gradient(135deg,#c70707 0%,#0c59b5 42%,#1678dc 100%);
+  color:#fff;border-radius:28px;padding:22px;box-shadow:var(--shadow);position:relative;overflow:hidden;
+}
+.hero:before,.hero:after{content:"";position:absolute;border-radius:50%;background:rgba(255,255,255,.08)}
+.hero:before{width:220px;height:220px;right:-70px;top:-90px}
+.hero:after{width:170px;height:170px;left:-60px;bottom:-70px}
+.brand{display:flex;align-items:center;gap:12px;position:relative;z-index:1}
+.logo{
+  width:58px;height:58px;border-radius:16px;background:#fff;color:var(--red);
+  display:grid;place-items:center;font-weight:1000;font-size:18px;box-shadow:0 10px 26px rgba(0,0,0,.18)
+}
+.brand span{font-weight:950}
+.brand span small{display:block;font-weight:700;opacity:.9;margin-top:2px}
+h1{font-size:clamp(30px,5.8vw,56px);line-height:1;margin:18px 0 8px;position:relative;z-index:1}
+.hero p{max-width:880px;margin:0;font-size:16px;opacity:.98;position:relative;z-index:1}
+.ruleline{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px;position:relative;z-index:1}
+.rulechip{
+  background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.23);
+  padding:9px 12px;border-radius:999px;font-weight:850
+}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:18px;position:relative;z-index:1}
+.stat{background:#fff;color:var(--text);border-radius:17px;padding:11px 13px;box-shadow:0 9px 22px rgba(0,0,0,.08)}
+.stat b{display:block;font-size:22px}
+.card{
+  margin-top:15px;background:#fff;border:1px solid var(--line);border-radius:24px;padding:16px;
+  box-shadow:0 10px 28px rgba(20,61,128,.07)
+}
+.card h2{margin:0 0 8px;color:var(--blue)}
+.legend{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px}
+.info{
+  border-radius:18px;padding:14px;border:1px solid var(--line);background:#f9fbff
+}
+.info b{color:var(--blue)}
+.tabs{display:flex;gap:8px;overflow-x:auto;padding:10px 2px 10px;margin-top:8px;scrollbar-width:none}
+.tabs::-webkit-scrollbar{display:none}
+.tab{
+  white-space:nowrap;border:1px solid var(--line);background:#fff;color:var(--text);
+  padding:12px 15px;border-radius:999px;font-weight:900;cursor:pointer
+}
+.tab.active{background:var(--blue);color:#fff;border-color:var(--blue)}
+.panel{
+  background:#fff;border:1px solid var(--line);border-radius:26px;padding:18px;box-shadow:var(--shadow)
+}
+.toprow{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:12px}
+.badge{background:#eef4ff;color:var(--blue);padding:8px 12px;border-radius:999px;font-size:13px;font-weight:950}
+.counter{color:var(--muted);font-weight:800;font-size:14px}
+.question{font-size:clamp(21px,3.8vw,30px);font-weight:950;line-height:1.25;margin:8px 0 12px}
+.subq{color:var(--muted);font-size:14px;margin-top:-4px;margin-bottom:10px}
+.answers,.words,.cards{display:flex;flex-wrap:wrap;gap:10px;margin:14px 0}
+.opt,.word,.mini{
+  border:1px solid #cfdef3;background:#fbfdff;color:#17395f;border-radius:14px;padding:11px 14px;
+  font-size:16px;font-weight:850;cursor:pointer;transition:.15s
+}
+.opt:hover,.word:hover,.mini:hover{transform:translateY(-1px);border-color:#84ace6}
+.opt.full{width:100%;text-align:left}
+.word.used{opacity:.35;pointer-events:none}
+.sentence{
+  min-height:66px;border:2px dashed #bfd4f4;background:#f7fbff;border-radius:18px;padding:12px;
+  display:flex;flex-wrap:wrap;gap:8px;align-items:center
+}
+.selected{
+  background:#edf5ff;border:1px solid #bfd7fb;color:#12468c;padding:9px 11px;border-radius:12px;
+  font-weight:850;cursor:pointer
+}
+.controls{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px}
+button{
+  appearance:none;border:0;border-radius:14px;padding:12px 16px;font-weight:900;cursor:pointer;font-size:15px
+}
+.primary{background:var(--blue);color:#fff}
+.secondary{background:#eaf2ff;color:#10499f}
+.redbtn{background:#fff0f0;color:#be1f26}
+.ghost{background:#f2f6fb;color:#596c7f}
+.feedback{display:none;margin-top:14px;padding:14px;border-radius:16px;font-weight:850}
+.feedback.ok{display:block;background:#eaf9ef;border:1px solid #c6edd5;color:#0d7b40}
+.feedback.bad{display:block;background:#fff1f1;border:1px solid #ffd0d0;color:#b82424}
+.translation{margin-top:7px;color:#4f687c;font-weight:750}
+.progress{height:12px;background:#edf2f8;border-radius:999px;overflow:hidden;margin-top:14px}
+.progress>div{height:100%;width:0;background:linear-gradient(90deg,var(--blue),#19a25d);transition:.25s}
+.input{
+  width:100%;border:2px solid #d5e3f6;background:#fcfdff;border-radius:15px;padding:13px 14px;
+  font-size:17px;font-weight:750;outline:none
+}
+.input:focus{border-color:#7aa5e6}
+.pair-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.paircol{display:grid;gap:9px}
+.pair{
+  width:100%;text-align:left;border:1px solid var(--line);background:#fbfdff;color:var(--text);
+  border-radius:14px;padding:12px;font-weight:850;cursor:pointer
+}
+.pair.active{outline:3px solid #9ebfee;background:#edf4ff}
+.tablewrap{overflow:auto}
+table{width:100%;border-collapse:collapse}
+th,td{padding:12px 10px;border-bottom:1px solid #e7eef9;text-align:left;vertical-align:top}
+th{background:#eff5ff;color:#0d4db3}
+tr:last-child td{border-bottom:0}
+.errorbox{
+  background:#fff6f6;border:1px solid #ffd6d8;border-radius:18px;padding:14px;font-size:18px;font-weight:850
+}
+.memory-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.memory-card{
+  min-height:94px;border:1px solid #cfdff4;border-radius:16px;background:#fbfdff;padding:10px;
+  display:grid;place-items:center;text-align:center;font-weight:900;cursor:pointer
+}
+.memory-card .front{display:none}
+.memory-card.revealed .back,.memory-card.matched .back{display:none}
+.memory-card.revealed .front,.memory-card.matched .front{display:block}
+.memory-card.revealed,.memory-card.matched{background:#edf5ff}
+.memory-card.matched{opacity:.6;pointer-events:none}
+.memory-card .back{font-size:30px;color:var(--blue)}
+.footer{text-align:center;color:#6e7d8f;font-size:13px;margin-top:16px}
+@media(max-width:860px){
+  .stats{grid-template-columns:repeat(2,1fr)}
+  .legend,.pair-grid{grid-template-columns:1fr}
+  .memory-grid{grid-template-columns:repeat(2,1fr)}
+}
+@media(max-width:560px){
+  .app{padding:10px 10px 30px}
+  .hero{padding:20px;border-radius:22px}
+  .panel{padding:15px;border-radius:22px}
+}
+</style>
+</head>
+<body>
+<div class="app">
+  <section class="hero">
+    <div class="brand">
+      <div class="logo">DE</div>
+      <span>DE-MAX • Nemački jezik<small>Lokacioni predlozi • interaktivna aplikacija</small></span>
+    </div>
+    <h1>Razni lokacioni predlozi</h1>
+    <p>Vežbaj lokalne predloge i padeže kroz izbor, slaganje, dopunjavanje, uparivanje, ispravljanje grešaka, prevod, mini dijaloge i memory. Obrađeni su: <b>durch</b>, <b>entlang</b>, <b>um … herum</b>, <b>über</b>, <b>bis zu / bis zum / bis zur</b>, <b>an … vorbei</b> i <b>gegenüber</b>.</p>
+    <div class="ruleline">
+      <span class="rulechip">durch + Akk</span>
+      <span class="rulechip">entlang + Akk</span>
+      <span class="rulechip">um … herum + Akk</span>
+      <span class="rulechip">über + Akk</span>
+      <span class="rulechip">bis zu + Dat</span>
+      <span class="rulechip">an … vorbei + Dat</span>
+      <span class="rulechip">gegenüber + Dat</span>
+    </div>
+    <div class="stats">
+      <div class="stat"><b id="score">0</b><span>poena</span></div>
+      <div class="stat"><b id="done">0</b><span>tačnih</span></div>
+      <div class="stat"><b id="streak">0</b><span>niz</span></div>
+      <div class="stat"><b id="level">Početak</b><span>status</span></div>
+    </div>
+  </section>
+
+  <section class="card">
+    <h2>Brza pravila</h2>
+    <div class="legend">
+      <div class="info"><b>durch, entlang, um … herum, über</b> najčešće koristimo za kretanje i idu sa <b>akuzativom</b>.</div>
+      <div class="info"><b>bis zu / bis zum / bis zur, an … vorbei, gegenüber</b> idu sa <b>dativom</b>.</div>
+    </div>
+  </section>
+
+  <div class="tabs">
+    <button class="tab active" data-mode="learn">1. Pregled</button>
+    <button class="tab" data-mode="choice">2. Izaberi</button>
+    <button class="tab" data-mode="order">3. Složi</button>
+    <button class="tab" data-mode="fill">4. Popuni</button>
+    <button class="tab" data-mode="pairs">5. Upari</button>
+    <button class="tab" data-mode="dialogue">6. Dijalog</button>
+    <button class="tab" data-mode="error">7. Ispravi grešku</button>
+    <button class="tab" data-mode="translate">8. Prevod</button>
+    <button class="tab" data-mode="memory">9. Memory</button>
+  </div>
+
+  <section class="panel">
+    <div class="toprow">
+      <div class="badge" id="modeBadge">PREGLED</div>
+      <div class="counter" id="counter"></div>
+    </div>
+    <div id="content"></div>
+    <div class="progress"><div id="bar"></div></div>
+  </section>
+
+  <div class="footer">DE-MAX • Lokale Präpositionen • A1/A2/B1</div>
+</div>
+
+<script>
+const OVERVIEW = [
+ {prep:"durch + Akk", ex:"durch den Park / die Stadt / das Zentrum / die Straßen", sr:"kroz park / grad / centar / ulice"},
+ {prep:"entlang + Akk", ex:"den Park entlang / die Straße entlang / das Ufer entlang / die Gleise entlang", sr:"duž parka / ulicom uzduž / duž obale / duž šina"},
+ {prep:"um … herum + Akk", ex:"um den Kreisverkehr (herum) / um die Stadt (herum)", sr:"oko kružnog toka / oko grada"},
+ {prep:"über + Akk", ex:"über den Platz / die Brücke / das Gleis / die Gleise", sr:"preko trga / mosta / koloseka / šina"},
+ {prep:"bis zu + Dat", ex:"bis zum Kreisverkehr / bis zur Kreuzung / bis zu den Gleisen", sr:"do kružnog toka / do raskrsnice / do šina"},
+ {prep:"an … vorbei + Dat", ex:"am Mozartplatz vorbei / an der Tankstelle vorbei / am Kino vorbei", sr:"pored Mocartovog trga / benzinske pumpe / bioskopa"},
+ {prep:"gegenüber + Dat", ex:"gegenüber dem Bahnhof / der Kirche / dem Kino / den Garagen", sr:"naspram stanice / crkve / bioskopa / garaža"}
+];
+
+const CHOICE = [
+ {q:"Koji predlog ide u rečenici: „Wir gehen ___ den Park.“", opts:["durch","gegenüber","bis zu"], c:0, tr:"Idemo kroz park."},
+ {q:"Koji oblik je tačan?", opts:["den Park entlang","dem Park entlang","der Park entlang"], c:0, tr:"duž parka"},
+ {q:"Koji odgovor je tačan?", opts:["Wir fahren um den Kreisverkehr herum.","Wir fahren um dem Kreisverkehr herum.","Wir fahren um den Kreisverkehr vorbei."], c:0, tr:"Vozimo se oko kružnog toka."},
+ {q:"Šta ide uz „die Brücke“?", opts:["über die Brücke","über der Brücke","bis die Brücke"], c:0, tr:"preko mosta"},
+ {q:"Koji oblik je tačan?", opts:["bis zur Kreuzung","bis die Kreuzung","bis den Kreuzung"], c:0, tr:"do raskrsnice"},
+ {q:"Koja rečenica je tačna?", opts:["Wir gehen an der Tankstelle vorbei.","Wir gehen an die Tankstelle vorbei.","Wir gehen durch der Tankstelle vorbei."], c:0, tr:"Prolazimo pored benzinske pumpe."},
+ {q:"Koji oblik je tačan?", opts:["gegenüber dem Bahnhof","gegenüber den Bahnhof","gegenüber der Bahnhof"], c:0, tr:"naspram stanice"},
+ {q:"Koja rečenica je tačna?", opts:["Wir laufen über den Platz.","Wir laufen über dem Platz.","Wir laufen bis dem Platz."], c:0, tr:"Trčimo preko trga."},
+ {q:"Koji oblik ide uz množinu?", opts:["bis zu den Gleisen","bis zu die Gleise","bis zum Gleisen"], c:0, tr:"do šina"},
+ {q:"Koji odgovor je tačan?", opts:["Das Kino liegt gegenüber der Kirche.","Das Kino liegt gegenüber die Kirche.","Das Kino liegt durch die Kirche."], c:0, tr:"Bioskop se nalazi naspram crkve."}
+];
+
+const ORDER = [
+ {w:["Wir","gehen","durch","den","Park","."], a:"Wir gehen durch den Park.", tr:"Idemo kroz park."},
+ {w:["Wir","laufen","die","Straße","entlang","."], a:"Wir laufen die Straße entlang.", tr:"Idemo duž ulice."},
+ {w:["Wir","fahren","um","den","Kreisverkehr","herum","."], a:"Wir fahren um den Kreisverkehr herum.", tr:"Vozimo se oko kružnog toka."},
+ {w:["Wir","gehen","über","die","Brücke","."], a:"Wir gehen über die Brücke.", tr:"Idemo preko mosta."},
+ {w:["Gehen","Sie","bitte","bis","zum","Kaufhaus","."], a:"Gehen Sie bitte bis zum Kaufhaus.", tr:"Idite molim vas do robne kuće."},
+ {w:["Wir","fahren","an","der","Tankstelle","vorbei","."], a:"Wir fahren an der Tankstelle vorbei.", tr:"Prolazimo pored benzinske pumpe."},
+ {w:["Das","Kino","liegt","gegenüber","dem","Bahnhof","."], a:"Das Kino liegt gegenüber dem Bahnhof.", tr:"Bioskop je naspram stanice."},
+ {w:["Wir","laufen","über","die","Gleise","."], a:"Wir laufen über die Gleise.", tr:"Prelazimo preko šina."},
+ {w:["Der","Weg","geht","das","Ufer","entlang","."], a:"Der Weg geht das Ufer entlang.", tr:"Put ide duž obale."},
+ {w:["Gehen","Sie","bitte","bis","zu","den","Garagen","."], a:"Gehen Sie bitte bis zu den Garagen.", tr:"Idite molim vas do garaža."}
+];
+
+const FILL = [
+ {text:"Wir gehen ___ den Park.", a:"durch", tr:"Idemo kroz park."},
+ {text:"Wir laufen die Straße ___.", a:"entlang", tr:"Idemo duž ulice."},
+ {text:"Wir fahren um den Kreisverkehr ___.", a:"herum", tr:"Vozimo se oko kružnog toka."},
+ {text:"Wir gehen ___ die Brücke.", a:"über", tr:"Idemo preko mosta."},
+ {text:"Gehen Sie bitte ___ zum Kaufhaus.", a:"bis", tr:"Idite molim vas do robne kuće."},
+ {text:"Wir fahren an der Tankstelle ___.", a:"vorbei", tr:"Prolazimo pored benzinske pumpe."},
+ {text:"Das Kino liegt ___ dem Bahnhof.", a:"gegenüber", tr:"Bioskop je naspram stanice."},
+ {text:"Wir gehen bis ___ den Gleisen.", a:"zu", tr:"Idemo do šina."},
+ {text:"Wir fahren ___ die Stadt.", a:"durch", tr:"Vozimo kroz grad."},
+ {text:"Das Hotel liegt gegenüber ___ Kirche.", a:"der", tr:"Hotel je naspram crkve."}
+];
+
+const PAIRS = [
+ ["durch","den Park"],
+ ["entlang","die Straße"],
+ ["um … herum","den Kreisverkehr"],
+ ["über","die Brücke"],
+ ["bis zu","den Gleisen"],
+ ["an … vorbei","der Tankstelle"],
+ ["gegenüber","dem Bahnhof"],
+ ["über","den Platz"]
+];
+
+const DIALOGUES = [
+ {title:"Pitaj za put", lines:["A: Gehen wir ___ den Park oder über die Brücke?","B: Wir gehen zuerst durch den Park."], ans:"durch", full:"Gehen wir durch den Park oder über die Brücke?", tr:"Idemo li kroz park ili preko mosta?"},
+ {title:"Vožnja kroz grad", lines:["A: Fahren wir um den Kreisverkehr ___?","B: Ja, dann links."], ans:"herum", full:"Fahren wir um den Kreisverkehr herum?", tr:"Da li idemo oko kružnog toka?"},
+ {title:"Pored benzinske pumpe", lines:["A: Fahren wir an der Tankstelle ___?","B: Ja, direkt danach ist das Kino."], ans:"vorbei", full:"Fahren wir an der Tankstelle vorbei?", tr:"Da li prolazimo pored benzinske pumpe?"},
+ {title:"Krajnja tačka", lines:["A: Gehen wir bis ___ Kreuzung?","B: Ja, bis zur Kreuzung und dann rechts."], ans:"zur", full:"Gehen wir bis zur Kreuzung?", tr:"Idemo li do raskrsnice?"},
+ {title:"Položaj", lines:["A: Wo ist das Kino?","B: Es liegt ___ dem Bahnhof."], ans:"gegenüber", full:"Es liegt gegenüber dem Bahnhof.", tr:"Nalazi se naspram stanice."},
+ {title:"Duž obale", lines:["A: Laufen wir das Ufer ___?","B: Ja, das ist der schönste Weg."], ans:"entlang", full:"Laufen wir das Ufer entlang?", tr:"Da li idemo duž obale?"}
+];
+
+const ERRORS = [
+ {bad:"Wir gehen durch dem Park.", good:"Wir gehen durch den Park.", tr:"Idemo kroz park."},
+ {bad:"Wir laufen den Straße entlang.", good:"Wir laufen die Straße entlang.", tr:"Idemo duž ulice."},
+ {bad:"Wir fahren um dem Kreisverkehr herum.", good:"Wir fahren um den Kreisverkehr herum.", tr:"Vozimo se oko kružnog toka."},
+ {bad:"Wir gehen über der Brücke.", good:"Wir gehen über die Brücke.", tr:"Idemo preko mosta."},
+ {bad:"Gehen Sie bis die Kreuzung.", good:"Gehen Sie bis zur Kreuzung.", tr:"Idite do raskrsnice."},
+ {bad:"Wir fahren an die Tankstelle vorbei.", good:"Wir fahren an der Tankstelle vorbei.", tr:"Prolazimo pored benzinske pumpe."},
+ {bad:"Das Kino liegt gegenüber den Bahnhof.", good:"Das Kino liegt gegenüber dem Bahnhof.", tr:"Bioskop je naspram stanice."},
+ {bad:"Wir gehen bis zum Gleisen.", good:"Wir gehen bis zu den Gleisen.", tr:"Idemo do šina."}
+];
+
+const TRANSLATE = [
+ {sr:"Idemo kroz park.", a:"Wir gehen durch den Park."},
+ {sr:"Idemo duž ulice.", a:"Wir laufen die Straße entlang."},
+ {sr:"Vozimo se oko grada.", a:"Wir fahren um die Stadt herum."},
+ {sr:"Idemo preko mosta.", a:"Wir gehen über die Brücke."},
+ {sr:"Idite do raskrsnice.", a:"Gehen Sie bis zur Kreuzung."},
+ {sr:"Prolazimo pored bioskopa.", a:"Wir fahren am Kino vorbei."},
+ {sr:"Bioskop je naspram stanice.", a:"Das Kino liegt gegenüber dem Bahnhof."},
+ {sr:"Idemo do šina.", a:"Wir gehen bis zu den Gleisen."},
+ {sr:"Trčimo preko trga.", a:"Wir laufen über den Platz."},
+ {sr:"Idemo duž obale.", a:"Wir gehen das Ufer entlang."}
+];
+
+let mode="learn", idx=0, score=0, done=0, streak=0, selected=[];
+let leftDone=new Set(), rightDone=new Set(), pairA=null, pairB=null;
+let mem={cards:[],opened:[],matched:0,lock:false};
+
+const content=document.getElementById("content");
+const badge=document.getElementById("modeBadge");
+const counter=document.getElementById("counter");
+const bar=document.getElementById("bar");
+
+document.querySelectorAll(".tab").forEach(t=>t.addEventListener("click",()=>{
+  document.querySelectorAll(".tab").forEach(x=>x.classList.remove("active"));
+  t.classList.add("active");
+  mode=t.dataset.mode; idx=0; selected=[];
+  leftDone=new Set(); rightDone=new Set(); pairA=null; pairB=null;
+  if(mode==="memory") initMemory();
+  render();
+}));
+
+function normalize(s){return (s||"").toLowerCase().replace(/[.,!?]/g,"").replace(/\s+/g," ").trim();}
+function speak(t){
+  if(!("speechSynthesis" in window)) return;
+  speechSynthesis.cancel();
+  const u=new SpeechSynthesisUtterance(t);u.lang="de-DE";u.rate=.9;speechSynthesis.speak(u);
+}
+function stats(){
+  document.getElementById("score").textContent=score;
+  document.getElementById("done").textContent=done;
+  document.getElementById("streak").textContent=streak;
+  document.getElementById("level").textContent=score>=220?"Odlično":score>=140?"Vrlo dobro":score>=60?"Napredak":"Početak";
+}
+function feedback(ok,msg,tr=""){
+  const el=document.getElementById("fb"); if(!el) return;
+  el.className="feedback "+(ok?"ok":"bad");
+  el.innerHTML=msg+(tr?`<div class="translation">${tr}</div>`:"");
+}
+function success(sent,tr=""){score+=10;done++;streak++;stats();feedback(true,"✓ Tačno!",tr);speak(sent);}
+function fail(sol){streak=0;stats();feedback(false,`✗ Pokušaj ponovo.<div class="translation">Rešenje: ${sol}</div>`);}
+function prog(total,current){counter.textContent=`${current}/${total}`;bar.style.width=(current/total*100)+"%";}
+function next(total){idx=(idx+1)%total;selected=[];render();}
+
+function render(){
+  stats();
+  if(mode==="learn") renderLearn();
+  if(mode==="choice") renderChoice();
+  if(mode==="order") renderOrder();
+  if(mode==="fill") renderFill();
+  if(mode==="pairs") renderPairs();
+  if(mode==="dialogue") renderDialogue();
+  if(mode==="error") renderError();
+  if(mode==="translate") renderTranslate();
+  if(mode==="memory") renderMemory();
+}
+
+function renderLearn(){
+  badge.textContent="PREGLED";
+  prog(1,1);
+  content.innerHTML=`<div class="question">Pregled lokalnih predloga</div>
+  <div class="tablewrap"><table>
+    <thead><tr><th>Predlog</th><th>Primer</th><th>Prevod</th></tr></thead>
+    <tbody>
+      ${OVERVIEW.map(x=>`<tr><td><b>${x.prep}</b></td><td>${x.ex}</td><td>${x.sr}</td></tr>`).join("")}
+    </tbody>
+  </table></div>
+  <div class="controls"><button class="primary" id="speakAll">Pročitaj primere</button></div>
+  <div id="fb" class="feedback"></div>`;
+  document.getElementById("speakAll").onclick=()=>{
+    speak("durch den Park, den Park entlang, um den Kreisverkehr herum, über die Brücke, bis zur Kreuzung, an der Tankstelle vorbei, gegenüber dem Bahnhof");
+    feedback(true,"✓ Izgovor pokrenut.");
+  };
+}
+
+function renderChoice(){
+  badge.textContent="IZABERI TAČNO";
+  const x=CHOICE[idx]; prog(CHOICE.length,idx+1);
+  content.innerHTML=`<div class="question">${x.q}</div><div class="answers" id="answers"></div>
+  <div class="controls"><button class="ghost" id="next">Sledeće</button></div><div id="fb" class="feedback"></div>`;
+  const a=document.getElementById("answers");
+  x.opts.forEach((o,i)=>{
+    const b=document.createElement("button"); b.className="opt full"; b.textContent=o;
+    b.onclick=()=>i===x.c?success(o,x.tr):fail(x.opts[x.c]); a.appendChild(b);
+  });
+  document.getElementById("next").onclick=()=>next(CHOICE.length);
+}
+
+function renderOrder(){
+  badge.textContent="SLOŽI REČENICU";
+  const x=ORDER[idx]; prog(ORDER.length,idx+1); selected=[];
+  const shuffled=[...x.w].sort(()=>Math.random()-.5);
+  content.innerHTML=`<div class="question">Složi pravilnu rečenicu.</div>
+  <div class="sentence" id="sentence"><span class="subq">Ovde složi rečenicu…</span></div>
+  <div class="words" id="words"></div>
+  <div class="controls"><button class="primary" id="check">Proveri</button><button class="secondary" id="clear">Obriši</button><button class="ghost" id="next">Sledeće</button></div>
+  <div id="fb" class="feedback"></div>`;
+  const wbox=document.getElementById("words");
+  shuffled.forEach(w=>{
+    const b=document.createElement("button"); b.className="word"; b.textContent=w;
+    b.onclick=()=>{if(b.classList.contains("used"))return; selected.push({w,b}); b.classList.add("used"); drawSentence();};
+    wbox.appendChild(b);
+  });
+  document.getElementById("check").onclick=()=>{
+    const built=selected.map(o=>o.w).join(" ").replace(/\s+([,.!?])/g,"$1").replace(/,\s*/g,", ").trim();
+    normalize(built)===normalize(x.a)?success(x.a,x.tr):fail(x.a);
+  };
+  document.getElementById("clear").onclick=()=>{
+    selected.forEach(o=>o.b.classList.remove("used")); selected=[]; drawSentence(); document.getElementById("fb").className="feedback";
+  };
+  document.getElementById("next").onclick=()=>next(ORDER.length);
+}
+function drawSentence(){
+  const s=document.getElementById("sentence");
+  if(!selected.length){s.innerHTML='<span class="subq">Ovde složi rečenicu…</span>';return;}
+  s.innerHTML="";
+  selected.forEach((o,i)=>{
+    const e=document.createElement("span"); e.className="selected"; e.textContent=o.w;
+    e.onclick=()=>{o.b.classList.remove("used"); selected.splice(i,1); drawSentence();}; s.appendChild(e);
+  });
+}
+
+function renderFill(){
+  badge.textContent="POPUNI PRAZNO MESTO";
+  const x=FILL[idx]; prog(FILL.length,idx+1);
+  content.innerHTML=`<div class="question">${x.text}</div>
+  <div class="subq">Upiši samo reč koja nedostaje.</div>
+  <input class="input" id="inp" placeholder="Nedostajuća reč..." autocomplete="off">
+  <div class="controls"><button class="primary" id="check">Proveri</button><button class="secondary" id="show">Prikaži rešenje</button><button class="ghost" id="next">Sledeće</button></div>
+  <div id="fb" class="feedback"></div>`;
+  document.getElementById("check").onclick=()=>{
+    const v=document.getElementById("inp").value;
+    normalize(v)===normalize(x.a)?success(x.text.replace("___",x.a),x.tr):fail(x.a);
+  };
+  document.getElementById("show").onclick=()=>feedback(true,"Rešenje:",x.a);
+  document.getElementById("next").onclick=()=>next(FILL.length);
+}
+
+function renderPairs(){
+  badge.textContent="UPARI";
+  if(leftDone.size===PAIRS.length){
+    prog(PAIRS.length,PAIRS.length);
+    content.innerHTML=`<div class="question">Bravo! Svi parovi su spojeni.</div>
+    <div class="feedback ok" style="display:block">✓ Vežba završena.</div>
+    <div class="controls"><button class="primary" id="again">Ponovi</button></div>`;
+    document.getElementById("again").onclick=()=>{leftDone.clear(); rightDone.clear(); score+=20; stats(); render();};
+    return;
+  }
+  prog(PAIRS.length,leftDone.size);
+  const left=PAIRS.map((x,i)=>({i,t:x[0]})).filter(x=>!leftDone.has(x.i));
+  const right=PAIRS.map((x,i)=>({i,t:x[1]})).filter(x=>!rightDone.has(x.i)).sort(()=>Math.random()-.5);
+  content.innerHTML=`<div class="question">Spoji predlog sa odgovarajućim primerom.</div>
+  <div class="pair-grid"><div class="paircol" id="left"></div><div class="paircol" id="right"></div></div>
+  <div id="fb" class="feedback"></div>`;
+  pairA=null; pairB=null;
+  const l=document.getElementById("left"), r=document.getElementById("right");
+  left.forEach(o=>{
+    const e=document.createElement("button"); e.className="pair"; e.textContent=o.t;
+    e.onclick=()=>{document.querySelectorAll("#left .pair").forEach(z=>z.classList.remove("active")); e.classList.add("active"); pairA=o; checkPair();};
+    l.appendChild(e);
+  });
+  right.forEach(o=>{
+    const e=document.createElement("button"); e.className="pair"; e.textContent=o.t;
+    e.onclick=()=>{document.querySelectorAll("#right .pair").forEach(z=>z.classList.remove("active")); e.classList.add("active"); pairB=o; checkPair();};
+    r.appendChild(e);
+  });
+}
+function checkPair(){
+  if(!pairA || !pairB) return;
+  if(pairA.i===pairB.i){
+    leftDone.add(pairA.i); rightDone.add(pairB.i); score+=10; done++; streak++; stats();
+    feedback(true,"✓ Tačan par!",`${PAIRS[pairA.i][0]} + ${PAIRS[pairA.i][1]}`);
+    speak(PAIRS[pairA.i][0] + " " + PAIRS[pairA.i][1]);
+    pairA=pairB=null;
+    setTimeout(render,550);
+  }else{
+    streak=0; stats(); feedback(false,"✗ Nije tačan par.");
+    pairA=pairB=null; document.querySelectorAll(".pair").forEach(x=>x.classList.remove("active"));
+  }
+}
+
+function renderDialogue(){
+  badge.textContent="MINI-DIJALOG";
+  const x=DIALOGUES[idx]; prog(DIALOGUES.length,idx+1);
+  content.innerHTML=`<div class="question">${x.title}</div>
+  <div class="cards"><span class="mini">${x.tr}</span></div>
+  <div class="card" style="margin-top:0;padding:12px">
+    <div style="font-weight:850;color:#103f86;margin-bottom:10px">${x.lines[0].replace("___",'<input class="input" id="inp" style="max-width:130px;display:inline-block;margin:0 6px" placeholder="...">')}</div>
+    <div style="font-weight:850;color:#12673c">${x.lines[1]}</div>
+  </div>
+  <div class="controls"><button class="primary" id="check">Proveri</button><button class="secondary" id="show">Rešenje</button><button class="ghost" id="next">Sledeće</button></div>
+  <div id="fb" class="feedback"></div>`;
+  document.getElementById("check").onclick=()=>{
+    const v=document.getElementById("inp").value;
+    normalize(v)===normalize(x.ans)?success(x.full,x.tr):fail(x.ans);
+  };
+  document.getElementById("show").onclick=()=>feedback(true,"Rešenje:",x.full);
+  document.getElementById("next").onclick=()=>next(DIALOGUES.length);
+}
+
+function renderError(){
+  badge.textContent="ISPRAVI GREŠKU";
+  const x=ERRORS[idx]; prog(ERRORS.length,idx+1);
+  content.innerHTML=`<div class="question">Pronađi i ispravi grešku.</div>
+  <div class="errorbox">${x.bad}</div>
+  <input class="input" id="inp" style="margin-top:12px" placeholder="Napiši ispravnu rečenicu..." autocomplete="off">
+  <div class="controls"><button class="primary" id="check">Proveri</button><button class="secondary" id="show">Rešenje</button><button class="ghost" id="next">Sledeće</button></div>
+  <div id="fb" class="feedback"></div>`;
+  document.getElementById("check").onclick=()=>{
+    const v=document.getElementById("inp").value;
+    normalize(v)===normalize(x.good)?success(x.good,x.tr):fail(x.good);
+  };
+  document.getElementById("show").onclick=()=>feedback(true,"Rešenje:",x.good);
+  document.getElementById("next").onclick=()=>next(ERRORS.length);
+}
+
+function renderTranslate(){
+  badge.textContent="PREVOD";
+  const x=TRANSLATE[idx]; prog(TRANSLATE.length,idx+1);
+  content.innerHTML=`<div class="question">${x.sr}</div>
+  <div class="subq">Prevedi na nemački koristeći odgovarajući lokacioni predlog.</div>
+  <input class="input" id="inp" placeholder="Upiši nemačku rečenicu..." autocomplete="off">
+  <div class="controls"><button class="primary" id="check">Proveri</button><button class="secondary" id="show">Rešenje</button><button class="ghost" id="next">Sledeće</button></div>
+  <div id="fb" class="feedback"></div>`;
+  document.getElementById("check").onclick=()=>{
+    const v=document.getElementById("inp").value;
+    normalize(v)===normalize(x.a)?success(x.a,x.sr):fail(x.a);
+  };
+  document.getElementById("show").onclick=()=>feedback(true,"Rešenje:",x.a);
+  document.getElementById("next").onclick=()=>next(TRANSLATE.length);
+}
+
+function initMemory(){
+  const base=[
+    ["durch","den Park"],
+    ["entlang","die Straße"],
+    ["über","die Brücke"],
+    ["gegenüber","dem Bahnhof"],
+    ["bis zu","den Gleisen"],
+    ["an ... vorbei","der Tankstelle"]
+  ];
+  let cards=[];
+  base.forEach((p,i)=>{cards.push({g:i,t:p[0]}); cards.push({g:i,t:p[1]});});
+  cards.sort(()=>Math.random()-.5);
+  mem={cards,opened:[],matched:0,lock:false};
+}
+function renderMemory(){
+  if(!mem.cards.length) initMemory();
+  badge.textContent="MEMORY";
+  prog(mem.cards.length/2,mem.matched);
+  content.innerHTML=`<div class="question">Pronađi par: predlog + odgovarajući deo primera.</div>
+  <div class="memory-grid" id="mem"></div>
+  <div class="controls"><button class="ghost" id="again">Ponovi</button></div>
+  <div id="fb" class="feedback"></div>`;
+  const box=document.getElementById("mem");
+  mem.cards.forEach((c,i)=>{
+    const e=document.createElement("div");
+    e.className="memory-card"+(c.r?" revealed":"")+(c.m?" matched":"");
+    e.innerHTML=`<div class="back">?</div><div class="front">${c.t}</div>`;
+    e.onclick=()=>flip(i);
+    box.appendChild(e);
+  });
+  document.getElementById("again").onclick=()=>{initMemory(); render();};
+}
+function flip(i){
+  if(mem.lock) return;
+  const c=mem.cards[i];
+  if(c.m || c.r) return;
+  c.r=true; mem.opened.push(i); renderMemory();
+  if(mem.opened.length===2){
+    mem.lock=true;
+    const [a,b]=mem.opened, ca=mem.cards[a], cb=mem.cards[b];
+    if(ca.g===cb.g){
+      ca.m=cb.m=true; mem.matched++; score+=10; done++; streak++; stats();
+      speak(ca.t + " " + cb.t);
+      mem.opened=[]; mem.lock=false; renderMemory();
+      if(mem.matched===mem.cards.length/2) feedback(true,"✓ Bravo! Svi parovi su pronađeni.");
+    }else{
+      streak=0; stats();
+      setTimeout(()=>{ca.r=false; cb.r=false; mem.opened=[]; mem.lock=false; renderMemory();},800);
+    }
+  }
+}
+render();
+</script>
+</body>
+</html>
