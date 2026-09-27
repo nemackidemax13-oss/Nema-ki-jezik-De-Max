@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="sr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>DE-MAX – Plusquamperfekt Trainer</title>
+<style>
+:root{--navy:#092f68;--blue:#0d5fc1;--blue2:#1b79df;--sky:#eef6ff;--gold:#f3aa00;--green:#12834b;--green2:#eaf8ef;--red:#d92d34;--text:#153654;--muted:#6b7d90;--line:#d5e4f6;--white:#fff;--shadow:0 16px 42px rgba(13,73,150,.13)}
+*{box-sizing:border-box}
+body{margin:0;font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;color:var(--text);background:radial-gradient(circle at 10% 0%,rgba(27,121,223,.13),transparent 28%),linear-gradient(180deg,#fbfdff,#edf5ff);min-height:100vh}
+.app{max-width:1120px;margin:0 auto;padding:14px 12px 38px}
+.hero{background:linear-gradient(135deg,#092f68,#0d5fc1 58%,#159160);color:#fff;border-radius:28px;padding:23px;box-shadow:var(--shadow);position:relative;overflow:hidden}
+.hero:after{content:"";position:absolute;width:250px;height:250px;border-radius:50%;right:-90px;top:-100px;background:rgba(255,255,255,.09)}
+.brand{display:flex;align-items:center;gap:12px;position:relative;z-index:1;font-weight:950}
+.logo{width:58px;height:58px;border-radius:16px;background:#fff;color:#d51d24;display:grid;place-items:center;font-size:17px;font-weight:1000;box-shadow:0 10px 26px rgba(0,0,0,.18)}
+.brand small{display:block;font-weight:700;opacity:.9}
+h1{margin:17px 0 8px;font-size:clamp(31px,5.8vw,58px);line-height:1;position:relative;z-index:1}
+.hero p{max-width:900px;margin:0;font-size:16px;position:relative;z-index:1;opacity:.97}
+.ruleline{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px;position:relative;z-index:1}
+.rulechip{padding:9px 12px;border-radius:999px;background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.23);font-weight:850}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:18px;position:relative;z-index:1}
+.stat{background:#fff;color:var(--text);border-radius:17px;padding:11px 13px;box-shadow:0 9px 22px rgba(0,0,0,.08)} .stat b{display:block;font-size:22px}
+.card{margin-top:15px;background:#fff;border:1px solid var(--line);border-radius:24px;padding:16px;box-shadow:0 10px 28px rgba(20,61,128,.07)}
+.card h2{margin:0 0 8px;color:var(--blue)}
+.compare{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px}
+.info{border:1px solid var(--line);border-radius:18px;padding:14px;background:#f9fbff}
+.formula{font-size:19px;font-weight:900;color:var(--navy)} .aux{color:var(--red)} .part{color:var(--green)}
+.tabs{display:flex;gap:8px;overflow-x:auto;padding:10px 2px;margin-top:8px;scrollbar-width:none} .tabs::-webkit-scrollbar{display:none}
+.tab{white-space:nowrap;border:1px solid var(--line);background:#fff;color:var(--text);padding:12px 15px;border-radius:999px;font-weight:900;cursor:pointer}
+.tab.active{background:var(--blue);color:#fff;border-color:var(--blue)}
+.panel{background:#fff;border:1px solid var(--line);border-radius:26px;padding:18px;box-shadow:var(--shadow)}
+.toprow{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:12px} .badge{background:#eef4ff;color:var(--blue);padding:8px 12px;border-radius:999px;font-size:13px;font-weight:950} .counter{color:var(--muted);font-weight:800;font-size:14px}
+.question{font-size:clamp(21px,3.8vw,30px);font-weight:950;line-height:1.25;margin:8px 0 12px} .subq{color:var(--muted);font-size:14px;margin-top:-4px;margin-bottom:10px}
+.answers,.words{display:flex;flex-wrap:wrap;gap:10px;margin:14px 0}
+.opt,.word{border:1px solid #cfdef3;background:#fbfdff;color:#17395f;border-radius:14px;padding:11px 14px;font-size:16px;font-weight:850;cursor:pointer;transition:.15s}
+.opt:hover,.word:hover{transform:translateY(-1px);border-color:#84ace6} .opt.full{width:100%;text-align:left} .word.used{opacity:.35;pointer-events:none}
+.sentence{min-height:66px;border:2px dashed #bfd4f4;background:#f7fbff;border-radius:18px;padding:12px;display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.selected{background:#edf5ff;border:1px solid #bfd7fb;color:#12468c;padding:9px 11px;border-radius:12px;font-weight:850;cursor:pointer}
+.controls{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px} button{appearance:none;border:0;border-radius:14px;padding:12px 16px;font-weight:900;cursor:pointer;font-size:15px}
+.primary{background:var(--blue);color:#fff} .secondary{background:#eaf2ff;color:#10499f} .ghost{background:#f2f6fb;color:#596c7f}
+.feedback{display:none;margin-top:14px;padding:14px;border-radius:16px;font-weight:850} .feedback.ok{display:block;background:#eaf9ef;border:1px solid #c6edd5;color:#0d7b40} .feedback.bad{display:block;background:#fff1f1;border:1px solid #ffd0d0;color:#b82424} .translation{margin-top:7px;color:#4f687c;font-weight:750}
+.progress{height:12px;background:#edf2f8;border-radius:999px;overflow:hidden;margin-top:14px} .progress>div{height:100%;width:0;background:linear-gradient(90deg,var(--blue),#19a25d);transition:.25s}
+.input{width:100%;border:2px solid #d5e3f6;background:#fcfdff;border-radius:15px;padding:13px 14px;font-size:17px;font-weight:750;outline:none} .input:focus{border-color:#7aa5e6}
+.tabletools{display:flex;gap:9px;flex-wrap:wrap;margin:10px 0} .search{flex:1;min-width:220px}
+.tablewrap{overflow:auto;max-height:620px;border:1px solid var(--line);border-radius:18px} table{width:100%;border-collapse:collapse} th,td{padding:11px 10px;border-bottom:1px solid #e7eef9;text-align:left;white-space:nowrap} th{background:#eff5ff;color:#0d4db3;position:sticky;top:0;z-index:2} tr:last-child td{border-bottom:0}
+.verbcard{border:1px solid var(--line);border-radius:20px;padding:18px;background:linear-gradient(180deg,#fbfdff,#f3f8ff);text-align:center} .verbcard .inf{font-size:34px;font-weight:1000;color:var(--blue)} .verbcard .plq{font-size:27px;font-weight:950;color:var(--green);margin-top:8px} .verbcard .sr{color:var(--muted);font-weight:750;margin-top:6px}
+.memory-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px} .memory-card{min-height:92px;border:1px solid #cfdff4;border-radius:16px;background:#fbfdff;padding:10px;display:grid;place-items:center;text-align:center;font-weight:900;cursor:pointer} .memory-card .front{display:none} .memory-card.revealed .back,.memory-card.matched .back{display:none} .memory-card.revealed .front,.memory-card.matched .front{display:block} .memory-card.revealed,.memory-card.matched{background:#edf5ff} .memory-card.matched{opacity:.6;pointer-events:none} .memory-card .back{font-size:30px;color:var(--blue)}
+.footer{text-align:center;color:#6e7d8f;font-size:13px;margin-top:16px}
+@media(max-width:860px){.stats{grid-template-columns:repeat(2,1fr)}.compare{grid-template-columns:1fr}.memory-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:560px){.app{padding:10px 10px 30px}.hero{padding:20px;border-radius:22px}.panel{padding:15px;border-radius:22px}}
+</style>
+</head>
+<body>
+<div class="app">
+<section class="hero">
+  <div class="brand"><div class="logo">DE-MAX</div><div>DE-MAX TUTIN<small>Plusquamperfekt • interaktivni trener</small></div></div>
+  <h1>Plusquamperfekt</h1>
+  <p>Velika aplikacija sa <b>150 glagola</b>, infinitivom, Partizipom II i oblikom u Plusquamperfektu, plus veliki broj rečenica i različitih vežbi.</p>
+  <div class="ruleline">
+    <span class="rulechip">haben → hatte + Partizip II</span>
+    <span class="rulechip">sein → war + Partizip II</span>
+    <span class="rulechip">ranija radnja u prošlosti</span>
+    <span class="rulechip">Nachdem / bevor / als</span>
+  </div>
+  <div class="stats">
+    <div class="stat"><b id="score">0</b><span>poena</span></div>
+    <div class="stat"><b id="done">0</b><span>tačnih</span></div>
+    <div class="stat"><b id="streak">0</b><span>niz</span></div>
+    <div class="stat"><b id="level">Početak</b><span>status</span></div>
+  </div>
+</section>
+
+<section class="card">
+  <h2>Kako se gradi?</h2>
+  <div class="compare">
+    <div class="info"><div class="formula">ich <span class="aux">hatte</span> <span class="part">gelernt</span></div><div>lernen → hatte gelernt</div></div>
+    <div class="info"><div class="formula">ich <span class="aux">war</span> <span class="part">gegangen</span></div><div>gehen → war gegangen</div></div>
+  </div>
+  <p style="margin-bottom:0"><b>Plusquamperfekt</b> opisuje radnju koja se dogodila <b>pre druge radnje u prošlosti</b>.</p>
+</section>
+
+<div class="tabs">
+  <button class="tab active" data-mode="verbs">1. 150 glagola</button>
+  <button class="tab" data-mode="flash">2. Glagol po glagol</button>
+  <button class="tab" data-mode="examples">3. Rečenice</button>
+  <button class="tab" data-mode="choice">4. Izaberi</button>
+  <button class="tab" data-mode="aux">5. haben / sein</button>
+  <button class="tab" data-mode="order">6. Složi</button>
+  <button class="tab" data-mode="transform">7. Perfekt → PLQ</button>
+  <button class="tab" data-mode="typeverb">8. Napiši oblik</button>
+  <button class="tab" data-mode="translate">9. Prevod u PLQ</button>
+  <button class="tab" data-mode="memory">10. Memory</button>
+</div>
+
+<section class="panel">
+  <div class="toprow"><div class="badge" id="modeBadge">150 GLAGOLA</div><div class="counter" id="counter"></div></div>
+  <div id="content"></div>
+  <div class="progress"><div id="bar"></div></div>
+</section>
+<div class="footer">DE-MAX • Plusquamperfekt Trainer • 150 glagola</div>
+</div>
+
+<script>
+const VERBS=[{"inf": "sein", "aux": "sein", "part": "gewesen", "plq": "war gewesen", "sr": "biti"}, {"inf": "haben", "aux": "haben", "part": "gehabt", "plq": "hatte gehabt", "sr": "imati"}, {"inf": "werden", "aux": "sein", "part": "geworden", "plq": "war geworden", "sr": "postati"}, {"inf": "gehen", "aux": "sein", "part": "gegangen", "plq": "war gegangen", "sr": "ići"}, {"inf": "kommen", "aux": "sein", "part": "gekommen", "plq": "war gekommen", "sr": "doći"}, {"inf": "fahren", "aux": "sein", "part": "gefahren", "plq": "war gefahren", "sr": "voziti se / ići vozilom"}, {"inf": "fliegen", "aux": "sein", "part": "geflogen", "plq": "war geflogen", "sr": "leteti"}, {"inf": "laufen", "aux": "sein", "part": "gelaufen", "plq": "war gelaufen", "sr": "trčati / hodati"}, {"inf": "rennen", "aux": "sein", "part": "gerannt", "plq": "war gerannt", "sr": "trčati"}, {"inf": "reisen", "aux": "sein", "part": "gereist", "plq": "war gereist", "sr": "putovati"}, {"inf": "ankommen", "aux": "sein", "part": "angekommen", "plq": "war angekommen", "sr": "stići"}, {"inf": "abfahren", "aux": "sein", "part": "abgefahren", "plq": "war abgefahren", "sr": "krenuti / poći"}, {"inf": "aufstehen", "aux": "sein", "part": "aufgestanden", "plq": "war aufgestanden", "sr": "ustati"}, {"inf": "einschlafen", "aux": "sein", "part": "eingeschlafen", "plq": "war eingeschlafen", "sr": "zaspati"}, {"inf": "aufwachen", "aux": "sein", "part": "aufgewacht", "plq": "war aufgewacht", "sr": "probuditi se"}, {"inf": "bleiben", "aux": "sein", "part": "geblieben", "plq": "war geblieben", "sr": "ostati"}, {"inf": "sterben", "aux": "sein", "part": "gestorben", "plq": "war gestorben", "sr": "umreti"}, {"inf": "fallen", "aux": "sein", "part": "gefallen", "plq": "war gefallen", "sr": "pasti"}, {"inf": "steigen", "aux": "sein", "part": "gestiegen", "plq": "war gestiegen", "sr": "penjati se / porasti"}, {"inf": "aussteigen", "aux": "sein", "part": "ausgestiegen", "plq": "war ausgestiegen", "sr": "izaći iz vozila"}, {"inf": "einsteigen", "aux": "sein", "part": "eingestiegen", "plq": "war eingestiegen", "sr": "ući u vozilo"}, {"inf": "umsteigen", "aux": "sein", "part": "umgestiegen", "plq": "war umgestiegen", "sr": "presesti"}, {"inf": "zurückkommen", "aux": "sein", "part": "zurückgekommen", "plq": "war zurückgekommen", "sr": "vratiti se"}, {"inf": "verschwinden", "aux": "sein", "part": "verschwunden", "plq": "war verschwunden", "sr": "nestati"}, {"inf": "passieren", "aux": "sein", "part": "passiert", "plq": "war passiert", "sr": "dogoditi se"}, {"inf": "geschehen", "aux": "sein", "part": "geschehen", "plq": "war geschehen", "sr": "dogoditi se"}, {"inf": "wachsen", "aux": "sein", "part": "gewachsen", "plq": "war gewachsen", "sr": "rasti"}, {"inf": "aufwachsen", "aux": "sein", "part": "aufgewachsen", "plq": "war aufgewachsen", "sr": "odrasti"}, {"inf": "schwimmen", "aux": "sein", "part": "geschwommen", "plq": "war geschwommen", "sr": "plivati"}, {"inf": "wandern", "aux": "sein", "part": "gewandert", "plq": "war gewandert", "sr": "pešačiti"}, {"inf": "klettern", "aux": "sein", "part": "geklettert", "plq": "war geklettert", "sr": "penjati se"}, {"inf": "springen", "aux": "sein", "part": "gesprungen", "plq": "war gesprungen", "sr": "skočiti"}, {"inf": "umfallen", "aux": "sein", "part": "umgefallen", "plq": "war umgefallen", "sr": "pasti / prevrnuti se"}, {"inf": "zurückgehen", "aux": "sein", "part": "zurückgegangen", "plq": "war zurückgegangen", "sr": "vratiti se peške"}, {"inf": "weggehen", "aux": "sein", "part": "weggegangen", "plq": "war weggegangen", "sr": "otići"}, {"inf": "mitkommen", "aux": "sein", "part": "mitgekommen", "plq": "war mitgekommen", "sr": "poći sa nekim"}, {"inf": "hochgehen", "aux": "sein", "part": "hochgegangen", "plq": "war hochgegangen", "sr": "popeti se"}, {"inf": "hinuntergehen", "aux": "sein", "part": "hinuntergegangen", "plq": "war hinuntergegangen", "sr": "sići"}, {"inf": "landen", "aux": "sein", "part": "gelandet", "plq": "war gelandet", "sr": "sleteti"}, {"inf": "machen", "aux": "haben", "part": "gemacht", "plq": "hatte gemacht", "sr": "raditi / napraviti"}, {"inf": "lernen", "aux": "haben", "part": "gelernt", "plq": "hatte gelernt", "sr": "učiti"}, {"inf": "arbeiten", "aux": "haben", "part": "gearbeitet", "plq": "hatte gearbeitet", "sr": "raditi"}, {"inf": "spielen", "aux": "haben", "part": "gespielt", "plq": "hatte gespielt", "sr": "igrati"}, {"inf": "wohnen", "aux": "haben", "part": "gewohnt", "plq": "hatte gewohnt", "sr": "stanovati"}, {"inf": "leben", "aux": "haben", "part": "gelebt", "plq": "hatte gelebt", "sr": "živeti"}, {"inf": "kaufen", "aux": "haben", "part": "gekauft", "plq": "hatte gekauft", "sr": "kupiti"}, {"inf": "verkaufen", "aux": "haben", "part": "verkauft", "plq": "hatte verkauft", "sr": "prodati"}, {"inf": "bezahlen", "aux": "haben", "part": "bezahlt", "plq": "hatte bezahlt", "sr": "platiti"}, {"inf": "bestellen", "aux": "haben", "part": "bestellt", "plq": "hatte bestellt", "sr": "naručiti"}, {"inf": "brauchen", "aux": "haben", "part": "gebraucht", "plq": "hatte gebraucht", "sr": "trebati"}, {"inf": "benutzen", "aux": "haben", "part": "benutzt", "plq": "hatte benutzt", "sr": "koristiti"}, {"inf": "öffnen", "aux": "haben", "part": "geöffnet", "plq": "hatte geöffnet", "sr": "otvoriti"}, {"inf": "schließen", "aux": "haben", "part": "geschlossen", "plq": "hatte geschlossen", "sr": "zatvoriti"}, {"inf": "fragen", "aux": "haben", "part": "gefragt", "plq": "hatte gefragt", "sr": "pitati"}, {"inf": "antworten", "aux": "haben", "part": "geantwortet", "plq": "hatte geantwortet", "sr": "odgovoriti"}, {"inf": "sagen", "aux": "haben", "part": "gesagt", "plq": "hatte gesagt", "sr": "reći"}, {"inf": "erzählen", "aux": "haben", "part": "erzählt", "plq": "hatte erzählt", "sr": "pričati"}, {"inf": "erklären", "aux": "haben", "part": "erklärt", "plq": "hatte erklärt", "sr": "objasniti"}, {"inf": "zeigen", "aux": "haben", "part": "gezeigt", "plq": "hatte gezeigt", "sr": "pokazati"}, {"inf": "hören", "aux": "haben", "part": "gehört", "plq": "hatte gehört", "sr": "čuti / slušati"}, {"inf": "sehen", "aux": "haben", "part": "gesehen", "plq": "hatte gesehen", "sr": "videti"}, {"inf": "lesen", "aux": "haben", "part": "gelesen", "plq": "hatte gelesen", "sr": "čitati"}, {"inf": "schreiben", "aux": "haben", "part": "geschrieben", "plq": "hatte geschrieben", "sr": "pisati"}, {"inf": "sprechen", "aux": "haben", "part": "gesprochen", "plq": "hatte gesprochen", "sr": "govoriti"}, {"inf": "reden", "aux": "haben", "part": "geredet", "plq": "hatte geredet", "sr": "razgovarati"}, {"inf": "verstehen", "aux": "haben", "part": "verstanden", "plq": "hatte verstanden", "sr": "razumeti"}, {"inf": "wissen", "aux": "haben", "part": "gewusst", "plq": "hatte gewusst", "sr": "znati"}, {"inf": "kennen", "aux": "haben", "part": "gekannt", "plq": "hatte gekannt", "sr": "poznavati"}, {"inf": "denken", "aux": "haben", "part": "gedacht", "plq": "hatte gedacht", "sr": "misliti"}, {"inf": "glauben", "aux": "haben", "part": "geglaubt", "plq": "hatte geglaubt", "sr": "verovati"}, {"inf": "meinen", "aux": "haben", "part": "gemeint", "plq": "hatte gemeint", "sr": "misliti / smatrati"}, {"inf": "finden", "aux": "haben", "part": "gefunden", "plq": "hatte gefunden", "sr": "naći"}, {"inf": "suchen", "aux": "haben", "part": "gesucht", "plq": "hatte gesucht", "sr": "tražiti"}, {"inf": "verlieren", "aux": "haben", "part": "verloren", "plq": "hatte verloren", "sr": "izgubiti"}, {"inf": "gewinnen", "aux": "haben", "part": "gewonnen", "plq": "hatte gewonnen", "sr": "pobediti / dobiti"}, {"inf": "bringen", "aux": "haben", "part": "gebracht", "plq": "hatte gebracht", "sr": "doneti"}, {"inf": "holen", "aux": "haben", "part": "geholt", "plq": "hatte geholt", "sr": "doneti / otići po"}, {"inf": "nehmen", "aux": "haben", "part": "genommen", "plq": "hatte genommen", "sr": "uzeti"}, {"inf": "geben", "aux": "haben", "part": "gegeben", "plq": "hatte gegeben", "sr": "dati"}, {"inf": "bekommen", "aux": "haben", "part": "bekommen", "plq": "hatte bekommen", "sr": "dobiti"}, {"inf": "essen", "aux": "haben", "part": "gegessen", "plq": "hatte gegessen", "sr": "jesti"}, {"inf": "trinken", "aux": "haben", "part": "getrunken", "plq": "hatte getrunken", "sr": "piti"}, {"inf": "kochen", "aux": "haben", "part": "gekocht", "plq": "hatte gekocht", "sr": "kuvati"}, {"inf": "backen", "aux": "haben", "part": "gebacken", "plq": "hatte gebacken", "sr": "peći"}, {"inf": "schneiden", "aux": "haben", "part": "geschnitten", "plq": "hatte geschnitten", "sr": "seći"}, {"inf": "waschen", "aux": "haben", "part": "gewaschen", "plq": "hatte gewaschen", "sr": "prati"}, {"inf": "putzen", "aux": "haben", "part": "geputzt", "plq": "hatte geputzt", "sr": "čistiti"}, {"inf": "räumen", "aux": "haben", "part": "geräumt", "plq": "hatte geräumt", "sr": "raspremiti"}, {"inf": "aufräumen", "aux": "haben", "part": "aufgeräumt", "plq": "hatte aufgeräumt", "sr": "pospremiti"}, {"inf": "duschen", "aux": "haben", "part": "geduscht", "plq": "hatte geduscht", "sr": "tuširati se"}, {"inf": "anziehen", "aux": "haben", "part": "angezogen", "plq": "hatte angezogen", "sr": "obući"}, {"inf": "ausziehen", "aux": "haben", "part": "ausgezogen", "plq": "hatte ausgezogen", "sr": "svući"}, {"inf": "tragen", "aux": "haben", "part": "getragen", "plq": "hatte getragen", "sr": "nositi"}, {"inf": "schlafen", "aux": "haben", "part": "geschlafen", "plq": "hatte geschlafen", "sr": "spavati"}, {"inf": "sitzen", "aux": "haben", "part": "gesessen", "plq": "hatte gesessen", "sr": "sedeti"}, {"inf": "stehen", "aux": "haben", "part": "gestanden", "plq": "hatte gestanden", "sr": "stajati"}, {"inf": "liegen", "aux": "haben", "part": "gelegen", "plq": "hatte gelegen", "sr": "ležati / nalaziti se"}, {"inf": "helfen", "aux": "haben", "part": "geholfen", "plq": "hatte geholfen", "sr": "pomoći"}, {"inf": "treffen", "aux": "haben", "part": "getroffen", "plq": "hatte getroffen", "sr": "sresti"}, {"inf": "besuchen", "aux": "haben", "part": "besucht", "plq": "hatte besucht", "sr": "posetiti"}, {"inf": "anrufen", "aux": "haben", "part": "angerufen", "plq": "hatte angerufen", "sr": "pozvati telefonom"}, {"inf": "telefonieren", "aux": "haben", "part": "telefoniert", "plq": "hatte telefoniert", "sr": "telefonirati"}, {"inf": "schicken", "aux": "haben", "part": "geschickt", "plq": "hatte geschickt", "sr": "poslati"}, {"inf": "senden", "aux": "haben", "part": "gesendet", "plq": "hatte gesendet", "sr": "poslati / emitovati"}, {"inf": "lieben", "aux": "haben", "part": "geliebt", "plq": "hatte geliebt", "sr": "voleti"}, {"inf": "mögen", "aux": "haben", "part": "gemocht", "plq": "hatte gemocht", "sr": "voleti / sviđati se"}, {"inf": "hassen", "aux": "haben", "part": "gehasst", "plq": "hatte gehasst", "sr": "mrzeti"}, {"inf": "lachen", "aux": "haben", "part": "gelacht", "plq": "hatte gelacht", "sr": "smejati se"}, {"inf": "weinen", "aux": "haben", "part": "geweint", "plq": "hatte geweint", "sr": "plakati"}, {"inf": "feiern", "aux": "haben", "part": "gefeiert", "plq": "hatte gefeiert", "sr": "slaviti"}, {"inf": "tanzen", "aux": "haben", "part": "getanzt", "plq": "hatte getanzt", "sr": "plesati"}, {"inf": "singen", "aux": "haben", "part": "gesungen", "plq": "hatte gesungen", "sr": "pevati"}, {"inf": "üben", "aux": "haben", "part": "geübt", "plq": "hatte geübt", "sr": "vežbati"}, {"inf": "studieren", "aux": "haben", "part": "studiert", "plq": "hatte studiert", "sr": "studirati"}, {"inf": "beginnen", "aux": "haben", "part": "begonnen", "plq": "hatte begonnen", "sr": "početi"}, {"inf": "anfangen", "aux": "haben", "part": "angefangen", "plq": "hatte angefangen", "sr": "početi"}, {"inf": "beenden", "aux": "haben", "part": "beendet", "plq": "hatte beendet", "sr": "završiti"}, {"inf": "vergessen", "aux": "haben", "part": "vergessen", "plq": "hatte vergessen", "sr": "zaboraviti"}, {"inf": "erinnern", "aux": "haben", "part": "erinnert", "plq": "hatte erinnert", "sr": "setiti / podsetiti"}, {"inf": "versuchen", "aux": "haben", "part": "versucht", "plq": "hatte versucht", "sr": "pokušati"}, {"inf": "planen", "aux": "haben", "part": "geplant", "plq": "hatte geplant", "sr": "planirati"}, {"inf": "entscheiden", "aux": "haben", "part": "entschieden", "plq": "hatte entschieden", "sr": "odlučiti"}, {"inf": "wählen", "aux": "haben", "part": "gewählt", "plq": "hatte gewählt", "sr": "izabrati"}, {"inf": "wechseln", "aux": "haben", "part": "gewechselt", "plq": "hatte gewechselt", "sr": "promeniti"}, {"inf": "reparieren", "aux": "haben", "part": "repariert", "plq": "hatte repariert", "sr": "popraviti"}, {"inf": "bauen", "aux": "haben", "part": "gebaut", "plq": "hatte gebaut", "sr": "graditi"}, {"inf": "malen", "aux": "haben", "part": "gemalt", "plq": "hatte gemalt", "sr": "slikati"}, {"inf": "zeichnen", "aux": "haben", "part": "gezeichnet", "plq": "hatte gezeichnet", "sr": "crtati"}, {"inf": "fotografieren", "aux": "haben", "part": "fotografiert", "plq": "hatte fotografiert", "sr": "fotografisati"}, {"inf": "reservieren", "aux": "haben", "part": "reserviert", "plq": "hatte reserviert", "sr": "rezervisati"}, {"inf": "buchen", "aux": "haben", "part": "gebucht", "plq": "hatte gebucht", "sr": "rezervisati"}, {"inf": "mieten", "aux": "haben", "part": "gemietet", "plq": "hatte gemietet", "sr": "iznajmiti"}, {"inf": "vermieten", "aux": "haben", "part": "vermietet", "plq": "hatte vermietet", "sr": "izdati"}, {"inf": "packen", "aux": "haben", "part": "gepackt", "plq": "hatte gepackt", "sr": "spakovati"}, {"inf": "auspacken", "aux": "haben", "part": "ausgepackt", "plq": "hatte ausgepackt", "sr": "raspakovati"}, {"inf": "vorbereiten", "aux": "haben", "part": "vorbereitet", "plq": "hatte vorbereitet", "sr": "pripremiti"}, {"inf": "erreichen", "aux": "haben", "part": "erreicht", "plq": "hatte erreicht", "sr": "stići / postići"}, {"inf": "verlassen", "aux": "haben", "part": "verlassen", "plq": "hatte verlassen", "sr": "napustiti"}, {"inf": "betreten", "aux": "haben", "part": "betreten", "plq": "hatte betreten", "sr": "ući / stupiti u"}, {"inf": "unterschreiben", "aux": "haben", "part": "unterschrieben", "plq": "hatte unterschrieben", "sr": "potpisati"}, {"inf": "ausfüllen", "aux": "haben", "part": "ausgefüllt", "plq": "hatte ausgefüllt", "sr": "popuniti"}, {"inf": "prüfen", "aux": "haben", "part": "geprüft", "plq": "hatte geprüft", "sr": "proveriti"}, {"inf": "bestehen", "aux": "haben", "part": "bestanden", "plq": "hatte bestanden", "sr": "položiti / sastojati se"}, {"inf": "wiederholen", "aux": "haben", "part": "wiederholt", "plq": "hatte wiederholt", "sr": "ponoviti"}, {"inf": "übersetzen", "aux": "haben", "part": "übersetzt", "plq": "hatte übersetzt", "sr": "prevesti"}, {"inf": "beschreiben", "aux": "haben", "part": "beschrieben", "plq": "hatte beschrieben", "sr": "opisati"}, {"inf": "vergleichen", "aux": "haben", "part": "verglichen", "plq": "hatte verglichen", "sr": "uporediti"}, {"inf": "empfehlen", "aux": "haben", "part": "empfohlen", "plq": "hatte empfohlen", "sr": "preporučiti"}, {"inf": "erlauben", "aux": "haben", "part": "erlaubt", "plq": "hatte erlaubt", "sr": "dozvoliti"}, {"inf": "verbieten", "aux": "haben", "part": "verboten", "plq": "hatte verboten", "sr": "zabraniti"}];
+const EXAMPLES=[{"de": "Nachdem ich gefrühstückt hatte, ging ich zur Arbeit.", "sr": "Nakon što sam doručkovao, otišao sam na posao.", "focus": "hatte gefrühstückt"}, {"de": "Als der Bus angekommen war, stiegen wir ein.", "sr": "Kada je autobus stigao, ušli smo.", "focus": "war angekommen"}, {"de": "Nachdem sie die Hausaufgaben gemacht hatte, sah sie fern.", "sr": "Nakon što je uradila domaći, gledala je televiziju.", "focus": "hatte gemacht"}, {"de": "Bevor ich zur Schule ging, hatte ich meine Tasche gepackt.", "sr": "Pre nego što sam otišao u školu, spakovao sam torbu.", "focus": "hatte gepackt"}, {"de": "Nachdem wir gegessen hatten, gingen wir spazieren.", "sr": "Nakon što smo jeli, otišli smo u šetnju.", "focus": "hatten gegessen"}, {"de": "Er war schon eingeschlafen, als ich ihn anrief.", "sr": "On je već bio zaspao kada sam ga pozvao.", "focus": "war eingeschlafen"}, {"de": "Sie hatte das Buch gelesen, bevor der Unterricht begann.", "sr": "Pročitala je knjigu pre nego što je čas počeo.", "focus": "hatte gelesen"}, {"de": "Nachdem der Zug abgefahren war, kamen wir am Bahnhof an.", "sr": "Nakon što je voz krenuo, stigli smo na stanicu.", "focus": "war abgefahren"}, {"de": "Ich hatte den Schlüssel verloren, deshalb konnte ich die Tür nicht öffnen.", "sr": "Bio sam izgubio ključ, zato nisam mogao da otvorim vrata.", "focus": "hatte verloren"}, {"de": "Nachdem er viel gelernt hatte, bestand er die Prüfung.", "sr": "Nakon što je mnogo učio, položio je ispit.", "focus": "hatte gelernt"}, {"de": "Wir waren schon gegangen, als Anna kam.", "sr": "Već smo bili otišli kada je Ana došla.", "focus": "waren gegangen"}, {"de": "Nachdem sie das Essen gekocht hatte, deckte sie den Tisch.", "sr": "Nakon što je skuvala jelo, postavila je sto.", "focus": "hatte gekocht"}, {"de": "Bevor der Film begann, hatten wir die Karten gekauft.", "sr": "Pre nego što je film počeo, kupili smo karte.", "focus": "hatten gekauft"}, {"de": "Nachdem du mich angerufen hattest, schrieb ich dir eine Nachricht.", "sr": "Nakon što si me pozvao, napisao sam ti poruku.", "focus": "hattest angerufen"}, {"de": "Als wir ankamen, hatte das Geschäft schon geschlossen.", "sr": "Kada smo stigli, prodavnica se već bila zatvorila.", "focus": "hatte geschlossen"}, {"de": "Nachdem ich geduscht hatte, zog ich mich an.", "sr": "Nakon što sam se istuširao, obukao sam se.", "focus": "hatte geduscht"}, {"de": "Sie hatte die E-Mail geschrieben, bevor sie das Büro verließ.", "sr": "Napisala je imejl pre nego što je napustila kancelariju.", "focus": "hatte geschrieben"}, {"de": "Nachdem wir die Wohnung aufgeräumt hatten, kamen die Gäste.", "sr": "Nakon što smo pospremili stan, došli su gosti.", "focus": "hatten aufgeräumt"}, {"de": "Er war nach Hause zurückgekommen, bevor es dunkel wurde.", "sr": "Vratio se kući pre nego što je pao mrak.", "focus": "war zurückgekommen"}, {"de": "Nachdem ich das Formular ausgefüllt hatte, gab ich es ab.", "sr": "Nakon što sam popunio formular, predao sam ga.", "focus": "hatte ausgefüllt"}];
+const CHOICE=[{"q": "Koja rečenica je u Plusquamperfektu?", "opts": ["Ich hatte die Tür geschlossen.", "Ich habe die Tür geschlossen.", "Ich schloss die Tür."], "c": 0, "tr": "Bio sam zatvorio vrata."}, {"q": "Koji oblik je tačan za „gehen“?", "opts": ["hatte gegangen", "war gegangen", "war gegeht"], "c": 1, "tr": "gehen → war gegangen"}, {"q": "Koji oblik je tačan za „machen“?", "opts": ["hatte gemacht", "war gemacht", "hatte gemachen"], "c": 0, "tr": "machen → hatte gemacht"}, {"q": "Koja rečenica je tačna?", "opts": ["Nachdem ich gegessen hatte, ging ich spazieren.", "Nachdem ich hatte gegessen, ging ich spazieren.", "Nachdem ich gegessen war, ging ich spazieren."], "c": 0, "tr": "Nakon što sam jeo, otišao sam u šetnju."}, {"q": "Koji pomoćni glagol koristi „ankommen“?", "opts": ["haben", "sein", "werden"], "c": 1, "tr": "ankommen → war angekommen"}, {"q": "Koji pomoćni glagol koristi „lesen“?", "opts": ["haben", "sein", "werden"], "c": 0, "tr": "lesen → hatte gelesen"}, {"q": "Koji oblik je tačan za „einschlafen“?", "opts": ["hatte eingeschlafen", "war eingeschlafen", "war einschlafen"], "c": 1, "tr": "einschlafen → war eingeschlafen"}, {"q": "Koji oblik je tačan za „schreiben“?", "opts": ["hatte geschrieben", "war geschrieben", "hatte geschreibt"], "c": 0, "tr": "schreiben → hatte geschrieben"}, {"q": "Koja rečenica pokazuje raniju prošlu radnju?", "opts": ["Ich hatte gelernt, bevor ich die Prüfung schrieb.", "Ich lernte jeden Tag.", "Ich habe heute gelernt."], "c": 0, "tr": "Plusquamperfekt označava radnju koja se desila pre druge prošle radnje."}, {"q": "Koji oblik je tačan za „zurückkommen“?", "opts": ["hatte zurückgekommen", "war zurückgekommen", "war zurückkommt"], "c": 1, "tr": "zurückkommen → war zurückgekommen"}];
+const ORDER=[{"w": ["Nachdem", "ich", "gegessen", "hatte", ",", "ging", "ich", "spazieren", "."], "a": "Nachdem ich gegessen hatte, ging ich spazieren.", "tr": "Nakon što sam jeo, otišao sam u šetnju."}, {"w": ["Er", "war", "schon", "eingeschlafen", ",", "als", "ich", "anrief", "."], "a": "Er war schon eingeschlafen, als ich anrief.", "tr": "On je već bio zaspao kada sam pozvao."}, {"w": ["Wir", "hatten", "die", "Karten", "gekauft", ",", "bevor", "der", "Film", "begann", "."], "a": "Wir hatten die Karten gekauft, bevor der Film begann.", "tr": "Kupili smo karte pre nego što je film počeo."}, {"w": ["Nachdem", "sie", "die", "Hausaufgaben", "gemacht", "hatte", ",", "sah", "sie", "fern", "."], "a": "Nachdem sie die Hausaufgaben gemacht hatte, sah sie fern.", "tr": "Nakon što je uradila domaći, gledala je televiziju."}, {"w": ["Der", "Zug", "war", "schon", "abgefahren", ",", "als", "wir", "ankamen", "."], "a": "Der Zug war schon abgefahren, als wir ankamen.", "tr": "Voz je već bio krenuo kada smo stigli."}, {"w": ["Ich", "hatte", "meinen", "Schlüssel", "verloren", "."], "a": "Ich hatte meinen Schlüssel verloren.", "tr": "Bio sam izgubio svoj ključ."}, {"w": ["Nachdem", "wir", "aufgeräumt", "hatten", ",", "kamen", "die", "Gäste", "."], "a": "Nachdem wir aufgeräumt hatten, kamen die Gäste.", "tr": "Nakon što smo pospremili, došli su gosti."}, {"w": ["Sie", "hatte", "das", "Buch", "gelesen", ",", "bevor", "der", "Unterricht", "begann", "."], "a": "Sie hatte das Buch gelesen, bevor der Unterricht begann.", "tr": "Pročitala je knjigu pre nego što je čas počeo."}];
+const TRANSFORM=[{"src": "Ich habe die Tür geschlossen.", "a": "Ich hatte die Tür geschlossen.", "sr": "Bio sam zatvorio vrata."}, {"src": "Wir sind nach Hause gegangen.", "a": "Wir waren nach Hause gegangen.", "sr": "Bili smo otišli kući."}, {"src": "Sie hat das Buch gelesen.", "a": "Sie hatte das Buch gelesen.", "sr": "Ona je bila pročitala knjigu."}, {"src": "Er ist eingeschlafen.", "a": "Er war eingeschlafen.", "sr": "On je bio zaspao."}, {"src": "Ich habe meine Tasche gepackt.", "a": "Ich hatte meine Tasche gepackt.", "sr": "Bio sam spakovao torbu."}, {"src": "Der Zug ist abgefahren.", "a": "Der Zug war abgefahren.", "sr": "Voz je bio krenuo."}, {"src": "Wir haben gegessen.", "a": "Wir hatten gegessen.", "sr": "Bili smo jeli."}, {"src": "Anna ist angekommen.", "a": "Anna war angekommen.", "sr": "Ana je bila stigla."}];
+const TRANSLATE=[{"sr": "Bio sam već završio posao.", "a": "Ich hatte die Arbeit schon beendet."}, {"sr": "Ona je bila pročitala knjigu.", "a": "Sie hatte das Buch gelesen."}, {"sr": "Bili smo otišli kući.", "a": "Wir waren nach Hause gegangen."}, {"sr": "On je bio zaspao.", "a": "Er war eingeschlafen."}, {"sr": "Ana je bila stigla na stanicu.", "a": "Anna war am Bahnhof angekommen."}, {"sr": "Bio sam izgubio ključ.", "a": "Ich hatte den Schlüssel verloren."}, {"sr": "Bili smo kupili karte.", "a": "Wir hatten die Karten gekauft."}, {"sr": "Ona je bila napisala imejl.", "a": "Sie hatte die E-Mail geschrieben."}, {"sr": "Bio sam spakovao torbu.", "a": "Ich hatte die Tasche gepackt."}, {"sr": "Voz je već bio krenuo.", "a": "Der Zug war schon abgefahren."}, {"sr": "Bili smo jeli pre toga.", "a": "Wir hatten vorher gegessen."}, {"sr": "On je bio pozvao prijatelja.", "a": "Er hatte seinen Freund angerufen."}, {"sr": "Bila sam uradila domaći zadatak.", "a": "Ich hatte die Hausaufgaben gemacht."}, {"sr": "Bili smo pospremili stan.", "a": "Wir hatten die Wohnung aufgeräumt."}, {"sr": "Ona je bila skuvala ručak.", "a": "Sie hatte das Mittagessen gekocht."}, {"sr": "Bio sam popunio formular.", "a": "Ich hatte das Formular ausgefüllt."}, {"sr": "On se bio vratio kući.", "a": "Er war nach Hause zurückgekommen."}, {"sr": "Bili smo već rezervisali hotel.", "a": "Wir hatten das Hotel schon reserviert."}, {"sr": "Ona je bila platila račun.", "a": "Sie hatte die Rechnung bezahlt."}, {"sr": "Bio sam već naučio lekciju.", "a": "Ich hatte die Lektion schon gelernt."}];
+
+let mode="verbs",idx=0,score=0,done=0,streak=0,selected=[];
+let mem={cards:[],opened:[],matched:0,lock:false};
+const content=document.getElementById("content"),badge=document.getElementById("modeBadge"),counter=document.getElementById("counter"),bar=document.getElementById("bar");
+
+document.querySelectorAll(".tab").forEach(t=>t.addEventListener("click",()=>{
+  document.querySelectorAll(".tab").forEach(x=>x.classList.remove("active"));t.classList.add("active");
+  mode=t.dataset.mode;idx=0;selected=[];if(mode==="memory")initMemory();render();
+}));
+
+function norm(s){return (s||"").toLowerCase().replace(/[.,!?]/g,"").replace(/\s+/g," ").trim()}
+function speak(t){if(!("speechSynthesis" in window))return;speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(t);u.lang="de-DE";u.rate=.88;speechSynthesis.speak(u)}
+function stats(){document.getElementById("score").textContent=score;document.getElementById("done").textContent=done;document.getElementById("streak").textContent=streak;document.getElementById("level").textContent=score>=250?"Odlično":score>=140?"Vrlo dobro":score>=60?"Napredak":"Početak"}
+function fb(ok,msg,tr=""){const e=document.getElementById("fb");if(!e)return;e.className="feedback "+(ok?"ok":"bad");e.innerHTML=msg+(tr?`<div class="translation">${tr}</div>`:"")}
+function success(sent,tr=""){score+=10;done++;streak++;stats();fb(true,"✓ Tačno!",tr);speak(sent)}
+function fail(sol){streak=0;stats();fb(false,`✗ Pokušaj ponovo.<div class="translation">Rešenje: ${sol}</div>`)}
+function prog(total,current){counter.textContent=`${current}/${total}`;bar.style.width=(current/total*100)+"%"}
+function next(total){idx=(idx+1)%total;selected=[];render()}
+
+function render(){stats();if(mode==="verbs")renderVerbs();if(mode==="flash")renderFlash();if(mode==="examples")renderExamples();if(mode==="choice")renderChoice();if(mode==="aux")renderAux();if(mode==="order")renderOrder();if(mode==="transform")renderTransform();if(mode==="typeverb")renderTypeVerb();if(mode==="translate")renderTranslate();if(mode==="memory")renderMemory()}
+
+function renderVerbs(){
+  badge.textContent="150 GLAGOLA";prog(150,150);
+  content.innerHTML=`<div class="question">150 glagola: Infinitiv → Plusquamperfekt</div>
+  <div class="tabletools"><input class="input search" id="search" placeholder="Pretraži glagol ili prevod..."><button class="secondary" id="habenOnly">haben</button><button class="secondary" id="seinOnly">sein</button><button class="ghost" id="all">Svi</button></div>
+  <div class="tablewrap"><table><thead><tr><th>#</th><th>Infinitiv</th><th>Pomoćni</th><th>Partizip II</th><th>Plusquamperfekt</th><th>Prevod</th></tr></thead><tbody id="tbody"></tbody></table></div>
+  <div id="fb" class="feedback"></div>`;
+  let filter="all";
+  function draw(){
+    const q=(document.getElementById("search").value||"").toLowerCase();
+    const rows=VERBS.filter(v=>(filter==="all"||v.aux===filter)&&(`${v.inf} ${v.part} ${v.plq} ${v.sr}`.toLowerCase().includes(q)));
+    document.getElementById("tbody").innerHTML=rows.map((v,i)=>`<tr><td>${VERBS.indexOf(v)+1}</td><td><b>${v.inf}</b></td><td>${v.aux}</td><td>${v.part}</td><td><b>${v.plq}</b></td><td>${v.sr}</td></tr>`).join("");
+  }
+  document.getElementById("search").oninput=draw;
+  document.getElementById("habenOnly").onclick=()=>{filter="haben";draw()};
+  document.getElementById("seinOnly").onclick=()=>{filter="sein";draw()};
+  document.getElementById("all").onclick=()=>{filter="all";draw()};
+  draw();
+}
+
+function renderFlash(){
+  badge.textContent="GLAGOL PO GLAGOL";const v=VERBS[idx];prog(VERBS.length,idx+1);
+  content.innerHTML=`<div class="verbcard"><div class="inf">${v.inf}</div><div class="sr">${v.sr}</div><div class="plq">${v.plq}</div><div class="sr">Partizip II: ${v.part} • pomoćni: ${v.aux}</div></div>
+  <div class="controls"><button class="primary" id="speak">🔊 Izgovor</button><button class="ghost" id="next">Sledeći glagol</button></div><div id="fb" class="feedback"></div>`;
+  document.getElementById("speak").onclick=()=>speak(v.inf+", "+v.plq);
+  document.getElementById("next").onclick=()=>next(VERBS.length);
+}
+
+function renderExamples(){
+  badge.textContent="PRIMERI REČENICA";const x=EXAMPLES[idx];prog(EXAMPLES.length,idx+1);
+  content.innerHTML=`<div class="question">${x.de}</div><div class="info"><b>Plusquamperfekt:</b> ${x.focus}<div class="translation">${x.sr}</div></div>
+  <div class="controls"><button class="primary" id="speak">🔊 Pročitaj</button><button class="ghost" id="next">Sledeći primer</button></div><div id="fb" class="feedback"></div>`;
+  document.getElementById("speak").onclick=()=>speak(x.de);document.getElementById("next").onclick=()=>next(EXAMPLES.length);
+}
+
+function renderChoice(){
+  badge.textContent="IZABERI TAČNO";const x=CHOICE[idx];prog(CHOICE.length,idx+1);
+  content.innerHTML=`<div class="question">${x.q}</div><div class="answers" id="answers"></div><div class="controls"><button class="ghost" id="next">Sledeće</button></div><div id="fb" class="feedback"></div>`;
+  const box=document.getElementById("answers");x.opts.forEach((o,i)=>{const b=document.createElement("button");b.className="opt full";b.textContent=o;b.onclick=()=>i===x.c?success(o,x.tr):fail(x.opts[x.c]);box.appendChild(b)});
+  document.getElementById("next").onclick=()=>next(CHOICE.length);
+}
+
+function renderAux(){
+  badge.textContent="HABEN ILI SEIN";const v=VERBS[idx];prog(VERBS.length,idx+1);
+  content.innerHTML=`<div class="question">${v.inf} → koji pomoćni glagol koristi?</div><div class="subq">${v.sr}</div>
+  <div class="answers"><button class="opt" id="haben">haben → hatte</button><button class="opt" id="sein">sein → war</button></div>
+  <div class="controls"><button class="ghost" id="next">Sledeće</button></div><div id="fb" class="feedback"></div>`;
+  document.getElementById("haben").onclick=()=>v.aux==="haben"?success(v.plq,`${v.inf} → ${v.plq}`):fail(v.aux);
+  document.getElementById("sein").onclick=()=>v.aux==="sein"?success(v.plq,`${v.inf} → ${v.plq}`):fail(v.aux);
+  document.getElementById("next").onclick=()=>next(VERBS.length);
+}
+
+function renderOrder(){
+  badge.textContent="SLOŽI REČENICU";const x=ORDER[idx];prog(ORDER.length,idx+1);selected=[];const sh=[...x.w].sort(()=>Math.random()-.5);
+  content.innerHTML=`<div class="question">Složi pravilnu rečenicu u prošlosti.</div><div class="sentence" id="sentence"><span class="subq">Ovde složi rečenicu…</span></div><div class="words" id="words"></div>
+  <div class="controls"><button class="primary" id="check">Proveri</button><button class="secondary" id="clear">Obriši</button><button class="ghost" id="next">Sledeće</button></div><div id="fb" class="feedback"></div>`;
+  const wb=document.getElementById("words");sh.forEach(w=>{const b=document.createElement("button");b.className="word";b.textContent=w;b.onclick=()=>{if(b.classList.contains("used"))return;selected.push({w,b});b.classList.add("used");drawSentence()};wb.appendChild(b)});
+  document.getElementById("check").onclick=()=>{const built=selected.map(o=>o.w).join(" ").replace(/\s+([,.!?])/g,"$1").replace(/,\s*/g,", ").trim();norm(built)===norm(x.a)?success(x.a,x.tr):fail(x.a)};
+  document.getElementById("clear").onclick=()=>{selected.forEach(o=>o.b.classList.remove("used"));selected=[];drawSentence();document.getElementById("fb").className="feedback"};
+  document.getElementById("next").onclick=()=>next(ORDER.length);
+}
+function drawSentence(){const s=document.getElementById("sentence");if(!selected.length){s.innerHTML='<span class="subq">Ovde složi rečenicu…</span>';return}s.innerHTML="";selected.forEach((o,i)=>{const e=document.createElement("span");e.className="selected";e.textContent=o.w;e.onclick=()=>{o.b.classList.remove("used");selected.splice(i,1);drawSentence()};s.appendChild(e)})}
+
+function renderTransform(){
+  badge.textContent="PERFEKT → PLUSQUAMPERFEKT";const x=TRANSFORM[idx];prog(TRANSFORM.length,idx+1);
+  content.innerHTML=`<div class="question">${x.src}</div><div class="subq">Pretvori rečenicu iz Perfekta u Plusquamperfekt.</div><input class="input" id="inp" placeholder="Napiši Plusquamperfekt..." autocomplete="off">
+  <div class="controls"><button class="primary" id="check">Proveri</button><button class="secondary" id="show">Rešenje</button><button class="ghost" id="next">Sledeće</button></div><div id="fb" class="feedback"></div>`;
+  document.getElementById("check").onclick=()=>{const v=document.getElementById("inp").value;norm(v)===norm(x.a)?success(x.a,x.sr):fail(x.a)};
+  document.getElementById("show").onclick=()=>fb(true,"Rešenje:",x.a);document.getElementById("next").onclick=()=>next(TRANSFORM.length);
+}
+
+function renderTypeVerb(){
+  badge.textContent="NAPIŠI PLUSQUAMPERFEKT";const v=VERBS[idx];prog(VERBS.length,idx+1);
+  content.innerHTML=`<div class="question">${v.inf}</div><div class="subq">${v.sr} • napiši oblik za <b>ich</b></div><input class="input" id="inp" placeholder="npr. hatte gemacht / war gegangen" autocomplete="off">
+  <div class="controls"><button class="primary" id="check">Proveri</button><button class="secondary" id="show">Rešenje</button><button class="ghost" id="next">Sledeći glagol</button></div><div id="fb" class="feedback"></div>`;
+  document.getElementById("check").onclick=()=>{const x=document.getElementById("inp").value;norm(x)===norm(v.plq)?success(v.plq,v.sr):fail(v.plq)};
+  document.getElementById("show").onclick=()=>fb(true,"Rešenje:",v.plq);document.getElementById("next").onclick=()=>next(VERBS.length);
+}
+
+function renderTranslate(){
+  badge.textContent="PREVOD U PLUSQUAMPERFEKT";
+  const x=TRANSLATE[idx];
+  prog(TRANSLATE.length,idx+1);
+  content.innerHTML=`<div class="question">${x.sr}</div>
+  <div class="subq">Prevedi na nemački koristeći <b>Plusquamperfekt</b>.</div>
+  <input class="input" id="inp" placeholder="npr. Ich hatte ... / Ich war ..." autocomplete="off">
+  <div class="controls"><button class="primary" id="check">Proveri</button><button class="secondary" id="show">Prikaži rešenje</button><button class="ghost" id="next">Sledeće</button></div>
+  <div id="fb" class="feedback"></div>`;
+  document.getElementById("check").onclick=()=>{
+    const v=document.getElementById("inp").value;
+    norm(v)===norm(x.a)?success(x.a,x.sr):fail(x.a);
+  };
+  document.getElementById("show").onclick=()=>fb(true,"Rešenje:",x.a);
+  document.getElementById("next").onclick=()=>next(TRANSLATE.length);
+}
+
+function initMemory(){
+  const sample=VERBS.slice(0,8);let cards=[];sample.forEach((v,i)=>{cards.push({g:i,t:v.inf});cards.push({g:i,t:v.plq})});cards.sort(()=>Math.random()-.5);mem={cards,opened:[],matched:0,lock:false};
+}
+function renderMemory(){
+  if(!mem.cards.length)initMemory();badge.textContent="MEMORY";prog(mem.cards.length/2,mem.matched);
+  content.innerHTML=`<div class="question">Pronađi par: infinitiv + Plusquamperfekt.</div><div class="memory-grid" id="mem"></div><div class="controls"><button class="ghost" id="again">Ponovi</button></div><div id="fb" class="feedback"></div>`;
+  const box=document.getElementById("mem");mem.cards.forEach((c,i)=>{const e=document.createElement("div");e.className="memory-card"+(c.r?" revealed":"")+(c.m?" matched":"");e.innerHTML=`<div class="back">?</div><div class="front">${c.t}</div>`;e.onclick=()=>flip(i);box.appendChild(e)});
+  document.getElementById("again").onclick=()=>{initMemory();render()};
+}
+function flip(i){
+  if(mem.lock)return;const c=mem.cards[i];if(c.m||c.r)return;c.r=true;mem.opened.push(i);renderMemory();
+  if(mem.opened.length===2){mem.lock=true;const[a,b]=mem.opened,ca=mem.cards[a],cb=mem.cards[b];if(ca.g===cb.g){ca.m=cb.m=true;mem.matched++;score+=10;done++;streak++;stats();speak(ca.t+" "+cb.t);mem.opened=[];mem.lock=false;renderMemory();if(mem.matched===mem.cards.length/2)fb(true,"✓ Bravo! Svi parovi su pronađeni.")}else{streak=0;stats();setTimeout(()=>{ca.r=false;cb.r=false;mem.opened=[];mem.lock=false;renderMemory()},800)}}
+}
+render();
+</script>
+</body>
+</html>
