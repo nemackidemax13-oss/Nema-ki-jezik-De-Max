@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="sr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>De-Max | Konjunktiv II – können / Vorschläge</title>
+<style>
+:root{
+  --blue:#0a3fa4;
+  --blue2:#052766;
+  --sky:#edf5ff;
+  --red:#e21b2c;
+  --green:#168a49;
+  --ink:#15233a;
+  --muted:#68758a;
+  --line:#d9e6f7;
+  --soft:#f7faff;
+  --shadow:0 15px 40px rgba(15,58,130,.13);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;
+  font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+  color:var(--ink);
+  background:
+    radial-gradient(circle at 4% 0%,rgba(32,112,255,.13),transparent 26rem),
+    linear-gradient(180deg,#f8fbff,#fff 48%,#f8fbff);
+  min-height:100vh;
+}
+button,input{font:inherit}
+button{cursor:pointer}
+.app{width:min(100%,1040px);margin:auto;padding:12px 12px 44px}
+.hero{
+  position:relative;
+  overflow:hidden;
+  border-radius:30px;
+  padding:25px 22px 24px;
+  color:#fff;
+  background:linear-gradient(135deg,#0b54cd 0%,#0a3b9a 55%,#061f58 100%);
+  border:3px solid #fff;
+  box-shadow:var(--shadow);
+}
+.hero:before,.hero:after{
+  content:"";position:absolute;border-radius:50%;background:rgba(255,255,255,.08)
+}
+.hero:before{width:200px;height:200px;right:-70px;top:-90px}
+.hero:after{width:155px;height:155px;right:120px;bottom:-110px}
+.brand{
+  display:inline-flex;align-items:center;
+  background:#fff;color:var(--red);
+  padding:8px 13px;border-radius:12px;
+  font-weight:1000;margin-bottom:12px;
+  box-shadow:0 6px 16px rgba(0,0,0,.18)
+}
+.hero h1{
+  position:relative;z-index:2;
+  margin:0;font-size:clamp(32px,6vw,58px);
+  line-height:1;letter-spacing:-1.3px
+}
+.hero h1 span{
+  display:block;font-size:.61em;color:#dfeeff;
+  margin-top:10px;letter-spacing:-.5px
+}
+.hero p{
+  position:relative;z-index:2;
+  max-width:820px;margin:12px 0 0;
+  font-size:clamp(15px,2.4vw,19px);
+  line-height:1.5
+}
+.hero p b{color:#ffd8da}
+.heroSpeak{
+  position:absolute;right:18px;bottom:17px;z-index:3;
+  width:52px;height:52px;border:0;border-radius:50%;
+  background:#fff;color:var(--blue);font-size:24px;
+  box-shadow:0 8px 18px rgba(0,0,0,.18)
+}
+.stats{
+  position:sticky;top:8px;z-index:60;
+  margin:12px 0;padding:10px 12px;
+  background:rgba(255,255,255,.95);backdrop-filter:blur(14px);
+  border:1px solid #dbe7f7;border-radius:18px;
+  box-shadow:0 10px 25px rgba(11,63,165,.08)
+}
+.statrow{display:flex;align-items:center;gap:10px}
+.progress{height:11px;flex:1;background:#e7eef8;border-radius:999px;overflow:hidden}
+.progress span{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--blue),#4f92ff,var(--red));border-radius:inherit;transition:.25s}
+.stattext{font-size:13px;font-weight:900;color:var(--blue);white-space:nowrap}
+.tabs{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:12px 0 16px}
+.tab{
+  min-height:48px;border:1px solid #d9e6f8;background:#fff;color:var(--blue);
+  border-radius:14px;padding:10px 8px;font-weight:900;transition:.18s
+}
+.tab:hover,.tab.active{
+  background:linear-gradient(135deg,var(--blue),#2f73da);color:#fff;border-color:var(--blue);transform:translateY(-1px)
+}
+.panel{display:none}.panel.active{display:block}
+.card{
+  background:#fff;border:1px solid #dbe7f7;border-radius:24px;
+  padding:20px;box-shadow:var(--shadow)
+}
+.card+.card{margin-top:14px}
+.section-title{display:flex;align-items:center;gap:12px;margin-bottom:16px}
+.badge{
+  width:46px;height:46px;flex:0 0 auto;
+  display:grid;place-items:center;border-radius:14px;
+  background:linear-gradient(135deg,var(--blue),#3983ef);
+  color:#fff;font-weight:1000;
+  box-shadow:0 7px 16px rgba(11,63,165,.23)
+}
+.section-title h2{margin:0;color:var(--blue2);font-size:clamp(22px,4vw,34px)}
+.section-title p{margin:4px 0 0;color:var(--muted);font-weight:650}
+.rulegrid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.rule{
+  border:1px solid #dbe7f7;border-radius:18px;
+  padding:15px;background:linear-gradient(180deg,#fff,#f6f9ff)
+}
+.rule h3{margin:0 0 8px;color:var(--blue);font-size:20px}
+.rule p{margin:0;line-height:1.5;font-weight:700}
+.rule b{color:var(--red)}
+.conj{
+  width:100%;border-collapse:separate;border-spacing:0;
+  border:1px solid #d8e5f7;border-radius:18px;overflow:hidden;margin-top:14px
+}
+.conj th,.conj td{padding:11px 9px;text-align:center;border-bottom:1px solid #e4edf8;font-weight:850}
+.conj th{background:linear-gradient(135deg,var(--blue),#174cae);color:#fff}
+.conj tr:last-child td{border-bottom:0}
+.conj td:nth-child(2){color:var(--red);font-size:18px}
+.examples{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px}
+.example{padding:13px;border:1px solid #dbe6f6;border-radius:15px;background:#f8fbff;font-weight:750;line-height:1.5}
+.example b{color:var(--red)}
+.note{
+  margin-top:12px;padding:12px 14px;border-radius:14px;
+  border:1px solid #f0d67c;border-left:5px solid #eab814;
+  background:#fff8df;line-height:1.45;font-weight:700
+}
+.qtop{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:14px}
+.qcount{
+  background:#eef5ff;color:var(--blue);
+  border:1px solid #d7e5fa;border-radius:999px;
+  padding:7px 11px;font-size:14px;font-weight:950
+}
+.speaker{
+  width:43px;height:43px;border-radius:12px;border:1px solid #d7e4f6;
+  background:#fff;color:var(--blue);font-size:20px
+}
+.prompt{
+  font-size:clamp(23px,5vw,37px);
+  line-height:1.35;color:var(--blue2);font-weight:950;
+  margin:5px 0 18px
+}
+.blank{
+  display:inline-block;min-width:125px;text-align:center;
+  border-bottom:4px solid var(--red);color:var(--red);
+  padding:0 7px 2px
+}
+.options{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+.options.three{grid-template-columns:repeat(3,1fr)}
+.option{
+  border:2px solid #d9e4f3;background:#fff;color:var(--blue2);
+  border-radius:16px;padding:14px 11px;
+  font-weight:900;font-size:18px;transition:.16s
+}
+.option:hover{border-color:#5b91dc;transform:translateY(-1px)}
+.option.correct{background:#eaf8ef;border-color:#64b985;color:#0d7439}
+.option.wrong{background:#fff0f1;border-color:#e5737c;color:#ad1522}
+.option:disabled{cursor:default}
+.feedback{
+  display:none;margin-top:14px;border-radius:16px;
+  padding:12px 14px;line-height:1.5;
+  border:1px solid #e3e9f1;background:#f7f9fc
+}
+.feedback.show{display:block}
+.feedback.ok{background:#edf9f1;border-color:#b9dfc5}
+.feedback.bad{background:#fff1f2;border-color:#efbdc2}
+.feedback strong{color:var(--blue2)}
+.translation{margin-top:4px;color:var(--muted);font-weight:700}
+.controls{display:flex;justify-content:space-between;gap:10px;margin-top:14px}
+.ctrl{border:0;border-radius:14px;padding:12px 16px;font-weight:900}
+.ctrl.primary{background:linear-gradient(135deg,var(--blue),#2f73db);color:#fff}
+.ctrl.secondary{background:#eef2f7;color:#2c3c50}
+.ctrl.danger{background:#fff0f1;color:#b61724}
+.ctrl:disabled{opacity:.45;cursor:not-allowed}
+.dialog{
+  padding:14px;border:1px solid #dce8f8;border-radius:17px;
+  background:#f9fbff;margin-bottom:12px
+}
+.dialog .a,.dialog .b{font-size:18px;line-height:1.5;font-weight:800}
+.dialog .a{color:var(--blue2)}
+.dialog .b{color:var(--red);margin-top:8px}
+.inputline{
+  width:100%;border:2px solid #cbdcf3;border-radius:14px;
+  padding:13px 14px;font-size:18px;font-weight:750;outline:none
+}
+.inputline:focus{border-color:#4c87db;box-shadow:0 0 0 4px rgba(76,135,219,.1)}
+.wordbank,.sentence{
+  min-height:66px;border-radius:16px;padding:11px;display:flex;flex-wrap:wrap;gap:8px
+}
+.wordbank{border:2px dashed #bad1ee;background:#f8fbff}
+.sentence{border:2px solid #dbe5f2;background:#fff;margin-bottom:10px}
+.word{
+  border:0;border-radius:12px;padding:10px 13px;font-weight:850;
+  background:linear-gradient(135deg,var(--blue),#3b80e6);color:#fff;
+  box-shadow:0 4px 10px rgba(11,63,165,.17)
+}
+.sentence .word{background:#eef5ff;color:var(--blue);border:1px solid #cbdcf3;box-shadow:none}
+.result{text-align:center;padding:28px 14px}
+.result .circle{
+  width:118px;height:118px;border-radius:50%;margin:0 auto 12px;
+  display:grid;place-items:center;
+  background:linear-gradient(135deg,var(--blue),#3f84eb);
+  color:#fff;font-size:30px;font-weight:1000;
+  box-shadow:0 13px 30px rgba(11,63,165,.25)
+}
+.result h3{margin:6px 0;color:var(--blue2);font-size:30px}
+.result p{color:var(--muted);font-weight:700}
+.footer{text-align:center;margin-top:18px;color:#8993a3;font-size:12px;font-weight:750}
+@media(max-width:760px){
+  .tabs{grid-template-columns:repeat(2,1fr)}
+  .rulegrid,.examples{grid-template-columns:1fr}
+  .hero{padding:22px 16px;border-radius:22px}
+  .hero p{padding-right:45px}
+  .card{padding:16px;border-radius:20px}
+  .options.three{grid-template-columns:repeat(2,1fr)}
+}
+@media(max-width:440px){
+  .app{padding:8px 8px 30px}
+  .options,.options.three{grid-template-columns:1fr 1fr}
+  .option{font-size:16px;padding:12px 8px}
+}
+</style>
+</head>
+<body>
+<div class="app">
+<header class="hero">
+  <div class="brand">DE-MAX TUTIN</div>
+  <h1>Konjunktiv II – können
+    <span>Vorschläge • Predlozi • könnte / könntest / könnten / könntet</span>
+  </h1>
+  <p>Vežbaj kako se daju predlozi i ljubazne mogućnosti pomoću glagola <b>können</b> u Konjunktivu II: <b>könnte, könntest, könnten, könntet</b>.</p>
+  <button class="heroSpeak" id="heroSpeak" title="Poslušaj">🔊</button>
+</header>
+
+<div class="stats">
+  <div class="statrow">
+    <div class="progress"><span id="bar"></span></div>
+    <div class="stattext"><span id="done">0</span>/<span id="total">72</span> završeno • <span id="right">0</span> tačno</div>
+  </div>
+</div>
+
+<nav class="tabs">
+  <button class="tab active" data-panel="rules">Pravilo</button>
+  <button class="tab" data-panel="ex1">1. Konjugacija</button>
+  <button class="tab" data-panel="ex2">2. Dopuni</button>
+  <button class="tab" data-panel="ex3">3. Predlog</button>
+  <button class="tab" data-panel="ex4">4. Red reči</button>
+  <button class="tab" data-panel="ex5">5. Dijalozi</button>
+  <button class="tab" data-panel="ex6">6. Složi rečenicu</button>
+  <button class="tab" data-panel="final">Rezultat</button>
+</nav>
+
+<section id="rules" class="panel active">
+  <div class="card">
+    <div class="section-title">
+      <div class="badge">K</div>
+      <div><h2>Konjunktiv II glagola können</h2><p>Koristi se često za predloge, mogućnosti i ljubazne sugestije.</p></div>
+    </div>
+
+    <div class="rulegrid">
+      <div class="rule">
+        <h3>Predlog</h3>
+        <p><b>Du könntest</b> mehr Deutsch lernen.<br><span class="translation">Ti bi mogao više da učiš nemački.</span></p>
+      </div>
+      <div class="rule">
+        <h3>Zajednički predlog</h3>
+        <p><b>Wir könnten</b> spazieren gehen.<br><span class="translation">Mogli bismo da idemo u šetnju.</span></p>
+      </div>
+    </div>
+
+    <table class="conj">
+      <tr><th>Lice</th><th>Konjunktiv II</th><th>Primer</th></tr>
+      <tr><td>ich</td><td>könnte</td><td>Ich könnte dir helfen.</td></tr>
+      <tr><td>du</td><td>könntest</td><td>Du könntest früher kommen.</td></tr>
+      <tr><td>er / sie / es</td><td>könnte</td><td>Er könnte ins Kino gehen.</td></tr>
+      <tr><td>wir</td><td>könnten</td><td>Wir könnten zusammen lernen.</td></tr>
+      <tr><td>ihr</td><td>könntet</td><td>Ihr könntet uns besuchen.</td></tr>
+      <tr><td>sie / Sie</td><td>könnten</td><td>Sie könnten hier warten.</td></tr>
+    </table>
+
+    <div class="examples">
+      <div class="example"><b>Du könntest</b> früher schlafen gehen.<br><span class="translation">Mogao bi ranije da ideš na spavanje.</span></div>
+      <div class="example"><b>Wir könnten</b> heute Pizza essen.<br><span class="translation">Mogli bismo danas jesti picu.</span></div>
+      <div class="example"><b>Er könnte</b> mit dem Bus fahren.<br><span class="translation">On bi mogao da ide autobusom.</span></div>
+      <div class="example"><b>Sie könnten</b> morgen anrufen.<br><span class="translation">Mogli biste sutra da pozovete.</span></div>
+    </div>
+
+    <div class="note">💡 Red reči: <b>könnte / könntest / könnten / könntet</b> stoji na <b>2. mestu</b>, a drugi glagol ide kao <b>infinitiv na kraj rečenice</b>.</div>
+  </div>
+</section>
+
+<section id="ex1" class="panel"><div class="card"><div class="section-title"><div class="badge">1</div><div><h2>Konjugacija</h2><p>Izaberi pravilan oblik.</p></div></div><div id="ex1box"></div></div></section>
+<section id="ex2" class="panel"><div class="card"><div class="section-title"><div class="badge">2</div><div><h2>Dopuni rečenicu</h2><p>Izaberi pravilan oblik glagola können u Konjunktivu II.</p></div></div><div id="ex2box"></div></div></section>
+<section id="ex3" class="panel"><div class="card"><div class="section-title"><div class="badge">3</div><div><h2>Koji predlog odgovara?</h2><p>Izaberi najbolji predlog za situaciju.</p></div></div><div id="ex3box"></div></div></section>
+<section id="ex4" class="panel"><div class="card"><div class="section-title"><div class="badge">4</div><div><h2>Red reči</h2><p>Izaberi pravilno sastavljenu rečenicu.</p></div></div><div id="ex4box"></div></div></section>
+<section id="ex5" class="panel"><div class="card"><div class="section-title"><div class="badge">5</div><div><h2>Kratki dijalozi</h2><p>Odgovori prirodnim predlogom.</p></div></div><div id="ex5box"></div></div></section>
+<section id="ex6" class="panel"><div class="card"><div class="section-title"><div class="badge">6</div><div><h2>Složi rečenicu</h2><p>Klikni reči pravilnim redosledom.</p></div></div><div id="ex6box"></div></div></section>
+<section id="final" class="panel"><div class="card"><div id="finalbox"></div></div></section>
+
+<div class="footer">De-Max Tutin • Konjunktiv II • Vorschläge • A2/B1</div>
+</div>
+
+<script>
+const ex1=[
+{s:"ich → ?",a:"könnte",o:["könnte","könntest","könnten"],t:"ja bih mogao / mogla"},
+{s:"du → ?",a:"könntest",o:["könnte","könntest","könntet"],t:"ti bi mogao / mogla"},
+{s:"er → ?",a:"könnte",o:["könnte","könnten","könntet"],t:"on bi mogao"},
+{s:"sie (ona) → ?",a:"könnte",o:["könntest","könnte","könnten"],t:"ona bi mogla"},
+{s:"wir → ?",a:"könnten",o:["könnte","könnten","könntet"],t:"mi bismo mogli"},
+{s:"ihr → ?",a:"könntet",o:["könntet","könnten","könntest"],t:"vi biste mogli"},
+{s:"sie (oni) → ?",a:"könnten",o:["könnte","könntet","könnten"],t:"oni bi mogli"},
+{s:"Sie → ?",a:"könnten",o:["könnten","könntest","könnte"],t:"Vi biste mogli"},
+{s:"ich und du → ?",a:"könnten",o:["könnte","könnten","könntet"],t:"mi bismo mogli"},
+{s:"Peter → ?",a:"könnte",o:["könnte","könntest","könnten"],t:"Peter bi mogao"},
+{s:"du und Anna → ?",a:"könntet",o:["könntet","könnte","könnten"],t:"vas dvoje biste mogli"},
+{s:"meine Eltern → ?",a:"könnten",o:["könnte","könnten","könntest"],t:"moji roditelji bi mogli"}
+];
+
+const ex2=[
+{s:"Du ___ mehr Deutsch lernen.",a:"könntest",o:["könntest","könnte","könnten"],t:"Ti bi mogao više da učiš nemački."},
+{s:"Wir ___ heute spazieren gehen.",a:"könnten",o:["könnte","könnten","könntet"],t:"Mogli bismo danas da idemo u šetnju."},
+{s:"Er ___ mit dem Bus fahren.",a:"könnte",o:["könnte","könntest","könnten"],t:"On bi mogao da ide autobusom."},
+{s:"Ihr ___ uns morgen besuchen.",a:"könntet",o:["könnten","könntet","könnte"],t:"Mogli biste sutra da nas posetite."},
+{s:"Sie ___ später anrufen.",a:"könnten",o:["könnten","könnte","könntest"],t:"Mogli biste kasnije da pozovete."},
+{s:"Ich ___ dir helfen.",a:"könnte",o:["könnte","könntest","könntet"],t:"Mogao bih da ti pomognem."},
+{s:"Du ___ früher schlafen gehen.",a:"könntest",o:["könntest","könnten","könntet"],t:"Mogao bi ranije da ideš na spavanje."},
+{s:"Wir ___ zusammen lernen.",a:"könnten",o:["könnte","könnten","könntest"],t:"Mogli bismo zajedno da učimo."},
+{s:"Sie ___ einen Arzt fragen.",a:"könnten",o:["könnten","könnte","könntet"],t:"Mogli biste da pitate lekara."},
+{s:"Maria ___ heute zu Hause bleiben.",a:"könnte",o:["könnte","könntest","könnten"],t:"Marija bi mogla danas da ostane kod kuće."},
+{s:"Ihr ___ ein Taxi nehmen.",a:"könntet",o:["könnte","könntet","könnten"],t:"Mogli biste da uzmete taksi."},
+{s:"Die Kinder ___ draußen spielen.",a:"könnten",o:["könnten","könnte","könntest"],t:"Deca bi mogla da se igraju napolju."}
+];
+
+const ex3=[
+{s:"Tvoj drug slabo govori nemački. Šta mu predlažeš?",a:"Du könntest mehr Deutsch lernen.",o:["Du könntest mehr Deutsch lernen.","Du könnte mehr Deutsch lernen.","Du könntest mehr Deutsch gelernt."],t:"Mogao bi više da učiš nemački."},
+{s:"Dosadno vam je kod kuće.",a:"Wir könnten ins Kino gehen.",o:["Wir könnten ins Kino gehen.","Wir könntet ins Kino gehen.","Wir könnten ins Kino gegangen."],t:"Mogli bismo da idemo u bioskop."},
+{s:"Drug je umoran.",a:"Du könntest dich ausruhen.",o:["Du könntest dich ausruhen.","Du könnten dich ausruhen.","Du könntest dich ausgeruht."],t:"Mogao bi da se odmoriš."},
+{s:"Kasnite i nema autobusa.",a:"Wir könnten ein Taxi nehmen.",o:["Wir könnten ein Taxi nehmen.","Wir könnte ein Taxi nehmen.","Wir könnten ein Taxi genommen."],t:"Mogli bismo da uzmemo taksi."},
+{s:"Neko ima problem sa računarom.",a:"Du könntest den Computer neu starten.",o:["Du könntest den Computer neu starten.","Du könnte den Computer neu starten.","Du könntest den Computer neu gestartet."],t:"Mogao bi ponovo da pokreneš računar."},
+{s:"Pada kiša.",a:"Wir könnten zu Hause bleiben.",o:["Wir könnten zu Hause bleiben.","Wir könntet zu Hause bleiben.","Wir könnten zu Hause geblieben."],t:"Mogli bismo da ostanemo kod kuće."},
+{s:"Prijatelj ima glavobolju.",a:"Du könntest einen Arzt anrufen.",o:["Du könntest einen Arzt anrufen.","Du könnte einen Arzt anrufen.","Du könntest einen Arzt angerufen."],t:"Mogao bi da pozoveš lekara."},
+{s:"Želite nešto da jedete.",a:"Wir könnten Pizza bestellen.",o:["Wir könnten Pizza bestellen.","Wir könnte Pizza bestellen.","Wir könnten Pizza bestellt."],t:"Mogli bismo da naručimo picu."},
+{s:"Prijatelj traži poklon.",a:"Du könntest ein Buch kaufen.",o:["Du könntest ein Buch kaufen.","Du könnten ein Buch kaufen.","Du könntest ein Buch gekauft."],t:"Mogao bi da kupiš knjigu."},
+{s:"Vikend je i lepo vreme.",a:"Wir könnten wandern gehen.",o:["Wir könnten wandern gehen.","Wir könnte wandern gehen.","Wir könnten wandern gegangen."],t:"Mogli bismo da idemo na planinarenje."},
+{s:"Neko želi da nauči bolje da govori.",a:"Du könntest mehr sprechen üben.",o:["Du könntest mehr sprechen üben.","Du könnte mehr sprechen üben.","Du könntest mehr gesprochen üben."],t:"Mogao bi više da vežbaš govor."},
+{s:"Imate slobodno veče.",a:"Wir könnten Freunde besuchen.",o:["Wir könnten Freunde besuchen.","Wir könntet Freunde besuchen.","Wir könnten Freunde besucht."],t:"Mogli bismo da posetimo prijatelje."}
+];
+
+const ex4=[
+{s:"Koja rečenica je pravilna?",a:"Du könntest heute früher kommen.",o:["Du heute könntest früher kommen.","Du könntest heute früher kommen.","Du könntest kommen heute früher."],t:"Mogao bi danas ranije da dođeš."},
+{s:"Koja rečenica je pravilna?",a:"Wir könnten morgen zusammen lernen.",o:["Wir könnten morgen zusammen lernen.","Wir morgen könnten zusammen lernen.","Wir könnten lernen morgen zusammen."],t:"Mogli bismo sutra zajedno da učimo."},
+{s:"Koja rečenica je pravilna?",a:"Er könnte am Wochenende arbeiten.",o:["Er am Wochenende könnte arbeiten.","Er könnte am Wochenende arbeiten.","Er könnte arbeiten am Wochenende."],t:"On bi mogao da radi za vikend."},
+{s:"Koja rečenica je pravilna?",a:"Ihr könntet uns später anrufen.",o:["Ihr uns könntet später anrufen.","Ihr könntet uns später anrufen.","Ihr könntet anrufen uns später."],t:"Mogli biste kasnije da nas pozovete."},
+{s:"Koja rečenica je pravilna?",a:"Sie könnten mit dem Zug fahren.",o:["Sie könnten mit dem Zug fahren.","Sie mit dem Zug könnten fahren.","Sie könnten fahren mit dem Zug."],t:"Mogli biste da idete vozom."},
+{s:"Koja rečenica je pravilna?",a:"Ich könnte dir morgen helfen.",o:["Ich dir könnte morgen helfen.","Ich könnte dir morgen helfen.","Ich könnte helfen dir morgen."],t:"Mogao bih sutra da ti pomognem."},
+{s:"Koja rečenica je pravilna?",a:"Du könntest mehr Wasser trinken.",o:["Du mehr Wasser könntest trinken.","Du könntest mehr Wasser trinken.","Du könntest trinken mehr Wasser."],t:"Mogao bi da piješ više vode."},
+{s:"Koja rečenica je pravilna?",a:"Wir könnten heute zu Hause bleiben.",o:["Wir könnten heute zu Hause bleiben.","Wir heute könnten zu Hause bleiben.","Wir könnten bleiben heute zu Hause."],t:"Mogli bismo danas da ostanemo kod kuće."},
+{s:"Koja rečenica je pravilna?",a:"Maria könnte ein neues Handy kaufen.",o:["Maria könnte ein neues Handy kaufen.","Maria ein neues Handy könnte kaufen.","Maria könnte kaufen ein neues Handy."],t:"Marija bi mogla da kupi novi telefon."},
+{s:"Koja rečenica je pravilna?",a:"Die Kinder könnten draußen spielen.",o:["Die Kinder draußen könnten spielen.","Die Kinder könnten draußen spielen.","Die Kinder könnten spielen draußen."],t:"Deca bi mogla da se igraju napolju."},
+{s:"Koja rečenica je pravilna?",a:"Ihr könntet am Samstag kommen.",o:["Ihr könntet am Samstag kommen.","Ihr am Samstag könntet kommen.","Ihr könntet kommen am Samstag."],t:"Mogli biste da dođete u subotu."},
+{s:"Koja rečenica je pravilna?",a:"Sie könnten hier zehn Minuten warten.",o:["Sie hier könnten zehn Minuten warten.","Sie könnten hier zehn Minuten warten.","Sie könnten warten hier zehn Minuten."],t:"Mogli biste ovde da sačekate deset minuta."}
+];
+
+const ex5=[
+{s:"A: Ich bin müde.  B: ?",a:"Du könntest dich ein bisschen ausruhen.",o:["Du könntest dich ein bisschen ausruhen.","Du könntest einen Kuchen kaufen.","Wir könnten ins Kino gehen."],t:"Mogao bi malo da se odmoriš."},
+{s:"A: Was machen wir heute Abend?  B: ?",a:"Wir könnten ins Kino gehen.",o:["Wir könnten ins Kino gehen.","Du könntest mehr schlafen.","Er könnte einen Arzt anrufen."],t:"Mogli bismo da idemo u bioskop."},
+{s:"A: Mein Deutsch ist nicht gut.  B: ?",a:"Du könntest jeden Tag üben.",o:["Du könntest jeden Tag üben.","Wir könnten Pizza bestellen.","Du könntest das Fenster schließen."],t:"Mogao bi da vežbaš svaki dan."},
+{s:"A: Ich habe Hunger.  B: ?",a:"Wir könnten etwas bestellen.",o:["Wir könnten etwas bestellen.","Du könntest früher schlafen.","Sie könnten später kommen."],t:"Mogli bismo nešto da naručimo."},
+{s:"A: Mein Auto ist kaputt.  B: ?",a:"Du könntest eine Werkstatt anrufen.",o:["Du könntest eine Werkstatt anrufen.","Wir könnten wandern gehen.","Du könntest mehr lesen."],t:"Mogao bi da pozoveš servis."},
+{s:"A: Es ist sehr warm hier.  B: ?",a:"Du könntest das Fenster öffnen.",o:["Du könntest das Fenster öffnen.","Wir könnten ein Taxi nehmen.","Du könntest ein Buch kaufen."],t:"Mogao bi da otvoriš prozor."},
+{s:"A: Ich habe morgen frei.  B: ?",a:"Wir könnten einen Ausflug machen.",o:["Wir könnten einen Ausflug machen.","Du könntest den Computer starten.","Sie könnten Medikamente kaufen."],t:"Mogli bismo da idemo na izlet."},
+{s:"A: Ich verstehe die Aufgabe nicht.  B: ?",a:"Du könntest den Lehrer fragen.",o:["Du könntest den Lehrer fragen.","Wir könnten Kaffee trinken.","Du könntest früh schlafen."],t:"Mogao bi da pitaš nastavnika."},
+{s:"A: Der Bus kommt nicht.  B: ?",a:"Wir könnten ein Taxi nehmen.",o:["Wir könnten ein Taxi nehmen.","Du könntest Deutsch lernen.","Er könnte das Licht ausschalten."],t:"Mogli bismo da uzmemo taksi."},
+{s:"A: Ich suche ein Geschenk.  B: ?",a:"Du könntest ein Buch kaufen.",o:["Du könntest ein Buch kaufen.","Wir könnten schlafen gehen.","Du könntest die Tür schließen."],t:"Mogao bi da kupiš knjigu."},
+{s:"A: Ich habe Kopfschmerzen.  B: ?",a:"Du könntest dich hinlegen.",o:["Du könntest dich hinlegen.","Wir könnten einkaufen gehen.","Du könntest ein Foto machen."],t:"Mogao bi da legneš."},
+{s:"A: Was machen wir am Sonntag?  B: ?",a:"Wir könnten Freunde besuchen.",o:["Wir könnten Freunde besuchen.","Du könntest Wasser trinken.","Er könnte früher aufstehen."],t:"Mogli bismo da posetimo prijatelje."}
+];
+
+const ex6=[
+{a:"Du könntest mehr Deutsch lernen.",t:"Mogao bi više da učiš nemački."},
+{a:"Wir könnten heute spazieren gehen.",t:"Mogli bismo danas da idemo u šetnju."},
+{a:"Er könnte mit dem Bus fahren.",t:"On bi mogao da ide autobusom."},
+{a:"Ihr könntet uns morgen besuchen.",t:"Mogli biste sutra da nas posetite."},
+{a:"Sie könnten später anrufen.",t:"Mogli biste kasnije da pozovete."},
+{a:"Ich könnte dir heute helfen.",t:"Mogao bih danas da ti pomognem."},
+{a:"Du könntest früher schlafen gehen.",t:"Mogao bi ranije da ideš na spavanje."},
+{a:"Wir könnten zusammen Pizza essen.",t:"Mogli bismo zajedno jesti picu."},
+{a:"Maria könnte heute zu Hause bleiben.",t:"Marija bi mogla danas da ostane kod kuće."},
+{a:"Die Kinder könnten draußen spielen.",t:"Deca bi mogla da se igraju napolju."},
+{a:"Ihr könntet ein Taxi nehmen.",t:"Mogli biste da uzmete taksi."},
+{a:"Sie könnten morgen einen Arzt fragen.",t:"Mogli biste sutra da pitate lekara."}
+];
+
+const total=ex1.length+ex2.length+ex3.length+ex4.length+ex5.length+ex6.length;
+document.getElementById("total").textContent=total;
+let done=0,right=0;
+const mastered=new Set();
+
+function mark(key){
+  if(mastered.has(key))return;
+  mastered.add(key);done++;right++;
+  document.getElementById("done").textContent=done;
+  document.getElementById("right").textContent=right;
+  document.getElementById("bar").style.width=(done/total*100)+"%";
+  renderFinal();
+}
+function speak(text,rate=.92){
+  if(!("speechSynthesis" in window))return;
+  speechSynthesis.cancel();
+  const u=new SpeechSynthesisUtterance(text);
+  u.lang="de-DE";u.rate=rate;
+  const voices=speechSynthesis.getVoices();
+  const v=voices.find(x=>x.lang&&x.lang.toLowerCase().startsWith("de"));
+  if(v)u.voice=v;
+  speechSynthesis.speak(u);
+}
+document.getElementById("heroSpeak").onclick=()=>speak("Du könntest mehr Deutsch lernen. Wir könnten spazieren gehen. Er könnte ins Kino gehen.");
+
+function showPanel(id){
+  document.querySelectorAll(".panel").forEach(p=>p.classList.toggle("active",p.id===id));
+  document.querySelectorAll(".tab").forEach(t=>t.classList.toggle("active",t.dataset.panel===id));
+  window.scrollTo({top:0,behavior:"smooth"});
+}
+document.querySelectorAll(".tab").forEach(b=>b.onclick=()=>showPanel(b.dataset.panel));
+
+function renderMCQ(id,data,prefix){
+  const el=document.getElementById(id);let i=0;
+  function draw(){
+    const q=data[i],key=prefix+i;
+    el.innerHTML=`
+      <div class="qtop"><span class="qcount">${i+1} / ${data.length}</span><button class="speaker">🔊</button></div>
+      <div class="prompt">${q.s.replace("___",'<span class="blank">?</span>')}</div>
+      <div class="options ${q.o.length===3?'three':''}">
+        ${q.o.map(x=>`<button class="option" data-v="${x.replace(/"/g,'&quot;')}">${x}</button>`).join("")}
+      </div>
+      <div class="feedback" id="fb"></div>
+      <div class="controls">
+        <button class="ctrl secondary" id="prev" ${i===0?'disabled':''}>← Nazad</button>
+        <button class="ctrl primary" id="next">${i===data.length-1?'Završi':'Sledeće →'}</button>
+      </div>`;
+    el.querySelector(".speaker").onclick=()=>speak(q.s.includes("___")?q.s.replace("___",q.a):q.a);
+    const fb=el.querySelector("#fb");
+    if(mastered.has(key)){
+      fb.className="feedback show ok";
+      fb.innerHTML=`<strong>✓ Rešeno.</strong> Tačno: <b>${q.a}</b><div class="translation">${q.t}</div>`;
+      el.querySelectorAll(".option").forEach(b=>{if(b.dataset.v===q.a)b.classList.add("correct")});
+    }
+    el.querySelectorAll(".option").forEach(btn=>{
+      btn.onclick=()=>{
+        if(mastered.has(key))return;
+        const ok=btn.dataset.v===q.a;
+        if(ok){
+          btn.classList.add("correct");
+          fb.className="feedback show ok";
+          fb.innerHTML=`<strong>✓ Tačno!</strong><div class="translation">${q.t}</div>`;
+          mark(key);speak(q.a.length>25?q.a:(q.s.includes("___")?q.s.replace("___",q.a):q.a));
+          el.querySelectorAll(".option").forEach(b=>b.disabled=true);
+        }else{
+          btn.classList.add("wrong");
+          fb.className="feedback show bad";
+          fb.innerHTML=`<strong>✗ Pokušaj ponovo.</strong> Obrati pažnju na lice i infinitiv na kraju.`;
+          setTimeout(()=>btn.classList.remove("wrong"),650);
+        }
+      }
+    });
+    el.querySelector("#prev").onclick=()=>{if(i>0){i--;draw()}};
+    el.querySelector("#next").onclick=()=>{if(i<data.length-1){i++;draw()}else showPanel("final")};
+  }
+  draw();
+}
+renderMCQ("ex1box",ex1,"a");
+renderMCQ("ex2box",ex2,"b");
+renderMCQ("ex3box",ex3,"c");
+renderMCQ("ex4box",ex4,"d");
+renderMCQ("ex5box",ex5,"e");
+
+(function builder(){
+  const el=document.getElementById("ex6box");let i=0;
+  function shuffled(words){
+    const a=[...words];
+    for(let j=a.length-1;j>0;j--){
+      const k=(j*7+3)%(j+1);
+      [a[j],a[k]]=[a[k],a[j]];
+    }
+    return a;
+  }
+  function norm(s){return s.trim().replace(/\s+/g," ").replace(/[.]+$/,"").toLowerCase()}
+  function draw(){
+    const q=ex6[i],key="f"+i;
+    let selected=[],bank=shuffled(q.a.replace(/[.]+$/,"").split(" "));
+    el.innerHTML=`
+      <div class="qtop"><span class="qcount">${i+1} / ${ex6.length}</span><button class="speaker">🔊</button></div>
+      <div class="translation" style="font-size:18px;margin-bottom:10px">${q.t}</div>
+      <div class="sentence" id="built"></div>
+      <div class="wordbank" id="bank"></div>
+      <div class="feedback" id="bfb"></div>
+      <div class="controls">
+        <button class="ctrl danger" id="clear">Obriši</button>
+        <button class="ctrl primary" id="check">Proveri</button>
+      </div>
+      <div class="controls">
+        <button class="ctrl secondary" id="prev" ${i===0?'disabled':''}>← Nazad</button>
+        <button class="ctrl primary" id="next">${i===ex6.length-1?'Završi':'Sledeće →'}</button>
+      </div>`;
+    const bankEl=el.querySelector("#bank"),built=el.querySelector("#built"),fb=el.querySelector("#bfb");
+    el.querySelector(".speaker").onclick=()=>speak(q.a);
+    function paint(){
+      bankEl.innerHTML="";built.innerHTML="";
+      bank.forEach((w,idx)=>{
+        const b=document.createElement("button");b.className="word";b.textContent=w;
+        b.onclick=()=>{selected.push(w);bank.splice(idx,1);paint()};bankEl.appendChild(b);
+      });
+      selected.forEach((w,idx)=>{
+        const b=document.createElement("button");b.className="word";b.textContent=w;
+        b.onclick=()=>{bank.push(w);selected.splice(idx,1);paint()};built.appendChild(b);
+      });
+    }
+    paint();
+    if(mastered.has(key)){
+      bank=[];selected=q.a.replace(/[.]+$/,"").split(" ");paint();
+      fb.className="feedback show ok";fb.innerHTML=`<strong>✓ Rešeno.</strong> ${q.a}`;
+    }
+    el.querySelector("#clear").onclick=()=>{
+      if(mastered.has(key))return;
+      selected=[];bank=shuffled(q.a.replace(/[.]+$/,"").split(" "));paint();fb.className="feedback";
+    };
+    el.querySelector("#check").onclick=()=>{
+      if(mastered.has(key))return;
+      const made=selected.join(" ")+".";
+      if(norm(made)===norm(q.a)){
+        fb.className="feedback show ok";
+        fb.innerHTML=`<strong>✓ Tačno!</strong> ${q.a}`;
+        mark(key);speak(q.a);
+      }else{
+        fb.className="feedback show bad";
+        fb.innerHTML=`<strong>✗ Pokušaj ponovo.</strong> Konjunktiv II je na 2. mestu, a infinitiv na kraju.`;
+      }
+    };
+    el.querySelector("#prev").onclick=()=>{if(i>0){i--;draw()}};
+    el.querySelector("#next").onclick=()=>{if(i<ex6.length-1){i++;draw()}else showPanel("final")};
+  }
+  draw();
+})();
+
+function renderFinal(){
+  const pct=Math.round(done/total*100);
+  const msg=done===total?"Odlično! Završio/la si sve zadatke.":done>=50?"Sjajan napredak — još malo do kraja!":done>=25?"Dobro ide — nastavi dalje.":"Kreni redom od konjugacije.";
+  document.getElementById("finalbox").innerHTML=`
+    <div class="result">
+      <div class="circle">${pct}%</div>
+      <h3>Tvoj napredak</h3>
+      <p>${msg}</p>
+      <p><b>${done}</b> od <b>${total}</b> zadataka završeno tačno.</p>
+      <div class="controls" style="justify-content:center">
+        <button class="ctrl primary" onclick="showPanel('ex1')">Nastavi vežbanje</button>
+        <button class="ctrl secondary" onclick="showPanel('rules')">Ponovi pravilo</button>
+      </div>
+    </div>`;
+}
+renderFinal();
+</script>
+</body>
+</html>
