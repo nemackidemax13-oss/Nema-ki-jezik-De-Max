@@ -1,0 +1,744 @@
+<!DOCTYPE html>
+<html lang="sr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<title>DE-MAX – Zamenički prilozi</title>
+<style>
+  :root{
+    --blue:#0c4db3;
+    --blue2:#1c67d8;
+    --blue3:#eaf2ff;
+    --green:#12864a;
+    --green2:#19a35b;
+    --green3:#e9f9ef;
+    --orange:#ff8a00;
+    --red:#d72d2d;
+    --text:#17324f;
+    --muted:#6d7a8a;
+    --line:#d5e1f2;
+    --white:#ffffff;
+    --shadow:0 16px 40px rgba(16,64,145,.12);
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0;
+    font-family:Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+    color:var(--text);
+    background:
+      radial-gradient(circle at top left, rgba(28,103,216,.10), transparent 28%),
+      radial-gradient(circle at bottom right, rgba(25,163,91,.09), transparent 26%),
+      linear-gradient(180deg,#f8fbff 0%,#eef5ff 100%);
+    min-height:100vh;
+  }
+  .app{max-width:1060px;margin:0 auto;padding:16px 14px 36px}
+  .hero{
+    background:linear-gradient(135deg,#0d4db1 0%, #1e69da 55%, #1aa55d 100%);
+    color:#fff;border-radius:28px;padding:24px;box-shadow:var(--shadow);position:relative;overflow:hidden;
+  }
+  .hero::after{
+    content:""; position:absolute; right:-80px; top:-70px; width:220px; height:220px; border-radius:50%;
+    background:rgba(255,255,255,.11);
+  }
+  .brand{display:flex;align-items:center;gap:12px;font-weight:900}
+  .logo{
+    width:56px;height:56px;border-radius:16px;background:#fff;color:var(--blue);
+    display:grid;place-items:center;font-weight:1000;font-size:20px;box-shadow:0 10px 28px rgba(0,0,0,.18)
+  }
+  .brand small{display:block;opacity:.9;font-weight:700}
+  h1{margin:16px 0 10px;font-size:clamp(30px,5.8vw,56px);line-height:1}
+  .subtitle{font-size:16px;max-width:840px;opacity:.97}
+  .hero-grid{display:block}
+  .mini-box{
+    background:rgba(255,255,255,.13);border:1px solid rgba(255,255,255,.23);border-radius:20px;padding:14px 16px
+  }
+  .mini-box h3{margin:0 0 8px;font-size:18px}
+  .quick{display:flex;flex-wrap:wrap;gap:8px}
+  .pill{
+    background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.24);padding:8px 11px;border-radius:999px;
+    font-weight:850
+  }
+  .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:18px}
+  .stat{
+    background:#fff;color:var(--text);border-radius:18px;padding:12px 14px;box-shadow:0 10px 25px rgba(0,0,0,.08)
+  }
+  .stat b{display:block;font-size:22px}
+  .info-card{
+    margin-top:16px;background:#fff;border:1px solid var(--line);border-radius:24px;padding:16px;box-shadow:0 10px 28px rgba(18,55,112,.08)
+  }
+  .info-card h2{margin:0 0 10px;color:var(--blue)}
+  .formula{display:flex;flex-wrap:wrap;gap:8px}
+  .fchip{
+    background:#edf4ff;border:1px solid #d5e3fb;padding:8px 12px;border-radius:999px;font-weight:850
+  }
+  .tabs{
+    display:flex;gap:8px;overflow-x:auto;padding:8px 2px 10px;margin-top:12px;scrollbar-width:none
+  }
+  .tabs::-webkit-scrollbar{display:none}
+  .tab{
+    white-space:nowrap;border:1px solid var(--line);background:#fff;color:var(--text);padding:12px 15px;border-radius:999px;font-weight:900;cursor:pointer
+  }
+  .tab.active{background:var(--blue);color:#fff;border-color:var(--blue)}
+  .panel{
+    background:#fff;border:1px solid var(--line);border-radius:26px;padding:18px;box-shadow:var(--shadow)
+  }
+  .toprow{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:12px}
+  .badge{
+    background:#edf4ff;color:var(--blue);padding:8px 12px;border-radius:999px;font-weight:900;font-size:13px
+  }
+  .counter{color:var(--muted);font-weight:700;font-size:14px}
+  .question{font-size:clamp(21px,3.8vw,30px);font-weight:900;line-height:1.25;margin:10px 0 14px}
+  .hint{color:var(--muted);font-size:14px}
+  .answers,.words,.options{display:flex;flex-wrap:wrap;gap:10px;margin:14px 0}
+  .btn-opt,.word,.chip{
+    border:1px solid #cfe0f6;background:#fbfdff;color:#153457;border-radius:14px;padding:11px 14px;font-size:16px;font-weight:850;cursor:pointer;transition:.16s;
+  }
+  .btn-opt:hover,.word:hover,.chip:hover{transform:translateY(-1px);border-color:#86afe9}
+  .word.used{opacity:.36;pointer-events:none}
+  .sentence{
+    min-height:66px;border:2px dashed #bfd4f4;background:#f7fbff;border-radius:18px;padding:12px;display:flex;flex-wrap:wrap;gap:8px;align-items:center
+  }
+  .selected{
+    background:#edf5ff;border:1px solid #bfd7fb;color:#12468c;padding:9px 11px;border-radius:12px;font-weight:850;cursor:pointer
+  }
+  .controls{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px}
+  button{
+    appearance:none;border:0;border-radius:14px;padding:12px 16px;font-weight:900;cursor:pointer;font-size:15px
+  }
+  .primary{background:var(--blue);color:#fff}
+  .secondary{background:#eaf2ff;color:#0f499f}
+  .successBtn{background:#e9f9ef;color:#0f7b43}
+  .ghost{background:#f3f6fa;color:#5b6d80}
+  .feedback{display:none;margin-top:14px;padding:14px;border-radius:16px;font-weight:800}
+  .feedback.ok{display:block;background:#eaf9ef;border:1px solid #c7edd6;color:#0d7a40}
+  .feedback.bad{display:block;background:#fff1f1;border:1px solid #ffcfcf;color:#bb2222}
+  .translation{margin-top:7px;color:#476176;font-weight:700}
+  .progress{height:12px;background:#edf2f8;border-radius:999px;overflow:hidden;margin-top:14px}
+  .progress > div{height:100%;width:0;background:linear-gradient(90deg,#0c4db3,#18a15a);transition:.25s}
+  table{
+    width:100%;border-collapse:collapse;font-size:15px;overflow:hidden;border-radius:18px
+  }
+  th,td{padding:12px 10px;border-bottom:1px solid #e6edf8;text-align:left}
+  th{background:#f1f6ff;color:#0d4db1}
+  tr:last-child td{border-bottom:0}
+  .pair-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  .paircol{display:grid;gap:9px}
+  .pair{
+    border:1px solid var(--line);background:#fbfdff;border-radius:14px;padding:11px 12px;font-weight:850;cursor:pointer
+  }
+  .pair.active{outline:3px solid #9fc0f2;background:#edf4ff}
+  .input{
+    width:100%;border:2px solid #d6e4f7;background:#fcfdff;border-radius:15px;padding:13px 14px;font-size:17px;font-weight:750;outline:none
+  }
+  .input:focus{border-color:#7da8e9}
+  .dialogue{
+    background:#f8fbff;border:1px solid #dce8fb;border-radius:18px;padding:14px;margin-bottom:14px
+  }
+  .line{padding:10px 12px;border-radius:14px;margin:9px 0;font-weight:850}
+  .line.a{background:#edf4ff;color:#103f86}
+  .line.b{background:#eefaf3;color:#12673c}
+  .line .red{color:var(--red)}
+  .memory-grid{
+    display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:12px
+  }
+  .memory-card{
+    min-height:88px;border:1px solid #cfe0f6;border-radius:16px;background:#fbfdff;padding:10px;display:grid;place-items:center;
+    font-weight:900;text-align:center;cursor:pointer;position:relative;transition:.15s;
+  }
+  .memory-card.revealed,.memory-card.matched{background:#edf5ff}
+  .memory-card.matched{opacity:.65;pointer-events:none}
+  .memory-card .back{color:#0d4db1;font-size:32px}
+  .memory-card .front{display:none}
+  .memory-card.revealed .back,.memory-card.matched .back{display:none}
+  .memory-card.revealed .front,.memory-card.matched .front{display:block}
+  .footer{margin-top:16px;text-align:center;color:#6c7a8c;font-size:13px}
+  @media (max-width:850px){
+    .hero-grid{grid-template-columns:1fr}
+    .stats{grid-template-columns:repeat(2,1fr)}
+    .pair-grid{grid-template-columns:1fr}
+    .memory-grid{grid-template-columns:repeat(2,1fr)}
+  }
+  @media (max-width:560px){
+    .app{padding:10px 10px 30px}
+    .hero{padding:20px;border-radius:22px}
+    .panel{padding:15px;border-radius:22px}
+    .memory-grid{grid-template-columns:repeat(2,1fr)}
+  }
+</style>
+</head>
+<body>
+<div class="app">
+  <section class="hero">
+    <div class="brand">
+      <div class="logo">DE</div>
+      <div>DE-MAX TUTIN<small>Zamenički prilozi • interaktivna aplikacija</small></div>
+    </div>
+
+    <div class="hero-grid">
+      <div>
+        <h1>Präpositionaladverbien</h1>
+        <div class="subtitle">
+          Uči i vežbaj <b>wo-</b> pitanja i <b>da-</b> odgovore kroz razne zanimljive vežbe:
+          uparivanje, izbor, dijalog, slaganje rečenice, prevod i memory.
+        </div>
+      </div>
+      </div>
+    </div>
+
+    <div class="stats">
+      <div class="stat"><b id="score">0</b><span>poena</span></div>
+      <div class="stat"><b id="done">0</b><span>tačnih</span></div>
+      <div class="stat"><b id="streak">0</b><span>niz</span></div>
+      <div class="stat"><b id="level">Početak</b><span>status</span></div>
+    </div>
+  </section>
+
+  <section class="info-card">
+    <h2>Osnovno pravilo</h2>
+    <p><b>Zamenički prilozi</b> nastaju spajanjem <b>wo</b> ili <b>da</b> sa predlogom i odnose se na <b>stvari, pojave i događaje</b>.</p>
+    <div class="formula">
+      <span class="fchip">wo + an → woran</span>
+      <span class="fchip">wo + auf → worauf</span>
+      <span class="fchip">wo + über → worüber</span>
+      <span class="fchip">da + an → daran</span>
+      <span class="fchip">da + auf → darauf</span>
+      <span class="fchip">da + über → darüber</span>
+    </div>
+    <p class="hint">Ako predlog počinje samoglasnikom, dodaje se <b>r</b>: wo<b>r</b>an, da<b>r</b>auf, wo<b>r</b>über...</p>
+  </section>
+
+  <div class="tabs">
+    <button class="tab active" data-mode="learn">1. Tabela</button>
+    <button class="tab" data-mode="match">2. Upari</button>
+    <button class="tab" data-mode="choice">3. Izbor</button>
+    <button class="tab" data-mode="dialogue">4. Dijalog</button>
+    <button class="tab" data-mode="order">5. Složi</button>
+    <button class="tab" data-mode="translate">6. Prevod</button>
+    <button class="tab" data-mode="memory">7. Memory</button>
+  </div>
+
+  <section class="panel">
+    <div class="toprow">
+      <div class="badge" id="modeBadge">TABELA</div>
+      <div class="counter" id="counter"></div>
+    </div>
+    <div id="content"></div>
+    <div class="progress"><div id="bar"></div></div>
+  </section>
+
+  <div class="footer">DE-MAX • Präpositionaladverbien / zamenički prilozi • A1/A2 vežbe</div>
+</div>
+
+<script>
+const MAP = [
+  {wo:"woran", srq:"čega?", da:"daran", sra:"toga"},
+  {wo:"worauf", srq:"na čemu?", da:"darauf", sra:"na tome"},
+  {wo:"wofür", srq:"zašto?/za šta?", da:"dafür", sra:"za to / zato"},
+  {wo:"womit", srq:"s čim?", da:"damit", sra:"s tim"},
+  {wo:"worüber", srq:"o čemu?/zbog čega?", da:"darüber", sra:"o tome / zbog toga"},
+  {wo:"worum", srq:"oko čega?/o čemu?", da:"darum", sra:"oko toga / o tome"},
+  {wo:"wovon", srq:"od čega?/o čemu?", da:"davon", sra:"od toga / o tome"}
+];
+
+const CHOICE = [
+  {q:"Koji odgovor ide uz pitanje: „Wofür interessieren Sie sich?“", options:["Dafür interessiere ich mich.", "Darauf interessiere ich mich.", "Davon interessiere ich mich."], correct:0, tr:"Interesujem se za to."},
+  {q:"Koji odgovor ide uz pitanje: „Womit bezahlen Sie?“", options:["Damit bezahle ich.", "Dafür bezahle ich.", "Darüber bezahle ich."], correct:0, tr:"Time plaćam."},
+  {q:"Koje pitanje odgovara odgovoru: „Darauf warte ich.“", options:["Worauf wartest du?", "Woran wartest du?", "Wofür wartest du?"], correct:0, tr:"Na to čekam."},
+  {q:"Koji par je tačan?", options:["wovon – davon", "wovon – darum", "wovon – darauf"], correct:0, tr:"Tačan par je: wovon – davon."},
+  {q:"Koje pitanje odgovara odgovoru: „Darüber sprechen wir heute.“", options:["Wovon sprechen wir heute?", "Worüber sprechen wir heute?", "Worauf sprechen wir heute?"], correct:1, tr:"Danas pričamo o tome."},
+  {q:"Koji odgovor ide uz pitanje: „Woran denkst du?“", options:["Darauf denke ich.", "Daran denke ich.", "Damit denke ich."], correct:1, tr:"Mislim na to."},
+  {q:"Koji zamenički prilog znači „s tim“?", options:["damit", "dafür", "davon"], correct:0, tr:"damit = s tim"},
+  {q:"Koji zamenički prilog znači „na tome“?", options:["daran", "darauf", "darüber"], correct:1, tr:"darauf = na tome"}
+];
+
+const DIALOGUES = [
+  {
+    title:"Mini-dijalog u prodavnici",
+    lines:[
+      {type:"a", text:"A: Guten Tag! ___ interessieren Sie sich?"},
+      {type:"b", text:"B: Ich interessiere mich ___ diese Jacke."}
+    ],
+    answer1:"Wofür", answer2:"für", full:"A: Guten Tag! Wofür interessieren Sie sich? B: Ich interessiere mich für diese Jacke.",
+    tr:"Dobar dan! Za šta se interesujete? Interesujem se za ovu jaknu."
+  },
+  {
+    title:"Plaćanje",
+    lines:[
+      {type:"a", text:"A: ___ möchten Sie bezahlen?"},
+      {type:"b", text:"B: Ich möchte ___ Karte bezahlen."}
+    ],
+    answer1:"Womit", answer2:"mit", full:"A: Womit möchten Sie bezahlen? B: Ich möchte mit Karte bezahlen.",
+    tr:"Čime želite da platite? Želim da platim karticom."
+  },
+  {
+    title:"Čekanje",
+    lines:[
+      {type:"a", text:"A: ___ warten Sie?"},
+      {type:"b", text:"B: Ich warte ___ die passende Größe."}
+    ],
+    answer1:"Worauf", answer2:"auf", full:"A: Worauf warten Sie? B: Ich warte auf die passende Größe.",
+    tr:"Na šta čekate? Čekam odgovarajuću veličinu."
+  },
+  {
+    title:"Razgovor",
+    lines:[
+      {type:"a", text:"A: ___ sprechen Sie genau?"},
+      {type:"b", text:"B: Ich spreche ___ einer schönen Tasche."}
+    ],
+    answer1:"Wovon", answer2:"von", full:"A: Wovon sprechen Sie genau? B: Ich spreche von einer schönen Tasche.",
+    tr:"O čemu tačno govorite? Govorim o jednoj lepoj torbi."
+  },
+  {
+    title:"Razmišljanje",
+    lines:[
+      {type:"a", text:"A: ___ denkst du noch?"},
+      {type:"b", text:"B: Ich denke ___ den Preis."}
+    ],
+    answer1:"Woran", answer2:"an", full:"A: Woran denkst du noch? B: Ich denke an den Preis.",
+    tr:"Na šta još misliš? Mislim na cenu."
+  }
+];
+
+const ORDER = [
+  {words:["Ich","interessiere","mich","dafür","."], answer:"Ich interessiere mich dafür.", tr:"Interesujem se za to."},
+  {words:["Darüber","sprechen","wir","morgen","."], answer:"Darüber sprechen wir morgen.", tr:"O tome pričamo sutra."},
+  {words:["Worauf","wartest","du","?",""], answer:"Worauf wartest du?", tr:"Na šta čekaš?"},
+  {words:["Er","denkt","daran",",","seine","Hausaufgaben","zu machen","."], answer:"Er denkt daran, seine Hausaufgaben zu machen.", tr:"On misli na to da uradi domaći."},
+  {words:["Damit","kann","ich","gut","arbeiten","."], answer:"Damit kann ich gut arbeiten.", tr:"Sa tim mogu dobro da radim."},
+  {words:["Wovon","träumt","ihr","?",""], answer:"Wovon träumt ihr?", tr:"O čemu sanjate?"},
+  {words:["Wir","sprechen","oft","darüber","."], answer:"Wir sprechen oft darüber.", tr:"Često pričamo o tome."},
+  {words:["Wofür","ist","das","gut","?",""], answer:"Wofür ist das gut?", tr:"Za šta je to dobro?"}
+];
+
+const TRANSLATE = [
+  {sr:"Na šta čekaš?", answer:"Worauf wartest du?", tr:"Na šta čekaš?"},
+  {sr:"O tome pričamo danas.", answer:"Darüber sprechen wir heute.", tr:"O tome pričamo danas."},
+  {sr:"Čime plaćaš?", answer:"Womit bezahlst du?", tr:"Čime plaćaš?"},
+  {sr:"Mislim na to.", answer:"Ich denke daran.", tr:"Mislim na to."},
+  {sr:"Za to nemam vremena.", answer:"Dafür habe ich keine Zeit.", tr:"Za to nemam vremena."},
+  {sr:"O čemu govoriš?", answer:"Wovon sprichst du?", tr:"O čemu govoriš?"},
+  {sr:"Interesujem se za to.", answer:"Ich interessiere mich dafür.", tr:"Interesujem se za to."},
+  {sr:"Sa tim učim nemački.", answer:"Damit lerne ich Deutsch.", tr:"Sa tim učim nemački."}
+];
+
+let mode = "learn";
+let idx = 0;
+let score = 0;
+let done = 0;
+let streak = 0;
+let selected = [];
+let pairsDone = new Set();
+let pairA = null;
+let pairB = null;
+let memoryState = {cards:[], opened:[], matched:0, lock:false};
+
+const badge = document.getElementById("modeBadge");
+const counter = document.getElementById("counter");
+const content = document.getElementById("content");
+const bar = document.getElementById("bar");
+
+document.querySelectorAll(".tab").forEach(tab=>{
+  tab.addEventListener("click", ()=>{
+    document.querySelectorAll(".tab").forEach(t=>t.classList.remove("active"));
+    tab.classList.add("active");
+    mode = tab.dataset.mode;
+    idx = 0;
+    selected = [];
+    pairsDone = new Set();
+    if(mode==="memory") initMemory();
+    render();
+  });
+});
+
+function speak(text){
+  if(!("speechSynthesis" in window)) return;
+  speechSynthesis.cancel();
+  const u = new SpeechSynthesisUtterance(text);
+  u.lang = "de-DE";
+  u.rate = 0.9;
+  speechSynthesis.speak(u);
+}
+function normalize(s){
+  return s.toLowerCase()
+    .replace(/[.,!?]/g,"")
+    .replace(/\s+/g," ")
+    .trim();
+}
+function setStats(){
+  document.getElementById("score").textContent = score;
+  document.getElementById("done").textContent = done;
+  document.getElementById("streak").textContent = streak;
+  document.getElementById("level").textContent =
+    score >= 180 ? "Odlično" :
+    score >= 110 ? "Vrlo dobro" :
+    score >= 50 ? "Napredak" : "Početak";
+}
+function setFeedback(ok, html, tr=""){
+  const el = document.getElementById("fb");
+  if(!el) return;
+  el.className = "feedback " + (ok ? "ok" : "bad");
+  el.innerHTML = html + (tr ? `<div class="translation">${tr}</div>` : "");
+}
+function success(spoken, tr){
+  score += 10;
+  done += 1;
+  streak += 1;
+  setStats();
+  setFeedback(true, "✓ Tačno!", tr);
+  speak(spoken);
+}
+function fail(solution){
+  streak = 0;
+  setStats();
+  setFeedback(false, `✗ Pokušaj ponovo.<div class="translation">Rešenje: ${solution}</div>`);
+}
+function progress(total, current){
+  counter.textContent = `${current}/${total}`;
+  bar.style.width = ((current/total)*100) + "%";
+}
+function nextItem(total){
+  idx = (idx + 1) % total;
+  selected = [];
+  render();
+}
+
+function render(){
+  setStats();
+  if(mode==="learn") renderLearn();
+  if(mode==="match") renderMatch();
+  if(mode==="choice") renderChoice();
+  if(mode==="dialogue") renderDialogue();
+  if(mode==="order") renderOrder();
+  if(mode==="translate") renderTranslate();
+  if(mode==="memory") renderMemory();
+}
+
+function renderLearn(){
+  badge.textContent = "TABELA";
+  progress(1,1);
+  content.innerHTML = `
+    <div class="question">Pregled najvažnijih zameničkih priloga</div>
+    <table>
+      <thead>
+        <tr>
+          <th>Pitanje</th>
+          <th>Značenje</th>
+          <th>Odgovor</th>
+          <th>Značenje</th>
+        </tr>
+      </thead>
+      <tbody>
+        ${MAP.map(x=>`
+          <tr>
+            <td><b>${x.wo}</b></td>
+            <td>${x.srq}</td>
+            <td><b>${x.da}</b></td>
+            <td>${x.sra}</td>
+          </tr>
+        `).join("")}
+      </tbody>
+    </table>
+    <div class="controls">
+      <button class="primary" id="speakAll">Pročitaj primere</button>
+    </div>
+    <div id="fb" class="feedback"></div>
+  `;
+  document.getElementById("speakAll").onclick = ()=>{
+    speak("woran, daran, worauf, darauf, wofür, dafür, womit, damit, worüber, darüber, worum, darum, wovon, davon");
+    setFeedback(true,"✓ Izgovor pokrenut.");
+  };
+}
+
+function renderMatch(){
+  badge.textContent = "UPARI PITANJE I ODGOVOR";
+  if(pairsDone.size === MAP.length){
+    progress(MAP.length, MAP.length);
+    content.innerHTML = `
+      <div class="question">Odlično! Upario/la si sve parove.</div>
+      <div class="feedback ok" style="display:block">✓ Vežba je završena.</div>
+      <div class="controls">
+        <button class="primary" id="again">Ponovi</button>
+      </div>`;
+    document.getElementById("again").onclick = ()=>{
+      pairsDone.clear();
+      score += 20;
+      setStats();
+      render();
+    };
+    return;
+  }
+  progress(MAP.length, pairsDone.size);
+  const left = MAP.map((x,i)=>({i, t:`${x.wo} – ${x.srq}`})).filter(x=>!pairsDone.has(x.i)).sort(()=>Math.random()-.5);
+  const right = MAP.map((x,i)=>({i, t:`${x.da} – ${x.sra}`})).filter(x=>!pairsDone.has(x.i)).sort(()=>Math.random()-.5);
+  content.innerHTML = `
+    <div class="question">Spoji pitanje sa tačnim odgovorom.</div>
+    <div class="pair-grid">
+      <div class="paircol" id="left"></div>
+      <div class="paircol" id="right"></div>
+    </div>
+    <div id="fb" class="feedback"></div>`;
+  pairA = null; pairB = null;
+  const l = document.getElementById("left");
+  const r = document.getElementById("right");
+  left.forEach(o=>{
+    const el = document.createElement("div");
+    el.className = "pair"; el.textContent = o.t;
+    el.onclick = ()=>{
+      document.querySelectorAll("#left .pair").forEach(x=>x.classList.remove("active"));
+      el.classList.add("active");
+      pairA = o; checkPair();
+    };
+    l.appendChild(el);
+  });
+  right.forEach(o=>{
+    const el = document.createElement("div");
+    el.className = "pair"; el.textContent = o.t;
+    el.onclick = ()=>{
+      document.querySelectorAll("#right .pair").forEach(x=>x.classList.remove("active"));
+      el.classList.add("active");
+      pairB = o; checkPair();
+    };
+    r.appendChild(el);
+  });
+}
+function checkPair(){
+  if(!pairA || !pairB) return;
+  if(pairA.i === pairB.i){
+    pairsDone.add(pairA.i);
+    score += 10; done += 1; streak += 1; setStats();
+    const x = MAP[pairA.i];
+    setFeedback(true, "✓ Tačan par!", `${x.wo} – ${x.da}`);
+    speak(`${x.wo} ... ${x.da}`);
+    setTimeout(render, 650);
+  }else{
+    streak = 0; setStats();
+    setFeedback(false, "✗ Ova dva elementa ne idu zajedno.");
+    pairA = null; pairB = null;
+    document.querySelectorAll(".pair").forEach(x=>x.classList.remove("active"));
+  }
+}
+
+function renderChoice(){
+  badge.textContent = "IZBOR TAČNOG ODGOVORA";
+  const x = CHOICE[idx];
+  progress(CHOICE.length, idx+1);
+  content.innerHTML = `
+    <div class="question">${x.q}</div>
+    <div class="answers" id="answers"></div>
+    <div class="controls">
+      <button class="ghost" id="next">Sledeće</button>
+    </div>
+    <div id="fb" class="feedback"></div>`;
+  const box = document.getElementById("answers");
+  x.options.forEach((op, i)=>{
+    const b = document.createElement("button");
+    b.className = "btn-opt";
+    b.style.width = "100%";
+    b.style.textAlign = "left";
+    b.textContent = op;
+    b.onclick = ()=> i===x.correct ? success(op, x.tr) : fail(x.options[x.correct]);
+    box.appendChild(b);
+  });
+  document.getElementById("next").onclick = ()=> nextItem(CHOICE.length);
+}
+
+function renderDialogue(){
+  badge.textContent = "DIJALOG";
+  const x = DIALOGUES[idx];
+  progress(DIALOGUES.length, idx+1);
+  content.innerHTML = `
+    <div class="question">${x.title}</div>
+    <div class="dialogue">
+      <div class="line a">${x.lines[0].text.replace("___", '<input class="input" id="d1" style="max-width:160px;display:inline-block;margin:0 6px" placeholder="...">')}</div>
+      <div class="line b">${x.lines[1].text.replace("___", '<input class="input" id="d2" style="max-width:130px;display:inline-block;margin:0 6px" placeholder="...">')}</div>
+    </div>
+    <div class="hint">Popuni prazna mesta tačnim oblikom.</div>
+    <div class="controls">
+      <button class="primary" id="check">Proveri</button>
+      <button class="secondary" id="show">Prikaži rešenje</button>
+      <button class="ghost" id="next">Sledeće</button>
+    </div>
+    <div id="fb" class="feedback"></div>`;
+  document.getElementById("check").onclick = ()=>{
+    const a1 = document.getElementById("d1").value.trim();
+    const a2 = document.getElementById("d2").value.trim();
+    if(normalize(a1)===normalize(x.answer1) && normalize(a2)===normalize(x.answer2)){
+      success(x.full, x.tr);
+    } else {
+      streak = 0; setStats();
+      setFeedback(false, `✗ Pokušaj ponovo.<div class="translation">Rešenje: ${x.answer1} / ${x.answer2}</div>`);
+    }
+  };
+  document.getElementById("show").onclick = ()=>{
+    setFeedback(true, "Rešenje:", `${x.answer1} / ${x.answer2}`);
+  };
+  document.getElementById("next").onclick = ()=> nextItem(DIALOGUES.length);
+}
+
+function renderOrder(){
+  badge.textContent = "SLOŽI REČENICU";
+  const x = ORDER[idx];
+  progress(ORDER.length, idx+1);
+  const shuffled = [...x.words].sort(()=>Math.random()-.5).filter(Boolean);
+  content.innerHTML = `
+    <div class="question">Složi pravilnu rečenicu.</div>
+    <div class="hint">Klikni reči pravilnim redom.</div>
+    <div class="sentence" id="sentence"><span class="hint">Ovde složi rečenicu…</span></div>
+    <div class="words" id="words"></div>
+    <div class="controls">
+      <button class="primary" id="check">Proveri</button>
+      <button class="secondary" id="clear">Obriši</button>
+      <button class="ghost" id="next">Sledeće</button>
+    </div>
+    <div id="fb" class="feedback"></div>`;
+  const words = document.getElementById("words");
+  selected = [];
+  shuffled.forEach(w=>{
+    const b = document.createElement("button");
+    b.className = "word";
+    b.textContent = w;
+    b.onclick = ()=>{
+      if(b.classList.contains("used")) return;
+      selected.push({w,b});
+      b.classList.add("used");
+      drawSentence();
+    };
+    words.appendChild(b);
+  });
+  document.getElementById("check").onclick = ()=>{
+    const built = selected.map(o=>o.w).join(" ").replace(/\s+([,.!?])/g,"$1").trim();
+    if(normalize(built)===normalize(x.answer)) success(x.answer, x.tr); else fail(x.answer);
+  };
+  document.getElementById("clear").onclick = ()=>{
+    selected.forEach(o=>o.b.classList.remove("used"));
+    selected = [];
+    drawSentence();
+    document.getElementById("fb").className = "feedback";
+  };
+  document.getElementById("next").onclick = ()=> nextItem(ORDER.length);
+}
+function drawSentence(){
+  const s = document.getElementById("sentence");
+  if(!s) return;
+  if(!selected.length){
+    s.innerHTML = '<span class="hint">Ovde složi rečenicu…</span>';
+    return;
+  }
+  s.innerHTML = "";
+  selected.forEach((o,i)=>{
+    const el = document.createElement("span");
+    el.className = "selected";
+    el.textContent = o.w;
+    el.onclick = ()=>{
+      o.b.classList.remove("used");
+      selected.splice(i,1);
+      drawSentence();
+    };
+    s.appendChild(el);
+  });
+}
+
+function renderTranslate(){
+  badge.textContent = "PREVOD";
+  const x = TRANSLATE[idx];
+  progress(TRANSLATE.length, idx+1);
+  content.innerHTML = `
+    <div class="question">${x.sr}</div>
+    <div class="hint">Prevedi na nemački koristeći odgovarajući zamenički prilog.</div>
+    <input class="input" id="tr" placeholder="Upiši nemačku rečenicu..." autocomplete="off">
+    <div class="controls">
+      <button class="primary" id="check">Proveri</button>
+      <button class="secondary" id="show">Prikaži rešenje</button>
+      <button class="ghost" id="next">Sledeće</button>
+    </div>
+    <div id="fb" class="feedback"></div>`;
+  document.getElementById("check").onclick = ()=>{
+    const v = document.getElementById("tr").value;
+    if(normalize(v)===normalize(x.answer)) success(x.answer, x.tr); else fail(x.answer);
+  };
+  document.getElementById("show").onclick = ()=> setFeedback(true,"Rešenje:", x.answer);
+  document.getElementById("next").onclick = ()=> nextItem(TRANSLATE.length);
+}
+
+function initMemory(){
+  const base = [
+    ["woran","daran"],
+    ["worauf","darauf"],
+    ["wofür","dafür"],
+    ["womit","damit"],
+    ["worüber","darüber"],
+    ["worum","darum"]
+  ];
+  let cards = [];
+  base.forEach((pair, idx)=>{
+    cards.push({id:"q"+idx, group:idx, text:pair[0]});
+    cards.push({id:"a"+idx, group:idx, text:pair[1]});
+  });
+  cards = cards.sort(()=>Math.random()-.5);
+  memoryState = {cards, opened:[], matched:0, lock:false};
+}
+function renderMemory(){
+  if(!memoryState.cards.length) initMemory();
+  badge.textContent = "MEMORY";
+  progress(memoryState.cards.length/2, memoryState.matched);
+  content.innerHTML = `
+    <div class="question">Pronađi parove: <span style="color:var(--blue)">wo-</span> i <span style="color:var(--green)">da-</span>.</div>
+    <div class="hint">Klikni dve kartice. Ako su par, ostaju otvorene.</div>
+    <div class="memory-grid" id="mem"></div>
+    <div class="controls">
+      <button class="ghost" id="restart">Ponovi</button>
+    </div>
+    <div id="fb" class="feedback"></div>`;
+  const mem = document.getElementById("mem");
+  memoryState.cards.forEach((card, i)=>{
+    const el = document.createElement("div");
+    el.className = "memory-card" + (card.matched ? " matched" : "") + (card.revealed ? " revealed" : "");
+    el.innerHTML = `<div class="back">?</div><div class="front">${card.text}</div>`;
+    el.onclick = ()=> flipCard(i);
+    mem.appendChild(el);
+  });
+  document.getElementById("restart").onclick = ()=>{
+    initMemory();
+    render();
+  };
+}
+function flipCard(i){
+  if(memoryState.lock) return;
+  const card = memoryState.cards[i];
+  if(card.matched || card.revealed) return;
+  card.revealed = true;
+  memoryState.opened.push(i);
+  renderMemory();
+  if(memoryState.opened.length === 2){
+    memoryState.lock = true;
+    const [a,b] = memoryState.opened;
+    const ca = memoryState.cards[a], cb = memoryState.cards[b];
+    if(ca.group === cb.group){
+      ca.matched = cb.matched = true;
+      memoryState.matched += 1;
+      score += 10; done += 1; streak += 1; setStats();
+      setFeedback(true, "✓ Tačan par!", `${ca.text} – ${cb.text}`);
+      speak(ca.text + " ... " + cb.text);
+      memoryState.opened = [];
+      memoryState.lock = false;
+      if(memoryState.matched === memoryState.cards.length/2){
+        setFeedback(true, "✓ Bravo! Završio/la si memory.", "Svi parovi su pronađeni.");
+      }
+      renderMemory();
+    }else{
+      streak = 0; setStats();
+      setFeedback(false, "✗ Nije par. Pokušaj ponovo.");
+      setTimeout(()=>{
+        ca.revealed = false; cb.revealed = false;
+        memoryState.opened = [];
+        memoryState.lock = false;
+        renderMemory();
+      }, 850);
+    }
+  }
+}
+
+render();
+</script>
+</body>
+</html>
