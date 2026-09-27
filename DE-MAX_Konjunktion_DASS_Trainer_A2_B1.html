@@ -1,0 +1,682 @@
+<!DOCTYPE html>
+<html lang="sr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DE-MAX • Konjunktion dass Trainer</title>
+<style>
+:root{
+  --navy:#06275f;
+  --blue:#0759ca;
+  --blue2:#1687f8;
+  --sky:#edf7ff;
+  --line:#cce4fb;
+  --white:#fff;
+  --text:#103261;
+  --muted:#6a89ad;
+  --green:#0b9e58;
+  --red:#e93235;
+  --gold:#ffd443;
+  --orange:#ff6a22;
+  --shadow:0 18px 50px rgba(5,43,104,.14);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;
+  font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",Arial,sans-serif;
+  color:var(--text);
+  background:
+    radial-gradient(circle at 8% 0%,rgba(22,135,248,.16),transparent 27%),
+    radial-gradient(circle at 96% 20%,rgba(7,89,202,.10),transparent 30%),
+    linear-gradient(180deg,#fbfdff,#edf6ff 55%,#fbfdff);
+}
+button,input{font:inherit}
+.app{width:min(1220px,100%);margin:auto;padding:14px 12px 64px}
+.hero{
+  position:relative;overflow:hidden;border-radius:30px;
+  background:linear-gradient(135deg,#05245b 0%,#0759ca 58%,#1687f8 100%);
+  color:#fff;padding:28px 24px;box-shadow:var(--shadow)
+}
+.hero:before,.hero:after{
+  content:"";position:absolute;border-radius:999px;background:rgba(255,255,255,.08)
+}
+.hero:before{width:290px;height:290px;right:-100px;top:-120px}
+.hero:after{width:175px;height:175px;left:-65px;bottom:-85px}
+.brandline{position:relative;z-index:2;display:flex;align-items:center;justify-content:space-between;gap:14px}
+.brand{display:flex;align-items:center;gap:11px;font-weight:1000;letter-spacing:.5px}
+.logo{
+  width:56px;height:56px;border-radius:18px;background:#fff;color:var(--blue);
+  display:grid;place-items:center;font-weight:1000;box-shadow:0 8px 24px rgba(0,0,0,.13)
+}
+.brand small{display:block;font-weight:750;opacity:.82;letter-spacing:1.5px;font-size:11px}
+.pill{
+  background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.22);
+  border-radius:999px;padding:10px 14px;font-size:13px;font-weight:900
+}
+.hero h1{
+  position:relative;z-index:2;margin:24px 0 8px;
+  font-size:clamp(39px,7vw,74px);line-height:.98;letter-spacing:-2px
+}
+.hero h1 span{color:#d7edff}
+.hero p{position:relative;z-index:2;margin:0;max-width:930px;line-height:1.58;font-size:clamp(15px,2vw,20px)}
+.hero-stats{position:relative;z-index:2;display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:23px}
+.hstat{background:rgba(255,255,255,.13);border:1px solid rgba(255,255,255,.19);border-radius:18px;padding:14px 16px}
+.hstat b{display:block;font-size:24px}.hstat span{font-size:12px;opacity:.9}
+
+.tabs{display:flex;gap:8px;overflow:auto;padding:16px 1px 6px;scrollbar-width:none}
+.tabs::-webkit-scrollbar{display:none}
+.tabs button{
+  border:1px solid var(--line);background:#fff;color:var(--text);font-weight:900;
+  padding:11px 15px;border-radius:14px;cursor:pointer;white-space:nowrap;
+  box-shadow:0 7px 20px rgba(5,43,104,.06)
+}
+.tabs button.active{background:var(--blue);color:#fff;border-color:var(--blue)}
+.section{display:none;margin-top:16px}.section.active{display:block}
+.card{
+  background:rgba(255,255,255,.97);border:1px solid var(--line);border-radius:27px;
+  padding:22px;box-shadow:var(--shadow)
+}
+.card+.card{margin-top:15px}
+.head{display:flex;justify-content:space-between;gap:12px;align-items:flex-start;margin-bottom:17px}
+.kicker{
+  display:inline-flex;align-items:center;gap:7px;background:#e8f4ff;color:var(--blue);
+  padding:8px 11px;border-radius:999px;font-size:12px;font-weight:950;text-transform:uppercase;letter-spacing:.8px
+}
+.head h2{margin:8px 0 0;font-size:clamp(25px,4vw,35px);letter-spacing:-.6px}
+.rule-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.rulebox{border:1px solid var(--line);border-radius:22px;overflow:hidden;background:linear-gradient(180deg,#fff,#f2f8ff)}
+.rulebox .title{padding:15px 18px;background:linear-gradient(90deg,var(--navy),var(--blue));color:#fff;font-weight:950;font-size:21px}
+.rulebox .body{padding:16px 18px;line-height:1.65;font-weight:720}
+.formula{
+  font-size:clamp(18px,3vw,25px);font-weight:1000;text-align:center;
+  background:#fff7e8;border:1px solid #ffd1a6;color:#d75100;border-radius:18px;padding:15px;margin-top:13px
+}
+.example{
+  border:1px solid var(--line);background:#f8fbff;border-radius:16px;padding:13px 15px;margin-top:10px
+}
+.example .de{font-size:18px;font-weight:880}
+.example .sr{font-size:14px;color:var(--muted);margin-top:4px}
+.red{color:var(--red);font-weight:1000}.green{color:var(--green);font-weight:1000}.blue{color:var(--blue);font-weight:1000}
+.note{
+  margin-top:15px;background:#fff7d2;border:1px solid #f2dc78;color:#5f4d00;
+  border-radius:18px;padding:14px 16px;font-weight:760;line-height:1.55
+}
+.exercise{display:grid;grid-template-columns:1fr 290px;gap:16px}
+.qbox{
+  min-height:315px;border:1px solid var(--line);border-radius:24px;padding:22px;
+  background:linear-gradient(180deg,#fff,#f4faff);display:flex;flex-direction:column;justify-content:center
+}
+.qtop{font-size:13px;font-weight:950;text-transform:uppercase;letter-spacing:.9px;color:var(--muted)}
+.question{font-size:clamp(25px,4.4vw,41px);line-height:1.28;font-weight:950;margin:12px 0 18px}
+.blank{display:inline-block;min-width:120px;text-align:center;color:var(--red);border-bottom:4px solid var(--blue);padding:0 8px}
+.options{display:flex;flex-wrap:wrap;gap:10px}
+.opt{
+  border:2px solid var(--line);background:#fff;color:var(--text);border-radius:15px;
+  padding:13px 17px;font-weight:950;cursor:pointer;transition:.18s
+}
+.opt:hover{transform:translateY(-2px);border-color:var(--blue);box-shadow:0 8px 20px rgba(7,89,202,.12)}
+.opt.correct{background:#eafff2;border-color:#50cf91;color:#07864d}
+.opt.wrong{background:#fff0f0;border-color:#ef9595;color:#ca2c2c}
+.feedback{min-height:30px;margin-top:14px;font-weight:900}
+.feedback.ok{color:var(--green)}.feedback.no{color:var(--red)}
+.actions{display:flex;flex-wrap:wrap;gap:9px;margin-top:14px}
+.btn{border:0;border-radius:14px;padding:12px 16px;font-weight:950;cursor:pointer}
+.btn.primary{background:linear-gradient(90deg,var(--navy),var(--blue));color:#fff}
+.btn.ghost{background:#edf6ff;color:var(--blue);border:1px solid var(--line)}
+.btn.audio{background:#fff6d8;color:#655000;border:1px solid #f1dc82}
+.side{border:1px solid var(--line);border-radius:24px;padding:16px;background:linear-gradient(180deg,#edf7ff,#fff)}
+.ring{
+  width:120px;height:120px;border-radius:50%;margin:5px auto 13px;display:grid;place-items:center;
+  position:relative;background:conic-gradient(var(--blue) 0deg,#dcecff 0deg)
+}
+.ring:after{content:"";position:absolute;width:88px;height:88px;border-radius:50%;background:#fff}
+.ring span{position:relative;z-index:1;font-size:24px;font-weight:1000}
+.side h3{text-align:center;margin:0 0 12px}
+.mini{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.mini div{text-align:center;background:#fff;border:1px solid var(--line);border-radius:14px;padding:10px}
+.mini b{display:block;font-size:20px}
+.translate{background:#f5faff;border:1px solid var(--line);border-radius:18px;padding:14px 16px;margin-top:12px}
+.translate .label{font-size:12px;text-transform:uppercase;letter-spacing:.7px;color:var(--muted);font-weight:900}
+.translate .text{margin-top:5px;font-weight:850;font-size:17px}
+.answerline{
+  min-height:80px;border:2px dashed #a8d1f7;background:#f7fbff;border-radius:18px;padding:12px;
+  display:flex;flex-wrap:wrap;gap:9px;align-items:center
+}
+.wordbank{display:flex;flex-wrap:wrap;gap:9px;margin-top:12px}
+.word{border:2px solid var(--line);background:#fff;border-radius:13px;padding:10px 13px;font-weight:900;cursor:pointer}
+.word.used{opacity:.33;pointer-events:none}
+.token{background:var(--blue);color:#fff;border-radius:12px;padding:9px 12px;font-weight:900;cursor:pointer}
+.pairs{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.pair-card{border:1px solid var(--line);border-radius:18px;padding:15px;background:linear-gradient(160deg,#fff,#edf7ff)}
+.pair-card .a{font-weight:900}.pair-card .b{margin-top:8px;color:var(--muted);font-size:14px}
+.search{width:100%;border:1px solid var(--line);border-radius:16px;padding:13px 15px;font:inherit;font-weight:750;outline:none}
+.search:focus{border-color:var(--blue);box-shadow:0 0 0 4px rgba(7,89,202,.08)}
+.tablewrap{overflow:auto;margin-top:12px}
+table{width:100%;border-collapse:separate;border-spacing:0 9px}
+th{text-align:left;color:var(--muted);font-size:12px;text-transform:uppercase;letter-spacing:.7px;padding:0 12px 4px}
+td{background:#f7fbff;border-top:1px solid #d9ebfb;border-bottom:1px solid #d9ebfb;padding:12px;font-weight:750}
+td:first-child{border-left:1px solid #d9ebfb;border-radius:14px 0 0 14px}
+td:last-child{border-right:1px solid #d9ebfb;border-radius:0 14px 14px 0}
+.tag{display:inline-block;background:#e6f2ff;color:var(--blue);padding:4px 8px;border-radius:999px;font-size:11px;font-weight:950}
+.footer{text-align:center;color:#6e8dad;font-size:13px;margin-top:25px}
+@media(max-width:860px){
+  .app{padding:10px 10px 52px}.hero{padding:22px 17px;border-radius:24px}.pill{display:none}
+  .hero-stats,.rule-grid,.exercise,.pairs{grid-template-columns:1fr}.side{order:-1}
+  .card{padding:16px;border-radius:22px}.question{font-size:28px}
+  .ring{width:96px;height:96px}.ring:after{width:68px;height:68px}.ring span{font-size:20px}
+}
+</style>
+</head>
+<body>
+<div class="app">
+<header class="hero">
+  <div class="brandline">
+    <div class="brand"><div class="logo">DM</div><div>DE-MAX<small>DASS SATZTRAINER</small></div></div>
+    <div class="pill">A2–B1 • Konjunktion dass</div>
+  </div>
+  <h1>Konjunktion: <span>dass</span></h1>
+  <p>Vežbaj zavisne rečenice sa <b>dass</b>: glagol na kraju, redosled <b>HS + NS</b> i <b>NS + HS</b>, spajanje dve rečenice, prevod i slaganje reči. Kada je odgovor tačan, aplikacija može da pročita nemačku rečenicu.</p>
+  <div class="hero-stats">
+    <div class="hstat"><b id="allDone">0</b><span>urađenih zadataka</span></div>
+    <div class="hstat"><b id="allGood">0</b><span>tačnih odgovora</span></div>
+    <div class="hstat"><b id="allRate">0%</b><span>ukupna uspešnost</span></div>
+  </div>
+</header>
+
+<nav class="tabs">
+  <button class="active" data-tab="pravilo">📘 Pravilo</button>
+  <button data-tab="glagol">✅ Glagol na kraju</button>
+  <button data-tab="redosled">🧩 Složi rečenicu</button>
+  <button data-tab="spoji">🔗 Spoji dve rečenice</button>
+  <button data-tab="hsns">🔄 HS / NS</button>
+  <button data-tab="prevod">🌍 Prevod</button>
+  <button data-tab="primeri">📚 40 primera</button>
+  <button data-tab="test">🏁 Test</button>
+</nav>
+
+<section id="pravilo" class="section active">
+  <div class="card">
+    <div class="head"><div><div class="kicker">Pravilo</div><h2>Kako se gradi rečenica sa <span class="red">dass</span>?</h2></div></div>
+    <div class="rule-grid">
+      <div class="rulebox">
+        <div class="title">HS + NS</div>
+        <div class="body">
+          Kada prvo stoji glavna rečenica, posle zareza dolazi <b>dass</b>, zatim subjekat i ostali delovi, a <b>glagol ide na kraj</b>.
+          <div class="formula">Hauptsatz + dass + Subjekt + ostalo + glagol</div>
+          <div class="example">
+            <div class="de"><span class="blue">Ich weiß,</span> <span class="red">dass</span> du Deutsch <span class="green">lernst.</span></div>
+            <div class="sr">Ja znam da ti učiš nemački.</div>
+          </div>
+        </div>
+      </div>
+      <div class="rulebox">
+        <div class="title">NS + HS</div>
+        <div class="body">
+          Kada zavisna rečenica sa <b>dass</b> stoji prva, njen glagol i dalje ostaje na kraju. Posle zareza u glavnoj rečenici glagol dolazi odmah posle zavisne rečenice.
+          <div class="formula">Dass + Subjekt + ostalo + glagol, + glagol + Subjekt ...</div>
+          <div class="example">
+            <div class="de"><span class="red">Dass</span> du gesund <span class="green">bist,</span> <span class="blue">ist</span> wichtig.</div>
+            <div class="sr">To što si zdrav, važno je.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="note"><b>Najvažnije:</b> u zavisnoj rečenici sa <b>dass</b> glagol koji se menja po licu ide na <b>sam kraj</b>. Primer: <i>Ich glaube, dass er heute kommt.</i></div>
+  </div>
+
+  <div class="card">
+    <div class="head"><div><div class="kicker">Česte uvodne fraze</div><h2>Šta često stoji pre dass?</h2></div></div>
+    <div class="pairs">
+      <div class="pair-card"><div class="a">Ich denke, dass ...</div><div class="b">Mislim da ...</div></div>
+      <div class="pair-card"><div class="a">Ich glaube, dass ...</div><div class="b">Verujem / mislim da ...</div></div>
+      <div class="pair-card"><div class="a">Ich weiß, dass ...</div><div class="b">Znam da ...</div></div>
+      <div class="pair-card"><div class="a">Sie sagt, dass ...</div><div class="b">Ona kaže da ...</div></div>
+      <div class="pair-card"><div class="a">Ich hoffe, dass ...</div><div class="b">Nadam se da ...</div></div>
+      <div class="pair-card"><div class="a">Ich freue mich, dass ...</div><div class="b">Radujem se što ...</div></div>
+    </div>
+  </div>
+</section>
+
+<section id="glagol" class="section">
+  <div class="card">
+    <div class="head"><div><div class="kicker">Vežba 1</div><h2>Stavi glagol na pravo mesto</h2></div></div>
+    <div class="exercise">
+      <div class="qbox">
+        <div class="qtop" id="verbNo"></div>
+        <div class="question" id="verbQ"></div>
+        <div class="options" id="verbOpts"></div>
+        <div class="feedback" id="verbFb"></div>
+        <div class="translate" id="verbTr"></div>
+        <div class="actions"><button class="btn primary" id="verbNext">Sledeće →</button><button class="btn audio" id="verbSpeak">🔊 Izgovor</button></div>
+      </div>
+      <div class="side">
+        <div class="ring" id="verbRing"><span id="verbPct">0%</span></div>
+        <h3>Napredak</h3>
+        <div class="mini"><div><b id="verbDone">0</b><span>urađeno</span></div><div><b id="verbGood">0</b><span>tačno</span></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="redosled" class="section">
+  <div class="card">
+    <div class="head"><div><div class="kicker">Vežba 2</div><h2>Složi reči u pravilnu rečenicu</h2></div></div>
+    <div class="qbox">
+      <div class="qtop" id="orderNo"></div>
+      <div class="question" style="font-size:25px" id="orderHint"></div>
+      <div class="answerline" id="answerLine"></div>
+      <div class="wordbank" id="wordBank"></div>
+      <div class="feedback" id="orderFb"></div>
+      <div class="translate" id="orderTr"></div>
+      <div class="actions">
+        <button class="btn primary" id="orderCheck">Proveri</button>
+        <button class="btn ghost" id="orderReset">Ponovo</button>
+        <button class="btn ghost" id="orderShow">Rešenje</button>
+        <button class="btn audio" id="orderSpeak">🔊 Izgovor</button>
+        <button class="btn primary" id="orderNext">Sledeće →</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="spoji" class="section">
+  <div class="card">
+    <div class="head"><div><div class="kicker">Vežba 3</div><h2>Spoji dve rečenice pomoću dass</h2></div></div>
+    <div class="exercise">
+      <div class="qbox">
+        <div class="qtop" id="joinNo"></div>
+        <div class="question" style="font-size:26px" id="joinQ"></div>
+        <div class="options" id="joinOpts"></div>
+        <div class="feedback" id="joinFb"></div>
+        <div class="translate" id="joinTr"></div>
+        <div class="actions"><button class="btn primary" id="joinNext">Sledeće →</button><button class="btn audio" id="joinSpeak">🔊 Izgovor</button></div>
+      </div>
+      <div class="side">
+        <div class="ring" id="joinRing"><span id="joinPct">0%</span></div>
+        <h3>Napredak</h3>
+        <div class="mini"><div><b id="joinDone">0</b><span>urađeno</span></div><div><b id="joinGood">0</b><span>tačno</span></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="hsns" class="section">
+  <div class="card">
+    <div class="head"><div><div class="kicker">Vežba 4</div><h2>HS + NS ili NS + HS?</h2></div></div>
+    <div class="exercise">
+      <div class="qbox">
+        <div class="qtop" id="swapNo"></div>
+        <div class="question" style="font-size:26px" id="swapQ"></div>
+        <div class="options" id="swapOpts"></div>
+        <div class="feedback" id="swapFb"></div>
+        <div class="translate" id="swapTr"></div>
+        <div class="actions"><button class="btn primary" id="swapNext">Sledeće →</button><button class="btn audio" id="swapSpeak">🔊 Izgovor</button></div>
+      </div>
+      <div class="side">
+        <div class="ring" id="swapRing"><span id="swapPct">0%</span></div>
+        <h3>Napredak</h3>
+        <div class="mini"><div><b id="swapDone">0</b><span>urađeno</span></div><div><b id="swapGood">0</b><span>tačno</span></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="prevod" class="section">
+  <div class="card">
+    <div class="head"><div><div class="kicker">Vežba 5</div><h2>Izaberi tačan nemački prevod</h2></div></div>
+    <div class="exercise">
+      <div class="qbox">
+        <div class="qtop" id="transNo"></div>
+        <div class="question" id="transQ"></div>
+        <div class="options" id="transOpts"></div>
+        <div class="feedback" id="transFb"></div>
+        <div class="actions"><button class="btn primary" id="transNext">Sledeće →</button><button class="btn audio" id="transSpeak">🔊 Izgovor</button></div>
+      </div>
+      <div class="side">
+        <div class="ring" id="transRing"><span id="transPct">0%</span></div>
+        <h3>Napredak</h3>
+        <div class="mini"><div><b id="transDone">0</b><span>urađeno</span></div><div><b id="transGood">0</b><span>tačno</span></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="primeri" class="section">
+  <div class="card">
+    <div class="head"><div><div class="kicker">Baza primera</div><h2>40 korisnih rečenica sa dass</h2></div></div>
+    <input id="exSearch" class="search" placeholder="Pretraži npr. glaube, Schule, wichtig, kommt..." />
+    <div class="tablewrap">
+      <table>
+        <thead><tr><th>Nemački</th><th>Prevod</th><th>Tip</th><th>Izgovor</th></tr></thead>
+        <tbody id="exTable"></tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<section id="test" class="section">
+  <div class="card">
+    <div class="head"><div><div class="kicker">Završni test</div><h2>20 mešovitih pitanja</h2></div></div>
+    <div class="exercise">
+      <div class="qbox">
+        <div class="qtop" id="testNo"></div>
+        <div class="question" id="testQ"></div>
+        <div class="options" id="testOpts"></div>
+        <div class="feedback" id="testFb"></div>
+        <div class="translate" id="testTr"></div>
+        <div class="actions"><button class="btn primary" id="testNext">Sledeće →</button><button class="btn audio" id="testSpeak">🔊 Izgovor</button></div>
+      </div>
+      <div class="side">
+        <div class="ring" id="testRing"><span id="testPct">0%</span></div>
+        <h3>Rezultat</h3>
+        <div class="mini"><div><b id="testDone">0</b><span>od 20</span></div><div><b id="testGood">0</b><span>tačno</span></div></div>
+        <div class="note" id="testResult">Odgovori na svih 20 pitanja.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="footer">DE-MAX • Konjunktion dass Trainer • Glagol na kraju</div>
+</div>
+
+<script>
+const $=id=>document.getElementById(id);
+const shuffle=a=>[...a].sort(()=>Math.random()-.5);
+let total={done:0,good:0};
+
+function updateAll(){
+  $("allDone").textContent=total.done;
+  $("allGood").textContent=total.good;
+  $("allRate").textContent=total.done?Math.round(total.good/total.done*100)+"%":"0%";
+}
+function ring(id,pct){$(id).style.background=`conic-gradient(var(--blue) ${pct*3.6}deg,#dcecff 0deg)`}
+function speak(text){
+  if(!("speechSynthesis" in window))return;
+  speechSynthesis.cancel();
+  const u=new SpeechSynthesisUtterance(text);u.lang="de-DE";u.rate=.88;speechSynthesis.speak(u);
+}
+document.querySelectorAll(".tabs button").forEach(b=>b.onclick=()=>{
+  document.querySelectorAll(".tabs button").forEach(x=>x.classList.remove("active"));
+  document.querySelectorAll(".section").forEach(x=>x.classList.remove("active"));
+  b.classList.add("active");$(b.dataset.tab).classList.add("active");
+});
+
+const verbData=[
+["Ich denke, dass Deutsch wichtig ___.","ist",["ist","sind","sein","bist"],"Ich denke, dass Deutsch wichtig ist.","Mislim da je nemački važan."],
+["Ich glaube, dass er heute ___.","kommt",["kommt","kommen","komme","kommst"],"Ich glaube, dass er heute kommt.","Mislim da on danas dolazi."],
+["Sie sagt, dass sie krank ___.","ist",["ist","sein","sind","bist"],"Sie sagt, dass sie krank ist.","Ona kaže da je bolesna."],
+["Wir wissen, dass Anna gut Deutsch ___.","spricht",["spricht","sprechen","sprach","sprichst"],"Wir wissen, dass Anna gut Deutsch spricht.","Znamo da Ana dobro govori nemački."],
+["Ich freue mich, dass du hier ___.","bist",["bist","ist","sein","sind"],"Ich freue mich, dass du hier bist.","Radujem se što si ovde."],
+["Er weiß, dass ich morgen ___.","arbeite",["arbeite","arbeitet","arbeiten","arbeitest"],"Er weiß, dass ich morgen arbeite.","On zna da sutra radim."],
+["Wir hoffen, dass das Wetter schön ___.","wird",["wird","werden","werde","wurden"],"Wir hoffen, dass das Wetter schön wird.","Nadamo se da će vreme biti lepo."],
+["Ich sehe, dass die Kinder draußen ___.","spielen",["spielen","spielt","spielst","gespielt"],"Ich sehe, dass die Kinder draußen spielen.","Vidim da se deca igraju napolju."],
+["Sie meint, dass der Kurs interessant ___.","ist",["ist","sind","war","sein"],"Sie meint, dass der Kurs interessant ist.","Ona misli da je kurs zanimljiv."],
+["Ich weiß, dass du viel ___.","lernst",["lernst","lernt","lernen","lerne"],"Ich weiß, dass du viel lernst.","Znam da mnogo učiš."],
+["Er sagt, dass seine Mutter in Berlin ___.","wohnt",["wohnt","wohnen","wohnst","gewohnt"],"Er sagt, dass seine Mutter in Berlin wohnt.","On kaže da njegova majka živi u Berlinu."],
+["Ich hoffe, dass ihr pünktlich ___.","kommt",["kommt","kommen","kommst","komme"],"Ich hoffe, dass ihr pünktlich kommt.","Nadam se da ćete doći na vreme."],
+["Wir glauben, dass der Test leicht ___.","ist",["ist","sein","sind","war"],"Wir glauben, dass der Test leicht ist.","Mislimo da je test lak."],
+["Sie weiß, dass ich kein Auto ___.","habe",["habe","hat","haben","hast"],"Sie weiß, dass ich kein Auto habe.","Ona zna da nemam auto."],
+["Ich denke, dass wir morgen frei ___.","haben",["haben","hat","habe","hast"],"Ich denke, dass wir morgen frei haben.","Mislim da smo sutra slobodni."],
+["Er glaubt, dass du die Wahrheit ___.","sagst",["sagst","sagt","sagen","sage"],"Er glaubt, dass du die Wahrheit sagst.","On veruje da govoriš istinu."],
+["Wir wissen, dass der Zug um acht Uhr ___.","fährt",["fährt","fahren","fuhr","fährst"],"Wir wissen, dass der Zug um acht Uhr fährt.","Znamo da voz polazi u osam."],
+["Sie sagt, dass ihre Kinder früh ___.","schlafen",["schlafen","schläft","schlafst","geschlafen"],"Sie sagt, dass ihre Kinder früh schlafen.","Ona kaže da njena deca rano spavaju."],
+["Ich hoffe, dass alles gut ___.","geht",["geht","gehen","ging","gehst"],"Ich hoffe, dass alles gut geht.","Nadam se da će sve proći dobro."],
+["Wir hören, dass jemand an der Tür ___.","klopft",["klopft","klopfen","klopfst","geklopft"],"Wir hören, dass jemand an der Tür klopft.","Čujemo da neko kuca na vrata."]
+];
+
+const orderData=[
+{sr:"Mislim da je nemački važan.",words:["Ich","denke,","dass","Deutsch","wichtig","ist."],ans:"Ich denke, dass Deutsch wichtig ist."},
+{sr:"Verujem da on danas dolazi.",words:["Ich","glaube,","dass","er","heute","kommt."],ans:"Ich glaube, dass er heute kommt."},
+{sr:"Ona kaže da je bolesna.",words:["Sie","sagt,","dass","sie","krank","ist."],ans:"Sie sagt, dass sie krank ist."},
+{sr:"Znamo da Ana dobro govori nemački.",words:["Wir","wissen,","dass","Anna","gut","Deutsch","spricht."],ans:"Wir wissen, dass Anna gut Deutsch spricht."},
+{sr:"Radujem se što si ovde.",words:["Ich","freue","mich,","dass","du","hier","bist."],ans:"Ich freue mich, dass du hier bist."},
+{sr:"Znam da sutra radiš.",words:["Ich","weiß,","dass","du","morgen","arbeitest."],ans:"Ich weiß, dass du morgen arbeitest."},
+{sr:"Nadamo se da će vreme biti lepo.",words:["Wir","hoffen,","dass","das","Wetter","schön","wird."],ans:"Wir hoffen, dass das Wetter schön wird."},
+{sr:"Vidim da se deca igraju napolju.",words:["Ich","sehe,","dass","die","Kinder","draußen","spielen."],ans:"Ich sehe, dass die Kinder draußen spielen."},
+{sr:"Ona misli da je kurs zanimljiv.",words:["Sie","meint,","dass","der","Kurs","interessant","ist."],ans:"Sie meint, dass der Kurs interessant ist."},
+{sr:"Znam da mnogo učiš.",words:["Ich","weiß,","dass","du","viel","lernst."],ans:"Ich weiß, dass du viel lernst."},
+{sr:"On kaže da njegova majka živi u Berlinu.",words:["Er","sagt,","dass","seine","Mutter","in","Berlin","wohnt."],ans:"Er sagt, dass seine Mutter in Berlin wohnt."},
+{sr:"Nadam se da ćete doći na vreme.",words:["Ich","hoffe,","dass","ihr","pünktlich","kommt."],ans:"Ich hoffe, dass ihr pünktlich kommt."},
+{sr:"Mislimo da je test lak.",words:["Wir","glauben,","dass","der","Test","leicht","ist."],ans:"Wir glauben, dass der Test leicht ist."},
+{sr:"Ona zna da nemam auto.",words:["Sie","weiß,","dass","ich","kein","Auto","habe."],ans:"Sie weiß, dass ich kein Auto habe."},
+{sr:"Nadam se da će sve proći dobro.",words:["Ich","hoffe,","dass","alles","gut","geht."],ans:"Ich hoffe, dass alles gut geht."}
+];
+
+const joinData=[
+["Ich denke. Deutsch ist wichtig.","Ich denke, dass Deutsch wichtig ist.",["Ich denke, dass Deutsch wichtig ist.","Ich denke, dass ist Deutsch wichtig.","Ich denke, Deutsch dass wichtig ist."],"Mislim da je nemački važan."],
+["Ich glaube. Er kommt heute.","Ich glaube, dass er heute kommt.",["Ich glaube, dass er heute kommt.","Ich glaube, dass kommt er heute.","Ich glaube, er dass heute kommt."],"Verujem da on danas dolazi."],
+["Sie sagt. Sie ist krank.","Sie sagt, dass sie krank ist.",["Sie sagt, dass sie krank ist.","Sie sagt, dass ist sie krank.","Sie sagt, sie dass krank ist."],"Ona kaže da je bolesna."],
+["Wir wissen. Anna spricht gut Deutsch.","Wir wissen, dass Anna gut Deutsch spricht.",["Wir wissen, dass Anna gut Deutsch spricht.","Wir wissen, dass spricht Anna gut Deutsch.","Wir wissen, Anna dass gut Deutsch spricht."],"Znamo da Ana dobro govori nemački."],
+["Ich freue mich. Du bist hier.","Ich freue mich, dass du hier bist.",["Ich freue mich, dass du hier bist.","Ich freue mich, dass bist du hier.","Ich freue mich, du dass hier bist."],"Radujem se što si ovde."],
+["Er weiß. Ich arbeite morgen.","Er weiß, dass ich morgen arbeite.",["Er weiß, dass ich morgen arbeite.","Er weiß, dass arbeite ich morgen.","Er weiß, ich dass morgen arbeite."],"On zna da sutra radim."],
+["Wir hoffen. Das Wetter wird schön.","Wir hoffen, dass das Wetter schön wird.",["Wir hoffen, dass das Wetter schön wird.","Wir hoffen, dass wird das Wetter schön.","Wir hoffen, das Wetter dass schön wird."],"Nadamo se da će vreme biti lepo."],
+["Ich sehe. Die Kinder spielen draußen.","Ich sehe, dass die Kinder draußen spielen.",["Ich sehe, dass die Kinder draußen spielen.","Ich sehe, dass spielen die Kinder draußen.","Ich sehe, die Kinder dass draußen spielen."],"Vidim da se deca igraju napolju."],
+["Sie meint. Der Kurs ist interessant.","Sie meint, dass der Kurs interessant ist.",["Sie meint, dass der Kurs interessant ist.","Sie meint, dass ist der Kurs interessant.","Sie meint, der Kurs dass interessant ist."],"Ona misli da je kurs zanimljiv."],
+["Ich weiß. Du lernst viel.","Ich weiß, dass du viel lernst.",["Ich weiß, dass du viel lernst.","Ich weiß, dass lernst du viel.","Ich weiß, du dass viel lernst."],"Znam da mnogo učiš."],
+["Er sagt. Seine Mutter wohnt in Berlin.","Er sagt, dass seine Mutter in Berlin wohnt.",["Er sagt, dass seine Mutter in Berlin wohnt.","Er sagt, dass wohnt seine Mutter in Berlin.","Er sagt, seine Mutter dass in Berlin wohnt."],"On kaže da njegova majka živi u Berlinu."],
+["Ich hoffe. Ihr kommt pünktlich.","Ich hoffe, dass ihr pünktlich kommt.",["Ich hoffe, dass ihr pünktlich kommt.","Ich hoffe, dass kommt ihr pünktlich.","Ich hoffe, ihr dass pünktlich kommt."],"Nadam se da ćete doći na vreme."]
+];
+
+const swapData=[
+["Es ist wichtig, dass du gesund bist.","Dass du gesund bist, ist es wichtig.",["Dass du gesund bist, ist es wichtig.","Dass bist du gesund, es ist wichtig.","Dass du bist gesund, ist es wichtig."],"HS + NS → NS + HS"],
+["Es ist schön, dass du hier bist.","Dass du hier bist, ist es schön.",["Dass du hier bist, ist es schön.","Dass bist du hier, es ist schön.","Dass du hier bist, es schön ist."],"HS + NS → NS + HS"],
+["Es ist gut, dass ihr pünktlich kommt.","Dass ihr pünktlich kommt, ist es gut.",["Dass ihr pünktlich kommt, ist es gut.","Dass kommt ihr pünktlich, es ist gut.","Dass ihr kommt pünktlich, ist gut es."],"HS + NS → NS + HS"],
+["Es ist schade, dass Anna nicht kommt.","Dass Anna nicht kommt, ist es schade.",["Dass Anna nicht kommt, ist es schade.","Dass kommt Anna nicht, es ist schade.","Dass Anna nicht kommt, es schade ist."],"HS + NS → NS + HS"],
+["Dass er heute arbeitet, weiß ich.","Ich weiß, dass er heute arbeitet.",["Ich weiß, dass er heute arbeitet.","Ich weiß, dass arbeitet er heute.","Ich dass weiß, er heute arbeitet."],"NS + HS → HS + NS"],
+["Dass Deutsch wichtig ist, denke ich.","Ich denke, dass Deutsch wichtig ist.",["Ich denke, dass Deutsch wichtig ist.","Ich denke, dass ist Deutsch wichtig.","Ich dass denke, Deutsch wichtig ist."],"NS + HS → HS + NS"],
+["Dass sie krank ist, sagt sie.","Sie sagt, dass sie krank ist.",["Sie sagt, dass sie krank ist.","Sie sagt, dass ist sie krank.","Sie dass sagt, sie krank ist."],"NS + HS → HS + NS"],
+["Dass der Kurs interessant ist, glauben wir.","Wir glauben, dass der Kurs interessant ist.",["Wir glauben, dass der Kurs interessant ist.","Wir glauben, dass ist der Kurs interessant.","Wir dass glauben, der Kurs interessant ist."],"NS + HS → HS + NS"]
+];
+
+const transData=[
+["Mislim da je nemački važan.","Ich denke, dass Deutsch wichtig ist.",["Ich denke, dass Deutsch wichtig ist.","Ich denke, dass ist Deutsch wichtig.","Ich denke, Deutsch ist dass wichtig."]],
+["Verujem da on danas dolazi.","Ich glaube, dass er heute kommt.",["Ich glaube, dass er heute kommt.","Ich glaube, dass kommt er heute.","Ich glaube, er heute dass kommt."]],
+["Ona kaže da je bolesna.","Sie sagt, dass sie krank ist.",["Sie sagt, dass sie krank ist.","Sie sagt, dass ist sie krank.","Sie sagt, sie krank dass ist."]],
+["Znamo da Ana dobro govori nemački.","Wir wissen, dass Anna gut Deutsch spricht.",["Wir wissen, dass Anna gut Deutsch spricht.","Wir wissen, dass spricht Anna gut Deutsch.","Wir wissen, Anna spricht dass gut Deutsch."]],
+["Radujem se što si ovde.","Ich freue mich, dass du hier bist.",["Ich freue mich, dass du hier bist.","Ich freue mich, dass bist du hier.","Ich freue mich, du hier dass bist."]],
+["Nadam se da će vreme biti lepo.","Wir hoffen, dass das Wetter schön wird.",["Wir hoffen, dass das Wetter schön wird.","Wir hoffen, dass wird das Wetter schön.","Wir hoffen, das Wetter wird dass schön."]],
+["Vidim da se deca igraju napolju.","Ich sehe, dass die Kinder draußen spielen.",["Ich sehe, dass die Kinder draußen spielen.","Ich sehe, dass spielen die Kinder draußen.","Ich sehe, die Kinder draußen dass spielen."]],
+["Ona misli da je kurs zanimljiv.","Sie meint, dass der Kurs interessant ist.",["Sie meint, dass der Kurs interessant ist.","Sie meint, dass ist der Kurs interessant.","Sie meint, der Kurs interessant dass ist."]],
+["Znam da mnogo učiš.","Ich weiß, dass du viel lernst.",["Ich weiß, dass du viel lernst.","Ich weiß, dass lernst du viel.","Ich weiß, du viel dass lernst."]],
+["On kaže da njegova majka živi u Berlinu.","Er sagt, dass seine Mutter in Berlin wohnt.",["Er sagt, dass seine Mutter in Berlin wohnt.","Er sagt, dass wohnt seine Mutter in Berlin.","Er sagt, seine Mutter in Berlin dass wohnt."]],
+["Nadam se da ćete doći na vreme.","Ich hoffe, dass ihr pünktlich kommt.",["Ich hoffe, dass ihr pünktlich kommt.","Ich hoffe, dass kommt ihr pünktlich.","Ich hoffe, ihr pünktlich dass kommt."]],
+["Ona zna da nemam auto.","Sie weiß, dass ich kein Auto habe.",["Sie weiß, dass ich kein Auto habe.","Sie weiß, dass habe ich kein Auto.","Sie weiß, ich kein Auto dass habe."]]
+];
+
+const examples=[
+["Ich denke, dass Deutsch wichtig ist.","Mislim da je nemački važan.","HS + NS"],
+["Ich glaube, dass er heute kommt.","Verujem da on danas dolazi.","HS + NS"],
+["Sie sagt, dass sie krank ist.","Ona kaže da je bolesna.","HS + NS"],
+["Wir wissen, dass Anna gut Deutsch spricht.","Znamo da Ana dobro govori nemački.","HS + NS"],
+["Ich freue mich, dass du hier bist.","Radujem se što si ovde.","HS + NS"],
+["Er weiß, dass ich morgen arbeite.","On zna da sutra radim.","HS + NS"],
+["Wir hoffen, dass das Wetter schön wird.","Nadamo se da će vreme biti lepo.","HS + NS"],
+["Ich sehe, dass die Kinder draußen spielen.","Vidim da se deca igraju napolju.","HS + NS"],
+["Sie meint, dass der Kurs interessant ist.","Ona misli da je kurs zanimljiv.","HS + NS"],
+["Ich weiß, dass du viel lernst.","Znam da mnogo učiš.","HS + NS"],
+["Er sagt, dass seine Mutter in Berlin wohnt.","On kaže da njegova majka živi u Berlinu.","HS + NS"],
+["Ich hoffe, dass ihr pünktlich kommt.","Nadam se da ćete doći na vreme.","HS + NS"],
+["Wir glauben, dass der Test leicht ist.","Mislimo da je test lak.","HS + NS"],
+["Sie weiß, dass ich kein Auto habe.","Ona zna da nemam auto.","HS + NS"],
+["Ich denke, dass wir morgen frei haben.","Mislim da smo sutra slobodni.","HS + NS"],
+["Er glaubt, dass du die Wahrheit sagst.","On veruje da govoriš istinu.","HS + NS"],
+["Wir wissen, dass der Zug um acht Uhr fährt.","Znamo da voz polazi u osam.","HS + NS"],
+["Sie sagt, dass ihre Kinder früh schlafen.","Ona kaže da njena deca rano spavaju.","HS + NS"],
+["Ich hoffe, dass alles gut geht.","Nadam se da će sve proći dobro.","HS + NS"],
+["Wir hören, dass jemand an der Tür klopft.","Čujemo da neko kuca na vrata.","HS + NS"],
+["Es ist wichtig, dass du gesund bist.","Važno je da si zdrav.","HS + NS"],
+["Es ist schön, dass du hier bist.","Lepo je što si ovde.","HS + NS"],
+["Es ist schade, dass Anna nicht kommt.","Šteta je što Ana ne dolazi.","HS + NS"],
+["Es ist gut, dass ihr pünktlich kommt.","Dobro je što dolazite na vreme.","HS + NS"],
+["Es ist klar, dass er Recht hat.","Jasno je da je on u pravu.","HS + NS"],
+["Ich finde, dass der Kurs Spaß macht.","Mislim da je kurs zabavan.","HS + NS"],
+["Meine Mutter sagt, dass ich mehr schlafen soll.","Moja majka kaže da treba više da spavam.","HS + NS"],
+["Der Lehrer erklärt, dass wir viel üben müssen.","Nastavnik objašnjava da moramo mnogo da vežbamo.","HS + NS"],
+["Ich weiß, dass er morgen nach Berlin fährt.","Znam da on sutra ide u Berlin.","HS + NS"],
+["Sie hofft, dass sie die Prüfung besteht.","Ona se nada da će položiti ispit.","HS + NS"],
+["Dass du gesund bist, ist wichtig.","To što si zdrav, važno je.","NS + HS"],
+["Dass du hier bist, ist schön.","To što si ovde, lepo je.","NS + HS"],
+["Dass Anna nicht kommt, ist schade.","To što Ana ne dolazi, šteta je.","NS + HS"],
+["Dass ihr pünktlich kommt, ist gut.","To što dolazite na vreme, dobro je.","NS + HS"],
+["Dass er Recht hat, ist klar.","To što je on u pravu, jasno je.","NS + HS"],
+["Dass der Kurs Spaß macht, finde ich.","Mislim da je kurs zabavan.","NS + HS"],
+["Dass wir viel üben müssen, erklärt der Lehrer.","Da moramo mnogo da vežbamo, objašnjava nastavnik.","NS + HS"],
+["Dass er morgen nach Berlin fährt, weiß ich.","Da on sutra ide u Berlin, znam.","NS + HS"],
+["Dass sie die Prüfung besteht, hofft sie.","Da će položiti ispit, ona se nada.","NS + HS"],
+["Dass alles gut geht, hoffe ich.","Da će sve proći dobro, nadam se.","NS + HS"]
+];
+
+function buildMC(prefix,data,answerIndex,optionsIndex,fullIndex,transIndex){
+  let i=0,done=0,good=0,locked=false,current="";
+  function render(){
+    locked=false;let row=data[i];current=row[fullIndex]||row[answerIndex];
+    $(prefix+"No").textContent=`Zadatak ${i+1} / ${data.length}`;
+    $(prefix+"Q").innerHTML=row[0].replace("___",'<span class="blank">?</span>');
+    $(prefix+"Fb").textContent="";$(prefix+"Fb").className="feedback";
+    if($(prefix+"Tr"))$(prefix+"Tr").innerHTML=`<div class="label">Prevod / cilj</div><div class="text">${row[transIndex]||""}</div>`;
+    const box=$(prefix+"Opts");box.innerHTML="";
+    shuffle(row[optionsIndex]).forEach(op=>{
+      const b=document.createElement("button");b.className="opt";b.textContent=op;
+      b.onclick=()=>{
+        if(locked)return;locked=true;done++;total.done++;
+        $(prefix+"Q").innerHTML=row[0].replace("___",`<span class="blank">${op}</span>`);
+        if(op===row[answerIndex]){
+          b.classList.add("correct");good++;total.good++;
+          $(prefix+"Fb").textContent="✓ Tačno!";$(prefix+"Fb").className="feedback ok";speak(current);
+        }else{
+          b.classList.add("wrong");$(prefix+"Fb").textContent="✗ Tačno: "+row[answerIndex];$(prefix+"Fb").className="feedback no";
+        }
+        $(prefix+"Done").textContent=done;$(prefix+"Good").textContent=good;
+        let p=Math.round(done/data.length*100);$(prefix+"Pct").textContent=p+"%";ring(prefix+"Ring",p);updateAll();
+      };box.appendChild(b);
+    });
+  }
+  $(prefix+"Next").onclick=()=>{i=(i+1)%data.length;render()};
+  $(prefix+"Speak").onclick=()=>speak(current);
+  render();
+}
+
+buildMC("verb",verbData,1,2,3,4);
+
+let oi=0,selected=[];
+function renderOrder(){
+  selected=[];let row=orderData[oi];
+  $("orderNo").textContent=`Zadatak ${oi+1} / ${orderData.length}`;
+  $("orderHint").textContent=row.sr;$("orderFb").textContent="";$("orderFb").className="feedback";
+  $("orderTr").innerHTML='<div class="label">Zadatak</div><div class="text">Složi kompletnu nemačku rečenicu. Glagol u dass-rečenici ide na kraj.</div>';
+  $("answerLine").innerHTML="";$("wordBank").innerHTML="";
+  shuffle(row.words.map((w,i)=>({w,i}))).forEach(o=>{
+    const b=document.createElement("button");b.className="word";b.textContent=o.w;
+    b.onclick=()=>{selected.push({w:o.w,el:b});b.classList.add("used");drawOrder()};
+    $("wordBank").appendChild(b);
+  });
+}
+function drawOrder(){
+  $("answerLine").innerHTML="";
+  selected.forEach((o,i)=>{
+    const t=document.createElement("span");t.className="token";t.textContent=o.w;
+    t.onclick=()=>{o.el.classList.remove("used");selected.splice(i,1);drawOrder()};
+    $("answerLine").appendChild(t);
+  });
+}
+$("orderCheck").onclick=()=>{
+  let user=selected.map(x=>x.w).join(" "),ans=orderData[oi].ans;total.done++;
+  if(user===ans){$("orderFb").textContent="✓ Tačno!";$("orderFb").className="feedback ok";total.good++;speak(ans)}
+  else{$("orderFb").textContent="✗ Pokušaj ponovo. Obrati pažnju: glagol ide na kraj dass-rečenice.";$("orderFb").className="feedback no"}
+  updateAll();
+};
+$("orderReset").onclick=renderOrder;
+$("orderShow").onclick=()=>{$("orderFb").textContent="Rešenje: "+orderData[oi].ans;$("orderFb").className="feedback ok"};
+$("orderSpeak").onclick=()=>speak(orderData[oi].ans);
+$("orderNext").onclick=()=>{oi=(oi+1)%orderData.length;renderOrder()};
+renderOrder();
+
+function buildSentenceChoice(prefix,data){
+  let i=0,done=0,good=0,lock=false,current="";
+  function render(){
+    lock=false;let row=data[i];current=row[1];
+    $(prefix+"No").textContent=`Zadatak ${i+1} / ${data.length}`;$(prefix+"Q").textContent=row[0];
+    $(prefix+"Fb").textContent="";$(prefix+"Fb").className="feedback";
+    if($(prefix+"Tr"))$(prefix+"Tr").innerHTML=`<div class="label">Prevod / smer</div><div class="text">${row[3]||""}</div>`;
+    $(prefix+"Opts").innerHTML="";
+    shuffle(row[2]).forEach(op=>{
+      const b=document.createElement("button");b.className="opt";b.textContent=op;
+      b.onclick=()=>{
+        if(lock)return;lock=true;done++;total.done++;
+        if(op===row[1]){b.classList.add("correct");good++;total.good++;$(prefix+"Fb").textContent="✓ Tačno!";$(prefix+"Fb").className="feedback ok";speak(row[1])}
+        else{b.classList.add("wrong");$(prefix+"Fb").textContent="✗ Tačno: "+row[1];$(prefix+"Fb").className="feedback no"}
+        $(prefix+"Done").textContent=done;$(prefix+"Good").textContent=good;let p=Math.round(done/data.length*100);$(prefix+"Pct").textContent=p+"%";ring(prefix+"Ring",p);updateAll();
+      };$(prefix+"Opts").appendChild(b);
+    });
+  }
+  $(prefix+"Next").onclick=()=>{i=(i+1)%data.length;render()};$(prefix+"Speak").onclick=()=>speak(current);render();
+}
+buildSentenceChoice("join",joinData);
+buildSentenceChoice("swap",swapData);
+buildSentenceChoice("trans",transData);
+
+function renderExamples(filter=""){
+  $("exTable").innerHTML="";
+  examples.filter(x=>x.join(" ").toLowerCase().includes(filter.toLowerCase())).forEach(x=>{
+    const tr=document.createElement("tr");
+    tr.innerHTML=`<td>${x[0]}</td><td>${x[1]}</td><td><span class="tag">${x[2]}</span></td><td><button class="btn audio">🔊</button></td>`;
+    tr.querySelector("button").onclick=()=>speak(x[0]);$("exTable").appendChild(tr);
+  });
+}
+$("exSearch").oninput=e=>renderExamples(e.target.value);renderExamples();
+
+const testData=[
+["Ich denke, dass Deutsch wichtig ___.","ist",["ist","sein","sind","bist"],"Ich denke, dass Deutsch wichtig ist.","Mislim da je nemački važan."],
+["Ich glaube, dass er heute ___.","kommt",["kommt","kommen","kommst","komme"],"Ich glaube, dass er heute kommt.","Verujem da on danas dolazi."],
+["Sie sagt, dass sie krank ___.","ist",["ist","sind","sein","bist"],"Sie sagt, dass sie krank ist.","Ona kaže da je bolesna."],
+["Wir wissen, dass Anna gut Deutsch ___.","spricht",["spricht","sprechen","sprichst","gesprochen"],"Wir wissen, dass Anna gut Deutsch spricht.","Znamo da Ana dobro govori nemački."],
+["Ich freue mich, dass du hier ___.","bist",["bist","ist","sein","sind"],"Ich freue mich, dass du hier bist.","Radujem se što si ovde."],
+["Ich hoffe, dass alles gut ___.","geht",["geht","gehen","gehst","ging"],"Ich hoffe, dass alles gut geht.","Nadam se da će sve proći dobro."],
+["Ich denke. Deutsch ist wichtig.","Ich denke, dass Deutsch wichtig ist.",["Ich denke, dass Deutsch wichtig ist.","Ich denke, dass ist Deutsch wichtig.","Ich denke, Deutsch dass wichtig ist."],"Mislim da je nemački važan."],
+["Sie sagt. Sie ist krank.","Sie sagt, dass sie krank ist.",["Sie sagt, dass sie krank ist.","Sie sagt, dass ist sie krank.","Sie sagt, sie dass krank ist."],"Ona kaže da je bolesna."],
+["Ich sehe. Die Kinder spielen draußen.","Ich sehe, dass die Kinder draußen spielen.",["Ich sehe, dass die Kinder draußen spielen.","Ich sehe, dass spielen die Kinder draußen.","Ich sehe, die Kinder dass draußen spielen."],"Vidim da se deca igraju napolju."],
+["Es ist wichtig, dass du gesund bist.","Dass du gesund bist, ist es wichtig.",["Dass du gesund bist, ist es wichtig.","Dass bist du gesund, es ist wichtig.","Dass du bist gesund, ist es wichtig."],"HS + NS → NS + HS"],
+["Dass er heute arbeitet, weiß ich.","Ich weiß, dass er heute arbeitet.",["Ich weiß, dass er heute arbeitet.","Ich weiß, dass arbeitet er heute.","Ich dass weiß, er heute arbeitet."],"NS + HS → HS + NS"],
+["Mislim da je kurs zanimljiv.","Ich denke, dass der Kurs interessant ist.",["Ich denke, dass der Kurs interessant ist.","Ich denke, dass ist der Kurs interessant.","Ich denke, der Kurs interessant dass ist."],"Prevod"],
+["Znam da mnogo učiš.","Ich weiß, dass du viel lernst.",["Ich weiß, dass du viel lernst.","Ich weiß, dass lernst du viel.","Ich weiß, du viel dass lernst."],"Prevod"],
+["Ona zna da nemam auto.","Sie weiß, dass ich kein Auto habe.",["Sie weiß, dass ich kein Auto habe.","Sie weiß, dass habe ich kein Auto.","Sie weiß, ich kein Auto dass habe."],"Prevod"],
+["Wir hoffen, dass das Wetter schön ___.","wird",["wird","werden","werde","wurden"],"Wir hoffen, dass das Wetter schön wird.","Nadamo se da će vreme biti lepo."],
+["Er glaubt, dass du die Wahrheit ___.","sagst",["sagst","sagt","sagen","sage"],"Er glaubt, dass du die Wahrheit sagst.","On veruje da govoriš istinu."],
+["Sie sagt, dass ihre Kinder früh ___.","schlafen",["schlafen","schläft","schlafst","geschlafen"],"Sie sagt, dass ihre Kinder früh schlafen.","Ona kaže da njena deca rano spavaju."],
+["Ich hoffe. Ihr kommt pünktlich.","Ich hoffe, dass ihr pünktlich kommt.",["Ich hoffe, dass ihr pünktlich kommt.","Ich hoffe, dass kommt ihr pünktlich.","Ich hoffe, ihr dass pünktlich kommt."],"Nadam se da ćete doći na vreme."],
+["Es ist schade, dass Anna nicht kommt.","Dass Anna nicht kommt, ist es schade.",["Dass Anna nicht kommt, ist es schade.","Dass kommt Anna nicht, es ist schade.","Dass Anna nicht kommt, es schade ist."],"HS + NS → NS + HS"],
+["On kaže da njegova majka živi u Berlinu.","Er sagt, dass seine Mutter in Berlin wohnt.",["Er sagt, dass seine Mutter in Berlin wohnt.","Er sagt, dass wohnt seine Mutter in Berlin.","Er sagt, seine Mutter in Berlin dass wohnt."],"Prevod"]
+];
+
+let ti=0,td=0,tg=0,tlock=false,tcur="";
+function renderTest(){
+  if(ti>=20){
+    $("testNo").textContent="Rezultat";$("testQ").textContent="Test je završen.";$("testOpts").innerHTML="";$("testTr").innerHTML="";
+    let p=Math.round(tg/20*100);$("testPct").textContent=p+"%";ring("testRing",p);
+    $("testResult").innerHTML=`Rezultat: <b>${tg}/20</b> (${p}%). ${p>=85?"Odlično!":p>=65?"Vrlo dobro — vežbaj još malo red reči.":"Ponovi pravilo i uradi test ponovo."}`;
+    return;
+  }
+  tlock=false;let row=testData[ti];tcur=row[3];
+  $("testNo").textContent=`Pitanje ${ti+1} / 20`;
+  $("testQ").innerHTML=row[0].includes("___")?row[0].replace("___",'<span class="blank">?</span>'):row[0];
+  $("testFb").textContent="";$("testFb").className="feedback";
+  $("testTr").innerHTML=`<div class="label">Pomoć / prevod</div><div class="text">${row[4]}</div>`;
+  $("testOpts").innerHTML="";
+  shuffle(row[2]).forEach(op=>{
+    const b=document.createElement("button");b.className="opt";b.textContent=op;
+    b.onclick=()=>{
+      if(tlock)return;tlock=true;td++;total.done++;
+      if(row[0].includes("___"))$("testQ").innerHTML=row[0].replace("___",`<span class="blank">${op}</span>`);
+      if(op===row[1]){b.classList.add("correct");tg++;total.good++;$("testFb").textContent="✓ Tačno!";$("testFb").className="feedback ok";speak(row[3])}
+      else{b.classList.add("wrong");$("testFb").textContent="✗ Tačno: "+row[1];$("testFb").className="feedback no"}
+      $("testDone").textContent=td;$("testGood").textContent=tg;let p=Math.round(td/20*100);$("testPct").textContent=p+"%";ring("testRing",p);updateAll();
+    };$("testOpts").appendChild(b);
+  });
+}
+$("testNext").onclick=()=>{if(!tlock&&ti<20)return;ti++;renderTest()};
+$("testSpeak").onclick=()=>speak(tcur);
+renderTest();updateAll();
+</script>
+</body>
+</html>
