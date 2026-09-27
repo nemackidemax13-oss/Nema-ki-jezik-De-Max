@@ -1,0 +1,691 @@
+<!DOCTYPE html>
+<html lang="sr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<title>De-Max | Lokale Präpositionen – Wo?</title>
+<style>
+:root{
+  --red:#e60012;
+  --red2:#b8000c;
+  --navy:#0f2d4a;
+  --ink:#17212b;
+  --muted:#6f7b86;
+  --line:#ead7d9;
+  --soft:#fff3f4;
+  --ok:#14883e;
+  --bad:#c32631;
+  --shadow:0 14px 36px rgba(42,0,4,.12);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;
+  font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+  color:var(--ink);
+  background:
+    radial-gradient(circle at 10% 0%, rgba(230,0,18,.09), transparent 26rem),
+    linear-gradient(180deg,#fff,#fff8f8 58%,#fff);
+  min-height:100vh;
+}
+button,select{font:inherit}
+button{cursor:pointer}
+.app{
+  width:min(100%,980px);
+  margin:auto;
+  padding:14px 14px 42px;
+}
+.hero{
+  position:relative;
+  overflow:hidden;
+  border-radius:28px;
+  background:linear-gradient(135deg,#f10a1d,#c90011 62%,#a8000c);
+  color:white;
+  padding:26px 22px 24px;
+  box-shadow:var(--shadow);
+  border:3px solid #fff;
+}
+.hero:before,.hero:after{
+  content:"";
+  position:absolute;
+  width:180px;height:180px;border-radius:50%;
+  background:rgba(255,255,255,.09);
+}
+.hero:before{right:-70px;top:-80px}
+.hero:after{right:65px;bottom:-135px}
+.brand{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  padding:7px 12px;
+  background:#fff;
+  color:var(--red);
+  border-radius:12px;
+  font-weight:900;
+  box-shadow:0 6px 16px rgba(75,0,0,.18);
+  margin-bottom:14px;
+}
+.hero h1{
+  margin:0;
+  font-size:clamp(29px,6vw,54px);
+  line-height:1.02;
+  letter-spacing:-1.3px;
+  position:relative;
+  z-index:2;
+}
+.hero h1 span{font-weight:600;opacity:.95}
+.hero p{
+  margin:10px 0 0;
+  max-width:740px;
+  font-size:clamp(15px,2.4vw,19px);
+  line-height:1.45;
+  position:relative;
+  z-index:2;
+}
+.stats{
+  position:sticky;
+  top:8px;
+  z-index:40;
+  margin:12px 0;
+  background:rgba(255,255,255,.94);
+  backdrop-filter:blur(14px);
+  border:1px solid #f0d3d6;
+  border-radius:18px;
+  padding:10px 12px;
+  box-shadow:0 9px 25px rgba(80,0,0,.08);
+}
+.statrow{display:flex;align-items:center;gap:10px}
+.progress{height:10px;background:#f0e3e4;border-radius:999px;overflow:hidden;flex:1}
+.progress>span{
+  display:block;height:100%;width:0%;
+  background:linear-gradient(90deg,var(--red),#ff5b67);
+  border-radius:inherit;transition:.25s ease;
+}
+.stattext{font-weight:800;color:var(--navy);font-size:13px;white-space:nowrap}
+.tabs{
+  display:grid;
+  grid-template-columns:repeat(5,1fr);
+  gap:8px;
+  margin:12px 0 16px;
+}
+.tab{
+  border:1px solid #efc8cb;
+  background:white;
+  color:var(--red2);
+  border-radius:14px;
+  padding:11px 8px;
+  font-weight:900;
+  min-height:48px;
+  transition:.18s ease;
+}
+.tab:hover,.tab.active{
+  background:var(--red);
+  color:#fff;
+  border-color:var(--red);
+  transform:translateY(-1px);
+}
+.panel{display:none}
+.panel.active{display:block}
+.card{
+  background:#fff;
+  border:1px solid #efd5d7;
+  border-radius:24px;
+  padding:20px;
+  box-shadow:var(--shadow);
+}
+.card + .card{margin-top:14px}
+.section-title{
+  display:flex;gap:12px;align-items:center;
+  margin-bottom:16px;
+}
+.badge{
+  width:44px;height:44px;flex:0 0 auto;
+  display:grid;place-items:center;
+  background:var(--red);color:#fff;border-radius:13px;font-weight:1000;
+  box-shadow:0 6px 14px rgba(230,0,18,.25);
+}
+.section-title h2{margin:0;color:var(--navy);font-size:clamp(22px,4vw,34px)}
+.section-title p{margin:4px 0 0;color:var(--muted);font-weight:650}
+.prep-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:10px;
+}
+.prep{
+  border:1px solid #f0cdd0;
+  border-radius:18px;
+  padding:14px 10px;
+  text-align:center;
+  background:linear-gradient(#fff,#fff8f8);
+  position:relative;
+}
+.prep strong{display:block;font-size:24px;color:var(--red)}
+.prep span{display:block;margin-top:2px;font-weight:800;color:var(--navy)}
+.prep small{display:block;margin-top:6px;color:var(--muted);font-size:12px}
+.rulebox{
+  margin-top:14px;
+  display:grid;grid-template-columns:1fr 1fr;
+  gap:10px;
+}
+.rule{
+  border-radius:16px;
+  background:var(--soft);
+  border:1px solid #f2c3c7;
+  padding:13px 14px;
+  font-size:17px;
+  font-weight:850;
+}
+.rule b{color:var(--red)}
+.note{
+  margin-top:12px;
+  background:#fff8df;
+  border:1px solid #f3d96e;
+  border-left:5px solid #f0ba00;
+  border-radius:14px;
+  padding:12px 14px;
+  line-height:1.45;
+  font-weight:650;
+}
+.qtop{
+  display:flex;justify-content:space-between;align-items:center;gap:12px;
+  margin-bottom:16px;
+}
+.qcount{
+  color:var(--red);font-weight:950;font-size:14px;
+  background:var(--soft);padding:7px 11px;border-radius:999px;border:1px solid #f2c8cc;
+}
+.speak{
+  border:1px solid #efc6ca;
+  background:#fff;
+  color:var(--red);
+  border-radius:12px;
+  width:42px;height:42px;
+  font-size:20px;
+}
+.prompt{
+  font-size:clamp(24px,5vw,38px);
+  line-height:1.35;
+  color:var(--navy);
+  font-weight:900;
+  letter-spacing:-.3px;
+  margin:6px 0 18px;
+}
+.blank{
+  display:inline-block;
+  min-width:112px;
+  border-bottom:4px solid var(--red);
+  color:var(--red);
+  text-align:center;
+  padding:0 7px 2px;
+}
+.options{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:10px;
+}
+.options.multi{grid-template-columns:repeat(3,1fr)}
+.option{
+  border:2px solid #efc9cd;
+  background:#fff;
+  color:var(--navy);
+  border-radius:16px;
+  padding:14px 12px;
+  font-weight:900;
+  font-size:18px;
+  transition:.17s;
+}
+.option:hover{border-color:var(--red);transform:translateY(-1px)}
+.option.correct{background:#eaf8ef;border-color:#53ad73;color:#0b6c31}
+.option.wrong{background:#fff0f1;border-color:#e56770;color:#a90e1a}
+.option:disabled{cursor:default}
+.feedback{
+  min-height:70px;
+  margin-top:14px;
+  border-radius:16px;
+  padding:12px 14px;
+  background:#f8f8f8;
+  border:1px solid #ececec;
+  display:none;
+  line-height:1.45;
+}
+.feedback.show{display:block}
+.feedback.ok{background:#eef9f1;border-color:#bce1c8}
+.feedback.bad{background:#fff1f2;border-color:#f3bdc1}
+.feedback strong{color:var(--navy)}
+.translation{margin-top:3px;color:#66717c;font-weight:700}
+.controls{
+  display:flex;gap:10px;justify-content:space-between;
+  margin-top:14px;
+}
+.ctrl{
+  border:none;border-radius:14px;
+  padding:12px 16px;font-weight:900;
+}
+.ctrl.primary{background:var(--red);color:#fff}
+.ctrl.secondary{background:#f2f2f2;color:#2d3945}
+.ctrl:disabled{opacity:.45;cursor:not-allowed}
+.answer-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:10px;
+}
+.wordbank,.sentence{
+  display:flex;gap:8px;flex-wrap:wrap;
+  min-height:64px;
+  padding:11px;
+  border-radius:16px;
+  border:2px dashed #efb9be;
+  background:#fffafa;
+}
+.sentence{background:#fff;border-style:solid;border-color:#ead6d8;margin-bottom:10px}
+.word{
+  border:none;border-radius:12px;
+  background:var(--red);color:#fff;
+  padding:10px 13px;
+  font-weight:850;
+  box-shadow:0 4px 10px rgba(140,0,0,.15);
+}
+.sentence .word{background:#fff0f1;color:var(--red2);border:1px solid #efc5c9;box-shadow:none}
+.minihelp{font-size:13px;color:var(--muted);font-weight:650;margin:8px 0 10px}
+.result-big{
+  text-align:center;padding:28px 14px;
+}
+.result-big .circle{
+  margin:0 auto 12px;
+  width:110px;height:110px;border-radius:50%;
+  display:grid;place-items:center;
+  background:linear-gradient(135deg,var(--red),#ff5865);
+  color:#fff;font-size:30px;font-weight:1000;
+  box-shadow:0 12px 28px rgba(230,0,18,.24);
+}
+.result-big h3{font-size:30px;color:var(--navy);margin:6px 0}
+.result-big p{color:var(--muted);font-weight:650}
+.footer{
+  margin-top:18px;
+  text-align:center;color:#8a9298;font-size:12px;font-weight:700;
+}
+@media(max-width:700px){
+  .app{padding:8px 8px 30px}
+  .hero{border-radius:22px;padding:22px 17px}
+  .tabs{grid-template-columns:repeat(2,1fr)}
+  .tabs .tab:first-child{grid-column:1/-1}
+  .card{padding:16px;border-radius:20px}
+  .prep-grid{grid-template-columns:repeat(2,1fr)}
+  .prep:last-child{grid-column:1/-1}
+  .rulebox{grid-template-columns:1fr}
+  .options.multi,.answer-grid{grid-template-columns:repeat(2,1fr)}
+  .prompt{font-size:25px}
+}
+@media(max-width:420px){
+  .options,.options.multi,.answer-grid{grid-template-columns:1fr 1fr}
+  .option{padding:13px 8px;font-size:16px}
+  .prep strong{font-size:21px}
+}
+</style>
+</head>
+<body>
+<div class="app">
+  <header class="hero">
+    <div class="brand">De-Max®</div>
+    <h1>Lokale Präpositionen <span>(Wo?)</span></h1>
+    <p>Lokacioni predlozi – <b>Gde?</b> Vežbaj mesto, dativ, skraćenice <b>am / im</b> i redosled reči.</p>
+  </header>
+
+  <div class="stats">
+    <div class="statrow">
+      <div class="progress"><span id="globalBar"></span></div>
+      <div class="stattext"><span id="globalDone">0</span>/<span id="globalTotal">46</span> završeno • <span id="globalScore">0</span> tačno</div>
+    </div>
+  </div>
+
+  <nav class="tabs">
+    <button class="tab active" data-panel="rules">Pravilo</button>
+    <button class="tab" data-panel="ex1">Vežba 1</button>
+    <button class="tab" data-panel="ex2">Vežba 2</button>
+    <button class="tab" data-panel="ex3">Vežba 3</button>
+    <button class="tab" data-panel="ex4">Složi rečenicu</button>
+  </nav>
+
+  <section id="rules" class="panel active">
+    <div class="card">
+      <div class="section-title">
+        <div class="badge">9</div>
+        <div><h2>Lokacioni predlozi</h2><p>Kod pitanja <b>Wo?</b> koristimo dativ.</p></div>
+      </div>
+      <div class="prep-grid">
+        <div class="prep"><strong>an</strong><span>uz / na</span><small>an der Wand</small></div>
+        <div class="prep"><strong>auf</strong><span>na</span><small>auf dem Tisch</small></div>
+        <div class="prep"><strong>hinter</strong><span>iza</span><small>hinter der Tür</small></div>
+        <div class="prep"><strong>in</strong><span>u</span><small>in der Tasche</small></div>
+        <div class="prep"><strong>neben</strong><span>pored</span><small>neben dem Bett</small></div>
+        <div class="prep"><strong>über</strong><span>iznad</span><small>über dem Sofa</small></div>
+        <div class="prep"><strong>unter</strong><span>ispod</span><small>unter dem Tisch</small></div>
+        <div class="prep"><strong>vor</strong><span>ispred</span><small>vor der Klasse</small></div>
+        <div class="prep"><strong>zwischen</strong><span>između</span><small>zwischen den Stühlen</small></div>
+      </div>
+
+      <div class="rulebox">
+        <div class="rule"><b>an + dem = am</b><br><small>Das Bild hängt am Fenster.</small></div>
+        <div class="rule"><b>in + dem = im</b><br><small>Die Milch ist im Kühlschrank.</small></div>
+      </div>
+      <div class="note">💡 <b>Wo?</b> = mesto bez kretanja → <b>Dativ</b>. Primer: <i>Das Buch liegt auf dem Tisch.</i></div>
+    </div>
+  </section>
+
+  <section id="ex1" class="panel">
+    <div class="card">
+      <div class="section-title">
+        <div class="badge">1</div>
+        <div><h2>Izaberi predlog</h2><p>Dve mogućnosti – samo jedna je tačna.</p></div>
+      </div>
+      <div id="ex1box"></div>
+    </div>
+  </section>
+
+  <section id="ex2" class="panel">
+    <div class="card">
+      <div class="section-title">
+        <div class="badge">2</div>
+        <div><h2>Dativ</h2><p>Izaberi odgovarajući član: <b>dem / der / den</b>.</p></div>
+      </div>
+      <div id="ex2box"></div>
+    </div>
+  </section>
+
+  <section id="ex3" class="panel">
+    <div class="card">
+      <div class="section-title">
+        <div class="badge">3</div>
+        <div><h2>am ili im?</h2><p>Vežbaj skraćenice <b>an + dem = am</b> i <b>in + dem = im</b>.</p></div>
+      </div>
+      <div id="ex3box"></div>
+    </div>
+  </section>
+
+  <section id="ex4" class="panel">
+    <div class="card">
+      <div class="section-title">
+        <div class="badge">4</div>
+        <div><h2>Složi rečenicu</h2><p>Klikni reči pravilnim redosledom.</p></div>
+      </div>
+      <div id="ex4box"></div>
+    </div>
+  </section>
+
+  <div class="footer">De-Max • Nemački jezik • Interaktivna vežba za A1/A2</div>
+</div>
+
+<script>
+const ex1 = [
+  {s:"Der Schlüssel ist ___ der Tasche.", a:"in", o:["in","auf"], t:"Ključ je u torbi."},
+  {s:"Das Handy liegt ___ dem Sofa.", a:"auf", o:["auf","unter"], t:"Telefon leži na sofi."},
+  {s:"Der Teppich liegt ___ dem Tisch.", a:"unter", o:["unter","über"], t:"Tepih je ispod stola."},
+  {s:"Der Lehrer steht ___ der Klasse.", a:"vor", o:["vor","hinter"], t:"Nastavnik stoji ispred razreda."},
+  {s:"Das Bild hängt ___ dem Bett.", a:"über", o:["über","unter"], t:"Slika visi iznad kreveta."},
+  {s:"Der Ball liegt ___ der Tür.", a:"hinter", o:["hinter","vor"], t:"Lopta je iza vrata."},
+  {s:"Die Tasche steht ___ der Jacke.", a:"neben", o:["neben","über"], t:"Torba je pored jakne."},
+  {s:"Der Stuhl steht ___ dem Tisch und dem Fenster.", a:"zwischen", o:["zwischen","hinter"], t:"Stolica je između stola i prozora."},
+  {s:"Das Poster hängt ___ der Wand.", a:"an", o:["an","unter"], t:"Poster visi na zidu."},
+  {s:"Die Vase steht ___ dem Tisch.", a:"auf", o:["auf","in"], t:"Vaza stoji na stolu."},
+  {s:"Die Schuhe stehen ___ dem Bett.", a:"unter", o:["unter","neben"], t:"Cipele su ispod kreveta."},
+  {s:"Der Schrank steht ___ dem Sofa.", a:"neben", o:["neben","über"], t:"Orman stoji pored sofe."},
+  {s:"Die Lampe hängt ___ dem Tisch.", a:"über", o:["über","hinter"], t:"Lampa visi iznad stola."},
+  {s:"Der Rucksack steht ___ der Tür.", a:"vor", o:["vor","über"], t:"Ranac je ispred vrata."},
+  {s:"Die Katze sitzt ___ der Box.", a:"in", o:["in","auf"], t:"Mačka sedi u kutiji."},
+  {s:"Das Fahrrad steht ___ dem Haus.", a:"hinter", o:["hinter","über"], t:"Bicikl je iza kuće."}
+];
+
+const ex2 = [
+  {s:"Der Schlüssel ist in ___ Tasche.", a:"der", o:["dem","der","den"], t:"Ključ je u torbi."},
+  {s:"Das Buch liegt auf ___ Tisch.", a:"dem", o:["dem","der","den"], t:"Knjiga leži na stolu."},
+  {s:"Die Katze sitzt in ___ Box.", a:"der", o:["dem","der","den"], t:"Mačka sedi u kutiji."},
+  {s:"Das Bild hängt über ___ Bett.", a:"dem", o:["dem","der","den"], t:"Slika visi iznad kreveta."},
+  {s:"Die Tasche steht neben ___ Jacke.", a:"der", o:["dem","der","den"], t:"Torba stoji pored jakne."},
+  {s:"Die Schuhe stehen unter ___ Bett.", a:"dem", o:["dem","der","den"], t:"Cipele su ispod kreveta."},
+  {s:"Das Poster hängt an ___ Wand.", a:"der", o:["dem","der","den"], t:"Poster visi na zidu."},
+  {s:"Der Lehrer steht vor ___ Tafel.", a:"der", o:["dem","der","den"], t:"Nastavnik stoji ispred table."},
+  {s:"Die Vase steht zwischen ___ Büchern.", a:"den", o:["dem","der","den"], t:"Vaza stoji između knjiga."},
+  {s:"Der Ball liegt hinter ___ Stuhl.", a:"dem", o:["dem","der","den"], t:"Lopta je iza stolice."}
+];
+
+const ex3 = [
+  {s:"Die Milch ist ___ Kühlschrank.", a:"im", o:["am","im"], t:"Mleko je u frižideru."},
+  {s:"Wir sitzen ___ Tisch.", a:"am", o:["am","im"], t:"Sedimo za stolom."},
+  {s:"Das Foto hängt ___ Kühlschrank.", a:"am", o:["am","im"], t:"Fotografija visi na frižideru."},
+  {s:"Die Jacke ist ___ Schrank.", a:"im", o:["am","im"], t:"Jakna je u ormanu."},
+  {s:"Der Mann wartet ___ Bahnhof.", a:"am", o:["am","im"], t:"Čovek čeka na stanici."},
+  {s:"Das Kind ist ___ Zimmer.", a:"im", o:["am","im"], t:"Dete je u sobi."},
+  {s:"Die Schuhe stehen ___ Flur.", a:"im", o:["am","im"], t:"Cipele su u hodniku."},
+  {s:"Wir treffen uns ___ Eingang.", a:"am", o:["am","im"], t:"Nalazimo se kod ulaza."},
+  {s:"Das Essen ist ___ Kühlschrank.", a:"im", o:["am","im"], t:"Hrana je u frižideru."},
+  {s:"Der Kalender hängt ___ Schrank.", a:"am", o:["am","im"], t:"Kalendar visi na ormanu."}
+];
+
+const ex4 = [
+  {a:"Das Buch liegt auf dem Tisch.", t:"Knjiga leži na stolu."},
+  {a:"Die Katze sitzt in der Box.", t:"Mačka sedi u kutiji."},
+  {a:"Der Ball liegt unter dem Stuhl.", t:"Lopta je ispod stolice."},
+  {a:"Die Lampe hängt über dem Tisch.", t:"Lampa visi iznad stola."},
+  {a:"Der Rucksack steht neben der Tür.", t:"Ranac stoji pored vrata."},
+  {a:"Der Lehrer steht vor der Tafel.", t:"Nastavnik stoji ispred table."},
+  {a:"Der Schrank steht hinter dem Sofa.", t:"Orman stoji iza sofe."},
+  {a:"Die Vase steht zwischen den Büchern.", t:"Vaza stoji između knjiga."},
+  {a:"Das Bild hängt an der Wand.", t:"Slika visi na zidu."},
+  {a:"Die Schuhe stehen unter dem Bett.", t:"Cipele su ispod kreveta."}
+];
+
+const total = ex1.length+ex2.length+ex3.length+ex4.length;
+document.getElementById("globalTotal").textContent = total;
+let globalDone=0, globalScore=0;
+const scored = new Set();
+
+function updateGlobal(key, correct){
+  if(scored.has(key)) return;
+  scored.add(key); globalDone++;
+  if(correct) globalScore++;
+  document.getElementById("globalDone").textContent=globalDone;
+  document.getElementById("globalScore").textContent=globalScore;
+  document.getElementById("globalBar").style.width=(globalDone/total*100)+"%";
+}
+
+function speak(text, rate=0.92){
+  if(!("speechSynthesis" in window)) return;
+  speechSynthesis.cancel();
+  const u=new SpeechSynthesisUtterance(text.replace("___",""));
+  u.lang="de-DE"; u.rate=rate;
+  const voices=speechSynthesis.getVoices();
+  const v=voices.find(x=>x.lang&&x.lang.toLowerCase().startsWith("de"));
+  if(v) u.voice=v;
+  speechSynthesis.speak(u);
+}
+
+function showPanel(id){
+  document.querySelectorAll(".panel").forEach(p=>p.classList.toggle("active",p.id===id));
+  document.querySelectorAll(".tab").forEach(t=>t.classList.toggle("active",t.dataset.panel===id));
+  window.scrollTo({top:0,behavior:"smooth"});
+}
+document.querySelectorAll(".tab").forEach(b=>b.addEventListener("click",()=>showPanel(b.dataset.panel)));
+
+function mcqRenderer(containerId, data, prefix){
+  const el=document.getElementById(containerId);
+  let i=0;
+  function render(){
+    const q=data[i];
+    el.innerHTML=`
+      <div class="qtop">
+        <span class="qcount">${i+1} / ${data.length}</span>
+        <button class="speak" title="Poslušaj rečenicu">🔊</button>
+      </div>
+      <div class="prompt">${q.s.replace("___",'<span class="blank">?</span>')}</div>
+      <div class="options ${q.o.length===3?'multi':''}">
+        ${q.o.map(x=>`<button class="option" data-v="${x}">${x}</button>`).join("")}
+      </div>
+      <div class="feedback" id="${containerId}feedback"></div>
+      <div class="controls">
+        <button class="ctrl secondary" id="${containerId}prev" ${i===0?'disabled':''}>← Nazad</button>
+        <button class="ctrl primary" id="${containerId}next">${i===data.length-1?'Završi':'Sledeće →'}</button>
+      </div>`;
+    el.querySelector(".speak").onclick=()=>speak(q.s.replace("___",q.a));
+    let answered=scored.has(prefix+i);
+    if(answered){
+      revealExisting();
+    }
+    el.querySelectorAll(".option").forEach(btn=>{
+      btn.onclick=()=>{
+        if(scored.has(prefix+i)) return;
+        const val=btn.dataset.v;
+        const ok=val===q.a;
+        updateGlobal(prefix+i,ok);
+        showAnswer(val,ok);
+        if(ok) speak(q.s.replace("___",q.a));
+      };
+    });
+    el.querySelector(`#${containerId}prev`).onclick=()=>{if(i>0){i--;render()}};
+    el.querySelector(`#${containerId}next`).onclick=()=>{
+      if(i<data.length-1){i++;render()}
+      else showSummary(el,data,prefix,()=>{i=0;render()});
+    };
+    function showAnswer(val,ok){
+      el.querySelectorAll(".option").forEach(b=>{
+        b.disabled=true;
+        if(b.dataset.v===q.a)b.classList.add("correct");
+        else if(b.dataset.v===val&&!ok)b.classList.add("wrong");
+      });
+      const f=el.querySelector(`#${containerId}feedback`);
+      f.className="feedback show "+(ok?"ok":"bad");
+      f.innerHTML=`<strong>${ok?"✓ Tačno!":"✗ Nije tačno."}</strong> Rešenje: <b>${q.a}</b><div class="translation">${q.t}</div>`;
+    }
+    function revealExisting(){
+      el.querySelectorAll(".option").forEach(b=>{
+        b.disabled=true;
+        if(b.dataset.v===q.a)b.classList.add("correct");
+      });
+      const f=el.querySelector(`#${containerId}feedback`);
+      f.className="feedback show ok";
+      f.innerHTML=`<strong>Rešenje:</strong> <b>${q.a}</b><div class="translation">${q.t}</div>`;
+    }
+  }
+  render();
+}
+
+function showSummary(el,data,prefix,restart){
+  const answered=data.filter((_,idx)=>scored.has(prefix+idx)).length;
+  const correct=data.filter((_,idx)=>scored.has(prefix+idx) && scoreCorrect(prefix+idx)).length;
+  // scoreCorrect is stored in correctness map below
+  el.innerHTML=`
+    <div class="result-big">
+      <div class="circle">${correct}/${data.length}</div>
+      <h3>Vežba završena</h3>
+      <p>Odgovoreno: ${answered}/${data.length}. Možeš da se vratiš na kartice i ponoviš rečenice.</p>
+      <button class="ctrl primary" id="backFirst">Ponovo pregledaj</button>
+    </div>`;
+  el.querySelector("#backFirst").onclick=restart;
+}
+
+// correctness map for summaries
+const correctness = new Map();
+const oldUpdate = updateGlobal;
+updateGlobal = function(key, correct){
+  if(scored.has(key)) return;
+  correctness.set(key,correct);
+  oldUpdate(key,correct);
+};
+function scoreCorrect(key){return correctness.get(key)===true}
+
+mcqRenderer("ex1box",ex1,"a");
+mcqRenderer("ex2box",ex2,"b");
+mcqRenderer("ex3box",ex3,"c");
+
+(function orderExercise(){
+  const el=document.getElementById("ex4box");
+  let i=0, selected=[], solved=[];
+  function shuffle(arr){
+    const a=[...arr];
+    for(let j=a.length-1;j>0;j--){
+      const k=(j*7+3)%(j+1); // deterministic enough for offline app
+      [a[j],a[k]]=[a[k],a[j]];
+    }
+    return a;
+  }
+  function tokensFor(sentence){
+    return shuffle(sentence.replace(".","").split(" "));
+  }
+  function render(){
+    const q=ex4[i];
+    selected=[];
+    let bank=tokensFor(q.a);
+    el.innerHTML=`
+      <div class="qtop">
+        <span class="qcount">${i+1} / ${ex4.length}</span>
+        <button class="speak" title="Poslušaj rešenje">🔊</button>
+      </div>
+      <div class="minihelp">Složi nemačku rečenicu:</div>
+      <div class="translation" style="font-size:18px;margin-bottom:10px">${q.t}</div>
+      <div class="sentence" id="built"></div>
+      <div class="wordbank" id="bank"></div>
+      <div class="feedback" id="orderFeedback"></div>
+      <div class="controls">
+        <button class="ctrl secondary" id="clearBtn">Obriši</button>
+        <button class="ctrl primary" id="checkBtn">Proveri</button>
+      </div>
+      <div class="controls">
+        <button class="ctrl secondary" id="orderPrev" ${i===0?'disabled':''}>← Nazad</button>
+        <button class="ctrl primary" id="orderNext">${i===ex4.length-1?'Završi':'Sledeće →'}</button>
+      </div>`;
+    el.querySelector(".speak").onclick=()=>speak(q.a);
+    const bankEl=el.querySelector("#bank"), built=el.querySelector("#built");
+    function draw(){
+      bankEl.innerHTML="";
+      built.innerHTML="";
+      bank.forEach((w,idx)=>{
+        const b=document.createElement("button"); b.className="word"; b.textContent=w;
+        b.onclick=()=>{selected.push(w);bank.splice(idx,1);draw()};
+        bankEl.appendChild(b);
+      });
+      selected.forEach((w,idx)=>{
+        const b=document.createElement("button"); b.className="word"; b.textContent=w;
+        b.onclick=()=>{bank.push(w);selected.splice(idx,1);draw()};
+        built.appendChild(b);
+      });
+    }
+    draw();
+    el.querySelector("#clearBtn").onclick=()=>{bank=tokensFor(q.a);selected=[];draw(); el.querySelector("#orderFeedback").className="feedback";};
+    el.querySelector("#checkBtn").onclick=()=>{
+      if(scored.has("d"+i)) return;
+      const made=selected.join(" ") + ".";
+      const ok=made===q.a;
+      updateGlobal("d"+i,ok);
+      const f=el.querySelector("#orderFeedback");
+      f.className="feedback show "+(ok?"ok":"bad");
+      f.innerHTML= ok
+        ? `<strong>✓ Tačno!</strong><div class="translation">${q.a}</div>`
+        : `<strong>✗ Pokušaj ponovo.</strong> Rešenje je: <b>${q.a}</b>`;
+      if(ok) speak(q.a);
+    };
+    el.querySelector("#orderPrev").onclick=()=>{if(i>0){i--;render()}};
+    el.querySelector("#orderNext").onclick=()=>{
+      if(i<ex4.length-1){i++;render()}
+      else {
+        const answered=ex4.filter((_,idx)=>scored.has("d"+idx)).length;
+        const correct=ex4.filter((_,idx)=>scored.has("d"+idx)&&scoreCorrect("d"+idx)).length;
+        el.innerHTML=`
+          <div class="result-big">
+            <div class="circle">${correct}/${ex4.length}</div>
+            <h3>Odlično!</h3>
+            <p>Složene rečenice: ${answered}/${ex4.length}.</p>
+            <button class="ctrl primary" id="restartOrder">Ponovo pregledaj</button>
+          </div>`;
+        el.querySelector("#restartOrder").onclick=()=>{i=0;render()};
+      }
+    };
+    if(scored.has("d"+i)){
+      const f=el.querySelector("#orderFeedback");
+      f.className="feedback show ok";
+      f.innerHTML=`<strong>Rešenje:</strong> <b>${q.a}</b>`;
+    }
+  }
+  render();
+})();
+</script>
+</body>
+</html>
