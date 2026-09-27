@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="sr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DE-MAX Präsens Passiv Trainer</title>
+<style>
+:root{
+  --bg:#f3f8ff;
+  --card:#ffffff;
+  --blue:#1456d8;
+  --blue2:#0e3fa7;
+  --light:#eaf2ff;
+  --green:#148a4b;
+  --red:#d62f3e;
+  --text:#152033;
+  --muted:#6b7280;
+  --shadow:0 12px 32px rgba(20,86,216,.13);
+}
+*{box-sizing:border-box}
+body{
+  margin:0;
+  font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+  background:linear-gradient(180deg,#eaf3ff 0%,#f8fbff 38%,#eef5ff 100%);
+  color:var(--text);
+}
+.app{max-width:900px;margin:auto;min-height:100vh;padding:18px 14px 80px}
+.hero{
+  background:linear-gradient(135deg,var(--blue2),var(--blue));
+  color:#fff;border-radius:28px;padding:24px 20px;box-shadow:var(--shadow);
+  position:relative;overflow:hidden
+}
+.hero:after{
+  content:"";position:absolute;width:220px;height:220px;border-radius:50%;
+  background:rgba(255,255,255,.08);right:-70px;top:-90px
+}
+.brand{font-weight:900;letter-spacing:.12em;font-size:13px;opacity:.9}
+h1{margin:8px 0 6px;font-size:clamp(29px,6vw,47px);line-height:1.05}
+.hero p{margin:0;font-size:16px;opacity:.95}
+.progress-wrap{margin-top:18px;background:rgba(255,255,255,.18);height:10px;border-radius:999px;overflow:hidden}
+.progress{height:100%;width:0;background:#fff;border-radius:999px;transition:.3s}
+.stats{margin-top:8px;font-size:13px;font-weight:800}
+.nav{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:14px 0
+}
+.nav button{
+  border:0;border-radius:15px;padding:12px 8px;background:#fff;color:var(--blue2);
+  font-weight:900;box-shadow:0 5px 18px rgba(20,86,216,.09);cursor:pointer
+}
+.nav button.active{background:var(--blue);color:white}
+.card{
+  background:var(--card);border-radius:24px;padding:20px;margin:14px 0;
+  box-shadow:var(--shadow);border:1px solid #e5edfb
+}
+.section-title{font-size:22px;font-weight:900;color:var(--blue2);margin:0 0 12px}
+.rule{
+  background:var(--light);border-left:5px solid var(--blue);
+  border-radius:18px;padding:15px;margin:12px 0
+}
+.formula{
+  font-size:20px;font-weight:900;text-align:center;background:#fff;border-radius:15px;
+  padding:13px;margin:10px 0;color:var(--blue2)
+}
+.table{width:100%;border-collapse:collapse;overflow:hidden;border-radius:14px}
+.table th,.table td{padding:10px;border-bottom:1px solid #e6edf9;text-align:left}
+.table th{background:#edf4ff;color:var(--blue2)}
+.examples{display:grid;gap:9px}
+.example{
+  padding:12px 14px;border-radius:14px;background:#f8fbff;border:1px solid #e6eefb
+}
+.de{font-weight:850;font-size:16px}.sr{color:var(--muted);font-size:14px;margin-top:3px}
+.exercise-title{font-size:19px;font-weight:900;margin-bottom:6px}
+.prompt{font-size:20px;font-weight:850;line-height:1.35;margin:14px 0}
+.translation{font-size:14px;color:var(--muted);margin-top:-8px;margin-bottom:12px}
+.options{display:grid;gap:9px}
+.option,.word{
+  border:2px solid #dfe8f7;background:white;color:var(--text);border-radius:15px;
+  padding:12px 14px;font-weight:800;cursor:pointer;text-align:left;font-size:16px
+}
+.option:hover,.word:hover{border-color:#9bb9ef;background:#f8fbff}
+.option.correct{border-color:#2eb26f;background:#edfff5;color:#08743d}
+.option.wrong{border-color:#ef6c75;background:#fff1f3;color:#a51d29}
+.wordbank,.sentence-build{display:flex;flex-wrap:wrap;gap:8px;min-height:54px}
+.word{width:auto}
+.sentence-build{
+  border:2px dashed #b9cae7;padding:10px;border-radius:16px;background:#f8fbff;margin-bottom:10px
+}
+.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:13px}
+.btn{
+  border:0;border-radius:14px;padding:11px 15px;font-weight:900;cursor:pointer
+}
+.btn.primary{background:var(--blue);color:white}.btn.secondary{background:#edf4ff;color:var(--blue2)}
+.btn.green{background:#eafaf1;color:#08743d}.btn.red{background:#fff0f1;color:#a61c2b}
+.feedback{
+  margin-top:12px;padding:12px 14px;border-radius:14px;font-weight:800;display:none
+}
+.feedback.ok{display:block;background:#eafaf1;color:#08743d}
+.feedback.bad{display:block;background:#fff0f1;color:#a61c2b}
+.answer{font-weight:900;margin-top:5px}
+.hide{display:none!important}
+.input{
+  width:100%;border:2px solid #dce7f7;border-radius:14px;padding:13px;font-size:17px;outline:none
+}
+.input:focus{border-color:var(--blue)}
+.badge{
+  display:inline-block;background:#edf4ff;color:var(--blue2);font-size:12px;font-weight:900;
+  padding:6px 10px;border-radius:999px;margin-bottom:8px
+}
+.footer{text-align:center;color:var(--muted);font-size:13px;padding:20px}
+@media (max-width:600px){
+  .app{padding:10px 10px 70px}.hero{border-radius:22px;padding:20px 16px}
+  .card{padding:16px;border-radius:20px}.nav{grid-template-columns:1fr 1fr}
+  .nav button:last-child{grid-column:1/-1}
+}
+</style>
+</head>
+<body>
+<div class="app">
+  <section class="hero">
+    <div class="brand">DE‑MAX · NEMAČKI JEZIK</div>
+    <h1>Präsens Passiv</h1>
+    <p>Vorgangspassiv – pasiv radnje u sadašnjem vremenu</p>
+    <div class="progress-wrap"><div class="progress" id="progress"></div></div>
+    <div class="stats" id="stats">Tačno: 0 · Pokušaji: 0 · Napredak: 0%</div>
+  </section>
+
+  <div class="nav">
+    <button class="active" onclick="showTab('learn',this)">📘 Pravilo</button>
+    <button onclick="showTab('examples',this)">💬 Primeri</button>
+    <button onclick="showTab('practice',this)">🎯 Vežbe</button>
+  </div>
+
+  <section id="learn" class="tab">
+    <div class="card">
+      <h2 class="section-title">Kako se gradi pasiv radnje?</h2>
+      <div class="rule">
+        U nemačkom jeziku se <b>Präsens Passiv</b> gradi pomoću glagola <b>werden</b> u prezentu + <b>Partizip II</b> glavnog glagola.
+      </div>
+      <div class="formula">Subjekat + werden + ... + Partizip II</div>
+      <table class="table">
+        <tr><th>Lice</th><th>werden</th><th>Primer</th></tr>
+        <tr><td>ich</td><td>werde</td><td>Ich werde gefragt.</td></tr>
+        <tr><td>du</td><td>wirst</td><td>Du wirst gefragt.</td></tr>
+        <tr><td>er/sie/es</td><td>wird</td><td>Er wird gefragt.</td></tr>
+        <tr><td>wir</td><td>werden</td><td>Wir werden gefragt.</td></tr>
+        <tr><td>ihr</td><td>werdet</td><td>Ihr werdet gefragt.</td></tr>
+        <tr><td>sie/Sie</td><td>werden</td><td>Sie werden gefragt.</td></tr>
+      </table>
+    </div>
+
+    <div class="card">
+      <h2 class="section-title">Aktiv → Pasiv</h2>
+      <div class="example"><div class="de">Der Mechaniker repariert das Auto.</div><div class="sr">Mehaničar popravlja auto.</div></div>
+      <div class="formula">Das Auto wird vom Mechaniker repariert.</div>
+      <div class="sr">Auto se popravlja / Auto je popravljen od strane mehaničara.</div>
+      <div class="rule">
+        U pasivu je važna <b>radnja</b>. Osoba koja vrši radnju može da se doda sa <b>von + Dativ</b>, ali često nije potrebna.
+      </div>
+    </div>
+  </section>
+
+  <section id="examples" class="tab hide">
+    <div class="card">
+      <h2 class="section-title">30 korisnih primera</h2>
+      <div class="examples" id="examplesList"></div>
+    </div>
+  </section>
+
+  <section id="practice" class="tab hide">
+    <div class="card">
+      <span class="badge">VEŽBA 1</span>
+      <div class="exercise-title">Izaberi tačan oblik glagola „werden“</div>
+      <div id="q1"></div>
+    </div>
+
+    <div class="card">
+      <span class="badge">VEŽBA 2</span>
+      <div class="exercise-title">Složi rečenicu u pasivu</div>
+      <div id="q2"></div>
+    </div>
+
+    <div class="card">
+      <span class="badge">VEŽBA 3</span>
+      <div class="exercise-title">Aktiv → Pasiv</div>
+      <div id="q3"></div>
+    </div>
+
+    <div class="card">
+      <span class="badge">VEŽBA 4</span>
+      <div class="exercise-title">Dopuni Partizip II</div>
+      <div id="q4"></div>
+    </div>
+  </section>
+
+  <div class="footer">DE‑MAX · Präsens Passiv Trainer · radi i na telefonu</div>
+</div>
+
+<script>
+const examples = [
+["Die Tür wird geöffnet.","Vrata se otvaraju."],
+["Das Essen wird gekocht.","Hrana se kuva."],
+["Das Auto wird repariert.","Auto se popravlja."],
+["Das Zimmer wird gereinigt.","Soba se čisti."],
+["Der Brief wird geschrieben.","Pismo se piše."],
+["Die Rechnung wird bezahlt.","Račun se plaća."],
+["Das Paket wird geliefert.","Paket se dostavlja."],
+["Die Aufgabe wird erklärt.","Zadatak se objašnjava."],
+["Der Patient wird untersucht.","Pacijent se pregleda."],
+["Das Haus wird gebaut.","Kuća se gradi."],
+["Das Fenster wird geschlossen.","Prozor se zatvara."],
+["Die Straße wird repariert.","Ulica se popravlja."],
+["Die Fragen werden beantwortet.","Na pitanja se odgovara."],
+["Die Bücher werden verkauft.","Knjige se prodaju."],
+["Die Schüler werden geprüft.","Učenici se ispituju."],
+["Das Brot wird gebacken.","Hleb se peče."],
+["Die Kleidung wird gewaschen.","Odeća se pere."],
+["Der Tisch wird gedeckt.","Sto se postavlja."],
+["Die E-Mail wird geschickt.","Imejl se šalje."],
+["Die Musik wird gehört.","Muzika se sluša."],
+["Deutsch wird hier gesprochen.","Ovde se govori nemački."],
+["Die Zeitung wird jeden Morgen gelesen.","Novine se čitaju svakog jutra."],
+["Die Computer werden kontrolliert.","Računari se proveravaju."],
+["Der Vertrag wird unterschrieben.","Ugovor se potpisuje."],
+["Das Problem wird gelöst.","Problem se rešava."],
+["Die Maschine wird eingeschaltet.","Mašina se uključuje."],
+["Die Flaschen werden recycelt.","Flaše se recikliraju."],
+["Der Termin wird verschoben.","Termin se pomera."],
+["Die Kinder werden abgeholt.","Deca se preuzimaju."],
+["Das Formular wird ausgefüllt.","Formular se popunjava."]
+];
+
+const q1Data = [
+{p:"Das Auto ___ repariert.",a:"wird",o:["werde","wird","werden","werdet"],t:"Auto se popravlja."},
+{p:"Die Bücher ___ verkauft.",a:"werden",o:["wird","werden","werdet","wirst"],t:"Knjige se prodaju."},
+{p:"Du ___ gefragt.",a:"wirst",o:["wirst","wird","werdet","werde"],t:"Ti si pitan/a."},
+{p:"Ihr ___ informiert.",a:"werdet",o:["werden","wird","werdet","wirst"],t:"Vi ste obavešteni."},
+{p:"Ich ___ untersucht.",a:"werde",o:["werde","wirst","wird","werden"],t:"Ja sam pregledan/a."},
+{p:"Wir ___ eingeladen.",a:"werden",o:["wird","werdet","werden","werde"],t:"Mi smo pozvani."},
+{p:"Das Fenster ___ geschlossen.",a:"wird",o:["werden","werde","wird","wirst"],t:"Prozor se zatvara."},
+{p:"Die Schüler ___ geprüft.",a:"werden",o:["werden","werdet","wird","wirst"],t:"Učenici se ispituju."}
+];
+
+const q2Data = [
+{words:["wird","Das Auto","repariert"],a:"Das Auto wird repariert.",t:"Auto se popravlja."},
+{words:["werden","Die Briefe","geschrieben"],a:"Die Briefe werden geschrieben.",t:"Pisma se pišu."},
+{words:["wird","Die Tür","geöffnet"],a:"Die Tür wird geöffnet.",t:"Vrata se otvaraju."},
+{words:["hier","Deutsch","gesprochen","wird"],a:"Deutsch wird hier gesprochen.",t:"Ovde se govori nemački."},
+{words:["wird","Das Essen","gekocht"],a:"Das Essen wird gekocht.",t:"Hrana se kuva."},
+{words:["Die Pakete","geliefert","werden"],a:"Die Pakete werden geliefert.",t:"Paketi se dostavljaju."},
+{words:["wird","Der Vertrag","unterschrieben"],a:"Der Vertrag wird unterschrieben.",t:"Ugovor se potpisuje."},
+{words:["werden","Die Fragen","beantwortet"],a:"Die Fragen werden beantwortet.",t:"Na pitanja se odgovara."}
+];
+
+const q3Data = [
+{p:"Der Koch kocht das Essen.",a:"Das Essen wird vom Koch gekocht.",t:"Kuvar kuva hranu."},
+{p:"Der Mechaniker repariert das Auto.",a:"Das Auto wird vom Mechaniker repariert.",t:"Mehaničar popravlja auto."},
+{p:"Die Lehrerin erklärt die Aufgabe.",a:"Die Aufgabe wird von der Lehrerin erklärt.",t:"Nastavnica objašnjava zadatak."},
+{p:"Der Arzt untersucht den Patienten.",a:"Der Patient wird vom Arzt untersucht.",t:"Lekar pregleda pacijenta."},
+{p:"Die Firma liefert das Paket.",a:"Das Paket wird von der Firma geliefert.",t:"Firma dostavlja paket."},
+{p:"Die Schüler schreiben die Texte.",a:"Die Texte werden von den Schülern geschrieben.",t:"Učenici pišu tekstove."}
+];
+
+const q4Data = [
+{p:"Die Tür wird ______. (öffnen)",a:"geöffnet",t:"Vrata se otvaraju."},
+{p:"Das Auto wird ______. (reparieren)",a:"repariert",t:"Auto se popravlja."},
+{p:"Das Essen wird ______. (kochen)",a:"gekocht",t:"Hrana se kuva."},
+{p:"Der Brief wird ______. (schreiben)",a:"geschrieben",t:"Pismo se piše."},
+{p:"Das Haus wird ______. (bauen)",a:"gebaut",t:"Kuća se gradi."},
+{p:"Die Rechnung wird ______. (bezahlen)",a:"bezahlt",t:"Račun se plaća."},
+{p:"Das Paket wird ______. (liefern)",a:"geliefert",t:"Paket se dostavlja."},
+{p:"Der Vertrag wird ______. (unterschreiben)",a:"unterschrieben",t:"Ugovor se potpisuje."}
+];
+
+let correct=0, attempts=0;
+let i1=0,i2=0,i3=0,i4=0;
+let built=[];
+
+function speak(txt){
+  if(!("speechSynthesis" in window)) return;
+  speechSynthesis.cancel();
+  const u=new SpeechSynthesisUtterance(txt);
+  u.lang="de-DE";u.rate=.86;
+  speechSynthesis.speak(u);
+}
+function updateStats(){
+  let pct=attempts?Math.round(correct/attempts*100):0;
+  document.getElementById("stats").textContent=`Tačno: ${correct} · Pokušaji: ${attempts} · Uspešnost: ${pct}%`;
+  document.getElementById("progress").style.width=Math.min(100,correct/24*100)+"%";
+}
+function score(ok){
+  attempts++; if(ok) correct++; updateStats();
+}
+function showTab(id,btn){
+  document.querySelectorAll(".tab").forEach(x=>x.classList.add("hide"));
+  document.getElementById(id).classList.remove("hide");
+  document.querySelectorAll(".nav button").forEach(x=>x.classList.remove("active"));
+  btn.classList.add("active");
+}
+document.getElementById("examplesList").innerHTML=examples.map((x,i)=>`
+<div class="example" onclick="speak('${x[0].replaceAll("'","\\'")}')" style="cursor:pointer">
+<div class="de">${i+1}. ${x[0]} 🔊</div><div class="sr">${x[1]}</div></div>`).join("");
+
+function renderQ1(){
+ const d=q1Data[i1%q1Data.length], box=document.getElementById("q1");
+ box.innerHTML=`<div class="prompt">${d.p}</div><div class="translation">${d.t}</div>
+ <div class="options">${d.o.map(o=>`<button class="option" onclick="ans1(this,'${o}')">${o}</button>`).join("")}</div>
+ <div id="fb1" class="feedback"></div><div class="actions"><button class="btn secondary" onclick="next1()">Sledeće →</button></div>`;
+}
+function ans1(el,val){
+ const d=q1Data[i1%q1Data.length],ok=val===d.a;score(ok);
+ document.querySelectorAll("#q1 .option").forEach(b=>b.disabled=true);
+ el.classList.add(ok?"correct":"wrong");
+ document.querySelectorAll("#q1 .option").forEach(b=>{if(b.textContent===d.a)b.classList.add("correct")});
+ const f=document.getElementById("fb1");f.className="feedback "+(ok?"ok":"bad");
+ f.innerHTML=(ok?"✓ Tačno!":"✗ Nije tačno.")+` <div class="answer">${d.p.replace("___",d.a)}</div>`;
+ if(ok)speak(d.p.replace("___",d.a));
+}
+function next1(){i1++;renderQ1()}
+
+function renderQ2(){
+ built=[];const d=q2Data[i2%q2Data.length], shuffled=[...d.words].sort(()=>Math.random()-.5);
+ document.getElementById("q2").innerHTML=`<div class="translation">${d.t}</div>
+ <div class="sentence-build" id="build"></div><div class="wordbank" id="bank">
+ ${shuffled.map((w,k)=>`<button class="word" id="w${k}" onclick="addWord(this,'${w.replaceAll("'","\\'")}')">${w}</button>`).join("")}
+ </div><div id="fb2" class="feedback"></div>
+ <div class="actions"><button class="btn primary" onclick="check2()">Proveri</button><button class="btn red" onclick="renderQ2()">Ponovo</button><button class="btn secondary" onclick="next2()">Sledeće →</button></div>`;
+}
+function addWord(el,w){
+ built.push({w,id:el.id});el.classList.add("hide");
+ const b=document.createElement("button");b.className="word";b.textContent=w;b.onclick=()=>removeWord(b,el.id,w);document.getElementById("build").appendChild(b);
+}
+function removeWord(btn,id,w){
+ btn.remove();document.getElementById(id).classList.remove("hide");
+ const idx=built.findIndex(x=>x.id===id);if(idx>=0)built.splice(idx,1);
+}
+function check2(){
+ const d=q2Data[i2%q2Data.length],s=built.map(x=>x.w).join(" ")+".",ok=s===d.a;score(ok);
+ const f=document.getElementById("fb2");f.className="feedback "+(ok?"ok":"bad");
+ f.innerHTML=(ok?"✓ Odlično!":"✗ Probaj ponovo.")+`<div class="answer">Rešenje: ${d.a}</div>`;
+ if(ok)speak(d.a);
+}
+function next2(){i2++;renderQ2()}
+
+function renderQ3(){
+ const d=q3Data[i3%q3Data.length];
+ document.getElementById("q3").innerHTML=`<div class="prompt">${d.p}</div><div class="translation">${d.t}</div>
+ <input id="in3" class="input" placeholder="Napiši rečenicu u pasivu...">
+ <div id="fb3" class="feedback"></div><div class="actions">
+ <button class="btn primary" onclick="check3()">Proveri</button>
+ <button class="btn green" onclick="show3()">Prikaži rešenje</button>
+ <button class="btn secondary" onclick="next3()">Sledeće →</button></div>`;
+}
+function norm(s){return s.trim().toLowerCase().replace(/[.!?]/g,"").replace(/\s+/g," ")}
+function check3(){
+ const d=q3Data[i3%q3Data.length],v=document.getElementById("in3").value,ok=norm(v)===norm(d.a);score(ok);
+ const f=document.getElementById("fb3");f.className="feedback "+(ok?"ok":"bad");
+ f.innerHTML=(ok?"✓ Tačno!":"✗ Proveri red reči.")+`<div class="answer">${d.a}</div>`;
+ if(ok)speak(d.a)
+}
+function show3(){const d=q3Data[i3%q3Data.length],f=document.getElementById("fb3");f.className="feedback ok";f.innerHTML=`<div class="answer">${d.a}</div>`;speak(d.a)}
+function next3(){i3++;renderQ3()}
+
+function renderQ4(){
+ const d=q4Data[i4%q4Data.length];
+ document.getElementById("q4").innerHTML=`<div class="prompt">${d.p}</div><div class="translation">${d.t}</div>
+ <input id="in4" class="input" placeholder="Upiši Partizip II...">
+ <div id="fb4" class="feedback"></div><div class="actions"><button class="btn primary" onclick="check4()">Proveri</button>
+ <button class="btn secondary" onclick="next4()">Sledeće →</button></div>`;
+}
+function check4(){
+ const d=q4Data[i4%q4Data.length],v=document.getElementById("in4").value,ok=norm(v)===norm(d.a);score(ok);
+ const full=d.p.replace("______",d.a).replace(/\s*\([^)]*\)/,"");
+ const f=document.getElementById("fb4");f.className="feedback "+(ok?"ok":"bad");
+ f.innerHTML=(ok?"✓ Tačno!":"✗ Nije tačno.")+`<div class="answer">${d.a}</div>`;
+ if(ok)speak(full)
+}
+function next4(){i4++;renderQ4()}
+
+renderQ1();renderQ2();renderQ3();renderQ4();updateStats();
+</script>
+</body>
+</html>
