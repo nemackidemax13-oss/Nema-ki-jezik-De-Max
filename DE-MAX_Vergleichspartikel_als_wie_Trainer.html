@@ -1,0 +1,748 @@
+<!DOCTYPE html>
+<html lang="sr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>DE-MAX • Vergleichspartikel Trainer</title>
+<style>
+:root{
+  --blue1:#082d73;
+  --blue2:#0b57c2;
+  --blue3:#1b8cff;
+  --sky:#eef7ff;
+  --line:#cfe4ff;
+  --text:#12325f;
+  --white:#ffffff;
+  --red:#ef2f2f;
+  --yellow:#ffe45c;
+  --green:#11a760;
+  --shadow:0 18px 45px rgba(6,43,104,.12);
+}
+*{box-sizing:border-box}
+body{
+  margin:0;
+  font-family:Inter, Arial, sans-serif;
+  color:var(--text);
+  background:
+    radial-gradient(circle at top left, rgba(27,140,255,.12), transparent 30%),
+    linear-gradient(180deg,#f8fbff,#eef6ff 50%, #f8fbff 100%);
+}
+.app{
+  width:min(1180px,100%);
+  margin:auto;
+  padding:14px 12px 60px;
+}
+.hero{
+  position:relative;
+  overflow:hidden;
+  border-radius:28px;
+  background:linear-gradient(135deg,var(--blue1),var(--blue2) 60%, var(--blue3));
+  color:#fff;
+  padding:26px 22px;
+  box-shadow:var(--shadow);
+}
+.hero:before,.hero:after{
+  content:"";
+  position:absolute;
+  border-radius:50%;
+  background:rgba(255,255,255,.08);
+}
+.hero:before{width:220px;height:220px;right:-70px;top:-70px}
+.hero:after{width:150px;height:150px;left:-40px;bottom:-50px}
+.toprow{
+  display:flex;justify-content:space-between;gap:12px;align-items:center;position:relative;z-index:1;
+}
+.brand{
+  display:flex;align-items:center;gap:10px;font-weight:900;letter-spacing:.4px;
+}
+.badge{
+  width:52px;height:52px;border-radius:16px;background:#fff;color:var(--blue2);
+  display:grid;place-items:center;font-size:18px;font-weight:1000;box-shadow:0 8px 20px rgba(0,0,0,.12);
+}
+.mini-pill{
+  background:rgba(255,255,255,.14);
+  border:1px solid rgba(255,255,255,.22);
+  padding:10px 14px;border-radius:999px;font-weight:800;font-size:13px;
+}
+.hero h1{
+  margin:22px 0 8px;
+  font-size:clamp(34px,6vw,64px);
+  line-height:1.03;
+  letter-spacing:-1px;
+  position:relative;z-index:1;
+}
+.hero h1 .red{color:#ffd8d8}
+.hero p{
+  max-width:860px;margin:0;line-height:1.6;font-size:clamp(15px,2vw,20px);
+  position:relative;z-index:1;opacity:.98;
+}
+.stats{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:22px;position:relative;z-index:1;
+}
+.stat{
+  background:rgba(255,255,255,.14);
+  border:1px solid rgba(255,255,255,.2);
+  border-radius:18px;padding:14px 16px;
+}
+.stat b{display:block;font-size:24px}
+.stat span{font-size:12px;opacity:.92}
+.tabs{
+  display:flex;gap:8px;overflow:auto;padding:16px 1px 6px;scrollbar-width:none;
+}
+.tabs::-webkit-scrollbar{display:none}
+.tabs button{
+  background:#fff;border:1px solid var(--line);border-radius:14px;padding:11px 15px;
+  color:var(--text);font-weight:900;white-space:nowrap;cursor:pointer;box-shadow:0 8px 20px rgba(6,43,104,.05)
+}
+.tabs button.active{background:var(--blue2);color:#fff;border-color:var(--blue2)}
+.section{display:none;margin-top:16px}
+.section.active{display:block}
+.card{
+  background:rgba(255,255,255,.97);
+  border:1px solid var(--line);
+  border-radius:26px;
+  padding:22px;
+  box-shadow:var(--shadow);
+}
+.card + .card{margin-top:14px}
+.head{
+  display:flex;justify-content:space-between;gap:10px;align-items:flex-start;margin-bottom:18px;
+}
+.kicker{
+  display:inline-flex;align-items:center;gap:8px;
+  background:#e8f3ff;color:var(--blue2);padding:8px 11px;border-radius:999px;
+  font-size:12px;font-weight:900;text-transform:uppercase;letter-spacing:.8px
+}
+.head h2{margin:8px 0 0;font-size:clamp(25px,4vw,34px)}
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.rule{
+  border:1px solid var(--line);border-radius:22px;overflow:hidden;background:linear-gradient(180deg,#f9fcff,#eef7ff);
+}
+.rule .title{
+  background:linear-gradient(90deg,var(--blue1),var(--blue2));
+  color:#fff;padding:15px 18px;font-weight:900;font-size:20px;
+}
+.rule .body{padding:16px 18px}
+.example{
+  padding:12px 0;border-bottom:1px dashed #d7e8fb;font-size:20px;font-weight:700;
+}
+.example:last-child{border-bottom:0}
+.hl-red{color:var(--red);font-weight:950}
+.hl-yellow{background:var(--yellow);padding:0 6px;border-radius:8px}
+.note{
+  background:#fff7d1;border:1px solid #f4df7c;border-radius:18px;padding:14px 16px;
+  color:#665100;font-weight:700;line-height:1.55
+}
+.exercise-layout{display:grid;grid-template-columns:1fr 280px;gap:16px}
+.questionbox{
+  min-height:290px;display:flex;flex-direction:column;justify-content:center;
+  border:1px solid var(--line);border-radius:24px;
+  padding:22px;background:linear-gradient(180deg,#fff,#f5faff)
+}
+.qtop{font-size:13px;text-transform:uppercase;letter-spacing:.8px;font-weight:900;color:#6c8ab1}
+.qtext{
+  margin:12px 0 18px;font-size:clamp(26px,4vw,40px);line-height:1.28;font-weight:900;
+}
+.blank{
+  display:inline-block;min-width:110px;padding:0 8px;text-align:center;
+  border-bottom:4px solid var(--blue2);color:var(--red)
+}
+.options{display:flex;flex-wrap:wrap;gap:10px}
+.option{
+  padding:13px 18px;border-radius:15px;border:2px solid var(--line);
+  background:#fff;cursor:pointer;font-weight:900;color:var(--text);transition:.18s;
+}
+.option:hover{transform:translateY(-2px);border-color:var(--blue2);box-shadow:0 8px 20px rgba(11,87,194,.12)}
+.option.correct{background:#e9fff2;border-color:#4ed18c;color:#0a8b53}
+.option.wrong{background:#fff0f0;border-color:#ef9393;color:#cd2f2f}
+.feedback{min-height:30px;margin-top:14px;font-weight:900}
+.feedback.ok{color:var(--green)}
+.feedback.no{color:var(--red)}
+.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
+.btn{
+  border:0;border-radius:14px;padding:12px 16px;font-weight:900;cursor:pointer
+}
+.btn.primary{background:linear-gradient(90deg,var(--blue1),var(--blue2));color:#fff}
+.btn.ghost{background:#edf6ff;color:var(--blue2);border:1px solid var(--line)}
+.btn.speak{background:#fff6d6;color:#6f5500;border:1px solid #f4df7c}
+.side{
+  border:1px solid var(--line);border-radius:24px;padding:16px;background:linear-gradient(180deg,#eef7ff,#fff)
+}
+.ring{
+  width:120px;height:120px;border-radius:50%;margin:6px auto 12px;
+  display:grid;place-items:center;position:relative;background:conic-gradient(var(--blue2) 0deg,#d8ebff 0deg)
+}
+.ring:after{content:"";position:absolute;width:88px;height:88px;border-radius:50%;background:#fff}
+.ring span{position:relative;z-index:1;font-weight:950;font-size:24px}
+.side h3{text-align:center;margin:0 0 12px}
+.mini{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.mini div{background:#fff;border:1px solid var(--line);border-radius:14px;padding:10px;text-align:center}
+.mini b{display:block;font-size:20px}
+.answerline{
+  min-height:76px;background:#f7fbff;border:2px dashed #a8d0f4;border-radius:18px;padding:12px;
+  display:flex;flex-wrap:wrap;gap:10px;align-items:center
+}
+.wordbank{display:flex;flex-wrap:wrap;gap:10px;margin-top:12px}
+.word{
+  padding:10px 13px;border-radius:13px;border:2px solid var(--line);background:#fff;cursor:pointer;font-weight:900
+}
+.word.used{opacity:.35;pointer-events:none}
+.token{
+  background:var(--blue2);color:#fff;padding:9px 12px;border-radius:12px;font-weight:850;cursor:pointer
+}
+.search{
+  width:100%;padding:13px 15px;border-radius:16px;border:1px solid var(--line);
+  outline:none;font:inherit;font-weight:700;color:var(--text)
+}
+.search:focus{border-color:var(--blue2);box-shadow:0 0 0 4px rgba(11,87,194,.08)}
+.table-wrap{overflow:auto;margin-top:12px}
+table{width:100%;border-collapse:separate;border-spacing:0 9px}
+th{text-align:left;color:#6c8ab1;font-size:12px;text-transform:uppercase;letter-spacing:.8px;padding:0 12px 4px}
+td{
+  background:#f7fbff;border-top:1px solid #d9ebfb;border-bottom:1px solid #d9ebfb;
+  padding:13px 12px;font-weight:750;vertical-align:top
+}
+td:first-child{border-left:1px solid #d9ebfb;border-radius:14px 0 0 14px}
+td:last-child{border-right:1px solid #d9ebfb;border-radius:0 14px 14px 0}
+.tag{
+  display:inline-block;background:#e8f2ff;color:var(--blue2);padding:4px 8px;border-radius:999px;font-size:11px;font-weight:900
+}
+.footer{margin-top:26px;text-align:center;font-size:13px;color:#6c8ab1}
+@media(max-width:820px){
+  .stats{grid-template-columns:1fr}
+  .grid-2,.exercise-layout{grid-template-columns:1fr}
+  .side{order:-1}
+  .hero{padding:22px 16px}
+  .toprow{align-items:flex-start}
+  .mini-pill{display:none}
+  .card{padding:16px}
+  .qtext{font-size:29px}
+  .ring{width:96px;height:96px}
+  .ring:after{width:68px;height:68px}
+  .ring span{font-size:20px}
+}
+</style>
+</head>
+<body>
+<div class="app">
+  <header class="hero">
+    <div class="toprow">
+      <div class="brand">
+        <div class="badge">DM</div>
+        <div>DE-MAX<br><small style="opacity:.85;font-weight:700;letter-spacing:1px">VERGLEICHSTRAINER</small></div>
+      </div>
+      <div class="mini-pill">A1–B1 • als / wie</div>
+    </div>
+    <h1>Vergleichspartikel: <span class="red">als</span>, <span class="red">genau so wie</span></h1>
+    <p>Nauči razliku između poređenja <b>različitosti</b> i <b>sličnosti</b>. Vežbaj kroz izbor tačnog odgovora, dopunjavanje rečenica, redosled reči, komparativ prideva i završni test.</p>
+    <div class="stats">
+      <div class="stat"><b id="heroDone">0</b><span>urađeno zadataka</span></div>
+      <div class="stat"><b id="heroCorrect">0</b><span>tačnih odgovora</span></div>
+      <div class="stat"><b id="heroRate">0%</b><span>ukupna uspešnost</span></div>
+    </div>
+  </header>
+
+  <nav class="tabs">
+    <button class="active" data-tab="pravilo">📘 Pravilo</button>
+    <button data-tab="izbor">✅ Izaberi</button>
+    <button data-tab="dopuni">✍️ Dopuni</button>
+    <button data-tab="redosled">🧩 Redosled reči</button>
+    <button data-tab="pridevi">📚 Komparativ prideva</button>
+    <button data-tab="test">🏁 Završni test</button>
+  </nav>
+
+  <section id="pravilo" class="section active">
+    <div class="card">
+      <div class="head">
+        <div>
+          <div class="kicker">Osnovno pravilo</div>
+          <h2>Kada ide <span class="hl-red">als</span>, a kada <span class="hl-red">so / genau so … wie</span>?</h2>
+        </div>
+      </div>
+      <div class="grid-2">
+        <div class="rule">
+          <div class="title">ALS = različitost</div>
+          <div class="body">
+            <p>Rečca <b>als</b> pokazuje da je nešto <b>više</b> ili <b>manje</b> u odnosu na nešto drugo. Pridev tada stoji u <b>komparativu</b>.</p>
+            <div class="example">Mein Auto ist <span class="hl-yellow">schneller</span> <span class="hl-red">als</span> dein Auto.</div>
+            <div class="example">Ich bin <span class="hl-yellow">größer</span> <span class="hl-red">als</span> mein Bruder.</div>
+            <div class="example">Das Buch ist <span class="hl-yellow">interessanter</span> <span class="hl-red">als</span> der Film.</div>
+          </div>
+        </div>
+        <div class="rule">
+          <div class="title">SO / GENAU SO … WIE = sličnost</div>
+          <div class="body">
+            <p>Rečca <b>so … wie</b> ili <b>genau so … wie</b> pokazuje da su dve osobe ili stvari <b>jednake</b>. Pridev tada stoji u <b>pozitivu</b>.</p>
+            <div class="example">Mein Auto ist <span class="hl-red">genau so</span> <span class="hl-yellow">schnell</span> <span class="hl-red">wie</span> dein Auto.</div>
+            <div class="example">Ich bin <span class="hl-red">so</span> <span class="hl-yellow">groß</span> <span class="hl-red">wie</span> meine Schwester.</div>
+            <div class="example">Der Kaffee ist <span class="hl-red">so</span> <span class="hl-yellow">heiß</span> <span class="hl-red">wie</span> die Suppe.</div>
+          </div>
+        </div>
+      </div>
+      <div class="note" style="margin-top:16px">
+        Zapamti: <b>als = komparativ + različitost</b>, a <b>so / genau so … wie = pozitiv + sličnost</b>.
+      </div>
+    </div>
+  </section>
+
+  <section id="izbor" class="section">
+    <div class="card">
+      <div class="head"><div><div class="kicker">Vežba 1</div><h2>Izaberi tačnu reč</h2></div></div>
+      <div class="exercise-layout">
+        <div class="questionbox">
+          <div class="qtop" id="choiceNo">Zadatak 1</div>
+          <div class="qtext" id="choiceQuestion"></div>
+          <div class="options" id="choiceOptions"></div>
+          <div class="feedback" id="choiceFeedback"></div>
+          <div class="actions">
+            <button class="btn primary" id="nextChoice">Sledeće →</button>
+            <button class="btn speak" id="speakChoice">🔊 Izgovor</button>
+          </div>
+        </div>
+        <div class="side">
+          <div class="ring" id="choiceRing"><span id="choicePct">0%</span></div>
+          <h3>Napredak</h3>
+          <div class="mini">
+            <div><b id="choiceDone">0</b><span>urađeno</span></div>
+            <div><b id="choiceGood">0</b><span>tačno</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="dopuni" class="section">
+    <div class="card">
+      <div class="head"><div><div class="kicker">Vežba 2</div><h2>Dopuni rečenicu</h2></div></div>
+      <div class="exercise-layout">
+        <div class="questionbox">
+          <div class="qtop" id="fillNo">Zadatak 1</div>
+          <div class="qtext" id="fillQuestion"></div>
+          <div class="options" id="fillOptions"></div>
+          <div class="feedback" id="fillFeedback"></div>
+          <div class="actions">
+            <button class="btn primary" id="nextFill">Sledeće →</button>
+            <button class="btn ghost" id="showFill">Rešenje</button>
+            <button class="btn speak" id="speakFill">🔊 Izgovor</button>
+          </div>
+        </div>
+        <div class="side">
+          <div class="ring" id="fillRing"><span id="fillPct">0%</span></div>
+          <h3>Napredak</h3>
+          <div class="mini">
+            <div><b id="fillDone">0</b><span>urađeno</span></div>
+            <div><b id="fillGood">0</b><span>tačno</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="redosled" class="section">
+    <div class="card">
+      <div class="head"><div><div class="kicker">Vežba 3</div><h2>Složi rečenicu</h2></div></div>
+      <div class="questionbox">
+        <div class="qtop" id="orderNo">Zadatak 1</div>
+        <div class="qtext" style="font-size:24px" id="orderHint"></div>
+        <div class="answerline" id="answerLine"></div>
+        <div class="wordbank" id="wordBank"></div>
+        <div class="feedback" id="orderFeedback"></div>
+        <div class="actions">
+          <button class="btn primary" id="checkOrder">Proveri</button>
+          <button class="btn ghost" id="resetOrder">Ponovo</button>
+          <button class="btn ghost" id="showOrder">Rešenje</button>
+          <button class="btn speak" id="speakOrder">🔊 Izgovor</button>
+          <button class="btn primary" id="nextOrder">Sledeće →</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="pridevi" class="section">
+    <div class="card">
+      <div class="head"><div><div class="kicker">Dodatno</div><h2>Najvažniji pridevi za poređenje</h2></div></div>
+      <input class="search" id="adjSearch" placeholder="Pretraži pridev ili prevod..." />
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>Pozitiv</th><th>Komparativ</th><th>Prevod</th><th>Primer</th></tr>
+          </thead>
+          <tbody id="adjTable"></tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section id="test" class="section">
+    <div class="card">
+      <div class="head"><div><div class="kicker">Mini test</div><h2>Završni test</h2></div></div>
+      <div class="exercise-layout">
+        <div class="questionbox">
+          <div class="qtop" id="testNo">Pitanje 1 / 15</div>
+          <div class="qtext" id="testQuestion"></div>
+          <div class="options" id="testOptions"></div>
+          <div class="feedback" id="testFeedback"></div>
+          <div class="actions">
+            <button class="btn primary" id="nextTest">Sledeće →</button>
+            <button class="btn speak" id="speakTest">🔊 Izgovor</button>
+          </div>
+        </div>
+        <div class="side">
+          <div class="ring" id="testRing"><span id="testPct">0%</span></div>
+          <h3>Rezultat testa</h3>
+          <div class="mini">
+            <div><b id="testDone">0</b><span>od 15</span></div>
+            <div><b id="testGood">0</b><span>tačno</span></div>
+          </div>
+          <div class="note" id="testResult" style="margin-top:12px">Odgovori na sva pitanja.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="footer">DE-MAX • Vergleichspartikel Trainer • als / genau so wie</div>
+</div>
+
+<script>
+const choiceData = [
+["Mein Bruder ist größer ___ ich.","als","Mein Bruder ist größer als ich."],
+["Mein Laptop ist genauso schnell ___ dein Laptop.","wie","Mein Laptop ist genauso schnell wie dein Laptop."],
+["Heute ist es wärmer ___ gestern.","als","Heute ist es wärmer als gestern."],
+["Sara ist so fleißig ___ ihre Schwester.","wie","Sara ist so fleißig wie ihre Schwester."],
+["Das Auto ist teurer ___ das Fahrrad.","als","Das Auto ist teurer als das Fahrrad."],
+["Der Kaffee ist so heiß ___ die Suppe.","wie","Der Kaffee ist so heiß wie die Suppe."],
+["Mein Zimmer ist kleiner ___ dein Zimmer.","als","Mein Zimmer ist kleiner als dein Zimmer."],
+["Der Film ist genauso interessant ___ das Buch.","wie","Der Film ist genauso interessant wie das Buch."],
+["Meine Mutter ist jünger ___ mein Vater.","als","Meine Mutter ist jünger als mein Vater."],
+["Ich bin so müde ___ du.","wie","Ich bin so müde wie du."],
+["Deutsch ist leichter ___ Mathe.","als","Deutsch ist leichter als Mathe."],
+["Der Park ist genauso schön ___ der Garten.","wie","Der Park ist genauso schön wie der Garten."]
+];
+
+const fillData = [
+["Mein Auto ist ___ als dein Auto. (schnell)","schneller","Mein Auto ist schneller als dein Auto."],
+["Ich bin so ___ wie meine Schwester. (groß)","groß","Ich bin so groß wie meine Schwester."],
+["Der Zug ist ___ als der Bus. (langsam)","langsamer","Der Zug ist langsamer als der Bus."],
+["Heute ist es so ___ wie gestern. (kalt)","kalt","Heute ist es so kalt wie gestern."],
+["Das Buch ist ___ als der Film. (interessant)","interessanter","Das Buch ist interessanter als der Film."],
+["Der Kaffee ist genauso ___ wie der Tee. (heiß)","heiß","Der Kaffee ist genauso heiß wie der Tee."],
+["Mein Hund ist ___ als deine Katze. (alt)","älter","Mein Hund ist älter als deine Katze."],
+["Meine Tasche ist so ___ wie deine. (neu)","neu","Meine Tasche ist so neu wie deine."],
+["Der Weg ist ___ als ich dachte. (kurz)","kürzer","Der Weg ist kürzer als ich dachte."],
+["Die Aufgabe ist genauso ___ wie die andere. (schwer)","schwer","Die Aufgabe ist genauso schwer wie die andere."],
+["Mein Handy ist ___ als dein Handy. (gut)","besser","Mein Handy ist besser als dein Handy."],
+["Das Wetter ist so ___ wie im Sommer. (schön)","schön","Das Wetter ist so schön wie im Sommer."]
+];
+
+const orderData = [
+{hint:"Složi: Moj auto je brži od tvog auta.", words:["Mein","Auto","ist","schneller","als","dein","Auto."], ans:"Mein Auto ist schneller als dein Auto."},
+{hint:"Složi: Ja sam isto tako visok kao moj brat.", words:["Ich","bin","so","groß","wie","mein","Bruder."], ans:"Ich bin so groß wie mein Bruder."},
+{hint:"Složi: Knjiga je zanimljivija od filma.", words:["Das","Buch","ist","interessanter","als","der","Film."], ans:"Das Buch ist interessanter als der Film."},
+{hint:"Složi: Danas je isto tako hladno kao juče.", words:["Heute","ist","es","so","kalt","wie","gestern."], ans:"Heute ist es so kalt wie gestern."},
+{hint:"Složi: Moj pas je stariji od tvoje mačke.", words:["Mein","Hund","ist","älter","als","deine","Katze."], ans:"Mein Hund ist älter als deine Katze."},
+{hint:"Složi: Ovaj restoran je isto tako dobar kao onaj.", words:["Dieses","Restaurant","ist","genauso","gut","wie","jenes."], ans:"Dieses Restaurant ist genauso gut wie jenes."},
+{hint:"Složi: Voz je sporiji od auta.", words:["Der","Zug","ist","langsamer","als","das","Auto."], ans:"Der Zug ist langsamer als das Auto."},
+{hint:"Složi: Moja soba je isto tako svetla kao tvoja.", words:["Mein","Zimmer","ist","so","hell","wie","deins."], ans:"Mein Zimmer ist so hell wie deins."},
+{hint:"Složi: Ova torba je skuplja od one.", words:["Diese","Tasche","ist","teurer","als","jene."], ans:"Diese Tasche ist teurer als jene."},
+{hint:"Složi: Kafa je isto tako topla kao čaj.", words:["Der","Kaffee","ist","so","heiß","wie","der","Tee."], ans:"Der Kaffee ist so heiß wie der Tee."}
+];
+
+const adjectives = [
+["groß","größer","velik","Ich bin größer als mein Bruder."],
+["klein","kleiner","mali","Mein Zimmer ist kleiner als deins."],
+["schnell","schneller","brz","Das Auto ist schneller als das Fahrrad."],
+["langsam","langsamer","spor","Der Zug ist langsamer als das Auto."],
+["alt","älter","star","Mein Hund ist älter als deine Katze."],
+["jung","jünger","mlad","Anna ist jünger als Lara."],
+["interessant","interessanter","zanimljiv","Das Buch ist interessanter als der Film."],
+["schön","schöner","lep","Der Park ist schöner als die Straße."],
+["kalt","kälter","hladan","Heute ist es kälter als gestern."],
+["warm","wärmer","topao","Es ist wärmer als am Montag."],
+["gut","besser","dobar","Mein Handy ist besser als dein Handy."],
+["gern","lieber","rado","Ich schwimme lieber als ich laufe."],
+["viel","mehr","mnogo","Heute habe ich mehr Zeit als gestern."],
+["hoch","höher","visok","Der Berg ist höher als der Hügel."],
+["teuer","teurer","skup","Diese Tasche ist teurer als jene."],
+["billig","billiger","jeftin","Das Heft ist billiger als das Buch."],
+["hell","heller","svetao","Mein Zimmer ist heller als deins."],
+["schwer","schwerer","težak","Die Kiste ist schwerer als die Tasche."],
+["leicht","leichter","lak","Deutsch ist leichter als Mathe."],
+["laut","lauter","glasan","Das Radio ist lauter als der Fernseher."]
+];
+
+const testData = [
+["Heute ist es wärmer ___ gestern.","als","Heute ist es wärmer als gestern."],
+["Mein Kaffee ist so heiß ___ dein Kaffee.","wie","Mein Kaffee ist so heiß wie dein Kaffee."],
+["Das Buch ist ___ als der Film. (interessant)","interessanter","Das Buch ist interessanter als der Film."],
+["Mein Zimmer ist kleiner ___ dein Zimmer.","als","Mein Zimmer ist kleiner als dein Zimmer."],
+["Ich bin so groß ___ meine Schwester.","wie","Ich bin so groß wie meine Schwester."],
+["Der Zug ist ___ als der Bus. (langsam)","langsamer","Der Zug ist langsamer als der Bus."],
+["Dieses Handy ist besser ___ das alte.","als","Dieses Handy ist besser als das alte."],
+["Die Suppe ist genauso heiß ___ der Kaffee.","wie","Die Suppe ist genauso heiß wie der Kaffee."],
+["Mein Hund ist ___ als deine Katze. (alt)","älter","Mein Hund ist älter als deine Katze."],
+["Der Park ist schöner ___ die Straße.","als","Der Park ist schöner als die Straße."],
+["Anna ist so fleißig ___ ihre Freundin.","wie","Anna ist so fleißig wie ihre Freundin."],
+["Das Wetter ist ___ als letzte Woche. (gut)","besser","Das Wetter ist besser als letzte Woche."],
+["Mein Bruder ist jünger ___ ich.","als","Mein Bruder ist jünger als ich."],
+["Der Tee ist so warm ___ der Kaffee.","wie","Der Tee ist so warm wie der Kaffee."],
+["Der Weg ist ___ als ich dachte. (kurz)","kürzer","Der Weg ist kürzer als ich dachte."]
+];
+
+let totals={done:0,good:0};
+
+function updateHero(){
+  document.getElementById("heroDone").textContent = totals.done;
+  document.getElementById("heroCorrect").textContent = totals.good;
+  document.getElementById("heroRate").textContent = totals.done ? Math.round(totals.good/totals.done*100)+"%" : "0%";
+}
+
+function speak(text){
+  if(!("speechSynthesis" in window)) return;
+  speechSynthesis.cancel();
+  const u = new SpeechSynthesisUtterance(text);
+  u.lang = "de-DE";
+  u.rate = 0.9;
+  speechSynthesis.speak(u);
+}
+
+function setRing(id,pct){
+  document.getElementById(id).style.background = `conic-gradient(var(--blue2) ${pct*3.6}deg, #d8ebff 0deg)`;
+}
+function shuffle(arr){ return [...arr].sort(()=>Math.random()-0.5); }
+
+document.querySelectorAll(".tabs button").forEach(btn=>{
+  btn.onclick=()=>{
+    document.querySelectorAll(".tabs button").forEach(b=>b.classList.remove("active"));
+    document.querySelectorAll(".section").forEach(s=>s.classList.remove("active"));
+    btn.classList.add("active");
+    document.getElementById(btn.dataset.tab).classList.add("active");
+  }
+});
+
+function setupMultiple(prefix,data,options){
+  let i=0,done=0,good=0,locked=false, current="";
+  const q=document.getElementById(prefix+"Question");
+  const no=document.getElementById(prefix+"No");
+  const optBox=document.getElementById(prefix+"Options");
+  const fb=document.getElementById(prefix+"Feedback");
+  const d=document.getElementById(prefix+"Done");
+  const g=document.getElementById(prefix+"Good");
+  const pct=document.getElementById(prefix+"Pct");
+
+  function render(){
+    locked=false;
+    fb.textContent=""; fb.className="feedback";
+    const item=data[i];
+    current=item[2];
+    no.textContent=`Zadatak ${i+1} / ${data.length}`;
+    q.innerHTML=item[0].replace("___",'<span class="blank">?</span>');
+    optBox.innerHTML="";
+    shuffle(options(i,item)).forEach(op=>{
+      const b=document.createElement("button");
+      b.className="option";
+      b.textContent=op;
+      b.onclick=()=>{
+        if(locked) return;
+        locked=true;
+        done++; totals.done++;
+        q.innerHTML=item[0].replace("___", `<span class="blank">${op}</span>`);
+        if(op===item[1]){
+          b.classList.add("correct");
+          fb.textContent="✓ Tačno!";
+          fb.classList.add("ok");
+          good++; totals.good++;
+          speak(item[2]);
+        }else{
+          b.classList.add("wrong");
+          fb.textContent="✗ Tačno rešenje: "+item[1];
+          fb.classList.add("no");
+        }
+        d.textContent=done; g.textContent=good;
+        const pr=Math.round(done/data.length*100);
+        pct.textContent=pr+"%";
+        setRing(prefix+"Ring",pr);
+        updateHero();
+      };
+      optBox.appendChild(b);
+    });
+  }
+
+  document.getElementById("next"+prefix.charAt(0).toUpperCase()+prefix.slice(1)).onclick=()=>{
+    i=(i+1)%data.length; render();
+  };
+  const speakBtn=document.getElementById("speak"+prefix.charAt(0).toUpperCase()+prefix.slice(1));
+  if(speakBtn) speakBtn.onclick=()=>speak(current);
+  const showBtn=document.getElementById("show"+prefix.charAt(0).toUpperCase()+prefix.slice(1));
+  if(showBtn) showBtn.onclick=()=>{
+    q.innerHTML=data[i][0].replace("___", `<span class="blank">${data[i][1]}</span>`);
+    fb.textContent="Rešenje: "+data[i][2];
+    fb.className="feedback ok";
+  };
+  render();
+}
+
+setupMultiple("choice", choiceData, ()=>["als","wie","so","genauso"]);
+setupMultiple("fill", fillData, (i,item)=>{
+  const answer=item[1];
+  const sets = {
+    "schneller":["schnell","schneller","schnellsten","langsam"],
+    "groß":["groß","größer","am größten","klein"],
+    "langsamer":["langsam","langsamer","schneller","langsamsten"],
+    "kalt":["kalt","kälter","kalte","am kältesten"],
+    "interessanter":["interessant","interessanter","am interessantesten","langweilig"],
+    "heiß":["heiß","heißer","wärmer","heiße"],
+    "älter":["alt","älter","älteste","jung"],
+    "neu":["neu","neuer","neuste","alt"],
+    "kürzer":["kurz","kürzer","kürzest","lang"],
+    "schwer":["schwer","schwerer","schwere","leicht"],
+    "besser":["gut","besser","best","gute"],
+    "schön":["schön","schöner","schöne","warm"]
+  };
+  return sets[answer] || [answer,"als","wie","so"];
+});
+
+let oi=0, selected=[];
+function renderOrder(){
+  selected=[];
+  const item=orderData[oi];
+  document.getElementById("orderNo").textContent=`Zadatak ${oi+1} / ${orderData.length}`;
+  document.getElementById("orderHint").textContent=item.hint;
+  document.getElementById("orderFeedback").textContent="";
+  document.getElementById("orderFeedback").className="feedback";
+  const line=document.getElementById("answerLine");
+  const bank=document.getElementById("wordBank");
+  line.innerHTML=""; bank.innerHTML="";
+  shuffle(item.words.map((w,idx)=>({w,idx}))).forEach(obj=>{
+    const b=document.createElement("button");
+    b.className="word";
+    b.textContent=obj.w;
+    b.onclick=()=>{
+      selected.push({text:obj.w,el:b});
+      b.classList.add("used");
+      drawOrder();
+    };
+    bank.appendChild(b);
+  });
+}
+function drawOrder(){
+  const line=document.getElementById("answerLine");
+  line.innerHTML="";
+  selected.forEach((item,idx)=>{
+    const t=document.createElement("span");
+    t.className="token";
+    t.textContent=item.text;
+    t.onclick=()=>{
+      item.el.classList.remove("used");
+      selected.splice(idx,1);
+      drawOrder();
+    };
+    line.appendChild(t);
+  });
+}
+document.getElementById("checkOrder").onclick=()=>{
+  const user = selected.map(x=>x.text).join(" ");
+  const ans = orderData[oi].ans;
+  const fb=document.getElementById("orderFeedback");
+  totals.done++;
+  if(user===ans){
+    fb.textContent="✓ Tačno!";
+    fb.className="feedback ok";
+    totals.good++;
+    speak(ans);
+  }else{
+    fb.textContent="✗ Pokušaj još jednom.";
+    fb.className="feedback no";
+  }
+  updateHero();
+};
+document.getElementById("resetOrder").onclick=()=>renderOrder();
+document.getElementById("showOrder").onclick=()=>{
+  const fb=document.getElementById("orderFeedback");
+  fb.textContent="Rešenje: "+orderData[oi].ans;
+  fb.className="feedback ok";
+};
+document.getElementById("nextOrder").onclick=()=>{oi=(oi+1)%orderData.length; renderOrder();};
+document.getElementById("speakOrder").onclick=()=>speak(orderData[oi].ans);
+renderOrder();
+
+function renderAdjTable(filter=""){
+  const tbody=document.getElementById("adjTable");
+  tbody.innerHTML="";
+  adjectives.filter(a=>a.join(" ").toLowerCase().includes(filter.toLowerCase())).forEach(a=>{
+    const tr=document.createElement("tr");
+    tr.innerHTML=`<td>${a[0]}</td><td>${a[1]}</td><td>${a[2]}</td><td>${a[3]}</td>`;
+    tbody.appendChild(tr);
+  });
+}
+document.getElementById("adjSearch").oninput=(e)=>renderAdjTable(e.target.value);
+renderAdjTable();
+
+let ti=0,td=0,tg=0,tlocked=false, tCurrent="";
+function renderTest(){
+  if(ti>=15){
+    document.getElementById("testNo").textContent="Rezultat";
+    document.getElementById("testQuestion").textContent="Test je završen.";
+    document.getElementById("testOptions").innerHTML="";
+    const pct=Math.round((tg/15)*100);
+    document.getElementById("testPct").textContent=pct+"%";
+    setRing("testRing",pct);
+    document.getElementById("testResult").innerHTML = `Osvojeno: <b>${tg}/15</b> (${pct}%). ` + (pct>=80 ? "Odlično!" : pct>=60 ? "Vrlo dobro, vežbaj još malo." : "Ponovi pravilo i uradi ponovo.");
+    return;
+  }
+  tlocked=false;
+  const item=testData[ti];
+  tCurrent=item[2];
+  document.getElementById("testNo").textContent=`Pitanje ${ti+1} / 15`;
+  document.getElementById("testQuestion").innerHTML=item[0].replace("___",'<span class="blank">?</span>');
+  document.getElementById("testFeedback").textContent="";
+  document.getElementById("testFeedback").className="feedback";
+  const box=document.getElementById("testOptions");
+  box.innerHTML="";
+  let options;
+  if(item[0].includes("(interessant)") || item[0].includes("(langsam)") || item[0].includes("(alt)") || item[0].includes("(gut)") || item[0].includes("(kurz)")){
+    options=[item[1], "schön", "größer", "neu"];
+  }else{
+    options=["als","wie","so","genauso"];
+  }
+  shuffle(options).forEach(op=>{
+    const b=document.createElement("button");
+    b.className="option";
+    b.textContent=op;
+    b.onclick=()=>{
+      if(tlocked) return;
+      tlocked=true;
+      td++; totals.done++;
+      document.getElementById("testQuestion").innerHTML=item[0].replace("___", `<span class="blank">${op}</span>`);
+      const fb=document.getElementById("testFeedback");
+      if(op===item[1]){
+        b.classList.add("correct");
+        fb.textContent="✓ Tačno!";
+        fb.className="feedback ok";
+        tg++; totals.good++;
+        speak(item[2]);
+      }else{
+        b.classList.add("wrong");
+        fb.textContent="✗ Tačno rešenje: "+item[1];
+        fb.className="feedback no";
+      }
+      document.getElementById("testDone").textContent=td;
+      document.getElementById("testGood").textContent=tg;
+      const prog=Math.round((td/15)*100);
+      document.getElementById("testPct").textContent=prog+"%";
+      setRing("testRing",prog);
+      updateHero();
+    };
+    box.appendChild(b);
+  });
+}
+document.getElementById("nextTest").onclick=()=>{
+  if(!tlocked && ti<15) return;
+  ti++;
+  renderTest();
+};
+document.getElementById("speakTest").onclick=()=>speak(tCurrent);
+renderTest();
+updateHero();
+</script>
+</body>
+</html>
