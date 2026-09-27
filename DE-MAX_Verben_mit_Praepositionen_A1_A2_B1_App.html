@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="sr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>De-Max | Verben mit Präpositionen</title>
+<style>
+:root{
+  --navy:#08265f;
+  --blue:#0b57d0;
+  --blue2:#1f73ea;
+  --sky:#eaf3ff;
+  --ink:#12233f;
+  --muted:#64748b;
+  --white:#ffffff;
+  --green:#168a4a;
+  --greenbg:#eaf8ef;
+  --red:#d72d2d;
+  --redbg:#fff0f0;
+  --gold:#f5b900;
+  --line:#d8e6fb;
+  --shadow:0 16px 44px rgba(8,38,95,.13);
+}
+*{box-sizing:border-box}
+html,body{margin:0;min-height:100%;font-family:Inter,system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;background:#edf5ff;color:var(--ink)}
+body{display:flex;justify-content:center}
+.app{
+  width:min(100%,560px);
+  min-height:100vh;
+  background:
+    radial-gradient(circle at 90% 3%,rgba(31,115,234,.10),transparent 25%),
+    linear-gradient(180deg,#f8fbff,#edf5ff);
+  padding-bottom:105px;
+}
+.hero{
+  position:sticky;top:0;z-index:15;
+  background:linear-gradient(145deg,#071f50 0%,#083b98 55%,#0b63dd 100%);
+  color:white;
+  padding:18px 18px 17px;
+  border-radius:0 0 30px 30px;
+  box-shadow:0 14px 32px rgba(5,33,84,.28);
+}
+.topline{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.brand{display:flex;align-items:center;gap:10px;font-weight:950;font-size:20px}
+.logo{
+  width:42px;height:42px;border-radius:14px;background:white;color:var(--navy);
+  display:grid;place-items:center;font-weight:1000;font-size:22px;
+  box-shadow:0 6px 16px rgba(0,0,0,.2)
+}
+.badge{font-size:11px;font-weight:900;padding:7px 10px;border-radius:999px;background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.22)}
+h1{font-size:28px;line-height:1.05;margin:16px 0 5px;font-weight:1000;letter-spacing:-.5px}
+h1 span{color:#ffd34d}
+.sub{font-size:12.5px;line-height:1.5;opacity:.92}
+.progress{margin-top:13px}
+.track{height:9px;border-radius:999px;background:rgba(255,255,255,.2);overflow:hidden}
+.fill{height:100%;width:0;background:white;border-radius:999px;transition:.25s}
+.progressmeta{display:flex;justify-content:space-between;margin-top:5px;font-size:10.5px;font-weight:800;opacity:.9}
+
+main{padding:16px}
+.card{
+  background:var(--white);border:1px solid var(--line);border-radius:23px;
+  box-shadow:var(--shadow)
+}
+.intro{padding:16px;margin-bottom:14px}
+.intro-head{display:flex;align-items:center;gap:11px;font-weight:950;font-size:18px;color:var(--navy)}
+.icon{
+  width:40px;height:40px;border-radius:14px;background:var(--sky);display:grid;place-items:center;font-size:21px
+}
+.rulegrid{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:13px}
+.rule{
+  border:1px solid #dce9fb;background:#f7fbff;border-radius:14px;padding:11px;font-size:12px;line-height:1.4;font-weight:750
+}
+.rule.akk b{color:#c71f1f}
+.rule.dat b{color:#08783b}
+.rule strong{color:var(--navy)}
+.note{
+  margin-top:10px;padding:11px 12px;border-radius:14px;background:#fff9df;border:1px solid #f5df89;
+  font-size:11.5px;line-height:1.45;font-weight:750;color:#5d4a00
+}
+
+.tabs{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;margin:14px 0}
+.tab{
+  border:0;border-radius:14px;background:#e6efff;color:#17427f;padding:10px 4px;
+  font-size:10.5px;font-weight:950;cursor:pointer
+}
+.tab.active{background:linear-gradient(135deg,var(--navy),var(--blue));color:white;box-shadow:0 7px 18px rgba(11,87,208,.22)}
+
+.exercise{padding:18px}
+.kicker{font-size:10.5px;font-weight:950;letter-spacing:.9px;color:var(--blue);text-transform:uppercase}
+.title{font-size:20px;font-weight:1000;margin:5px 0 4px}
+.hint{font-size:12px;color:var(--muted);line-height:1.45}
+.caseTag{
+  display:inline-flex;align-items:center;gap:5px;margin-top:10px;padding:6px 9px;border-radius:999px;font-size:10.5px;font-weight:950
+}
+.caseTag.akk{background:#fff0f0;color:#b41f1f}
+.caseTag.dat{background:#eaf8ef;color:#0d7438}
+
+.question{
+  margin:13px 0;padding:17px;border-radius:18px;background:linear-gradient(180deg,#f8fbff,#eef5ff);
+  border:1px solid #d8e7fb;font-size:20px;line-height:1.4;font-weight:950
+}
+.blank{color:var(--blue);border-bottom:3px solid var(--blue);padding:0 4px}
+.trans{font-size:12.5px;color:#607086;margin-top:7px;font-weight:650}
+.answers{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+.answer{
+  min-height:57px;border:2px solid #d9e6f7;background:white;border-radius:16px;
+  padding:10px 8px;color:#16365f;font-size:15px;font-weight:950;cursor:pointer;transition:.16s
+}
+.answer:hover{transform:translateY(-1px);border-color:#a9c8f6}
+.answer.correct{background:var(--greenbg);border-color:#50b678;color:#0b6f36}
+.answer.wrong{background:var(--redbg);border-color:#ed7272;color:#a71919}
+
+.feedback{
+  display:none;margin-top:12px;padding:12px 14px;border-radius:15px;font-size:12.5px;font-weight:800;line-height:1.5
+}
+.feedback.show{display:block}
+.feedback.ok{background:var(--greenbg);border:1px solid #c5ebd3;color:#0a6a34}
+.feedback.no{background:var(--redbg);border:1px solid #f0cccc;color:#9b1919}
+.solution{margin-top:4px;font-size:15px;font-weight:950}
+.translation{font-size:12px;margin-top:4px;opacity:.82}
+
+.controls{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:13px}
+.btn{
+  border:0;border-radius:15px;padding:13px 11px;font-size:13px;font-weight:950;cursor:pointer
+}
+.btn.secondary{background:#e8f0fc;color:#19447f}
+.btn.primary{background:linear-gradient(135deg,#083e9f,#0b63dc);color:white;box-shadow:0 8px 19px rgba(11,87,208,.20)}
+.btn.green{background:linear-gradient(135deg,#0b7a3b,#14a053);color:white}
+
+.orderbox{
+  min-height:63px;border:1px dashed #9bbde9;background:#f2f7ff;border-radius:16px;
+  padding:10px;display:flex;gap:8px;flex-wrap:wrap;margin:11px 0
+}
+.word{
+  border:1px solid #bdd4f2;background:white;color:#163d76;border-radius:12px;padding:9px 11px;font-weight:900;cursor:pointer;
+  box-shadow:0 3px 8px rgba(0,0,0,.04)
+}
+.word.used{background:#0b57d0;color:#fff;border-color:#0b57d0}
+.input{
+  width:100%;border:2px solid #d9e6f7;border-radius:15px;padding:14px;font-size:16px;font-weight:750;outline:none
+}
+.input:focus{border-color:#6fa5f1;box-shadow:0 0 0 4px rgba(11,87,208,.08)}
+
+.reference{padding:16px;margin-top:14px}
+.refTitle{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.refTitle h3{margin:0;font-size:17px;color:var(--navy)}
+.search{
+  margin-top:12px;width:100%;border:1px solid #d6e5f9;border-radius:14px;padding:12px 13px;font-size:13px;outline:none;background:#f9fbff
+}
+.filterrow{display:flex;gap:7px;margin-top:9px;flex-wrap:wrap}
+.filter{
+  border:0;border-radius:999px;padding:7px 10px;font-size:10.5px;font-weight:900;background:#e8f0fc;color:#17427f;cursor:pointer
+}
+.filter.active{background:var(--navy);color:white}
+.list{margin-top:10px;max-height:430px;overflow:auto;padding-right:2px}
+.row{
+  display:grid;grid-template-columns:1.25fr .7fr .7fr;gap:7px;align-items:center;padding:10px 4px;border-bottom:1px solid #edf2f9;font-size:12px
+}
+.row:last-child{border-bottom:0}
+.verb{font-weight:950;color:#163d76}
+.prep{font-weight:950;color:#0b57d0}
+.case{font-weight:950;text-align:right}
+.case.akk{color:#b62222}.case.dat{color:#0d7a3c}
+.example{grid-column:1/-1;color:#5f6f84;font-size:11.5px;padding-top:2px}
+.hidden{display:none!important}
+
+.bottom{
+  position:fixed;bottom:0;left:50%;transform:translateX(-50%);
+  width:min(100%,560px);z-index:30;padding:10px 16px calc(10px + env(safe-area-inset-bottom));
+  background:rgba(248,251,255,.95);backdrop-filter:blur(14px);border-top:1px solid #dce9f8
+}
+.bottomInner{display:flex;gap:9px}.bottom .btn{flex:1}
+.foot{text-align:center;font-size:9.5px;color:#77859b;margin-top:6px;font-weight:750}
+
+@media(max-width:390px){
+ h1{font-size:25px}.question{font-size:18px}.answer{font-size:14px}.row{grid-template-columns:1.2fr .65fr .7fr}
+}
+</style>
+</head>
+<body>
+<div class="app">
+  <header class="hero">
+    <div class="topline">
+      <div class="brand"><div class="logo">D</div>De‑Max</div>
+      <div class="badge">A1 • A2 • B1</div>
+    </div>
+    <h1>Verben mit <span>Präpositionen</span></h1>
+    <div class="sub">Glagoli sa predlozima • Akkusativ i Dativ • izbor predloga • padež • slaganje rečenica • prevod</div>
+    <div class="progress">
+      <div class="track"><div class="fill" id="fill"></div></div>
+      <div class="progressmeta"><span>Napredak</span><span id="progressText">0 / 0</span></div>
+    </div>
+  </header>
+
+  <main>
+    <section class="card intro">
+      <div class="intro-head"><div class="icon">🧠</div><div>Brzo pravilo</div></div>
+      <div class="rulegrid">
+        <div class="rule akk"><strong>Često + Akkusativ</strong><br><b>auf, für, um, über, an</b><br>warten auf, denken an, bitten um…</div>
+        <div class="rule dat"><strong>Često + Dativ</strong><br><b>mit, nach, von, zu, bei</b><br>sprechen mit, träumen von…</div>
+      </div>
+      <div class="note">Važno: padež zavisi od cele veze <b>glagol + predlog</b>. Zato se glagol i predlog uče zajedno kao jedna celina.</div>
+    </section>
+
+    <div class="tabs">
+      <button class="tab active" data-mode="prep">1. Predlog</button>
+      <button class="tab" data-mode="case">2. Padež</button>
+      <button class="tab" data-mode="order">3. Složi</button>
+      <button class="tab" data-mode="translate">4. Prevod</button>
+    </div>
+
+    <section class="card exercise">
+      <div class="kicker" id="kicker">VEŽBA 1</div>
+      <div class="title" id="title">Izaberi tačan predlog</div>
+      <div class="hint" id="hint">Odaberi predlog koji ide uz dati glagol.</div>
+      <div id="caseTag"></div>
+
+      <div id="prepMode">
+        <div class="question" id="prepQuestion"></div>
+        <div class="answers" id="prepAnswers"></div>
+      </div>
+
+      <div id="caseMode" class="hidden">
+        <div class="question" id="caseQuestion"></div>
+        <div class="answers" id="caseAnswers"></div>
+      </div>
+
+      <div id="orderMode" class="hidden">
+        <div class="question" id="orderPrompt"></div>
+        <div class="orderbox" id="selectedWords"></div>
+        <div class="orderbox" id="wordBank"></div>
+        <div class="controls">
+          <button class="btn secondary" id="clearOrder">Poništi</button>
+          <button class="btn primary" id="checkOrder">Proveri</button>
+        </div>
+      </div>
+
+      <div id="translateMode" class="hidden">
+        <div class="question" id="translatePrompt"></div>
+        <input class="input" id="translateInput" placeholder="Napiši rečenicu na nemačkom…" autocomplete="off">
+        <div class="controls">
+          <button class="btn secondary" id="showSolution">Rešenje</button>
+          <button class="btn primary" id="checkTranslate">Proveri</button>
+        </div>
+      </div>
+
+      <div class="feedback" id="feedback"></div>
+
+      <div class="controls">
+        <button class="btn secondary" id="speakBtn">🔊 Izgovor</button>
+        <button class="btn primary" id="nextBtn">Sledeći primer →</button>
+      </div>
+    </section>
+
+    <section class="card reference">
+      <div class="refTitle">
+        <h3>📚 Lista glagola sa predlozima</h3>
+        <button class="filter" id="toggleList">Sakrij</button>
+      </div>
+      <div id="referenceContent">
+        <input id="search" class="search" placeholder="Pretraži glagol ili predlog…">
+        <div class="filterrow">
+          <button class="filter active" data-filter="all">Sve</button>
+          <button class="filter" data-filter="Akkusativ">Akkusativ</button>
+          <button class="filter" data-filter="Dativ">Dativ</button>
+        </div>
+        <div class="list" id="list"></div>
+      </div>
+    </section>
+  </main>
+
+  <div class="bottom">
+    <div class="bottomInner">
+      <button class="btn secondary" id="restart">↻ Početak</button>
+      <button class="btn green" id="random">Nasumični primer</button>
+    </div>
+    <div class="foot">De‑Max • Verben mit Präpositionen • interaktivne vežbe</div>
+  </div>
+</div>
+
+<script>
+const verbs = [
+ {verb:"warten", prep:"auf", kase:"Akkusativ", de:"Ich warte auf den Bus.", sr:"Ja čekam autobus."},
+ {verb:"denken", prep:"an", kase:"Akkusativ", de:"Ich denke an die Prüfung.", sr:"Ja mislim na ispit."},
+ {verb:"sich interessieren", prep:"für", kase:"Akkusativ", de:"Ich interessiere mich für Deutsch.", sr:"Ja se interesujem za nemački."},
+ {verb:"sich freuen", prep:"auf", kase:"Akkusativ", de:"Ich freue mich auf den Urlaub.", sr:"Radujem se odmoru koji dolazi."},
+ {verb:"sich freuen", prep:"über", kase:"Akkusativ", de:"Ich freue mich über das Geschenk.", sr:"Radujem se poklonu."},
+ {verb:"sich erinnern", prep:"an", kase:"Akkusativ", de:"Ich erinnere mich an die Schule.", sr:"Sećam se škole."},
+ {verb:"sprechen", prep:"über", kase:"Akkusativ", de:"Wir sprechen über Deutsch.", sr:"Mi pričamo o nemačkom."},
+ {verb:"bitten", prep:"um", kase:"Akkusativ", de:"Ich bitte um Hilfe.", sr:"Molim za pomoć."},
+ {verb:"sich kümmern", prep:"um", kase:"Akkusativ", de:"Sie kümmert sich um die Kinder.", sr:"Ona se brine o deci."},
+ {verb:"glauben", prep:"an", kase:"Akkusativ", de:"Er glaubt an seine Idee.", sr:"On veruje u svoju ideju."},
+ {verb:"sich bewerben", prep:"um", kase:"Akkusativ", de:"Ich bewerbe mich um eine Stelle.", sr:"Konkurišem za radno mesto."},
+ {verb:"sich vorbereiten", prep:"auf", kase:"Akkusativ", de:"Wir bereiten uns auf die Prüfung vor.", sr:"Pripremamo se za ispit."},
+
+ {verb:"helfen", prep:"bei", kase:"Dativ", de:"Ich helfe dir bei der Arbeit.", sr:"Pomažem ti u poslu."},
+ {verb:"sprechen", prep:"mit", kase:"Dativ", de:"Ich spreche mit meinem Lehrer.", sr:"Pričam sa svojim nastavnikom."},
+ {verb:"träumen", prep:"von", kase:"Dativ", de:"Ich träume von einer Reise.", sr:"Sanjam o putovanju."},
+ {verb:"erzählen", prep:"von", kase:"Dativ", de:"Er erzählt von seiner Reise.", sr:"On priča o svom putovanju."},
+ {verb:"suchen", prep:"nach", kase:"Dativ", de:"Er sucht nach dem Schlüssel.", sr:"On traži ključ."},
+ {verb:"gratulieren", prep:"zu", kase:"Dativ", de:"Ich gratuliere dir zum Geburtstag.", sr:"Čestitam ti rođendan."},
+ {verb:"anfangen", prep:"mit", kase:"Dativ", de:"Wir fangen mit der Übung an.", sr:"Počinjemo sa vežbom."},
+ {verb:"fragen", prep:"nach", kase:"Dativ", de:"Sie fragt nach dem Weg.", sr:"Ona pita za put."},
+ {verb:"abhängen", prep:"von", kase:"Dativ", de:"Das hängt vom Wetter ab.", sr:"To zavisi od vremena."},
+ {verb:"gehören", prep:"zu", kase:"Dativ", de:"Das gehört zu meinem Beruf.", sr:"To pripada mom poslu."},
+ {verb:"sich treffen", prep:"mit", kase:"Dativ", de:"Ich treffe mich mit meiner Freundin.", sr:"Nalazim se sa svojom prijateljicom."},
+ {verb:"teilnehmen", prep:"an", kase:"Dativ", de:"Er nimmt an dem Kurs teil.", sr:"On učestvuje na kursu."}
+];
+
+const translateItems = [
+ {sr:"Ja se interesujem za nemački.", de:"Ich interessiere mich für Deutsch.", kase:"Akkusativ"},
+ {sr:"Ja čekam na tebe.", de:"Ich warte auf dich.", kase:"Akkusativ"},
+ {sr:"Ja pričam sa nastavnikom.", de:"Ich spreche mit dem Lehrer.", kase:"Dativ"},
+ {sr:"Ja sanjam o putovanju.", de:"Ich träume von einer Reise.", kase:"Dativ"},
+ {sr:"Ja mislim na ispit.", de:"Ich denke an die Prüfung.", kase:"Akkusativ"},
+ {sr:"Ja molim za pomoć.", de:"Ich bitte um Hilfe.", kase:"Akkusativ"},
+ {sr:"Ona pita za put.", de:"Sie fragt nach dem Weg.", kase:"Dativ"},
+ {sr:"Mi pričamo o nemačkom.", de:"Wir sprechen über Deutsch.", kase:"Akkusativ"},
+ {sr:"On traži ključ.", de:"Er sucht nach dem Schlüssel.", kase:"Dativ"},
+ {sr:"Mi počinjemo sa vežbom.", de:"Wir fangen mit der Übung an.", kase:"Dativ"},
+ {sr:"Radujem se odmoru.", de:"Ich freue mich auf den Urlaub.", kase:"Akkusativ"},
+ {sr:"Ona se brine o deci.", de:"Sie kümmert sich um die Kinder.", kase:"Akkusativ"}
+];
+
+let mode="prep", index=0, selected=[], answered=false, currentFilter="all";
+let completed={prep:new Set(),case:new Set(),order:new Set(),translate:new Set()};
+
+const $=id=>document.getElementById(id);
+const modeIds={prep:"prepMode",case:"caseMode",order:"orderMode",translate:"translateMode"};
+
+function shuffle(a){
+ const x=[...a];
+ for(let i=x.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[x[i],x[j]]=[x[j],x[i]]}
+ return x;
+}
+function norm(s){
+ return s.toLowerCase().trim()
+ .replace(/[.,!?;:]/g,"")
+ .replace(/ß/g,"ss")
+ .replace(/\s+/g," ");
+}
+function speak(text){
+ if(!("speechSynthesis" in window)) return;
+ speechSynthesis.cancel();
+ const u=new SpeechSynthesisUtterance(text);
+ u.lang="de-DE";u.rate=.86;u.pitch=1;
+ const vs=speechSynthesis.getVoices();
+ const de=vs.find(v=>v.lang&&v.lang.toLowerCase().startsWith("de"));
+ if(de)u.voice=de;
+ speechSynthesis.speak(u);
+}
+function totals(){
+ return verbs.length*3+translateItems.length;
+}
+function done(){
+ return completed.prep.size+completed.case.size+completed.order.size+completed.translate.size;
+}
+function updateProgress(){
+ const d=done(),t=totals();
+ $("progressText").textContent=`${d} / ${t}`;
+ $("fill").style.width=(d/t*100)+"%";
+}
+function showFeedback(ok,de,sr,msg){
+ const f=$("feedback");
+ f.className="feedback show "+(ok?"ok":"no");
+ f.innerHTML=`${ok?"✅":"❌"} ${msg}<div class="solution">${de}</div><div class="translation">${sr}</div>`;
+}
+function setCaseTag(kase){
+ const e=$("caseTag");
+ e.innerHTML=`<span class="caseTag ${kase==="Akkusativ"?"akk":"dat"}">${kase}</span>`;
+}
+function current(){
+ if(mode==="translate") return translateItems[index%translateItems.length];
+ return verbs[index%verbs.length];
+}
+function meta(){
+ return {
+  prep:["VEŽBA 1","Izaberi tačan predlog","Koji predlog ide uz dati glagol?"],
+  case:["VEŽBA 2","Akkusativ ili Dativ?","Odredi padež koji traži data veza glagola i predloga."],
+  order:["VEŽBA 3","Složi rečenicu","Klikći na reči pravilnim redom, zatim proveri rešenje."],
+  translate:["VEŽBA 4","Prevedi na nemački","Napiši celu rečenicu na nemačkom."]
+ }[mode];
+}
+function renderButtons(container,opts,correct,onCorrect,item){
+ const box=$(container);box.innerHTML="";
+ opts.forEach(opt=>{
+  const b=document.createElement("button");
+  b.className="answer";b.textContent=opt;
+  b.onclick=()=>{
+    if(answered)return;
+    if(opt===correct){
+      answered=true;b.classList.add("correct");
+      completed[mode].add(index);updateProgress();
+      showFeedback(true,item.de,item.sr,"Tačno!");
+      speak(item.de); if(onCorrect)onCorrect();
+    }else{
+      b.classList.add("wrong");showFeedback(false,item.de,item.sr,"Nije tačno. Pokušaj ponovo.");
+      setTimeout(()=>b.classList.remove("wrong"),650);
+    }
+  };
+  box.appendChild(b);
+ });
+}
+function render(){
+ answered=false;selected=[];
+ $("feedback").className="feedback";$("feedback").innerHTML="";
+ Object.values(modeIds).forEach(id=>$(id).classList.add("hidden"));
+ $(modeIds[mode]).classList.remove("hidden");
+ document.querySelectorAll(".tab").forEach(t=>t.classList.toggle("active",t.dataset.mode===mode));
+
+ const [k,t,h]=meta();$("kicker").textContent=k;$("title").textContent=t;$("hint").textContent=h;
+ const item=current();setCaseTag(item.kase);
+
+ if(mode==="prep"){
+   $("prepQuestion").innerHTML=`<b>${item.verb}</b> <span class="blank">___</span> ?`;
+   const wrong=shuffle([...new Set(verbs.map(v=>v.prep).filter(p=>p!==item.prep))]).slice(0,3);
+   renderButtons("prepAnswers",shuffle([item.prep,...wrong]),item.prep,null,item);
+ }
+ if(mode==="case"){
+   $("caseQuestion").innerHTML=`<b>${item.verb} ${item.prep}</b> + ?`;
+   renderButtons("caseAnswers",shuffle(["Akkusativ","Dativ"]),item.kase,null,item);
+ }
+ if(mode==="order"){
+   $("orderPrompt").innerHTML=`Složi rečenicu: <span class="trans">${item.sr}</span>`;
+   $("selectedWords").innerHTML="";$("wordBank").innerHTML="";
+   const words=item.de.split(" ");
+   shuffle(words.map((w,i)=>({w,i}))).forEach(obj=>{
+     const b=document.createElement("button");b.className="word";b.textContent=obj.w;
+     b.onclick=()=>{
+       if(b.classList.contains("used"))return;
+       b.classList.add("used");
+       const marker={w:obj.w,src:b};selected.push(marker);
+       const c=document.createElement("button");c.className="word used";c.textContent=obj.w;
+       c.onclick=()=>{
+         const pos=selected.indexOf(marker);if(pos>=0)selected.splice(pos,1);
+         b.classList.remove("used");c.remove();
+       };
+       $("selectedWords").appendChild(c);
+     };
+     $("wordBank").appendChild(b);
+   });
+ }
+ if(mode==="translate"){
+   $("translatePrompt").innerHTML=`${item.sr}<div class="trans">Prevedi na nemački.</div>`;
+   $("translateInput").value="";
+ }
+ updateProgress();
+}
+
+$("checkOrder").onclick=()=>{
+ const item=current(); const sentence=selected.map(x=>x.w).join(" ");
+ if(norm(sentence)===norm(item.de)){
+   answered=true;completed.order.add(index);updateProgress();
+   showFeedback(true,item.de,item.sr,"Odlično složena rečenica!");speak(item.de);
+ }else showFeedback(false,item.de,item.sr,"Redosled nije dobar.");
+};
+$("clearOrder").onclick=()=>{
+ selected=[];$("selectedWords").innerHTML="";
+ document.querySelectorAll("#wordBank .word").forEach(x=>x.classList.remove("used"));
+};
+$("checkTranslate").onclick=()=>{
+ const item=current(),val=$("translateInput").value;
+ if(norm(val)===norm(item.de)){
+   answered=true;completed.translate.add(index);updateProgress();
+   showFeedback(true,item.de,item.sr,"Tačan prevod!");speak(item.de);
+ }else showFeedback(false,item.de,item.sr,"Još nije tačno. Obrati pažnju na glagol, predlog i padež.");
+};
+$("showSolution").onclick=()=>{
+ const item=current();showFeedback(false,item.de,item.sr,"Rešenje:");
+};
+$("translateInput").addEventListener("keydown",e=>{if(e.key==="Enter")$("checkTranslate").click()});
+
+document.querySelectorAll(".tab").forEach(t=>t.onclick=()=>{
+ mode=t.dataset.mode;index=0;render();
+});
+$("nextBtn").onclick=()=>{
+ const len=mode==="translate"?translateItems.length:verbs.length;
+ index=(index+1)%len;render();
+};
+$("random").onclick=()=>{
+ const len=mode==="translate"?translateItems.length:verbs.length;
+ index=Math.floor(Math.random()*len);render();
+};
+$("restart").onclick=()=>{
+ completed={prep:new Set(),case:new Set(),order:new Set(),translate:new Set()};
+ mode="prep";index=0;render();
+};
+$("speakBtn").onclick=()=>speak(current().de);
+
+function renderList(){
+ const q=$("search").value.toLowerCase().trim();
+ const list=verbs.filter(v=>{
+   const okCase=currentFilter==="all"||v.kase===currentFilter;
+   const text=(v.verb+" "+v.prep+" "+v.kase+" "+v.de+" "+v.sr).toLowerCase();
+   return okCase && text.includes(q);
+ });
+ $("list").innerHTML=list.map(v=>`
+   <div class="row">
+     <div class="verb">${v.verb}</div>
+     <div class="prep">${v.prep}</div>
+     <div class="case ${v.kase==="Akkusativ"?"akk":"dat"}">${v.kase}</div>
+     <div class="example">${v.de}<br><span style="color:#7a8798">${v.sr}</span></div>
+   </div>
+ `).join("");
+}
+$("search").addEventListener("input",renderList);
+document.querySelectorAll("[data-filter]").forEach(b=>b.onclick=()=>{
+ currentFilter=b.dataset.filter;
+ document.querySelectorAll("[data-filter]").forEach(x=>x.classList.toggle("active",x===b));
+ renderList();
+});
+$("toggleList").onclick=()=>{
+ const c=$("referenceContent");c.classList.toggle("hidden");
+ $("toggleList").textContent=c.classList.contains("hidden")?"Prikaži":"Sakrij";
+};
+
+speechSynthesis.onvoiceschanged=()=>{};
+renderList();
+render();
+</script>
+</body>
+</html>
