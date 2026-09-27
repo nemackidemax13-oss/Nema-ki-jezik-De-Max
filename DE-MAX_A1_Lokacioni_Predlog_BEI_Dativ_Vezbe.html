@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="sr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>De-Max | bei + Dativ</title>
+<style>
+:root{
+  --blue:#083d9b;
+  --blue2:#0b57d0;
+  --light:#eef5ff;
+  --card:#ffffff;
+  --text:#10213d;
+  --muted:#66758d;
+  --green:#138a45;
+  --red:#d62828;
+  --gold:#f4b400;
+  --shadow:0 14px 36px rgba(8,61,155,.15);
+}
+*{box-sizing:border-box}
+html,body{margin:0;min-height:100%;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;background:linear-gradient(180deg,#edf5ff,#f9fbff);color:var(--text)}
+body{display:flex;justify-content:center}
+.app{width:min(100%,520px);min-height:100vh;background:linear-gradient(180deg,#f7fbff 0%,#eef5ff 100%);padding-bottom:96px}
+.top{
+  background:linear-gradient(135deg,#062e7a,#0c57d6);
+  color:white;padding:22px 18px 18px;border-radius:0 0 28px 28px;
+  box-shadow:0 12px 28px rgba(8,61,155,.26);position:sticky;top:0;z-index:10
+}
+.brand{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.logo{display:flex;align-items:center;gap:10px;font-weight:900;font-size:20px;letter-spacing:.2px}
+.logo-badge{width:39px;height:39px;border-radius:13px;background:white;color:var(--blue);display:grid;place-items:center;font-weight:1000;box-shadow:0 5px 14px rgba(0,0,0,.18)}
+.level{font-size:12px;font-weight:800;background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.25);padding:7px 10px;border-radius:999px}
+h1{font-size:27px;line-height:1.1;margin:18px 0 6px;font-weight:950}
+h1 span{color:#ffd54a}
+.subtitle{font-size:13px;opacity:.9;line-height:1.45}
+.progress-wrap{margin-top:14px}
+.progress-line{height:9px;background:rgba(255,255,255,.22);border-radius:999px;overflow:hidden}
+.progress-bar{height:100%;width:0%;background:white;border-radius:999px;transition:.25s}
+.progress-text{display:flex;justify-content:space-between;margin-top:6px;font-size:11px;font-weight:700;opacity:.93}
+main{padding:16px}
+.rule-card,.exercise-card,.menu-card{
+  background:var(--card);border:1px solid #dbe9ff;border-radius:22px;box-shadow:var(--shadow)
+}
+.rule-card{padding:16px;margin-bottom:14px}
+.rule-title{display:flex;gap:10px;align-items:center;font-weight:950;color:var(--blue);font-size:18px}
+.pin{width:38px;height:38px;border-radius:13px;background:#e7f0ff;display:grid;place-items:center;font-size:20px}
+.rule-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:14px}
+.rule-pill{padding:10px;border-radius:14px;background:#f3f7ff;border:1px solid #e0eaff;font-size:12px;font-weight:750;line-height:1.35}
+.rule-pill b{color:var(--blue)}
+.beim{
+  margin-top:10px;padding:12px;border-radius:15px;background:#eefbf3;border:1px solid #c9efd8;
+  text-align:center;font-size:19px;font-weight:950;color:#0b6d35
+}
+.tabs{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;margin:14px 0}
+.tab{
+  border:0;border-radius:14px;padding:10px 5px;background:#e6efff;color:#17427f;
+  font-size:11px;font-weight:900;cursor:pointer
+}
+.tab.active{background:var(--blue);color:#fff;box-shadow:0 7px 18px rgba(8,61,155,.25)}
+.exercise-card{padding:18px}
+.eyebrow{font-size:11px;text-transform:uppercase;letter-spacing:.8px;color:var(--blue2);font-weight:900}
+.exercise-title{font-size:19px;font-weight:950;margin:6px 0 4px}
+.hint{font-size:12px;color:var(--muted);line-height:1.45;margin-bottom:15px}
+.question{
+  background:linear-gradient(180deg,#f8fbff,#edf4ff);border:1px solid #d7e6ff;
+  border-radius:18px;padding:17px;margin:12px 0;font-size:20px;font-weight:900;line-height:1.35
+}
+.question .blank{color:var(--blue2);border-bottom:3px solid var(--blue2);padding:0 4px}
+.translation{font-size:13px;color:#5b6a80;margin-top:8px;font-weight:650}
+.answers{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.answer{
+  min-height:56px;border:2px solid #d9e6f9;border-radius:16px;background:#fff;
+  color:#163661;font-size:16px;font-weight:900;padding:11px 8px;cursor:pointer;transition:.15s
+}
+.answer:hover{transform:translateY(-1px);border-color:#a9c8f8}
+.answer.correct{background:#eaf9ef;border-color:#42ad68;color:#096731}
+.answer.wrong{background:#fff0f0;border-color:#ef6a6a;color:#a81313}
+.feedback{min-height:50px;margin-top:13px;padding:12px 14px;border-radius:15px;display:none;font-size:13px;font-weight:800;line-height:1.45}
+.feedback.show{display:block}
+.feedback.ok{background:#eaf9ef;color:#0b6b34;border:1px solid #c4ebd2}
+.feedback.no{background:#fff0f0;color:#9b1717;border:1px solid #f4cccc}
+.solution{margin-top:4px;font-size:15px}
+.controls{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px}
+.btn{border:0;border-radius:15px;padding:13px 12px;font-weight:900;font-size:14px;cursor:pointer}
+.btn.secondary{background:#e7effc;color:#17427f}
+.btn.primary{background:linear-gradient(135deg,#083d9b,#0c62e8);color:#fff;box-shadow:0 8px 18px rgba(8,61,155,.22)}
+.order-area{display:flex;gap:8px;flex-wrap:wrap;min-height:64px;padding:10px;border-radius:16px;background:#f2f7ff;border:1px dashed #a6c4f0;margin:12px 0}
+.word{border:1px solid #bcd2f2;background:#fff;color:#163b73;border-radius:12px;padding:9px 11px;font-weight:850;cursor:pointer;box-shadow:0 3px 8px rgba(0,0,0,.05)}
+.word.selected{background:#0b57d0;color:#fff;border-color:#0b57d0}
+.input-line{width:100%;border:2px solid #d9e6f7;border-radius:15px;padding:14px;font-size:17px;font-weight:750;outline:none}
+.input-line:focus{border-color:#6ba1ef;box-shadow:0 0 0 4px rgba(11,87,208,.08)}
+.list-card{display:none;margin-top:12px;background:#fff;border:1px solid #dbe9ff;border-radius:18px;padding:14px}
+.list-card.show{display:block}
+.mini-row{display:flex;justify-content:space-between;gap:10px;padding:9px 0;border-bottom:1px solid #edf2fa;font-size:13px}
+.mini-row:last-child{border-bottom:0}
+.mini-row b{color:var(--blue)}
+.bottom{
+  position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:min(100%,520px);
+  padding:11px 16px calc(11px + env(safe-area-inset-bottom));background:rgba(248,251,255,.94);
+  backdrop-filter:blur(14px);border-top:1px solid #dce9fa;z-index:20
+}
+.bottom-inner{display:flex;gap:10px}
+.bottom .btn{flex:1}
+.small-note{text-align:center;color:#728198;font-size:10px;margin-top:7px;font-weight:700}
+.hidden{display:none!important}
+@media (max-width:390px){
+  h1{font-size:24px}.question{font-size:18px}.answer{font-size:14px}
+}
+</style>
+</head>
+<body>
+<div class="app">
+  <header class="top">
+    <div class="brand">
+      <div class="logo"><span class="logo-badge">D</span> De‑Max</div>
+      <div class="level">A1 • GRAMATIKA</div>
+    </div>
+    <h1>Lokacioni predlog <span>bei</span> + Dativ</h1>
+    <div class="subtitle">Vežbaj <b>bei / beim / bei der / bei den</b>, članove u dativu i pravilno slaganje rečenica.</div>
+    <div class="progress-wrap">
+      <div class="progress-line"><div class="progress-bar" id="progressBar"></div></div>
+      <div class="progress-text"><span>Napredak</span><span id="progressText">0 / 0</span></div>
+    </div>
+  </header>
+
+  <main>
+    <section class="rule-card">
+      <div class="rule-title"><div class="pin">📍</div><div>Kada koristimo „bei“?</div></div>
+      <div class="rule-grid">
+        <div class="rule-pill">Pitanje: <b>Wo?</b> — gde?</div>
+        <div class="rule-pill"><b>bei</b> uvek traži <b>Dativ</b></div>
+        <div class="rule-pill">der → <b>dem</b></div>
+        <div class="rule-pill">die → <b>der</b></div>
+        <div class="rule-pill">das → <b>dem</b></div>
+        <div class="rule-pill">die (mn.) → <b>den</b></div>
+      </div>
+      <div class="beim">bei + dem = beim</div>
+    </section>
+
+    <div class="tabs">
+      <button class="tab active" data-mode="choice">1. Izaberi</button>
+      <button class="tab" data-mode="article">2. Član</button>
+      <button class="tab" data-mode="order">3. Složi</button>
+      <button class="tab" data-mode="write">4. Upiši</button>
+    </div>
+
+    <section class="exercise-card">
+      <div class="eyebrow" id="eyebrow">VEŽBA 1</div>
+      <div class="exercise-title" id="exerciseTitle">Izaberi tačan oblik</div>
+      <div class="hint" id="hint">Klikni na tačan odgovor. Kada pogodiš, rečenica će biti pročitana na nemačkom.</div>
+
+      <div id="choiceMode">
+        <div class="question" id="choiceQuestion"></div>
+        <div class="answers" id="answers"></div>
+      </div>
+
+      <div id="articleMode" class="hidden">
+        <div class="question" id="articleQuestion"></div>
+        <div class="answers" id="articleAnswers"></div>
+      </div>
+
+      <div id="orderMode" class="hidden">
+        <div class="question" id="orderPrompt"></div>
+        <div class="order-area" id="selectedWords"></div>
+        <div class="order-area" id="wordBank"></div>
+        <div class="controls">
+          <button class="btn secondary" id="clearOrder">Poništi</button>
+          <button class="btn primary" id="checkOrder">Proveri</button>
+        </div>
+      </div>
+
+      <div id="writeMode" class="hidden">
+        <div class="question" id="writePrompt"></div>
+        <input class="input-line" id="writeInput" autocomplete="off" placeholder="Upiši odgovor…">
+        <div class="controls">
+          <button class="btn secondary" id="showSolution">Rešenje</button>
+          <button class="btn primary" id="checkWrite">Proveri</button>
+        </div>
+      </div>
+
+      <div class="feedback" id="feedback"></div>
+
+      <div class="controls">
+        <button class="btn secondary" id="speakBtn">🔊 Izgovor</button>
+        <button class="btn primary" id="nextBtn">Sledeći primer →</button>
+      </div>
+    </section>
+
+    <section class="rule-card" style="margin-top:14px">
+      <div class="rule-title"><div class="pin">💡</div><div>Brzi primeri</div></div>
+      <button class="btn secondary" id="toggleExamples" style="width:100%;margin-top:12px">Prikaži / sakrij primere</button>
+      <div class="list-card" id="exampleList">
+        <div class="mini-row"><span>bei meinem Vater</span><b>kod mog oca</b></div>
+        <div class="mini-row"><span>bei meiner Schwester</span><b>kod moje sestre</b></div>
+        <div class="mini-row"><span>bei meinen Eltern</span><b>kod mojih roditelja</b></div>
+        <div class="mini-row"><span>beim Bäcker</span><b>kod pekara / u pekari</b></div>
+        <div class="mini-row"><span>bei der Post</span><b>u pošti</b></div>
+        <div class="mini-row"><span>bei der Arbeit</span><b>na poslu</b></div>
+        <div class="mini-row"><span>bei Thomas</span><b>kod Tomasa</b></div>
+        <div class="mini-row"><span>bei München</span><b>kod Minhena</b></div>
+      </div>
+    </section>
+  </main>
+
+  <div class="bottom">
+    <div class="bottom-inner">
+      <button class="btn secondary" id="restartBtn">↻ Početak</button>
+      <button class="btn primary" id="randomBtn">Nasumični primer</button>
+    </div>
+    <div class="small-note">De‑Max • nemački jezik • interaktivne vežbe</div>
+  </div>
+</div>
+
+<script>
+const data = {
+choice: [
+ {q:"Ich wohne ___ meinem Vater.", options:["bei","beim","bei der","bei den"], a:"bei", full:"Ich wohne bei meinem Vater.", tr:"Živim kod svog oca."},
+ {q:"Ich bin ___ Bäcker.", options:["bei","beim","bei der","bei den"], a:"beim", full:"Ich bin beim Bäcker.", tr:"Kod pekara sam / u pekari sam."},
+ {q:"Sie arbeitet ___ Post.", options:["bei","beim","bei der","bei den"], a:"bei der", full:"Sie arbeitet bei der Post.", tr:"Ona radi u pošti."},
+ {q:"Wir sind ___ Eltern.", options:["bei","beim","bei der","bei den"], a:"bei den", full:"Wir sind bei den Eltern.", tr:"Mi smo kod roditelja."},
+ {q:"Heute bin ich ___ Anna.", options:["bei","beim","bei der","bei den"], a:"bei", full:"Heute bin ich bei Anna.", tr:"Danas sam kod Ane."},
+ {q:"Er ist ___ Arzt.", options:["bei","beim","bei der","bei den"], a:"beim", full:"Er ist beim Arzt.", tr:"On je kod lekara."},
+ {q:"Meine Mutter ist ___ Arbeit.", options:["bei","beim","bei der","bei den"], a:"bei der", full:"Meine Mutter ist bei der Arbeit.", tr:"Moja majka je na poslu."},
+ {q:"Die Kinder sind ___ Großeltern.", options:["bei","beim","bei der","bei den"], a:"bei den", full:"Die Kinder sind bei den Großeltern.", tr:"Deca su kod bake i deke."},
+ {q:"Ich bleibe heute ___ meinem Freund.", options:["bei","beim","bei der","bei den"], a:"bei", full:"Ich bleibe heute bei meinem Freund.", tr:"Danas ostajem kod svog prijatelja."},
+ {q:"Wir treffen uns ___ Bahnhof.", options:["bei","beim","bei der","bei den"], a:"beim", full:"Wir treffen uns beim Bahnhof.", tr:"Nalazimo se kod stanice."}
+],
+article: [
+ {q:"Ich wohne bei ___ Vater.", options:["mein","meinem","meiner","meinen"], a:"meinem", full:"Ich wohne bei meinem Vater.", tr:"Živim kod svog oca."},
+ {q:"Sie ist bei ___ Schwester.", options:["ihrem","ihrer","ihren","ihr"], a:"ihrer", full:"Sie ist bei ihrer Schwester.", tr:"Ona je kod svoje sestre."},
+ {q:"Wir sind bei ___ Kind.", options:["unser","unserem","unserer","unseren"], a:"unserem", full:"Wir sind bei unserem Kind.", tr:"Mi smo kod svog deteta."},
+ {q:"Er wohnt bei ___ Eltern.", options:["seinen","seinem","seiner","sein"], a:"seinen", full:"Er wohnt bei seinen Eltern.", tr:"On živi kod svojih roditelja."},
+ {q:"Ich bin bei ___ Ärztin.", options:["die","der","dem","den"], a:"der", full:"Ich bin bei der Ärztin.", tr:"Kod lekarke sam."},
+ {q:"Wir sind bei ___ Lehrer.", options:["der","dem","den","die"], a:"dem", full:"Wir sind bei dem Lehrer.", tr:"Mi smo kod nastavnika."},
+ {q:"Sie ist bei ___ Freundin.", options:["ihrem","ihrer","ihren","ihr"], a:"ihrer", full:"Sie ist bei ihrer Freundin.", tr:"Ona je kod svoje prijateljice."},
+ {q:"Die Kinder sind bei ___ Großeltern.", options:["den","dem","der","die"], a:"den", full:"Die Kinder sind bei den Großeltern.", tr:"Deca su kod bake i deke."},
+ {q:"Ich esse bei ___ Bäcker.", options:["dem","der","den","die"], a:"dem", full:"Ich esse bei dem Bäcker.", tr:"Jedem kod pekara / u pekari."},
+ {q:"Er ist bei ___ Firma.", options:["der","dem","den","die"], a:"der", full:"Er ist bei der Firma.", tr:"On je u toj firmi / kod te firme."}
+],
+order: [
+ {words:["Ich","wohne","bei","meinem","Vater."], full:"Ich wohne bei meinem Vater.", tr:"Živim kod svog oca."},
+ {words:["Sie","ist","bei","ihrer","Schwester."], full:"Sie ist bei ihrer Schwester.", tr:"Ona je kod svoje sestre."},
+ {words:["Wir","sind","beim","Bäcker."], full:"Wir sind beim Bäcker.", tr:"Mi smo kod pekara / u pekari."},
+ {words:["Er","ist","bei","der","Post."], full:"Er ist bei der Post.", tr:"On je u pošti."},
+ {words:["Die","Kinder","sind","bei","den","Großeltern."], full:"Die Kinder sind bei den Großeltern.", tr:"Deca su kod bake i deke."},
+ {words:["Heute","bin","ich","bei","Thomas."], full:"Heute bin ich bei Thomas.", tr:"Danas sam kod Tomasa."},
+ {words:["Meine","Mutter","ist","bei","der","Arbeit."], full:"Meine Mutter ist bei der Arbeit.", tr:"Moja majka je na poslu."},
+ {words:["Wir","warten","beim","Bahnhof."], full:"Wir warten beim Bahnhof.", tr:"Čekamo kod stanice."},
+ {words:["Ich","bleibe","bei","meinem","Freund."], full:"Ich bleibe bei meinem Freund.", tr:"Ostajem kod svog prijatelja."},
+ {words:["Er","arbeitet","bei","einer","Firma."], full:"Er arbeitet bei einer Firma.", tr:"On radi u jednoj firmi."}
+],
+write: [
+ {q:"Dopuni: Ich bin ___ Arzt. (bei + dem)", a:"beim", full:"Ich bin beim Arzt.", tr:"Kod lekara sam."},
+ {q:"Dopuni: Sie ist bei ___ Mutter. (ihre)", a:"ihrer", full:"Sie ist bei ihrer Mutter.", tr:"Ona je kod svoje majke."},
+ {q:"Dopuni: Wir wohnen bei ___ Eltern. (unsere)", a:"unseren", full:"Wir wohnen bei unseren Eltern.", tr:"Živimo kod svojih roditelja."},
+ {q:"Dopuni: Er arbeitet bei ___ Bank. (die)", a:"der", full:"Er arbeitet bei der Bank.", tr:"On radi u banci."},
+ {q:"Dopuni: Ich bin ___ Bäcker. (bei + dem)", a:"beim", full:"Ich bin beim Bäcker.", tr:"Kod pekara sam / u pekari sam."},
+ {q:"Dopuni: Du bist bei ___ Freund. (dein)", a:"deinem", full:"Du bist bei deinem Freund.", tr:"Ti si kod svog prijatelja."},
+ {q:"Dopuni: Sie wohnt bei ___ Tante. (ihre)", a:"ihrer", full:"Sie wohnt bei ihrer Tante.", tr:"Ona živi kod svoje tetke."},
+ {q:"Dopuni: Die Kinder sind bei ___ Großeltern. (die)", a:"den", full:"Die Kinder sind bei den Großeltern.", tr:"Deca su kod bake i deke."},
+ {q:"Dopuni: Ich arbeite bei ___ Firma. (eine)", a:"einer", full:"Ich arbeite bei einer Firma.", tr:"Radim u jednoj firmi."},
+ {q:"Dopuni: Wir sind bei ___ Nachbarn. (die, množina)", a:"den", full:"Wir sind bei den Nachbarn.", tr:"Mi smo kod komšija."}
+]
+};
+
+let mode="choice", index=0, selected=[], answered=false;
+let completed={choice:new Set(),article:new Set(),order:new Set(),write:new Set()};
+
+const els = id => document.getElementById(id);
+const modeIds={choice:"choiceMode",article:"articleMode",order:"orderMode",write:"writeMode"};
+
+function totalCount(){
+  return Object.values(data).reduce((s,a)=>s+a.length,0);
+}
+function doneCount(){
+  return Object.values(completed).reduce((s,set)=>s+set.size,0);
+}
+function updateProgress(){
+  const d=doneCount(), t=totalCount();
+  els("progressText").textContent=`${d} / ${t}`;
+  els("progressBar").style.width=(d/t*100)+"%";
+}
+function clean(s){
+  return s.toLowerCase().trim().replace(/[.!?]/g,"").replace(/\s+/g," ");
+}
+function speak(text){
+  if(!("speechSynthesis" in window)) return;
+  speechSynthesis.cancel();
+  const u=new SpeechSynthesisUtterance(text);
+  u.lang="de-DE"; u.rate=.86; u.pitch=1;
+  const voices=speechSynthesis.getVoices();
+  const de=voices.find(v=>v.lang && v.lang.toLowerCase().startsWith("de"));
+  if(de) u.voice=de;
+  speechSynthesis.speak(u);
+}
+function feedback(ok,item,msg){
+  const f=els("feedback");
+  f.className="feedback show "+(ok?"ok":"no");
+  f.innerHTML=`${ok?"✅":"❌"} ${msg}<div class="solution">${item.full}</div><div class="translation">${item.tr}</div>`;
+}
+function currentItem(){ return data[mode][index]; }
+
+function shuffle(arr){
+  const x=[...arr];
+  for(let i=x.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[x[i],x[j]]=[x[j],x[i]]}
+  return x;
+}
+
+function render(){
+  answered=false; selected=[];
+  els("feedback").className="feedback";
+  els("feedback").innerHTML="";
+  document.querySelectorAll("[id$='Mode']").forEach(e=>e.classList.add("hidden"));
+  els(modeIds[mode]).classList.remove("hidden");
+  document.querySelectorAll(".tab").forEach(t=>t.classList.toggle("active",t.dataset.mode===mode));
+
+  const item=currentItem();
+  const meta={
+    choice:["VEŽBA 1","Izaberi tačan oblik","Odaberi: bei, beim, bei der ili bei den."],
+    article:["VEŽBA 2","Dativ – izaberi član / zamenicu","Izaberi oblik koji odgovara dativu posle predloga „bei“."],
+    order:["VEŽBA 3","Složi rečenicu","Klikći na reči pravilnim redom, zatim proveri."],
+    write:["VEŽBA 4","Upiši tačan oblik","Upiši samo reč ili oblik koji nedostaje."]
+  }[mode];
+  els("eyebrow").textContent=meta[0];
+  els("exerciseTitle").textContent=meta[1];
+  els("hint").textContent=meta[2];
+
+  if(mode==="choice"){
+    els("choiceQuestion").innerHTML=item.q.replace("___","<span class='blank'>___</span>");
+    renderButtons("answers",shuffle(item.options),item);
+  }
+  if(mode==="article"){
+    els("articleQuestion").innerHTML=item.q.replace("___","<span class='blank'>___</span>");
+    renderButtons("articleAnswers",shuffle(item.options),item);
+  }
+  if(mode==="order"){
+    els("orderPrompt").innerHTML=`Složi: <span class="blank">bei + Dativ</span>`;
+    els("selectedWords").innerHTML="";
+    const bank=shuffle(item.words.map((w,i)=>({w,i})));
+    els("wordBank").innerHTML="";
+    bank.forEach(obj=>{
+      const b=document.createElement("button"); b.className="word"; b.textContent=obj.w;
+      b.dataset.word=obj.w; b.dataset.uid=Math.random();
+      b.onclick=()=>{
+        if(b.classList.contains("selected")) return;
+        b.classList.add("selected");
+        selected.push({w:obj.w, el:b});
+        const s=document.createElement("button"); s.className="word selected"; s.textContent=obj.w;
+        s.onclick=()=>{
+          const pos=selected.findIndex(x=>x.el===b);
+          if(pos>=0) selected.splice(pos,1);
+          b.classList.remove("selected"); s.remove();
+        };
+        els("selectedWords").appendChild(s);
+      };
+      els("wordBank").appendChild(b);
+    });
+  }
+  if(mode==="write"){
+    els("writePrompt").textContent=item.q;
+    els("writeInput").value="";
+    els("writeInput").focus();
+  }
+  updateProgress();
+}
+
+function renderButtons(containerId, options, item){
+  const box=els(containerId); box.innerHTML="";
+  options.forEach(opt=>{
+    const b=document.createElement("button");
+    b.className="answer"; b.textContent=opt;
+    b.onclick=()=>{
+      if(answered) return;
+      if(opt===item.a){
+        answered=true; b.classList.add("correct");
+        completed[mode].add(index); updateProgress();
+        feedback(true,item,"Tačno!");
+        speak(item.full);
+      }else{
+        b.classList.add("wrong");
+        feedback(false,item,"Nije tačno. Pokušaj ponovo.");
+        setTimeout(()=>b.classList.remove("wrong"),700);
+      }
+    };
+    box.appendChild(b);
+  });
+}
+
+document.querySelectorAll(".tab").forEach(t=>{
+  t.onclick=()=>{mode=t.dataset.mode; index=0; render();}
+});
+els("nextBtn").onclick=()=>{index=(index+1)%data[mode].length;render();}
+els("randomBtn").onclick=()=>{index=Math.floor(Math.random()*data[mode].length);render();}
+els("restartBtn").onclick=()=>{
+  completed={choice:new Set(),article:new Set(),order:new Set(),write:new Set()};
+  mode="choice";index=0;render();
+};
+els("speakBtn").onclick=()=>speak(currentItem().full);
+els("toggleExamples").onclick=()=>els("exampleList").classList.toggle("show");
+
+els("clearOrder").onclick=()=>{
+  selected=[]; document.querySelectorAll("#wordBank .word").forEach(x=>x.classList.remove("selected")); els("selectedWords").innerHTML="";
+};
+els("checkOrder").onclick=()=>{
+  const item=currentItem();
+  const s=selected.map(x=>x.w).join(" ");
+  if(clean(s)===clean(item.full)){
+    answered=true; completed[mode].add(index); updateProgress(); feedback(true,item,"Odlično složena rečenica!"); speak(item.full);
+  }else feedback(false,item,"Redosled još nije dobar.");
+};
+
+els("checkWrite").onclick=()=>{
+  const item=currentItem(), val=els("writeInput").value;
+  if(clean(val)===clean(item.a)){
+    answered=true; completed[mode].add(index); updateProgress(); feedback(true,item,"Tačan odgovor!"); speak(item.full);
+  }else feedback(false,item,"Odgovor nije tačan. Pokušaj još jednom.");
+};
+els("showSolution").onclick=()=>{
+  const item=currentItem(); feedback(false,item,"Tačno rešenje je: "+item.a);
+};
+els("writeInput").addEventListener("keydown",e=>{if(e.key==="Enter") els("checkWrite").click();});
+
+speechSynthesis.onvoiceschanged=()=>{};
+render();
+</script>
+</body>
+</html>
