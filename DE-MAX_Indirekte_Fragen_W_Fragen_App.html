@@ -1,0 +1,666 @@
+<!DOCTYPE html>
+<html lang="sr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>De-Max | Indirekte Fragen mit W-Fragen</title>
+<style>
+:root{
+  --blue:#0b3f9f;
+  --blue2:#062862;
+  --red:#d81d2b;
+  --red2:#b91422;
+  --sky:#edf6ff;
+  --ink:#13223a;
+  --muted:#68768b;
+  --line:#d7e5f7;
+  --green:#168a49;
+  --gold:#f2b51d;
+  --shadow:0 15px 40px rgba(15,58,130,.13);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;
+  font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+  color:var(--ink);
+  background:
+    radial-gradient(circle at 5% 0%,rgba(44,126,255,.14),transparent 28rem),
+    radial-gradient(circle at 100% 12%,rgba(216,29,43,.08),transparent 24rem),
+    linear-gradient(180deg,#f7fbff,#fff 45%,#f8fbff);
+  min-height:100vh;
+}
+button,input{font:inherit}
+button{cursor:pointer}
+.app{width:min(100%,1080px);margin:auto;padding:12px 12px 44px}
+.hero{
+  position:relative;overflow:hidden;
+  border-radius:30px;padding:25px 22px 24px;
+  color:#fff;background:linear-gradient(135deg,#0c54ca 0%,#0a3a96 56%,#061e57 100%);
+  border:3px solid #fff;box-shadow:var(--shadow)
+}
+.hero:before,.hero:after{
+  content:"";position:absolute;border-radius:50%;background:rgba(255,255,255,.08)
+}
+.hero:before{width:220px;height:220px;right:-80px;top:-90px}
+.hero:after{width:155px;height:155px;right:120px;bottom:-110px}
+.brand{
+  display:inline-flex;align-items:center;
+  background:#fff;color:var(--red);padding:8px 13px;border-radius:12px;
+  font-weight:1000;margin-bottom:12px;box-shadow:0 6px 16px rgba(0,0,0,.18)
+}
+.hero h1{
+  position:relative;z-index:2;margin:0;
+  font-size:clamp(32px,6vw,58px);line-height:1;letter-spacing:-1.3px
+}
+.hero h1 span{
+  display:block;font-size:.57em;color:#dfeeff;margin-top:10px;letter-spacing:-.4px
+}
+.hero p{
+  position:relative;z-index:2;max-width:850px;margin:12px 0 0;
+  font-size:clamp(15px,2.4vw,19px);line-height:1.5
+}
+.hero p b{color:#ffd9dc}
+.heroSpeak{
+  position:absolute;right:18px;bottom:17px;z-index:3;
+  width:52px;height:52px;border:0;border-radius:50%;
+  background:#fff;color:var(--blue);font-size:24px;
+  box-shadow:0 8px 18px rgba(0,0,0,.18)
+}
+.stats{
+  position:sticky;top:8px;z-index:60;
+  margin:12px 0;padding:10px 12px;
+  background:rgba(255,255,255,.95);backdrop-filter:blur(14px);
+  border:1px solid #dbe7f7;border-radius:18px;
+  box-shadow:0 10px 25px rgba(11,63,165,.08)
+}
+.statrow{display:flex;align-items:center;gap:10px}
+.progress{height:11px;flex:1;background:#e7eef8;border-radius:999px;overflow:hidden}
+.progress span{
+  display:block;height:100%;width:0;
+  background:linear-gradient(90deg,var(--blue),#4f92ff,var(--red));
+  border-radius:inherit;transition:.25s
+}
+.stattext{font-size:13px;font-weight:900;color:var(--blue);white-space:nowrap}
+.streak{
+  margin-left:6px;padding:5px 9px;border-radius:999px;
+  background:#fff5d9;border:1px solid #f2d787;color:#9a6a00;font-size:12px;font-weight:950
+}
+.tabs{
+  display:grid;grid-template-columns:repeat(4,1fr);
+  gap:8px;margin:12px 0 16px
+}
+.tab{
+  min-height:48px;border:1px solid #d9e6f8;background:#fff;color:var(--blue);
+  border-radius:14px;padding:10px 8px;font-weight:900;transition:.18s
+}
+.tab:hover,.tab.active{
+  background:linear-gradient(135deg,var(--blue),#2f73da);
+  color:#fff;border-color:var(--blue);transform:translateY(-1px)
+}
+.panel{display:none}.panel.active{display:block}
+.card{
+  background:#fff;border:1px solid #dbe7f7;border-radius:24px;
+  padding:20px;box-shadow:var(--shadow)
+}
+.section-title{display:flex;align-items:center;gap:12px;margin-bottom:16px}
+.badge{
+  width:46px;height:46px;flex:0 0 auto;
+  display:grid;place-items:center;border-radius:14px;
+  background:linear-gradient(135deg,var(--red),#ef4050);
+  color:#fff;font-weight:1000;
+  box-shadow:0 7px 16px rgba(216,29,43,.23)
+}
+.section-title h2{margin:0;color:var(--blue2);font-size:clamp(22px,4vw,34px)}
+.section-title p{margin:4px 0 0;color:var(--muted);font-weight:650}
+.rulegrid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.rule{
+  border:1px solid #dbe7f7;border-radius:18px;
+  padding:15px;background:linear-gradient(180deg,#fff,#f6f9ff)
+}
+.rule h3{margin:0 0 8px;color:var(--blue);font-size:20px}
+.rule p{margin:0;line-height:1.5;font-weight:700}
+.rule b{color:var(--red)}
+.compare{
+  display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px
+}
+.direct,.indirect{border-radius:18px;padding:14px;border:1px solid}
+.direct{background:#fff3f4;border-color:#f2c4c9}
+.indirect{background:#eef6ff;border-color:#c9ddf6}
+.direct h3{color:var(--red);margin:0 0 8px}
+.indirect h3{color:var(--blue);margin:0 0 8px}
+.direct p,.indirect p{margin:0;line-height:1.5;font-weight:800}
+.wchips{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+.wchip{
+  background:#f4f8ff;border:1px solid #d4e2f6;color:var(--blue);
+  border-radius:999px;padding:8px 11px;font-weight:900
+}
+.examples{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px}
+.example{
+  padding:13px;border:1px solid #dbe6f6;border-radius:15px;
+  background:#f8fbff;font-weight:750;line-height:1.5
+}
+.example b{color:var(--red)}
+.note{
+  margin-top:12px;padding:12px 14px;border-radius:14px;
+  border:1px solid #f0d67c;border-left:5px solid #eab814;background:#fff8df;
+  line-height:1.45;font-weight:700
+}
+.qtop{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:14px}
+.qcount{
+  background:#eef5ff;color:var(--blue);
+  border:1px solid #d7e5fa;border-radius:999px;
+  padding:7px 11px;font-size:14px;font-weight:950
+}
+.speaker{
+  width:43px;height:43px;border-radius:12px;
+  border:1px solid #d7e4f6;background:#fff;color:var(--blue);font-size:20px
+}
+.prompt{
+  font-size:clamp(23px,5vw,37px);line-height:1.35;
+  color:var(--blue2);font-weight:950;margin:5px 0 18px
+}
+.subprompt{
+  font-size:17px;line-height:1.45;color:var(--muted);
+  font-weight:750;margin:-7px 0 14px
+}
+.blank{
+  display:inline-block;min-width:125px;text-align:center;
+  border-bottom:4px solid var(--red);color:var(--red);padding:0 7px 2px
+}
+.options{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+.options.three{grid-template-columns:repeat(3,1fr)}
+.option{
+  border:2px solid #d9e4f3;background:#fff;color:var(--blue2);
+  border-radius:16px;padding:14px 11px;
+  font-weight:900;font-size:17px;transition:.16s
+}
+.option:hover{border-color:#5b91dc;transform:translateY(-1px)}
+.option.correct{background:#eaf8ef;border-color:#64b985;color:#0d7439}
+.option.wrong{background:#fff0f1;border-color:#e5737c;color:#ad1522}
+.option:disabled{cursor:default}
+.feedback{
+  display:none;margin-top:14px;border-radius:16px;padding:12px 14px;
+  line-height:1.5;border:1px solid #e3e9f1;background:#f7f9fc
+}
+.feedback.show{display:block}
+.feedback.ok{background:#edf9f1;border-color:#b9dfc5}
+.feedback.bad{background:#fff1f2;border-color:#efbdc2}
+.feedback strong{color:var(--blue2)}
+.translation{margin-top:4px;color:var(--muted);font-weight:700}
+.controls{display:flex;justify-content:space-between;gap:10px;margin-top:14px}
+.ctrl{border:0;border-radius:14px;padding:12px 16px;font-weight:900}
+.ctrl.primary{background:linear-gradient(135deg,var(--blue),#2f73db);color:#fff}
+.ctrl.secondary{background:#eef2f7;color:#2c3c50}
+.ctrl.danger{background:#fff0f1;color:#b61724}
+.ctrl:disabled{opacity:.45;cursor:not-allowed}
+.transform{
+  padding:14px;border:1px solid #dce8f8;border-radius:17px;background:#f9fbff
+}
+.transform .directq{font-size:20px;font-weight:900;color:var(--red);line-height:1.4}
+.transform .intro{font-size:16px;font-weight:800;color:var(--blue);margin-top:8px}
+.inputline{
+  width:100%;margin-top:10px;border:2px solid #cbdcf3;border-radius:14px;
+  padding:13px 14px;font-size:18px;font-weight:750;outline:none
+}
+.inputline:focus{border-color:#4c87db;box-shadow:0 0 0 4px rgba(76,135,219,.1)}
+.hints{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+.chip{
+  border:1px solid #cadcf3;background:#fff;color:var(--blue);
+  border-radius:999px;padding:8px 11px;font-weight:850
+}
+.wordbank,.sentence{
+  min-height:66px;border-radius:16px;padding:11px;display:flex;flex-wrap:wrap;gap:8px
+}
+.wordbank{border:2px dashed #bad1ee;background:#f8fbff}
+.sentence{border:2px solid #dbe5f2;background:#fff;margin-bottom:10px}
+.word{
+  border:0;border-radius:12px;padding:10px 13px;font-weight:850;
+  background:linear-gradient(135deg,var(--blue),#3b80e6);color:#fff;
+  box-shadow:0 4px 10px rgba(11,63,165,.17)
+}
+.sentence .word{background:#eef5ff;color:var(--blue);border:1px solid #cbdcf3;box-shadow:none}
+.dialog{
+  border:1px solid #dce8f8;border-radius:17px;background:#f9fbff;
+  padding:14px;margin-bottom:12px
+}
+.dialog .a{font-size:18px;font-weight:900;color:var(--red);line-height:1.45}
+.dialog .b{font-size:16px;font-weight:800;color:var(--blue);margin-top:6px}
+.result{text-align:center;padding:28px 14px}
+.result .circle{
+  width:118px;height:118px;border-radius:50%;margin:0 auto 12px;
+  display:grid;place-items:center;
+  background:linear-gradient(135deg,var(--blue),#3f84eb);
+  color:#fff;font-size:30px;font-weight:1000;
+  box-shadow:0 13px 30px rgba(11,63,165,.25)
+}
+.result h3{margin:6px 0;color:var(--blue2);font-size:30px}
+.result p{color:var(--muted);font-weight:700}
+.footer{text-align:center;margin-top:18px;color:#8993a3;font-size:12px;font-weight:750}
+@media(max-width:760px){
+  .tabs{grid-template-columns:repeat(2,1fr)}
+  .rulegrid,.compare,.examples{grid-template-columns:1fr}
+  .hero{padding:22px 16px;border-radius:22px}
+  .hero p{padding-right:45px}
+  .card{padding:16px;border-radius:20px}
+  .options.three{grid-template-columns:repeat(2,1fr)}
+}
+@media(max-width:440px){
+  .app{padding:8px 8px 30px}
+  .options,.options.three{grid-template-columns:1fr 1fr}
+  .option{font-size:15px;padding:12px 8px}
+}
+</style>
+</head>
+<body>
+<div class="app">
+<header class="hero">
+  <div class="brand">DE-MAX TUTIN</div>
+  <h1>Indirekte Fragen
+    <span>Indirektna pitanja sa W-upitnim rečima</span>
+  </h1>
+  <p>Vežbaj kako od direktnog pitanja nastaje ljubaznije indirektno pitanje. Najvažnije pravilo: <b>glagol u zavisnoj rečenici ide na kraj</b>.</p>
+  <button class="heroSpeak" id="heroSpeak" title="Poslušaj">🔊</button>
+</header>
+
+<div class="stats">
+  <div class="statrow">
+    <div class="progress"><span id="bar"></span></div>
+    <div class="stattext"><span id="done">0</span>/<span id="total">72</span> završeno • <span id="right">0</span> tačno</div>
+    <div class="streak">🔥 <span id="streak">0</span></div>
+  </div>
+</div>
+
+<nav class="tabs">
+  <button class="tab active" data-panel="rules">Pravilo</button>
+  <button class="tab" data-panel="ex1">1. W-reč</button>
+  <button class="tab" data-panel="ex2">2. Red reči</button>
+  <button class="tab" data-panel="ex3">3. Pretvori</button>
+  <button class="tab" data-panel="ex4">4. Glagol na kraju</button>
+  <button class="tab" data-panel="ex5">5. Dijalozi</button>
+  <button class="tab" data-panel="ex6">6. Složi rečenicu</button>
+  <button class="tab" data-panel="final">Rezultat</button>
+</nav>
+
+<section id="rules" class="panel active">
+<div class="card">
+  <div class="section-title">
+    <div class="badge">?</div>
+    <div><h2>Kako nastaje indirektno pitanje?</h2><p>W-reč ostaje, ali glagol prelazi na kraj.</p></div>
+  </div>
+
+  <div class="rulegrid">
+    <div class="rule">
+      <h3>Direktno pitanje</h3>
+      <p><b>Wo lernst du Deutsch?</b><br>Glagol <b>lernst</b> je na 2. mestu.</p>
+    </div>
+    <div class="rule">
+      <h3>Indirektno pitanje</h3>
+      <p>Ich möchte wissen, <b>wo du Deutsch lernst</b>.<br>Glagol <b>lernst</b> ide na kraj.</p>
+    </div>
+  </div>
+
+  <div class="compare">
+    <div class="direct"><h3>Direktno</h3><p>Was heißt das?<br>Wann haben die Banken geöffnet?<br>Wo kann man Geld abheben?</p></div>
+    <div class="indirect"><h3>Indirektno</h3><p>Können Sie mir sagen, was das <b>heißt</b>?<br>Wissen Sie, wann die Banken geöffnet <b>haben</b>?<br>Ich möchte wissen, wo man Geld abheben <b>kann</b>.</p></div>
+  </div>
+
+  <div class="wchips">
+    <span class="wchip">wer – ko</span><span class="wchip">was – šta</span>
+    <span class="wchip">wann – kada</span><span class="wchip">wo – gde</span>
+    <span class="wchip">wohin – kuda</span><span class="wchip">woher – odakle</span>
+    <span class="wchip">warum – zašto</span><span class="wchip">wie – kako</span>
+    <span class="wchip">wie lange – koliko dugo</span><span class="wchip">wie viel – koliko</span>
+  </div>
+
+  <div class="examples">
+    <div class="example">Können Sie mir sagen, <b>wann der Zug kommt</b>?<br><span class="translation">Možete li mi reći kada voz dolazi?</span></div>
+    <div class="example">Ich frage mich, <b>warum er so spät kommt</b>.<br><span class="translation">Pitam se zašto on dolazi tako kasno.</span></div>
+    <div class="example">Weißt du, <b>wo Anna wohnt</b>?<br><span class="translation">Znaš li gde Ana stanuje?</span></div>
+    <div class="example">Ich möchte wissen, <b>wie viel das kostet</b>.<br><span class="translation">Želim da znam koliko to košta.</span></div>
+  </div>
+
+  <div class="note">💡 Kod modalnih i složenih glagolskih oblika kompletan glagolski deo ide na kraj: <b>wo man das kaufen kann</b>, <b>wann die Bank geöffnet hat</b>.</div>
+</div>
+</section>
+
+<section id="ex1" class="panel"><div class="card"><div class="section-title"><div class="badge">1</div><div><h2>Izaberi W-reč</h2><p>wer, was, wann, wo, wohin, warum...</p></div></div><div id="ex1box"></div></div></section>
+<section id="ex2" class="panel"><div class="card"><div class="section-title"><div class="badge">2</div><div><h2>Pravilan red reči</h2><p>Pronađi tačno indirektno pitanje.</p></div></div><div id="ex2box"></div></div></section>
+<section id="ex3" class="panel"><div class="card"><div class="section-title"><div class="badge">3</div><div><h2>Pretvori pitanje</h2><p>Napiši indirektno pitanje.</p></div></div><div id="ex3box"></div></div></section>
+<section id="ex4" class="panel"><div class="card"><div class="section-title"><div class="badge">4</div><div><h2>Glagol na kraju</h2><p>Izaberi pravilan završetak.</p></div></div><div id="ex4box"></div></div></section>
+<section id="ex5" class="panel"><div class="card"><div class="section-title"><div class="badge">5</div><div><h2>Situacije i dijalozi</h2><p>Izaberi najprirodnije indirektno pitanje.</p></div></div><div id="ex5box"></div></div></section>
+<section id="ex6" class="panel"><div class="card"><div class="section-title"><div class="badge">6</div><div><h2>Složi rečenicu</h2><p>Klikni reči pravilnim redosledom.</p></div></div><div id="ex6box"></div></div></section>
+<section id="final" class="panel"><div class="card"><div id="finalbox"></div></div></section>
+
+<div class="footer">De-Max Tutin • Indirekte Fragen • W-Fragen • A2/B1</div>
+</div>
+
+<script>
+const ex1=[
+{s:"Können Sie mir sagen, ___ der Bahnhof ist?",a:"wo",o:["wo","wann","warum"],t:"Možete li mi reći gde je železnička stanica?"},
+{s:"Ich möchte wissen, ___ der Zug kommt.",a:"wann",o:["wann","woher","wer"],t:"Želim da znam kada voz dolazi."},
+{s:"Weißt du, ___ das kostet?",a:"wie viel",o:["wie viel","wo","wer"],t:"Znaš li koliko to košta?"},
+{s:"Mich interessiert, ___ er nicht kommt.",a:"warum",o:["warum","wohin","wann"],t:"Zanima me zašto on ne dolazi."},
+{s:"Kannst du mir sagen, ___ dort spricht?",a:"wer",o:["wer","was","wie"],t:"Možeš li mi reći ko tamo govori?"},
+{s:"Ich frage mich, ___ du am Wochenende machst.",a:"was",o:["was","wo","wie lange"],t:"Pitam se šta radiš za vikend."},
+{s:"Wissen Sie, ___ dieser Bus fährt?",a:"wohin",o:["wohin","woher","warum"],t:"Znate li kuda ide ovaj autobus?"},
+{s:"Ich möchte wissen, ___ sie kommt.",a:"woher",o:["woher","wann","wie"],t:"Želim da znam odakle ona dolazi."},
+{s:"Können Sie mir sagen, ___ das funktioniert?",a:"wie",o:["wie","wer","wohin"],t:"Možete li mi reći kako to funkcioniše?"},
+{s:"Weißt du, ___ der Kurs dauert?",a:"wie lange",o:["wie lange","wie viel","wo"],t:"Znaš li koliko dugo kurs traje?"},
+{s:"Ich möchte wissen, ___ du heißt.",a:"wie",o:["wie","was","wann"],t:"Želim da znam kako se zoveš."},
+{s:"Kannst du mir sagen, ___ heute Fußball spielt?",a:"wer",o:["wer","was","wann"],t:"Možeš li mi reći ko danas igra fudbal?"}
+];
+
+const ex2=[
+{s:"Direktno: Wo wohnst du?",a:"Ich möchte wissen, wo du wohnst.",o:["Ich möchte wissen, wo du wohnst.","Ich möchte wissen, wo wohnst du.","Ich möchte wissen, du wo wohnst."],t:"Želim da znam gde stanuješ."},
+{s:"Direktno: Wann beginnt der Kurs?",a:"Können Sie mir sagen, wann der Kurs beginnt?",o:["Können Sie mir sagen, wann beginnt der Kurs?","Können Sie mir sagen, wann der Kurs beginnt?","Können Sie mir sagen, der Kurs wann beginnt?"],t:"Možete li mi reći kada kurs počinje?"},
+{s:"Direktno: Was macht Anna?",a:"Weißt du, was Anna macht?",o:["Weißt du, was macht Anna?","Weißt du, was Anna macht?","Weißt du, Anna was macht?"],t:"Znaš li šta Ana radi?"},
+{s:"Direktno: Warum kommt er spät?",a:"Ich frage mich, warum er spät kommt.",o:["Ich frage mich, warum er spät kommt.","Ich frage mich, warum kommt er spät.","Ich frage mich, er warum spät kommt."],t:"Pitam se zašto on kasni."},
+{s:"Direktno: Wo kann man parken?",a:"Wissen Sie, wo man parken kann?",o:["Wissen Sie, wo kann man parken?","Wissen Sie, wo man parken kann?","Wissen Sie, man wo parken kann?"],t:"Znate li gde se može parkirati?"},
+{s:"Direktno: Wie viel kostet das?",a:"Können Sie mir sagen, wie viel das kostet?",o:["Können Sie mir sagen, wie viel kostet das?","Können Sie mir sagen, wie viel das kostet?","Können Sie mir sagen, das wie viel kostet?"],t:"Možete li mi reći koliko to košta?"},
+{s:"Direktno: Wer kommt heute?",a:"Ich möchte wissen, wer heute kommt.",o:["Ich möchte wissen, wer heute kommt.","Ich möchte wissen, wer kommt heute.","Ich möchte wissen, heute wer kommt."],t:"Želim da znam ko danas dolazi."},
+{s:"Direktno: Wohin fährt der Bus?",a:"Weißt du, wohin der Bus fährt?",o:["Weißt du, wohin fährt der Bus?","Weißt du, wohin der Bus fährt?","Weißt du, der Bus wohin fährt?"],t:"Znaš li kuda autobus ide?"},
+{s:"Direktno: Woher kommt sie?",a:"Mich interessiert, woher sie kommt.",o:["Mich interessiert, woher kommt sie.","Mich interessiert, woher sie kommt.","Mich interessiert, sie woher kommt."],t:"Zanima me odakle ona dolazi."},
+{s:"Direktno: Wie funktioniert das?",a:"Ich möchte wissen, wie das funktioniert.",o:["Ich möchte wissen, wie funktioniert das.","Ich möchte wissen, wie das funktioniert.","Ich möchte wissen, das wie funktioniert."],t:"Želim da znam kako to funkcioniše."},
+{s:"Direktno: Wann hat die Bank geöffnet?",a:"Wissen Sie, wann die Bank geöffnet hat?",o:["Wissen Sie, wann hat die Bank geöffnet?","Wissen Sie, wann die Bank geöffnet hat?","Wissen Sie, die Bank wann geöffnet hat?"],t:"Znate li kada je banka otvorena?"},
+{s:"Direktno: Was soll ich machen?",a:"Können Sie mir sagen, was ich machen soll?",o:["Können Sie mir sagen, was soll ich machen?","Können Sie mir sagen, was ich machen soll?","Können Sie mir sagen, ich was machen soll?"],t:"Možete li mi reći šta treba da uradim?"}
+];
+
+const ex3=[
+{q:"Was heißt das?",intro:"Können Sie mir sagen, ...",a:"Können Sie mir sagen, was das heißt?",t:"Možete li mi reći šta to znači?"},
+{q:"Wann fährt der Zug ab?",intro:"Ich möchte wissen, ...",a:"Ich möchte wissen, wann der Zug abfährt.",t:"Želim da znam kada voz polazi."},
+{q:"Wo wohnt Maria?",intro:"Weißt du, ...",a:"Weißt du, wo Maria wohnt?",t:"Znaš li gde Marija stanuje?"},
+{q:"Warum ist er müde?",intro:"Ich frage mich, ...",a:"Ich frage mich, warum er müde ist.",t:"Pitam se zašto je on umoran."},
+{q:"Wer arbeitet heute?",intro:"Ich möchte gerne wissen, ...",a:"Ich möchte gerne wissen, wer heute arbeitet.",t:"Želeo bih da znam ko danas radi."},
+{q:"Wie viel kostet das Ticket?",intro:"Können Sie mir sagen, ...",a:"Können Sie mir sagen, wie viel das Ticket kostet?",t:"Možete li mi reći koliko karta košta?"},
+{q:"Wo kann ich Geld wechseln?",intro:"Wissen Sie, ...",a:"Wissen Sie, wo ich Geld wechseln kann?",t:"Znate li gde mogu da zamenim novac?"},
+{q:"Wohin fährt dieser Bus?",intro:"Können Sie mir sagen, ...",a:"Können Sie mir sagen, wohin dieser Bus fährt?",t:"Možete li mi reći kuda ide ovaj autobus?"},
+{q:"Wie lange dauert die Fahrt?",intro:"Ich möchte wissen, ...",a:"Ich möchte wissen, wie lange die Fahrt dauert.",t:"Želim da znam koliko dugo putovanje traje."},
+{q:"Woher kommt dein Freund?",intro:"Ich wollte noch fragen, ...",a:"Ich wollte noch fragen, woher dein Freund kommt.",t:"Hteo sam još da pitam odakle je tvoj prijatelj."},
+{q:"Was muss ich mitbringen?",intro:"Können Sie mir sagen, ...",a:"Können Sie mir sagen, was ich mitbringen muss?",t:"Možete li mi reći šta moram da ponesem?"},
+{q:"Wann hat der Supermarkt geschlossen?",intro:"Weißt du, ...",a:"Weißt du, wann der Supermarkt geschlossen hat?",t:"Znaš li kada je supermarket zatvoren?"}
+];
+
+const ex4=[
+{s:"Ich möchte wissen, wo du Deutsch ___.",a:"lernst",o:["lernst","lernen","du lernst"],t:"Želim da znam gde učiš nemački."},
+{s:"Können Sie mir sagen, wann der Zug ___?",a:"kommt",o:["kommt","kommen","der Zug kommt"],t:"Možete li mi reći kada voz dolazi?"},
+{s:"Wissen Sie, wo man hier parken ___?",a:"kann",o:["kann","können","parken kann man"],t:"Znate li gde se ovde može parkirati?"},
+{s:"Ich frage mich, warum er so müde ___ .",a:"ist",o:["ist","sein","er ist"],t:"Pitam se zašto je toliko umoran."},
+{s:"Weißt du, was Anna heute ___?",a:"macht",o:["macht","machen","Anna macht"],t:"Znaš li šta Ana danas radi?"},
+{s:"Ich möchte wissen, wie viel das ___ .",a:"kostet",o:["kostet","kosten","das kostet"],t:"Želim da znam koliko to košta."},
+{s:"Können Sie mir sagen, wann die Bank geöffnet ___?",a:"hat",o:["hat","haben","geöffnet hat die Bank"],t:"Možete li mi reći kada je banka otvorena?"},
+{s:"Mich interessiert, wohin dieser Bus ___ .",a:"fährt",o:["fährt","fahren","dieser Bus fährt"],t:"Zanima me kuda ide ovaj autobus."},
+{s:"Ich weiß nicht, wer heute Fußball ___ .",a:"spielt",o:["spielt","spielen","wer spielt"],t:"Ne znam ko danas igra fudbal."},
+{s:"Können Sie mir sagen, was ich machen ___?",a:"soll",o:["soll","sollen","machen soll ich"],t:"Možete li mi reći šta treba da radim?"},
+{s:"Ich wollte fragen, wie lange der Kurs ___ .",a:"dauert",o:["dauert","dauern","der Kurs dauert"],t:"Hteo sam da pitam koliko kurs traje."},
+{s:"Weißt du, woher sie ___?",a:"kommt",o:["kommt","kommen","sie kommt"],t:"Znaš li odakle ona dolazi?"}
+];
+
+const ex5=[
+{s:"Na stanici želiš ljubazno da pitaš kada voz polazi.",a:"Können Sie mir sagen, wann der Zug abfährt?",o:["Wann fährt der Zug ab?","Können Sie mir sagen, wann der Zug abfährt?","Können Sie mir sagen, wann fährt der Zug ab?"],t:"Možete li mi reći kada voz polazi?"},
+{s:"U hotelu želiš da znaš gde je restoran.",a:"Können Sie mir sagen, wo das Restaurant ist?",o:["Können Sie mir sagen, wo das Restaurant ist?","Wo ist das Restaurant?","Können Sie mir sagen, wo ist das Restaurant?"],t:"Možete li mi reći gde je restoran?"},
+{s:"Ne znaš zašto kolega kasni.",a:"Ich frage mich, warum mein Kollege zu spät kommt.",o:["Ich frage mich, warum kommt mein Kollege zu spät.","Ich frage mich, warum mein Kollege zu spät kommt.","Warum mein Kollege zu spät kommt?"],t:"Pitam se zašto kolega kasni."},
+{s:"U prodavnici želiš da znaš koliko proizvod košta.",a:"Können Sie mir sagen, wie viel das kostet?",o:["Können Sie mir sagen, wie viel das kostet?","Wie viel das kostet?","Können Sie mir sagen, wie viel kostet das?"],t:"Možete li mi reći koliko to košta?"},
+{s:"Pitaš prijatelja gde Ana živi.",a:"Weißt du, wo Anna wohnt?",o:["Weißt du, wo Anna wohnt?","Wo Anna wohnt?","Weißt du, wo wohnt Anna?"],t:"Znaš li gde Ana stanuje?"},
+{s:"Želiš da saznaš ko danas radi.",a:"Ich möchte wissen, wer heute arbeitet.",o:["Ich möchte wissen, wer heute arbeitet.","Ich möchte wissen, wer arbeitet heute.","Wer heute arbeitet?"],t:"Želim da znam ko danas radi."},
+{s:"Na aerodromu pitaš kuda treba da ideš.",a:"Können Sie mir sagen, wohin ich gehen muss?",o:["Können Sie mir sagen, wohin ich gehen muss?","Können Sie mir sagen, wohin muss ich gehen?","Wohin ich gehen muss?"],t:"Možete li mi reći kuda moram da idem?"},
+{s:"Na kursu želiš da znaš koliko dugo traje čas.",a:"Ich möchte wissen, wie lange der Unterricht dauert.",o:["Ich möchte wissen, wie lange der Unterricht dauert.","Ich möchte wissen, wie lange dauert der Unterricht.","Wie lange der Unterricht dauert?"],t:"Želim da znam koliko dugo traje nastava."},
+{s:"U banci želiš da znaš gde možeš podići novac.",a:"Wissen Sie, wo ich Geld abheben kann?",o:["Wissen Sie, wo ich Geld abheben kann?","Wissen Sie, wo kann ich Geld abheben?","Wo ich Geld abheben kann?"],t:"Znate li gde mogu da podignem novac?"},
+{s:"Prijatelj je iz druge zemlje i želiš da znaš odakle dolazi.",a:"Ich möchte wissen, woher du kommst.",o:["Ich möchte wissen, woher du kommst.","Ich möchte wissen, woher kommst du.","Woher du kommst?"],t:"Želim da znam odakle dolaziš."},
+{s:"Pitaš nastavnika šta treba da poneseš.",a:"Können Sie mir sagen, was ich mitbringen soll?",o:["Können Sie mir sagen, was ich mitbringen soll?","Können Sie mir sagen, was soll ich mitbringen?","Was ich mitbringen soll?"],t:"Možete li mi reći šta treba da ponesem?"},
+{s:"Želiš da znaš kako radi novi uređaj.",a:"Ich möchte wissen, wie das Gerät funktioniert.",o:["Ich möchte wissen, wie das Gerät funktioniert.","Ich möchte wissen, wie funktioniert das Gerät.","Wie das Gerät funktioniert?"],t:"Želim da znam kako uređaj radi."}
+];
+
+const ex6=[
+{a:"Können Sie mir sagen, wo der Bahnhof ist?",t:"Možete li mi reći gde je železnička stanica?"},
+{a:"Ich möchte wissen, wann der Zug kommt.",t:"Želim da znam kada voz dolazi."},
+{a:"Weißt du, was Anna heute macht?",t:"Znaš li šta Ana danas radi?"},
+{a:"Ich frage mich, warum er so spät kommt.",t:"Pitam se zašto dolazi tako kasno."},
+{a:"Ich möchte wissen, wer heute arbeitet.",t:"Želim da znam ko danas radi."},
+{a:"Können Sie mir sagen, wie viel das kostet?",t:"Možete li mi reći koliko to košta?"},
+{a:"Wissen Sie, wo man hier parken kann?",t:"Znate li gde se ovde može parkirati?"},
+{a:"Ich möchte wissen, wohin dieser Bus fährt.",t:"Želim da znam kuda ide ovaj autobus."},
+{a:"Weißt du, woher Maria kommt?",t:"Znaš li odakle Marija dolazi?"},
+{a:"Ich möchte wissen, wie lange der Kurs dauert.",t:"Želim da znam koliko dugo kurs traje."},
+{a:"Können Sie mir sagen, was ich machen soll?",t:"Možete li mi reći šta treba da uradim?"},
+{a:"Wissen Sie, wann die Bank geöffnet hat?",t:"Znate li kada je banka otvorena?"}
+];
+
+const total=ex1.length+ex2.length+ex3.length+ex4.length+ex5.length+ex6.length;
+document.getElementById("total").textContent=total;
+let done=0,right=0,streak=0;
+const mastered=new Set();
+
+function normalize(s){
+  return s.trim().replace(/\s+/g," ").replace(/[“”„"]/g,'"').toLowerCase();
+}
+function mark(key){
+  if(mastered.has(key))return;
+  mastered.add(key);done++;right++;streak++;
+  document.getElementById("done").textContent=done;
+  document.getElementById("right").textContent=right;
+  document.getElementById("streak").textContent=streak;
+  document.getElementById("bar").style.width=(done/total*100)+"%";
+  renderFinal();
+}
+function miss(){
+  streak=0;document.getElementById("streak").textContent=streak;
+}
+function speak(text,rate=.92){
+  if(!("speechSynthesis" in window))return;
+  speechSynthesis.cancel();
+  const u=new SpeechSynthesisUtterance(text);
+  u.lang="de-DE";u.rate=rate;
+  const voices=speechSynthesis.getVoices();
+  const v=voices.find(x=>x.lang&&x.lang.toLowerCase().startsWith("de"));
+  if(v)u.voice=v;
+  speechSynthesis.speak(u);
+}
+document.getElementById("heroSpeak").onclick=()=>speak("Können Sie mir sagen, wo der Bahnhof ist? Ich möchte wissen, wann der Zug kommt. Weißt du, was Anna heute macht?");
+
+function showPanel(id){
+  document.querySelectorAll(".panel").forEach(p=>p.classList.toggle("active",p.id===id));
+  document.querySelectorAll(".tab").forEach(t=>t.classList.toggle("active",t.dataset.panel===id));
+  window.scrollTo({top:0,behavior:"smooth"});
+}
+document.querySelectorAll(".tab").forEach(b=>b.onclick=()=>showPanel(b.dataset.panel));
+
+function renderMCQ(id,data,prefix){
+  const el=document.getElementById(id);let i=0;
+  function draw(){
+    const q=data[i],key=prefix+i;
+    el.innerHTML=`
+      <div class="qtop"><span class="qcount">${i+1} / ${data.length}</span><button class="speaker">🔊</button></div>
+      <div class="prompt">${q.s.replace("___",'<span class="blank">?</span>')}</div>
+      <div class="options ${q.o.length===3?'three':''}">
+        ${q.o.map(x=>`<button class="option" data-v="${x.replace(/"/g,'&quot;')}">${x}</button>`).join("")}
+      </div>
+      <div class="feedback" id="fb"></div>
+      <div class="controls">
+        <button class="ctrl secondary" id="prev" ${i===0?'disabled':''}>← Nazad</button>
+        <button class="ctrl primary" id="next">${i===data.length-1?'Završi':'Sledeće →'}</button>
+      </div>`;
+    el.querySelector(".speaker").onclick=()=>speak(q.a.length>26?q.a:q.s.replace("___",q.a));
+    const fb=el.querySelector("#fb");
+    if(mastered.has(key)){
+      fb.className="feedback show ok";
+      fb.innerHTML=`<strong>✓ Rešeno.</strong> Tačno: <b>${q.a}</b><div class="translation">${q.t}</div>`;
+      el.querySelectorAll(".option").forEach(b=>{if(b.dataset.v===q.a)b.classList.add("correct")});
+    }
+    el.querySelectorAll(".option").forEach(btn=>{
+      btn.onclick=()=>{
+        if(mastered.has(key))return;
+        const ok=btn.dataset.v===q.a;
+        if(ok){
+          btn.classList.add("correct");
+          fb.className="feedback show ok";
+          fb.innerHTML=`<strong>✓ Tačno!</strong><div class="translation">${q.t}</div>`;
+          mark(key);
+          speak(q.a.length>26?q.a:q.s.replace("___",q.a));
+          el.querySelectorAll(".option").forEach(b=>b.disabled=true);
+        }else{
+          miss();
+          btn.classList.add("wrong");
+          fb.className="feedback show bad";
+          fb.innerHTML=`<strong>✗ Pokušaj ponovo.</strong> Kod indirektnog pitanja glagol u zavisnoj rečenici ide na kraj.`;
+          setTimeout(()=>btn.classList.remove("wrong"),650);
+        }
+      }
+    });
+    el.querySelector("#prev").onclick=()=>{if(i>0){i--;draw()}};
+    el.querySelector("#next").onclick=()=>{if(i<data.length-1){i++;draw()}else showPanel("final")};
+  }
+  draw();
+}
+
+renderMCQ("ex1box",ex1,"a");
+renderMCQ("ex2box",ex2,"b");
+renderMCQ("ex4box",ex4,"d");
+renderMCQ("ex5box",ex5,"e");
+
+(function transform(){
+  const el=document.getElementById("ex3box");let i=0;
+  function draw(){
+    const q=ex3[i],key="c"+i;
+    el.innerHTML=`
+      <div class="qtop"><span class="qcount">${i+1} / ${ex3.length}</span><button class="speaker">🔊</button></div>
+      <div class="transform">
+        <div class="directq">${q.q}</div>
+        <div class="intro">${q.intro}</div>
+        <input id="answer" class="inputline" placeholder="Napiši celo indirektno pitanje..." autocomplete="off">
+        <div class="hints">
+          <button class="chip" id="hint">💡 Pomoć</button>
+          <button class="chip" id="solution">👁 Rešenje</button>
+        </div>
+      </div>
+      <div class="feedback" id="tfb"></div>
+      <div class="controls">
+        <button class="ctrl secondary" id="prev" ${i===0?'disabled':''}>← Nazad</button>
+        <button class="ctrl primary" id="check">Proveri</button>
+        <button class="ctrl primary" id="next">${i===ex3.length-1?'Završi':'Sledeće →'}</button>
+      </div>`;
+    const inp=el.querySelector("#answer"),fb=el.querySelector("#tfb");
+    el.querySelector(".speaker").onclick=()=>speak(q.a);
+    if(mastered.has(key)){
+      inp.value=q.a;inp.disabled=true;
+      fb.className="feedback show ok";
+      fb.innerHTML=`<strong>✓ Rešeno.</strong><div class="translation">${q.t}</div>`;
+    }
+    el.querySelector("#hint").onclick=()=>{
+      fb.className="feedback show";
+      fb.innerHTML=`Zadrži W-reč iz direktnog pitanja i prebaci glagol na kraj zavisne rečenice.`;
+    };
+    el.querySelector("#solution").onclick=()=>{
+      fb.className="feedback show";
+      fb.innerHTML=`Rešenje: <b>${q.a}</b>`;
+    };
+    el.querySelector("#check").onclick=()=>{
+      if(mastered.has(key))return;
+      if(normalize(inp.value)===normalize(q.a)){
+        fb.className="feedback show ok";
+        fb.innerHTML=`<strong>✓ Tačno!</strong><div class="translation">${q.t}</div>`;
+        inp.disabled=true;mark(key);speak(q.a);
+      }else{
+        miss();
+        fb.className="feedback show bad";
+        fb.innerHTML=`<strong>✗ Još nije tačno.</strong> Proveri W-reč, subjekat i glagol na kraju.`;
+      }
+    };
+    inp.addEventListener("keydown",e=>{if(e.key==="Enter")el.querySelector("#check").click()});
+    el.querySelector("#prev").onclick=()=>{if(i>0){i--;draw()}};
+    el.querySelector("#next").onclick=()=>{if(i<ex3.length-1){i++;draw()}else showPanel("final")};
+  }
+  draw();
+})();
+
+(function builder(){
+  const el=document.getElementById("ex6box");let i=0;
+  function shuffled(words){
+    const a=[...words];
+    for(let j=a.length-1;j>0;j--){
+      const k=(j*7+3)%(j+1);
+      [a[j],a[k]]=[a[k],a[j]];
+    }
+    return a;
+  }
+  function norm(s){return s.trim().replace(/\s+/g," ").replace(/[?]+$/,"").toLowerCase()}
+  function draw(){
+    const q=ex6[i],key="f"+i;
+    let selected=[],bank=shuffled(q.a.replace(/[?]+$/,"").split(" "));
+    el.innerHTML=`
+      <div class="qtop"><span class="qcount">${i+1} / ${ex6.length}</span><button class="speaker">🔊</button></div>
+      <div class="translation" style="font-size:18px;margin-bottom:10px">${q.t}</div>
+      <div class="sentence" id="built"></div>
+      <div class="wordbank" id="bank"></div>
+      <div class="feedback" id="bfb"></div>
+      <div class="controls">
+        <button class="ctrl danger" id="clear">Obriši</button>
+        <button class="ctrl primary" id="check">Proveri</button>
+      </div>
+      <div class="controls">
+        <button class="ctrl secondary" id="prev" ${i===0?'disabled':''}>← Nazad</button>
+        <button class="ctrl primary" id="next">${i===ex6.length-1?'Završi':'Sledeće →'}</button>
+      </div>`;
+    const bankEl=el.querySelector("#bank"),built=el.querySelector("#built"),fb=el.querySelector("#bfb");
+    el.querySelector(".speaker").onclick=()=>speak(q.a);
+    function paint(){
+      bankEl.innerHTML="";built.innerHTML="";
+      bank.forEach((w,idx)=>{
+        const b=document.createElement("button");b.className="word";b.textContent=w;
+        b.onclick=()=>{selected.push(w);bank.splice(idx,1);paint()};bankEl.appendChild(b);
+      });
+      selected.forEach((w,idx)=>{
+        const b=document.createElement("button");b.className="word";b.textContent=w;
+        b.onclick=()=>{bank.push(w);selected.splice(idx,1);paint()};built.appendChild(b);
+      });
+    }
+    paint();
+    if(mastered.has(key)){
+      bank=[];selected=q.a.replace(/[?]+$/,"").split(" ");paint();
+      fb.className="feedback show ok";fb.innerHTML=`<strong>✓ Rešeno.</strong> ${q.a}`;
+    }
+    el.querySelector("#clear").onclick=()=>{
+      if(mastered.has(key))return;
+      selected=[];bank=shuffled(q.a.replace(/[?]+$/,"").split(" "));paint();fb.className="feedback";
+    };
+    el.querySelector("#check").onclick=()=>{
+      if(mastered.has(key))return;
+      const made=selected.join(" ")+"?";
+      if(norm(made)===norm(q.a)){
+        fb.className="feedback show ok";
+        fb.innerHTML=`<strong>✓ Tačno!</strong> ${q.a}`;
+        mark(key);speak(q.a);
+      }else{
+        miss();
+        fb.className="feedback show bad";
+        fb.innerHTML=`<strong>✗ Pokušaj ponovo.</strong> Zapamti: u zavisnoj rečenici glagol ide na kraj.`;
+      }
+    };
+    el.querySelector("#prev").onclick=()=>{if(i>0){i--;draw()}};
+    el.querySelector("#next").onclick=()=>{if(i<ex6.length-1){i++;draw()}else showPanel("final")};
+  }
+  draw();
+})();
+
+function renderFinal(){
+  const pct=Math.round(done/total*100);
+  let msg="Kreni od W-reči i redosleda reči.";
+  if(done>=24)msg="Dobro ide — nastavi dalje.";
+  if(done>=48)msg="Sjajan napredak — još malo do kraja!";
+  if(done===total)msg="Odlično! Završio/la si svih 72 zadatka.";
+  document.getElementById("finalbox").innerHTML=`
+    <div class="result">
+      <div class="circle">${pct}%</div>
+      <h3>Tvoj napredak</h3>
+      <p>${msg}</p>
+      <p><b>${done}</b> od <b>${total}</b> zadataka završeno tačno.</p>
+      <div class="controls" style="justify-content:center">
+        <button class="ctrl primary" onclick="showPanel('ex1')">Nastavi vežbanje</button>
+        <button class="ctrl secondary" onclick="showPanel('rules')">Ponovi pravilo</button>
+      </div>
+    </div>`;
+}
+renderFinal();
+</script>
+</body>
+</html>
