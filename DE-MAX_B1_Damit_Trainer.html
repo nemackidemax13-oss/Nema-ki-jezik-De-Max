@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="sr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DE-MAX | Veznik damit</title>
+<style>
+:root{
+  --blue:#1387dc;
+  --blue2:#0d66b7;
+  --light:#eaf7ff;
+  --soft:#f7fbff;
+  --text:#10243b;
+  --green:#1f9d64;
+  --red:#e54848;
+  --shadow:0 12px 35px rgba(22,115,181,.14);
+}
+*{box-sizing:border-box}
+body{
+  margin:0;
+  font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+  background:linear-gradient(180deg,#e9f7ff 0%,#f8fcff 48%,#ffffff 100%);
+  color:var(--text);
+}
+.app{
+  max-width:820px;
+  margin:auto;
+  min-height:100vh;
+  padding:14px;
+}
+.hero{
+  background:linear-gradient(135deg,#1495e7,#0866b9);
+  color:#fff;
+  border-radius:26px;
+  padding:22px 20px;
+  box-shadow:var(--shadow);
+  position:relative;
+  overflow:hidden;
+}
+.hero:after{
+  content:"";
+  position:absolute;
+  width:180px;height:180px;
+  border-radius:50%;
+  right:-55px;top:-70px;
+  background:rgba(255,255,255,.15);
+}
+.brand{
+  display:flex;align-items:center;justify-content:space-between;gap:14px;
+}
+.logo{
+  width:62px;height:62px;border-radius:18px;background:#fff;color:var(--blue2);
+  display:grid;place-items:center;font-weight:900;font-size:18px;box-shadow:0 6px 18px rgba(0,0,0,.12);
+}
+.hero h1{margin:10px 0 4px;font-size:clamp(28px,6vw,44px);line-height:1}
+.hero p{margin:6px 0 0;opacity:.95;font-size:16px}
+.badge{
+  background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.35);
+  padding:8px 12px;border-radius:999px;font-weight:800;font-size:13px;
+}
+.progressWrap{
+  background:#fff;border-radius:22px;padding:14px 16px;margin:14px 0;box-shadow:var(--shadow);
+  position:sticky;top:8px;z-index:20;
+}
+.progressTop{display:flex;justify-content:space-between;align-items:center;font-weight:800;font-size:14px;margin-bottom:8px}
+.progress{height:10px;background:#dfeef9;border-radius:999px;overflow:hidden}
+.progressBar{height:100%;width:0;background:linear-gradient(90deg,#16a1eb,#0b62b3);transition:.25s}
+.tabs{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:14px 0;
+}
+.tab{
+  border:0;background:#fff;padding:12px 8px;border-radius:15px;font-weight:800;color:#31536f;cursor:pointer;box-shadow:0 6px 18px rgba(20,90,140,.08)
+}
+.tab.active{background:var(--blue);color:#fff}
+.card{
+  background:#fff;border:1px solid #d9edfb;border-radius:24px;padding:18px;margin:12px 0;box-shadow:var(--shadow)
+}
+.card h2{margin:0 0 12px;font-size:22px;color:var(--blue2)}
+.rule{
+  border-left:5px solid var(--blue);background:var(--light);padding:14px 15px;border-radius:14px;
+  font-size:16px;line-height:1.55
+}
+.rule strong{color:var(--blue2)}
+.example{
+  margin:11px 0;padding:13px 14px;background:var(--soft);border:1px solid #dceffa;border-radius:15px;
+}
+.de{font-size:18px;font-weight:850;line-height:1.45}
+.sr{color:#516b80;margin-top:4px;line-height:1.4}
+.damit{color:var(--red);font-weight:900}
+.subj{color:#165ee5}
+.verb{color:#165ee5}
+.speak{
+  border:0;background:#e5f4ff;color:var(--blue2);border-radius:12px;padding:8px 11px;font-weight:800;cursor:pointer;margin-top:8px
+}
+.exerciseTitle{
+  display:flex;justify-content:space-between;gap:10px;align-items:center;margin-bottom:8px
+}
+.qnum{font-size:13px;font-weight:900;color:var(--blue2);background:#eaf6ff;padding:7px 10px;border-radius:999px}
+.question{font-size:19px;font-weight:850;line-height:1.5;margin:10px 0 14px}
+.options{display:grid;gap:9px}
+.option{
+  border:2px solid #dcecf7;background:#fff;border-radius:14px;padding:13px;text-align:left;font-size:16px;font-weight:750;cursor:pointer;
+}
+.option:hover{border-color:#9acff0}
+.option.correct{border-color:#37b779;background:#eafaf2}
+.option.wrong{border-color:#ee7070;background:#fff0f0}
+.feedback{
+  margin-top:12px;padding:12px 14px;border-radius:14px;font-weight:800;display:none
+}
+.feedback.ok{display:block;background:#eafaf2;color:#167349}
+.feedback.bad{display:block;background:#fff0f0;color:#a42d2d}
+.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}
+.btn{
+  border:0;border-radius:14px;padding:12px 16px;font-weight:900;cursor:pointer;
+}
+.btn.primary{background:var(--blue);color:#fff}
+.btn.secondary{background:#eaf5fc;color:#28526f}
+.btn.green{background:var(--green);color:#fff}
+.wordBank,.answerZone{display:flex;flex-wrap:wrap;gap:8px;min-height:54px;padding:10px;border-radius:14px}
+.wordBank{background:#eff8fe;border:1px solid #d8ecf8}
+.answerZone{background:#fff;border:2px dashed #abd7f2;margin-bottom:10px}
+.word{
+  background:#fff;border:1px solid #b9dff5;padding:9px 12px;border-radius:12px;font-weight:800;cursor:pointer;box-shadow:0 3px 8px rgba(0,0,0,.04)
+}
+.word.inanswer{background:#dff3ff}
+input[type=text]{
+  width:100%;font-size:17px;padding:13px 14px;border:2px solid #d3e8f5;border-radius:14px;outline:none
+}
+input[type=text]:focus{border-color:var(--blue)}
+.statgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:9px}
+.stat{background:#f2f9fe;border-radius:15px;padding:12px;text-align:center}
+.stat b{font-size:23px;color:var(--blue2);display:block}
+.hidden{display:none!important}
+.footer{text-align:center;color:#6c8192;font-size:13px;padding:24px 8px 40px}
+.small{font-size:13px;color:#6d8190}
+@media (max-width:560px){
+  .app{padding:10px}
+  .hero{border-radius:20px;padding:18px 16px}
+  .logo{width:54px;height:54px}
+  .tabs{grid-template-columns:repeat(2,1fr)}
+  .card{border-radius:20px;padding:15px}
+  .de{font-size:17px}
+}
+</style>
+</head>
+<body>
+<div class="app">
+  <section class="hero">
+    <div class="brand">
+      <div class="logo">DE‑MAX</div>
+      <div class="badge">B1 • Grammatik</div>
+    </div>
+    <h1>Veznik „damit“</h1>
+    <p><b>da bi / kako bi</b> • pravilo, izgovor i interaktivne vežbe</p>
+  </section>
+
+  <div class="progressWrap">
+    <div class="progressTop">
+      <span>Napredak</span>
+      <span id="progressText">0%</span>
+    </div>
+    <div class="progress"><div class="progressBar" id="progressBar"></div></div>
+  </div>
+
+  <div class="tabs">
+    <button class="tab active" data-tab="pravilo">📘 Pravilo</button>
+    <button class="tab" data-tab="izbor">✅ Izbor</button>
+    <button class="tab" data-tab="redosled">🧩 Red reči</button>
+    <button class="tab" data-tab="dopuna">✍️ Dopuni</button>
+    <button class="tab" data-tab="prevod">🌍 Prevod</button>
+    <button class="tab" data-tab="rezultat">🏆 Rezultat</button>
+  </div>
+
+  <section id="pravilo" class="panel">
+    <div class="card">
+      <h2>Kako koristimo „damit“?</h2>
+      <div class="rule">
+        <strong>damit</strong> uvodi zavisnu rečenicu namere ili cilja.<br>
+        U zavisnoj rečenici <strong>glagol ide na kraj</strong>.<br><br>
+        Često ga koristimo kada su subjekti u glavnoj i zavisnoj rečenici <strong>različiti</strong>.
+      </div>
+
+      <div class="example">
+        <div class="de">Ich helfe dir, <span class="damit">damit</span> <span class="subj">du</span> die Aufgabe <span class="verb">verstehst</span>.</div>
+        <div class="sr">Ja ti pomažem da bi ti razumeo zadatak.</div>
+        <button class="speak" onclick="speak('Ich helfe dir, damit du die Aufgabe verstehst.')">🔊 Izgovor</button>
+      </div>
+
+      <div class="example">
+        <div class="de">Der Lehrer erklärt die Grammatik, <span class="damit">damit</span> <span class="subj">die Schüler</span> die Regel <span class="verb">verstehen</span>.</div>
+        <div class="sr">Nastavnik objašnjava gramatiku da bi učenici razumeli pravilo.</div>
+        <button class="speak" onclick="speak('Der Lehrer erklärt die Grammatik, damit die Schüler die Regel verstehen.')">🔊 Izgovor</button>
+      </div>
+
+      <div class="example">
+        <div class="de">Die Mutter kocht, <span class="damit">damit</span> <span class="subj">die Kinder</span> etwas <span class="verb">essen</span>.</div>
+        <div class="sr">Majka kuva da bi deca nešto jela.</div>
+        <button class="speak" onclick="speak('Die Mutter kocht, damit die Kinder etwas essen.')">🔊 Izgovor</button>
+      </div>
+
+      <div class="example">
+        <div class="de">Wir machen Übungen, <span class="damit">damit</span> <span class="subj">ihr</span> besser Deutsch <span class="verb">sprecht</span>.</div>
+        <div class="sr">Radimo vežbe da biste vi bolje govorili nemački.</div>
+        <button class="speak" onclick="speak('Wir machen Übungen, damit ihr besser Deutsch sprecht.')">🔊 Izgovor</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Brza formula</h2>
+      <div class="rule"><b>Glavna rečenica + , damit + subjekat + ostalo + GLAGOL.</b></div>
+      <p class="small">Primer: Ich spreche langsam, damit du mich besser <b>verstehst</b>.</p>
+      <div class="actions"><button class="btn primary" onclick="goTab('izbor')">Počni vežbe →</button></div>
+    </div>
+  </section>
+
+  <section id="izbor" class="panel hidden"><div class="card" id="choiceCard"></div></section>
+  <section id="redosled" class="panel hidden"><div class="card" id="orderCard"></div></section>
+  <section id="dopuna" class="panel hidden"><div class="card" id="fillCard"></div></section>
+  <section id="prevod" class="panel hidden"><div class="card" id="transCard"></div></section>
+
+  <section id="rezultat" class="panel hidden">
+    <div class="card">
+      <h2>Tvoj rezultat</h2>
+      <div class="statgrid">
+        <div class="stat"><b id="scoreStat">0</b>tačno</div>
+        <div class="stat"><b id="doneStat">0</b>urađeno</div>
+        <div class="stat"><b id="pctStat">0%</b>uspeh</div>
+      </div>
+      <div class="actions">
+        <button class="btn primary" onclick="resetAll()">🔄 Počni ponovo</button>
+        <button class="btn secondary" onclick="goTab('pravilo')">📘 Pravilo</button>
+      </div>
+    </div>
+  </section>
+
+  <div class="footer">DE‑MAX • Nemački jezik • Interaktivna vežba „damit“</div>
+</div>
+
+<script>
+const choiceQs = [
+ {q:"Koja rečenica je pravilna?", opts:[
+  "Ich spreche langsam, damit du mich besser verstehst.",
+  "Ich spreche langsam, damit du verstehst mich besser.",
+  "Ich spreche langsam, damit verstehst du mich besser."
+ ], a:0, exp:"Posle „damit“ glagol ide na kraj: ... damit du mich besser verstehst."},
+ {q:"Izaberi pravilan red reči.", opts:[
+  "Wir öffnen das Fenster, damit frische Luft kommt herein.",
+  "Wir öffnen das Fenster, damit frische Luft hereinkommt.",
+  "Wir öffnen das Fenster, damit kommt frische Luft herein."
+ ], a:1, exp:"U zavisnoj rečenici finitni glagol ide na kraj: hereinkommt."},
+ {q:"Koja rečenica izražava cilj?", opts:[
+  "Ich lerne viel, damit ich die Prüfung bestehe.",
+  "Ich lerne viel, weil ich die Prüfung bestehe.",
+  "Ich lerne viel, obwohl ich die Prüfung bestehe."
+ ], a:0, exp:"„damit“ izražava cilj: učim da bih položio ispit."},
+ {q:"Dopuni logički: Die Mutter ruft den Arzt, ...", opts:[
+  "damit er das Kind untersucht.",
+  "damit er untersucht das Kind.",
+  "damit untersucht er das Kind."
+ ], a:0, exp:"Pravilno: damit + subjekat + ostalo + glagol na kraju."},
+ {q:"Koja rečenica je pravilna?", opts:[
+  "Der Lehrer wiederholt die Regel, damit alle sie verstehen.",
+  "Der Lehrer wiederholt die Regel, damit verstehen alle sie.",
+  "Der Lehrer wiederholt die Regel, damit alle verstehen sie."
+ ], a:0, exp:"Glagol „verstehen“ stoji na kraju zavisne rečenice."},
+ {q:"Izaberi tačnu rečenicu.", opts:[
+  "Ich schreibe es auf, damit ich es nicht vergesse.",
+  "Ich schreibe es auf, damit ich vergesse es nicht.",
+  "Ich schreibe es auf, damit vergesse ich es nicht."
+ ], a:0, exp:"Pravilno: damit ich es nicht vergesse."},
+ {q:"Koji prevod odgovara: „Otac radi više da bi porodica imala dovoljno novca.“?", opts:[
+  "Der Vater arbeitet mehr, damit die Familie genug Geld hat.",
+  "Der Vater arbeitet mehr, weil die Familie genug Geld hat.",
+  "Der Vater arbeitet mehr, obwohl die Familie genug Geld hat."
+ ], a:0, exp:"„da bi“ ovde izražava cilj → damit."},
+ {q:"Koja rečenica ima pravilan glagol na kraju?", opts:[
+  "Sie spricht deutlich, damit jeder kann sie verstehen.",
+  "Sie spricht deutlich, damit jeder sie verstehen kann.",
+  "Sie spricht deutlich, damit kann jeder sie verstehen."
+ ], a:1, exp:"Kod modalnog glagola: ... damit jeder sie verstehen kann."}
+];
+
+const orderQs = [
+ ["Ich","spreche","langsamer,","damit","du","alles","verstehst."],
+ ["Wir","lernen","jeden Tag,","damit","wir","die Prüfung","bestehen."],
+ ["Der Lehrer","schreibt","ein Beispiel,","damit","die Schüler","die Regel","verstehen."],
+ ["Sie","ruft","früh an,","damit","ihre Mutter","sich","keine Sorgen","macht."],
+ ["Ich","schalte","das Licht ein,","damit","du","besser","lesen","kannst."],
+ ["Die Eltern","sparen","Geld,","damit","die Kinder","studieren","können."],
+ ["Er","fährt","vorsichtig,","damit","niemand","Angst","hat."],
+ ["Wir","wiederholen","die Wörter,","damit","ihr","sie","nicht","vergesst."]
+];
+
+const fillQs = [
+ {s:"Ich spreche deutlich, damit du mich besser ____.", a:"verstehst", hint:"verstehen"},
+ {s:"Der Lehrer erklärt alles noch einmal, damit die Schüler die Aufgabe ____.", a:"lösen", hint:"lösen"},
+ {s:"Wir fahren früh los, damit wir pünktlich ____.", a:"ankommen", hint:"ankommen"},
+ {s:"Sie schreibt eine Nachricht, damit ihre Mutter Bescheid ____.", a:"weiß", hint:"wissen"},
+ {s:"Ich gebe dir meine Nummer, damit du mich anrufen ____.", a:"kannst", hint:"können"},
+ {s:"Er spart Geld, damit er ein Auto kaufen ____.", a:"kann", hint:"können"},
+ {s:"Die Mutter macht das Essen warm, damit die Kinder gleich ____.", a:"essen", hint:"essen"},
+ {s:"Wir üben die Aussprache, damit ihr besser Deutsch ____.", a:"sprecht", hint:"sprechen"},
+ {s:"Ich stelle den Wecker, damit ich morgen früh ____.", a:"aufstehe", hint:"aufstehen"},
+ {s:"Der Vater fährt langsam, damit die Kinder ruhig ____.", a:"bleiben", hint:"bleiben"}
+];
+
+const transQs = [
+ {sr:"Ja govorim sporije da bi me ti bolje razumeo.", de:"Ich spreche langsamer, damit du mich besser verstehst."},
+ {sr:"Nastavnik ponavlja pravilo da bi ga svi razumeli.", de:"Der Lehrer wiederholt die Regel, damit alle sie verstehen."},
+ {sr:"Majka kuva da bi deca nešto jela.", de:"Die Mutter kocht, damit die Kinder etwas essen."},
+ {sr:"Mi vežbamo svaki dan da bismo položili ispit.", de:"Wir üben jeden Tag, damit wir die Prüfung bestehen."},
+ {sr:"Dajem ti adresu da bi mogao da dođeš.", de:"Ich gebe dir die Adresse, damit du kommen kannst."},
+ {sr:"On govori tiho da beba ne bi probudila.", de:"Er spricht leise, damit das Baby nicht aufwacht."},
+ {sr:"Ona piše sve da ništa ne bi zaboravila.", de:"Sie schreibt alles auf, damit sie nichts vergisst."},
+ {sr:"Otvaramo prozor da bi svež vazduh ušao.", de:"Wir öffnen das Fenster, damit frische Luft hereinkommt."}
+];
+
+let state = {
+  score:0, done:0,
+  choice:0, order:0, fill:0, trans:0,
+  completed:new Set()
+};
+
+function speak(text){
+  if(!('speechSynthesis' in window)){ alert('Pregledač ne podržava izgovor.'); return; }
+  speechSynthesis.cancel();
+  const u=new SpeechSynthesisUtterance(text);
+  u.lang='de-DE'; u.rate=.88; u.pitch=1;
+  speechSynthesis.speak(u);
+}
+
+document.querySelectorAll('.tab').forEach(b=>b.onclick=()=>goTab(b.dataset.tab));
+function goTab(id){
+  document.querySelectorAll('.panel').forEach(p=>p.classList.add('hidden'));
+  document.getElementById(id).classList.remove('hidden');
+  document.querySelectorAll('.tab').forEach(b=>b.classList.toggle('active',b.dataset.tab===id));
+  if(id==='rezultat') updateStats();
+  scrollTo({top:0,behavior:'smooth'});
+}
+function progress(){
+  const total=choiceQs.length+orderQs.length+fillQs.length+transQs.length;
+  const p=Math.round((state.done/total)*100);
+  document.getElementById('progressBar').style.width=p+'%';
+  document.getElementById('progressText').textContent=p+'%';
+  updateStats();
+}
+function record(key, correct){
+  if(state.completed.has(key)) return;
+  state.completed.add(key); state.done++;
+  if(correct) state.score++;
+  progress();
+}
+function updateStats(){
+  document.getElementById('scoreStat').textContent=state.score;
+  document.getElementById('doneStat').textContent=state.done;
+  document.getElementById('pctStat').textContent=state.done?Math.round(state.score/state.done*100)+'%':'0%';
+}
+
+/* CHOICE */
+function renderChoice(){
+ const i=state.choice%choiceQs.length,q=choiceQs[i],box=document.getElementById('choiceCard');
+ box.innerHTML=`<div class="exerciseTitle"><h2>Izaberi tačan odgovor</h2><span class="qnum">${i+1}/${choiceQs.length}</span></div>
+ <div class="question">${q.q}</div>
+ <div class="options">${q.opts.map((o,k)=>`<button class="option" onclick="checkChoice(${k})">${o}</button>`).join('')}</div>
+ <div id="choiceFb" class="feedback"></div>
+ <div class="actions"><button class="btn secondary" onclick="nextChoice()">Sledeće →</button></div>`;
+}
+function checkChoice(k){
+ const i=state.choice%choiceQs.length,q=choiceQs[i],opts=[...document.querySelectorAll('#choiceCard .option')];
+ opts.forEach(x=>x.disabled=true); opts[q.a].classList.add('correct');
+ const ok=k===q.a; if(!ok) opts[k].classList.add('wrong');
+ const f=document.getElementById('choiceFb');f.className='feedback '+(ok?'ok':'bad');
+ f.innerHTML=(ok?'✅ Tačno! ':'❌ Nije tačno. ')+q.exp;
+ record('choice'+i,ok);
+}
+function nextChoice(){state.choice=(state.choice+1)%choiceQs.length;renderChoice()}
+
+/* ORDER */
+let chosen=[];
+function shuffled(a){return a.map(v=>({v,r:Math.random()})).sort((a,b)=>a.r-b.r).map(x=>x.v)}
+function renderOrder(){
+ chosen=[];
+ const i=state.order%orderQs.length, words=shuffled([...orderQs[i]]),box=document.getElementById('orderCard');
+ box.innerHTML=`<div class="exerciseTitle"><h2>Složi rečenicu</h2><span class="qnum">${i+1}/${orderQs.length}</span></div>
+ <div class="question">Klikći reči pravilnim redosledom.</div>
+ <div id="answerZone" class="answerZone"></div>
+ <div id="wordBank" class="wordBank">${words.map((w,k)=>`<button class="word" data-word="${encodeURIComponent(w)}" onclick="pickWord(this)">${w}</button>`).join('')}</div>
+ <div id="orderFb" class="feedback"></div>
+ <div class="actions"><button class="btn green" onclick="checkOrder()">Proveri</button><button class="btn secondary" onclick="renderOrder()">Poništi</button><button class="btn secondary" onclick="nextOrder()">Sledeće →</button></div>`;
+}
+function pickWord(el){
+ const w=decodeURIComponent(el.dataset.word); chosen.push(w); el.remove();
+ document.getElementById('answerZone').innerHTML=chosen.map((x,k)=>`<button class="word inanswer" onclick="removeChosen(${k})">${x}</button>`).join('');
+}
+function removeChosen(k){
+ const i=state.order%orderQs.length;
+ const w=chosen.splice(k,1)[0];
+ const b=document.getElementById('wordBank'),bt=document.createElement('button');bt.className='word';bt.textContent=w;bt.dataset.word=encodeURIComponent(w);bt.onclick=function(){pickWord(this)};b.appendChild(bt);
+ document.getElementById('answerZone').innerHTML=chosen.map((x,j)=>`<button class="word inanswer" onclick="removeChosen(${j})">${x}</button>`).join('');
+}
+function checkOrder(){
+ const i=state.order%orderQs.length,correct=orderQs[i].join(' ');
+ const mine=chosen.join(' '),ok=mine===correct,fb=document.getElementById('orderFb');
+ fb.className='feedback '+(ok?'ok':'bad');fb.innerHTML=ok?`✅ Tačno! <button class="speak" onclick="speak('${correct.replaceAll("'","\\'")}')">🔊 Izgovor</button>`:`❌ Pokušaj ponovo.<br><span class="small">Tačno rešenje: ${correct}</span>`;
+ record('order'+i,ok);
+}
+function nextOrder(){state.order=(state.order+1)%orderQs.length;renderOrder()}
+
+/* FILL */
+function renderFill(){
+ const i=state.fill%fillQs.length,q=fillQs[i],box=document.getElementById('fillCard');
+ box.innerHTML=`<div class="exerciseTitle"><h2>Dopuni glagol</h2><span class="qnum">${i+1}/${fillQs.length}</span></div>
+ <div class="question">${q.s}</div><div class="small">Glagol: <b>${q.hint}</b></div>
+ <input id="fillInput" type="text" autocomplete="off" placeholder="Upiši tačan oblik..." onkeydown="if(event.key==='Enter') checkFill()">
+ <div id="fillFb" class="feedback"></div>
+ <div class="actions"><button class="btn green" onclick="checkFill()">Proveri</button><button class="btn secondary" onclick="nextFill()">Sledeće →</button></div>`;
+}
+function norm(s){return s.trim().toLowerCase().replace(/[.!?]/g,'')}
+function checkFill(){
+ const i=state.fill%fillQs.length,q=fillQs[i],v=norm(document.getElementById('fillInput').value),ok=v===norm(q.a),fb=document.getElementById('fillFb');
+ fb.className='feedback '+(ok?'ok':'bad');fb.innerHTML=ok?'✅ Tačno!':'❌ Tačan odgovor je: <b>'+q.a+'</b>';
+ record('fill'+i,ok);
+}
+function nextFill(){state.fill=(state.fill+1)%fillQs.length;renderFill()}
+
+/* TRANSLATION */
+function renderTrans(){
+ const i=state.trans%transQs.length,q=transQs[i],box=document.getElementById('transCard');
+ box.innerHTML=`<div class="exerciseTitle"><h2>Prevedi na nemački</h2><span class="qnum">${i+1}/${transQs.length}</span></div>
+ <div class="question">${q.sr}</div>
+ <input id="transInput" type="text" autocomplete="off" placeholder="Napiši nemačku rečenicu..." onkeydown="if(event.key==='Enter') checkTrans()">
+ <div id="transFb" class="feedback"></div>
+ <div class="actions"><button class="btn green" onclick="checkTrans()">Proveri</button><button class="btn secondary" onclick="showTrans()">Prikaži rešenje</button><button class="btn secondary" onclick="nextTrans()">Sledeće →</button></div>`;
+}
+function simpleCompare(a,b){
+ const clean=s=>norm(s).replace(/ä/g,'a').replace(/ö/g,'o').replace(/ü/g,'u').replace(/ß/g,'ss').replace(/\s+/g,' ');
+ return clean(a)===clean(b);
+}
+function checkTrans(){
+ const i=state.trans%transQs.length,q=transQs[i],v=document.getElementById('transInput').value,ok=simpleCompare(v,q.de),fb=document.getElementById('transFb');
+ fb.className='feedback '+(ok?'ok':'bad');
+ fb.innerHTML=ok?`✅ Tačno! <button class="speak" onclick="speak('${q.de.replaceAll("'","\\'")}')">🔊 Izgovor</button>`:`❌ Proveri red reči.<br><span class="small">Model rešenje: ${q.de}</span>`;
+ record('trans'+i,ok);
+}
+function showTrans(){
+ const i=state.trans%transQs.length,q=transQs[i],fb=document.getElementById('transFb');
+ fb.className='feedback ok';fb.innerHTML=`💡 ${q.de} <button class="speak" onclick="speak('${q.de.replaceAll("'","\\'")}')">🔊 Izgovor</button>`;
+}
+function nextTrans(){state.trans=(state.trans+1)%transQs.length;renderTrans()}
+
+function resetAll(){
+ state={score:0,done:0,choice:0,order:0,fill:0,trans:0,completed:new Set()};
+ progress();renderChoice();renderOrder();renderFill();renderTrans();goTab('pravilo');
+}
+
+renderChoice();renderOrder();renderFill();renderTrans();progress();
+</script>
+</body>
+</html>

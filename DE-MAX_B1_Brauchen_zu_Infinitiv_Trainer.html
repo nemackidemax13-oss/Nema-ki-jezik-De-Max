@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+<html lang="sr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<title>DE-MAX • Brauchen + zu + Infinitiv</title>
+<style>
+:root{
+  --blue:#0b3b91;
+  --blue2:#1769d2;
+  --light:#eef6ff;
+  --ink:#10224b;
+  --green:#18a957;
+  --red:#df2a2a;
+  --orange:#f59e0b;
+  --card:#ffffff;
+  --muted:#667085;
+  --shadow:0 14px 36px rgba(10,43,102,.14);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;
+  font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;
+  color:var(--ink);
+  background:
+    radial-gradient(circle at 10% 0%,#cfe9ff 0,transparent 28%),
+    linear-gradient(180deg,#f5fbff 0,#edf4ff 55%,#f7f9fc 100%);
+  min-height:100vh;
+}
+button,input{font:inherit}
+button{cursor:pointer}
+.app{
+  width:min(100%,980px);
+  margin:auto;
+  padding:18px 14px 100px;
+}
+.hero{
+  position:relative;
+  overflow:hidden;
+  border-radius:28px;
+  padding:26px 22px 24px;
+  color:white;
+  background:linear-gradient(135deg,#071f67,#0c4fc4 58%,#2da8ff);
+  box-shadow:var(--shadow);
+  border:2px solid rgba(255,255,255,.85);
+}
+.hero:before,.hero:after{
+  content:"";
+  position:absolute;
+  border-radius:50%;
+  background:rgba(255,255,255,.12);
+}
+.hero:before{width:240px;height:240px;right:-80px;top:-90px}
+.hero:after{width:160px;height:160px;left:-65px;bottom:-100px}
+.brand{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  position:relative;
+  z-index:1;
+}
+.logo{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  font-weight:900;
+  letter-spacing:.5px;
+  background:white;
+  color:var(--blue);
+  border-radius:14px;
+  padding:9px 13px;
+}
+.level{
+  font-weight:800;
+  font-size:.86rem;
+  padding:8px 12px;
+  background:rgba(255,255,255,.16);
+  border:1px solid rgba(255,255,255,.35);
+  border-radius:999px;
+}
+.hero h1{
+  position:relative;
+  z-index:1;
+  margin:22px 0 10px;
+  font-size:clamp(2rem,7vw,4.6rem);
+  line-height:.98;
+  letter-spacing:-.05em;
+}
+.hero p{
+  position:relative;
+  z-index:1;
+  margin:0;
+  max-width:760px;
+  font-size:clamp(1rem,2.5vw,1.25rem);
+  line-height:1.55;
+  color:#eaf4ff;
+}
+.progress-wrap{
+  margin-top:22px;
+  position:relative;
+  z-index:1;
+}
+.progress-top{
+  display:flex;justify-content:space-between;gap:10px;
+  font-weight:800;font-size:.9rem;margin-bottom:7px
+}
+.progress{
+  height:12px;background:rgba(255,255,255,.25);border-radius:999px;overflow:hidden
+}
+.progress>div{
+  width:0;height:100%;background:white;border-radius:999px;transition:.35s ease
+}
+.tabs{
+  display:grid;
+  grid-template-columns:repeat(5,1fr);
+  gap:8px;
+  margin:16px 0 18px;
+  position:sticky;
+  top:8px;
+  z-index:20;
+  backdrop-filter:blur(14px);
+  padding:8px;
+  border-radius:18px;
+  background:rgba(246,250,255,.88);
+  box-shadow:0 8px 28px rgba(18,52,98,.09);
+  border:1px solid #dbeafe;
+}
+.tab{
+  border:0;background:transparent;color:#355079;font-weight:800;
+  padding:10px 6px;border-radius:13px;font-size:.82rem
+}
+.tab.active{background:var(--blue);color:white}
+.section{display:none}
+.section.active{display:block}
+.card{
+  background:var(--card);
+  border:1px solid #d9e7fb;
+  box-shadow:var(--shadow);
+  border-radius:24px;
+  padding:22px;
+  margin:14px 0;
+}
+.card h2,.card h3{margin-top:0}
+.rule-grid{
+  display:grid;grid-template-columns:1fr 1fr;gap:14px
+}
+.rule{
+  border-radius:20px;padding:18px;
+  border:1px solid #dbe8f8;
+  background:linear-gradient(180deg,#fff,#f6faff);
+}
+.rule.negative{border-top:6px solid var(--green)}
+.rule.positive{border-top:6px solid var(--orange)}
+.rule-title{
+  display:flex;align-items:center;gap:8px;font-weight:900;font-size:1.08rem;margin-bottom:10px
+}
+.formula{
+  display:flex;flex-wrap:wrap;gap:7px;align-items:center;
+  padding:12px;border-radius:16px;background:#edf5ff;
+  font-weight:900;color:#102a64;line-height:1.35
+}
+.pill{padding:5px 9px;border-radius:10px}
+.p-blue{background:#d7e9ff;color:#0c4fb2}
+.p-green{background:#d8f7df;color:#087f37}
+.p-red{background:#ffe0e0;color:#b42318}
+.p-orange{background:#fff0c2;color:#a15c00}
+.example{
+  margin-top:12px;padding:12px 14px;border-left:4px solid #3182ce;
+  background:#f8fbff;border-radius:10px;line-height:1.55
+}
+.de{font-weight:800;color:#132d64}
+.sr{color:#5c6b84;margin-top:2px}
+.compare{
+  display:grid;gap:10px;margin-top:12px
+}
+.compare-row{
+  display:grid;grid-template-columns:1fr auto 1fr;gap:10px;align-items:center;
+  padding:12px;border-radius:16px;background:#f9fbfe;border:1px solid #e1e9f5
+}
+.eq{font-weight:900;font-size:1.35rem;color:#1f5dbb}
+.speak{
+  border:0;background:#e7f1ff;color:#0a4da4;border-radius:12px;
+  width:42px;height:42px;font-size:1.1rem;flex:0 0 auto
+}
+.row{display:flex;align-items:center;gap:10px}
+.exercise-head{
+  display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:12px
+}
+.badge{
+  background:#edf4ff;color:#0d55b5;border-radius:999px;padding:7px 10px;
+  font-size:.78rem;font-weight:900
+}
+.question{
+  font-size:clamp(1.12rem,3vw,1.35rem);
+  line-height:1.5;font-weight:800;margin:14px 0
+}
+.translation{
+  color:#667085;font-size:.95rem;margin-top:-8px;margin-bottom:14px
+}
+.options{display:grid;gap:9px}
+.option{
+  text-align:left;border:2px solid #dbe5f2;background:white;color:#172b4d;
+  padding:13px 14px;border-radius:15px;font-weight:750;transition:.15s ease
+}
+.option:hover{border-color:#8fbaf4;background:#f7fbff}
+.option.correct{border-color:#1ebd63;background:#e9faef;color:#087936}
+.option.wrong{border-color:#ef4444;background:#fff0f0;color:#a31515}
+.feedback{
+  display:none;margin-top:12px;padding:12px 14px;border-radius:14px;font-weight:750;line-height:1.45
+}
+.feedback.show{display:block}
+.feedback.ok{background:#e9faef;color:#087936}
+.feedback.no{background:#fff0f0;color:#a31515}
+.actions{
+  display:flex;gap:9px;flex-wrap:wrap;margin-top:15px
+}
+.btn{
+  border:0;border-radius:14px;padding:12px 15px;font-weight:900
+}
+.btn-primary{background:var(--blue);color:white}
+.btn-light{background:#edf4ff;color:#0f4c9c}
+.btn-green{background:#18a957;color:white}
+.btn-outline{background:white;color:#264366;border:1px solid #c9d8eb}
+.sort-zone{
+  min-height:68px;border:2px dashed #b9cce3;border-radius:16px;padding:10px;
+  display:flex;gap:8px;flex-wrap:wrap;align-content:flex-start;background:#fbfdff
+}
+.word-bank{
+  min-height:68px;margin-top:10px;padding:10px;border-radius:16px;
+  background:#eef5ff;display:flex;gap:8px;flex-wrap:wrap;align-content:flex-start
+}
+.word{
+  border:1px solid #c5d9f4;background:white;color:#15376c;
+  padding:9px 11px;border-radius:11px;font-weight:800;box-shadow:0 3px 8px rgba(16,49,96,.06)
+}
+.transform-box{
+  padding:14px;border-radius:16px;background:#f7faff;border:1px solid #dce8f8
+}
+.input{
+  width:100%;margin-top:12px;border:2px solid #d4e1f1;border-radius:14px;
+  padding:14px;font-weight:750;outline:none;color:#13264a
+}
+.input:focus{border-color:#4c91e8;box-shadow:0 0 0 4px #e8f2ff}
+.score-grid{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:10px
+}
+.score-box{
+  padding:16px;border-radius:18px;background:#f5f9ff;border:1px solid #dce8f8;text-align:center
+}
+.score-num{font-size:1.7rem;font-weight:950;color:#0a4da4}
+.small{font-size:.83rem;color:#667085}
+.tip{
+  padding:14px;border-radius:16px;background:#fff8dc;border:1px solid #f8d56c;color:#6f5200;line-height:1.5
+}
+.footer-note{
+  text-align:center;color:#7a879a;font-size:.85rem;margin-top:20px
+}
+@media (max-width:700px){
+  .app{padding:10px 9px 90px}
+  .hero{border-radius:22px;padding:20px 16px}
+  .tabs{grid-template-columns:repeat(5,1fr);gap:4px;padding:5px}
+  .tab{font-size:.72rem;padding:9px 3px}
+  .rule-grid{grid-template-columns:1fr}
+  .compare-row{grid-template-columns:1fr}
+  .eq{text-align:center}
+  .card{padding:16px;border-radius:19px}
+  .score-grid{grid-template-columns:1fr 1fr 1fr}
+}
+@media (max-width:430px){
+  .tab span{display:none}
+  .tab{font-size:1rem}
+}
+</style>
+</head>
+<body>
+<div class="app">
+  <header class="hero">
+    <div class="brand">
+      <div class="logo">DE‑MAX 🇩🇪</div>
+      <div class="level">B1 • GRAMMATIK</div>
+    </div>
+    <h1>Brauchen + zu + Infinitiv</h1>
+    <p>Vežbaj konstrukcije <b>brauchen + nicht/kein + zu + Infinitiv</b> i <b>nur brauchen + zu + Infinitiv</b>. Uz svako pravilo dobijaš prevod, primere, izgovor i interaktivne zadatke.</p>
+    <div class="progress-wrap">
+      <div class="progress-top"><span>Napredak</span><span id="progressText">0%</span></div>
+      <div class="progress"><div id="progressBar"></div></div>
+    </div>
+  </header>
+
+  <nav class="tabs">
+    <button class="tab active" data-tab="ucenje">📘 <span>Učenje</span></button>
+    <button class="tab" data-tab="izbor">✅ <span>Izbor</span></button>
+    <button class="tab" data-tab="redosled">🧩 <span>Red reči</span></button>
+    <button class="tab" data-tab="transform">🔄 <span>Transform.</span></button>
+    <button class="tab" data-tab="rezultat">🏆 <span>Rezultat</span></button>
+  </nav>
+
+  <section id="ucenje" class="section active">
+    <div class="card">
+      <h2>1. Negacija: <span style="color:#0a7b38">nicht / kein</span></h2>
+      <div class="rule-grid">
+        <div class="rule negative">
+          <div class="rule-title">💡 Značenje: „ne morati“</div>
+          <div class="formula">
+            <span class="pill p-blue">brauchen</span> +
+            <span class="pill p-green">nicht / kein</span> +
+            <span class="pill p-red">zu + Infinitiv</span>
+          </div>
+          <div class="example">
+            <div class="row"><div style="flex:1"><div class="de">Du brauchst heute nicht zu arbeiten.</div><div class="sr">Danas ne moraš da radiš.</div></div><button class="speak" onclick="speak('Du brauchst heute nicht zu arbeiten.')">🔊</button></div>
+          </div>
+          <div class="example">
+            <div class="row"><div style="flex:1"><div class="de">Wir brauchen kein Geld zu wechseln.</div><div class="sr">Ne moramo da menjamo novac.</div></div><button class="speak" onclick="speak('Wir brauchen kein Geld zu wechseln.')">🔊</button></div>
+          </div>
+        </div>
+
+        <div class="rule positive">
+          <div class="rule-title">💡 Značenje: „samo treba / samo je potrebno“</div>
+          <div class="formula">
+            <span class="pill p-blue">brauchen</span> +
+            <span class="pill p-orange">nur</span> +
+            <span class="pill p-red">zu + Infinitiv</span>
+          </div>
+          <div class="example">
+            <div class="row"><div style="flex:1"><div class="de">Sie brauchen nur Deutsch zu reden.</div><div class="sr">Treba samo da govorite nemački.</div></div><button class="speak" onclick="speak('Sie brauchen nur Deutsch zu reden.')">🔊</button></div>
+          </div>
+          <div class="example">
+            <div class="row"><div style="flex:1"><div class="de">Du brauchst nur anzurufen.</div><div class="sr">Treba samo da pozoveš.</div></div><button class="speak" onclick="speak('Du brauchst nur anzurufen.')">🔊</button></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>2. Isto značenje sa <i>müssen</i></h2>
+      <div class="compare">
+        <div class="compare-row">
+          <div><div class="de">EU‑Bürger brauchen an der Grenze nicht zu warten.</div><div class="sr">Građani EU ne moraju da čekaju na granici.</div></div>
+          <div class="eq">=</div>
+          <div><div class="de">EU‑Bürger müssen an der Grenze nicht warten.</div><div class="sr">Građani EU ne moraju da čekaju na granici.</div></div>
+        </div>
+        <div class="compare-row">
+          <div><div class="de">Sie brauchen nur das Buch mitzubringen.</div><div class="sr">Treba samo da ponesete knjigu.</div></div>
+          <div class="eq">=</div>
+          <div><div class="de">Sie müssen nur das Buch mitbringen.</div><div class="sr">Morate samo da ponesete knjigu.</div></div>
+        </div>
+      </div>
+      <div class="tip" style="margin-top:14px"><b>Zapamti:</b> uz <b>brauchen</b> u ovoj konstrukciji ide <b>zu + infinitiv</b>. Kod razdvojivih glagola <b>zu</b> ulazi između prefiksa i glagola: <b>mitbringen → mitzubringen</b>, <b>anrufen → anzurufen</b>.</div>
+    </div>
+
+    <div class="card">
+      <h2>3. Brzi pregled oblika</h2>
+      <div class="formula" style="justify-content:center">
+        ich <b>brauche</b> • du <b>brauchst</b> • er/sie/es <b>braucht</b> • wir/Sie/sie <b>brauchen</b> • ihr <b>braucht</b>
+      </div>
+    </div>
+  </section>
+
+  <section id="izbor" class="section">
+    <div class="card" id="choiceCard">
+      <div class="exercise-head">
+        <div><h2 style="margin-bottom:4px">Izaberi tačan odgovor</h2><div class="small">Odaberi konstrukciju koja gramatički i značenjski odgovara.</div></div>
+        <div class="badge" id="choiceCount">1 / 12</div>
+      </div>
+      <div class="question" id="choiceQuestion"></div>
+      <div class="translation" id="choiceTranslation"></div>
+      <div class="options" id="choiceOptions"></div>
+      <div class="feedback" id="choiceFeedback"></div>
+      <div class="actions">
+        <button class="btn btn-light" onclick="playCurrentChoice()">🔊 Pročitaj</button>
+        <button class="btn btn-primary" id="choiceNext" onclick="nextChoice()" disabled>Sledeće →</button>
+      </div>
+    </div>
+  </section>
+
+  <section id="redosled" class="section">
+    <div class="card">
+      <div class="exercise-head">
+        <div><h2 style="margin-bottom:4px">Složi rečenicu</h2><div class="small">Klikni reči redom. Klik na reč gore vraća je dole.</div></div>
+        <div class="badge" id="sortCount">1 / 10</div>
+      </div>
+      <div class="translation" id="sortTranslation"></div>
+      <div class="sort-zone" id="sortZone"></div>
+      <div class="word-bank" id="wordBank"></div>
+      <div class="feedback" id="sortFeedback"></div>
+      <div class="actions">
+        <button class="btn btn-green" onclick="checkSort()">Proveri</button>
+        <button class="btn btn-outline" onclick="resetSort()">Ponovo</button>
+        <button class="btn btn-primary" id="sortNext" onclick="nextSort()" disabled>Sledeće →</button>
+      </div>
+    </div>
+  </section>
+
+  <section id="transform" class="section">
+    <div class="card">
+      <div class="exercise-head">
+        <div><h2 style="margin-bottom:4px">Preoblikuj rečenicu</h2><div class="small">Pretvori rečenicu sa <b>müssen</b> u konstrukciju sa <b>brauchen</b>.</div></div>
+        <div class="badge" id="transformCount">1 / 10</div>
+      </div>
+      <div class="transform-box">
+        <div class="question" id="transformPrompt"></div>
+        <div class="translation" id="transformTranslation"></div>
+      </div>
+      <input class="input" id="transformInput" autocomplete="off" placeholder="Upiši rečenicu na nemačkom…" />
+      <div class="feedback" id="transformFeedback"></div>
+      <div class="actions">
+        <button class="btn btn-green" onclick="checkTransform()">Proveri</button>
+        <button class="btn btn-light" onclick="showTransformAnswer()">Pokaži rešenje</button>
+        <button class="btn btn-primary" id="transformNext" onclick="nextTransform()" disabled>Sledeće →</button>
+      </div>
+    </div>
+  </section>
+
+  <section id="rezultat" class="section">
+    <div class="card">
+      <h2>Tvoj rezultat</h2>
+      <div class="score-grid">
+        <div class="score-box"><div class="score-num" id="scoreCorrect">0</div><div class="small">tačnih</div></div>
+        <div class="score-box"><div class="score-num" id="scoreTotal">0</div><div class="small">urađeno</div></div>
+        <div class="score-box"><div class="score-num" id="scorePercent">0%</div><div class="small">uspešnost</div></div>
+      </div>
+      <div id="resultMessage" class="tip" style="margin-top:16px">Počni sa vežbama i rezultat će se automatski računati.</div>
+      <div class="actions">
+        <button class="btn btn-primary" onclick="resetAll()">↻ Počni ponovo</button>
+      </div>
+    </div>
+    <div class="card">
+      <h3>Mini podsetnik</h3>
+      <p><b>nicht / kein + brauchen + zu</b> = nešto <b>nije potrebno</b>.</p>
+      <p><b>nur + brauchen + zu</b> = potrebno je <b>samo</b> nešto uraditi.</p>
+      <p><b>Razdvojivi glagol:</b> mitbringen → <b>mitzubringen</b>.</p>
+    </div>
+  </section>
+
+  <div class="footer-note">DE‑MAX • Interaktivna gramatika nemačkog jezika • B1</div>
+</div>
+
+<script>
+const choiceData = [
+ {q:"Du ___ heute nicht ___ kommen.", t:"Danas ne moraš da dođeš.", o:["brauchst / zu","musst / zu","brauchst / —"], a:0, s:"Du brauchst heute nicht zu kommen."},
+ {q:"Wir brauchen ___ lange zu warten.", t:"Ne moramo dugo da čekamo.", o:["nur","nicht","kein"], a:1, s:"Wir brauchen nicht lange zu warten."},
+ {q:"Sie brauchen ___ das Formular auszufüllen.", t:"Treba samo da popunite formular.", o:["nicht","kein","nur"], a:2, s:"Sie brauchen nur das Formular auszufüllen."},
+ {q:"Ihr braucht kein Geld ___.", t:"Ne morate da menjate novac.", o:["wechseln","zu wechseln","gewechselt"], a:1, s:"Ihr braucht kein Geld zu wechseln."},
+ {q:"Er braucht morgen nicht früh ___.", t:"Sutra ne mora rano da ustane.", o:["aufzustehen","zu aufstehen","aufstehen zu"], a:0, s:"Er braucht morgen nicht früh aufzustehen."},
+ {q:"Ich brauche nur den Chef ___.", t:"Treba samo da pozovem šefa.", o:["anrufen","anzurufen","zu anrufen"], a:1, s:"Ich brauche nur den Chef anzurufen."},
+ {q:"Man braucht hier ___ Eintritt zu bezahlen.", t:"Ovde ne mora da se plati ulaz.", o:["kein","nicht","nur"], a:0, s:"Man braucht hier keinen Eintritt zu bezahlen."},
+ {q:"Du brauchst ___ deinen Pass mitzubringen.", t:"Treba samo da poneseš pasoš.", o:["kein","nur","nicht"], a:1, s:"Du brauchst nur deinen Pass mitzubringen."},
+ {q:"Wir ___ nicht alles heute zu erledigen.", t:"Ne moramo sve danas da završimo.", o:["brauchen","müssen zu","braucht"], a:0, s:"Wir brauchen nicht alles heute zu erledigen."},
+ {q:"Sie braucht keine Angst ___.", t:"Ne mora da se plaši.", o:["haben","zu haben","gehabt"], a:1, s:"Sie braucht keine Angst zu haben."},
+ {q:"Ihr braucht nur leise ___.", t:"Treba samo da govorite tiho.", o:["zu sprechen","sprechen zu","gesprochen"], a:0, s:"Ihr braucht nur leise zu sprechen."},
+ {q:"Ich brauche heute nicht ___.", t:"Danas ne moram da kuvam.", o:["kochen","zu kochen","gekocht"], a:1, s:"Ich brauche heute nicht zu kochen."}
+];
+
+const sortData = [
+ {s:"Du brauchst heute nicht zu arbeiten.", t:"Danas ne moraš da radiš."},
+ {s:"Wir brauchen kein Geld zu wechseln.", t:"Ne moramo da menjamo novac."},
+ {s:"Sie brauchen nur Deutsch zu reden.", t:"Treba samo da govorite nemački."},
+ {s:"Ich brauche nur den Arzt anzurufen.", t:"Treba samo da pozovem lekara."},
+ {s:"Ihr braucht morgen nicht früh aufzustehen.", t:"Sutra ne morate rano da ustanete."},
+ {s:"Er braucht keinen Termin zu machen.", t:"Ne mora da zakazuje termin."},
+ {s:"Du brauchst nur deinen Pass mitzubringen.", t:"Treba samo da poneseš pasoš."},
+ {s:"Wir brauchen heute nicht einzukaufen.", t:"Danas ne moramo da kupujemo."},
+ {s:"Sie braucht keine Angst zu haben.", t:"Ne mora da se plaši."},
+ {s:"Man braucht hier nicht lange zu warten.", t:"Ovde se ne mora dugo čekati."}
+];
+
+const transformData = [
+ {p:"Du musst heute nicht arbeiten.", a:"Du brauchst heute nicht zu arbeiten.", t:"Danas ne moraš da radiš."},
+ {p:"Wir müssen kein Geld wechseln.", a:"Wir brauchen kein Geld zu wechseln.", t:"Ne moramo da menjamo novac."},
+ {p:"Sie müssen nur Deutsch reden.", a:"Sie brauchen nur Deutsch zu reden.", t:"Treba samo da govorite nemački."},
+ {p:"Ich muss nur den Arzt anrufen.", a:"Ich brauche nur den Arzt anzurufen.", t:"Treba samo da pozovem lekara."},
+ {p:"Ihr müsst morgen nicht früh aufstehen.", a:"Ihr braucht morgen nicht früh aufzustehen.", t:"Sutra ne morate rano da ustanete."},
+ {p:"Er muss keinen Termin machen.", a:"Er braucht keinen Termin zu machen.", t:"Ne mora da zakazuje termin."},
+ {p:"Du musst nur deinen Pass mitbringen.", a:"Du brauchst nur deinen Pass mitzubringen.", t:"Treba samo da poneseš pasoš."},
+ {p:"Wir müssen heute nicht einkaufen.", a:"Wir brauchen heute nicht einzukaufen.", t:"Danas ne moramo da kupujemo."},
+ {p:"Sie muss keine Angst haben.", a:"Sie braucht keine Angst zu haben.", t:"Ne mora da se plaši."},
+ {p:"Man muss hier nicht lange warten.", a:"Man braucht hier nicht lange zu warten.", t:"Ovde se ne mora dugo čekati."}
+];
+
+let choiceIndex=0, sortIndex=0, transformIndex=0;
+let correct=0, total=0;
+let choiceAnswered=false, sortAnswered=false, transformAnswered=false;
+
+function speak(text){
+  if(!('speechSynthesis' in window)) return;
+  speechSynthesis.cancel();
+  const u = new SpeechSynthesisUtterance(text);
+  u.lang='de-DE';
+  u.rate=.88;
+  speechSynthesis.speak(u);
+}
+
+function updateScore(){
+  document.getElementById('scoreCorrect').textContent=correct;
+  document.getElementById('scoreTotal').textContent=total;
+  const p = total ? Math.round(correct/total*100) : 0;
+  document.getElementById('scorePercent').textContent=p+'%';
+  const max = choiceData.length + sortData.length + transformData.length;
+  const progress = Math.min(100, Math.round(total/max*100));
+  document.getElementById('progressText').textContent=progress+'%';
+  document.getElementById('progressBar').style.width=progress+'%';
+  const m=document.getElementById('resultMessage');
+  if(total===0) m.textContent='Počni sa vežbama i rezultat će se automatski računati.';
+  else if(p>=90) m.textContent='Odlično! Konstrukcija „brauchen + zu + Infinitiv“ ti ide veoma dobro.';
+  else if(p>=70) m.textContent='Vrlo dobro. Obrati još pažnju na „zu“ kod razdvojivih glagola.';
+  else if(p>=50) m.textContent='Dobar početak. Ponovi pravilo za „nicht/kein“ i „nur“, pa probaj ponovo.';
+  else m.textContent='Vrati se na deo „Učenje“, pročitaj primere i uradi vežbe još jednom.';
+  localStorage.setItem('demax_brauchen_score', JSON.stringify({correct,total}));
+}
+function loadScore(){
+  try{
+    const d=JSON.parse(localStorage.getItem('demax_brauchen_score')||'null');
+    if(d){correct=d.correct||0;total=d.total||0}
+  }catch(e){}
+  updateScore();
+}
+
+document.querySelectorAll('.tab').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));
+    document.querySelectorAll('.section').forEach(x=>x.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById(btn.dataset.tab).classList.add('active');
+    if(btn.dataset.tab==='rezultat') updateScore();
+    window.scrollTo({top:document.querySelector('.tabs').offsetTop-6,behavior:'smooth'});
+  });
+});
+
+function renderChoice(){
+  choiceAnswered=false;
+  const d=choiceData[choiceIndex];
+  document.getElementById('choiceCount').textContent=(choiceIndex+1)+' / '+choiceData.length;
+  document.getElementById('choiceQuestion').textContent=d.q;
+  document.getElementById('choiceTranslation').textContent=d.t;
+  document.getElementById('choiceFeedback').className='feedback';
+  document.getElementById('choiceNext').disabled=true;
+  const wrap=document.getElementById('choiceOptions'); wrap.innerHTML='';
+  d.o.forEach((x,i)=>{
+    const b=document.createElement('button'); b.className='option'; b.textContent=x;
+    b.onclick=()=>answerChoice(i,b); wrap.appendChild(b);
+  });
+}
+function answerChoice(i,b){
+  if(choiceAnswered) return;
+  choiceAnswered=true; total++;
+  const d=choiceData[choiceIndex];
+  const opts=[...document.querySelectorAll('#choiceOptions .option')];
+  opts[d.a].classList.add('correct');
+  const f=document.getElementById('choiceFeedback');
+  if(i===d.a){
+    correct++; b.classList.add('correct'); f.textContent='Tačno! '+d.s; f.className='feedback show ok'; speak(d.s);
+  }else{
+    b.classList.add('wrong'); f.textContent='Nije tačno. Rešenje: '+d.s; f.className='feedback show no'; speak(d.s);
+  }
+  document.getElementById('choiceNext').disabled=false; updateScore();
+}
+function nextChoice(){
+  choiceIndex=(choiceIndex+1)%choiceData.length; renderChoice();
+}
+function playCurrentChoice(){speak(choiceData[choiceIndex].s)}
+
+function shuffle(a){
+  const arr=[...a];
+  for(let i=arr.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[arr[i],arr[j]]=[arr[j],arr[i]]}
+  return arr;
+}
+function renderSort(){
+  sortAnswered=false;
+  const d=sortData[sortIndex];
+  document.getElementById('sortCount').textContent=(sortIndex+1)+' / '+sortData.length;
+  document.getElementById('sortTranslation').textContent=d.t;
+  document.getElementById('sortFeedback').className='feedback';
+  document.getElementById('sortNext').disabled=true;
+  const zone=document.getElementById('sortZone'), bank=document.getElementById('wordBank');
+  zone.innerHTML=''; bank.innerHTML='';
+  shuffle(d.s.split(' ')).forEach((w,idx)=>bank.appendChild(makeWord(w,idx)));
+}
+function makeWord(w,idx){
+  const b=document.createElement('button'); b.className='word'; b.textContent=w;
+  b.dataset.word=w; b.dataset.uid=Date.now()+'_'+idx+'_'+Math.random();
+  b.onclick=()=> {
+    const z=document.getElementById('sortZone'), bank=document.getElementById('wordBank');
+    (b.parentElement===bank?z:bank).appendChild(b);
+  };
+  return b;
+}
+function checkSort(){
+  if(sortAnswered) return;
+  const words=[...document.getElementById('sortZone').children].map(x=>x.dataset.word).join(' ');
+  const ans=sortData[sortIndex].s;
+  const f=document.getElementById('sortFeedback');
+  total++; sortAnswered=true;
+  if(norm(words)===norm(ans)){correct++;f.textContent='Tačno! '+ans;f.className='feedback show ok';speak(ans)}
+  else{f.textContent='Nije tačno. Rešenje: '+ans;f.className='feedback show no';speak(ans)}
+  document.getElementById('sortNext').disabled=false;updateScore();
+}
+function resetSort(){renderSort()}
+function nextSort(){sortIndex=(sortIndex+1)%sortData.length;renderSort()}
+
+function renderTransform(){
+  transformAnswered=false;
+  const d=transformData[transformIndex];
+  document.getElementById('transformCount').textContent=(transformIndex+1)+' / '+transformData.length;
+  document.getElementById('transformPrompt').textContent=d.p;
+  document.getElementById('transformTranslation').textContent=d.t;
+  document.getElementById('transformInput').value='';
+  document.getElementById('transformFeedback').className='feedback';
+  document.getElementById('transformNext').disabled=true;
+}
+function norm(s){
+  return s.toLowerCase().trim().replace(/[.,!?]/g,'').replace(/\s+/g,' ');
+}
+function checkTransform(){
+  if(transformAnswered) return;
+  const d=transformData[transformIndex], val=document.getElementById('transformInput').value;
+  const f=document.getElementById('transformFeedback');
+  if(!val.trim()){f.textContent='Najpre upiši rečenicu.';f.className='feedback show no';return}
+  total++;transformAnswered=true;
+  if(norm(val)===norm(d.a)){correct++;f.textContent='Tačno! '+d.a;f.className='feedback show ok';speak(d.a)}
+  else{f.textContent='Rešenje: '+d.a;f.className='feedback show no';speak(d.a)}
+  document.getElementById('transformNext').disabled=false;updateScore();
+}
+function showTransformAnswer(){
+  const d=transformData[transformIndex], f=document.getElementById('transformFeedback');
+  f.textContent='Rešenje: '+d.a;f.className='feedback show ok';speak(d.a);
+}
+function nextTransform(){transformIndex=(transformIndex+1)%transformData.length;renderTransform()}
+
+function resetAll(){
+  correct=0;total=0;choiceIndex=sortIndex=transformIndex=0;
+  localStorage.removeItem('demax_brauchen_score');
+  renderChoice();renderSort();renderTransform();updateScore();
+}
+
+document.getElementById('transformInput').addEventListener('keydown',e=>{
+  if(e.key==='Enter')checkTransform();
+});
+
+renderChoice();renderSort();renderTransform();loadScore();
+</script>
+</body>
+</html>

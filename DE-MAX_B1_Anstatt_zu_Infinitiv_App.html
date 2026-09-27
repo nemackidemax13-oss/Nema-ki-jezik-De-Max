@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="sr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>DE-MAX | anstatt zu + Infinitiv</title>
+<style>
+:root{
+  --blue:#0638c9;
+  --blue2:#0b5cff;
+  --navy:#06165c;
+  --red:#ef1717;
+  --yellow:#ffd400;
+  --bg:#eef6ff;
+  --card:#ffffff;
+  --text:#10152f;
+  --muted:#667085;
+  --green:#16a34a;
+  --bad:#dc2626;
+  --shadow:0 16px 40px rgba(0,52,160,.16);
+}
+*{box-sizing:border-box}
+body{
+  margin:0;
+  font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+  color:var(--text);
+  background:
+    radial-gradient(circle at 10% 0%,rgba(59,130,246,.25),transparent 28%),
+    linear-gradient(180deg,#dff0ff 0,#f7fbff 28%,#eef5ff 100%);
+  min-height:100vh;
+}
+button,input{font:inherit}
+button{cursor:pointer}
+.app{
+  width:min(100%,980px);
+  margin:0 auto;
+  min-height:100vh;
+  padding:14px 14px 90px;
+}
+.hero{
+  position:relative;
+  overflow:hidden;
+  border-radius:28px;
+  padding:20px;
+  color:white;
+  background:linear-gradient(135deg,#07165f,#0642d5 58%,#0a67ff);
+  box-shadow:var(--shadow);
+  border:2px solid rgba(255,255,255,.7);
+}
+.hero:before,.hero:after{
+  content:"";
+  position:absolute;border-radius:999px;background:rgba(255,255,255,.08)
+}
+.hero:before{width:240px;height:240px;right:-80px;top:-100px}
+.hero:after{width:170px;height:170px;left:-70px;bottom:-90px}
+.brandrow{display:flex;align-items:center;gap:14px;position:relative;z-index:1}
+.logo{
+  width:94px;height:74px;background:#fff;border:3px solid #5ba2ff;border-radius:20px;
+  display:grid;place-items:center;box-shadow:0 8px 20px rgba(0,0,0,.18);flex:0 0 auto;
+}
+.logo strong{font-size:24px;line-height:.9;color:var(--red);font-style:italic;letter-spacing:-1px}
+.logo small{display:block;color:#111;font-size:13px;text-align:center;font-style:normal;letter-spacing:1px;margin-top:4px}
+.hero h1{margin:0;font-size:clamp(28px,5vw,48px);line-height:1.05}
+.hero h1 span{color:var(--yellow)}
+.hero p{margin:8px 0 0;color:#e7efff;font-weight:700}
+.stats{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:16px;position:relative;z-index:1
+}
+.stat{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);padding:10px;border-radius:15px;text-align:center}
+.stat b{display:block;font-size:18px}.stat small{opacity:.86}
+.progressbar{height:9px;background:#dce8ff;border-radius:99px;overflow:hidden;margin:15px 2px 0}
+.progressbar>div{height:100%;width:0;background:linear-gradient(90deg,#16a34a,#4ade80);transition:.35s}
+.tabs{
+  display:flex;gap:8px;overflow:auto;padding:14px 2px 8px;scrollbar-width:none;position:sticky;top:0;z-index:20;
+  background:linear-gradient(180deg,rgba(238,246,255,.97) 70%,rgba(238,246,255,0));
+  backdrop-filter:blur(10px);
+}
+.tabs::-webkit-scrollbar{display:none}
+.tab{
+  border:none;white-space:nowrap;padding:11px 15px;border-radius:14px;background:white;color:var(--navy);
+  font-weight:800;box-shadow:0 4px 15px rgba(0,45,140,.09)
+}
+.tab.active{background:linear-gradient(135deg,var(--blue),var(--blue2));color:white}
+.panel{display:none}.panel.active{display:block}
+.card{
+  background:var(--card);border-radius:24px;padding:19px;margin:12px 0;box-shadow:var(--shadow);border:1px solid #dce9ff
+}
+.section-title{display:flex;align-items:center;gap:10px;margin:0 0 12px;font-size:22px;color:var(--navy)}
+.badge{background:#e8f1ff;color:var(--blue);border-radius:999px;padding:5px 10px;font-size:12px;font-weight:900}
+.rule{
+  background:linear-gradient(135deg,#fff6f6,#fff);border:2px solid #ffd0d0;border-radius:20px;padding:16px;
+}
+.rule-main{font-size:clamp(23px,4vw,34px);font-weight:950;color:var(--navy);line-height:1.25}
+.rule-main .red{color:var(--red)}
+.translation{
+  margin-top:10px;display:inline-block;background:var(--red);color:#fff;border-radius:12px;padding:8px 14px;font-size:21px;font-weight:900
+}
+.example{
+  margin-top:14px;border-left:5px solid var(--blue);padding:12px 14px;background:#f5f9ff;border-radius:0 16px 16px 0
+}
+.de{font-weight:900;font-size:20px;color:var(--navy)}
+.sr{margin-top:6px;color:#363c52;font-weight:700}
+.hi{color:var(--red)}
+.note{
+  padding:13px;border-radius:15px;background:#fff8d7;border:1px solid #f9dd66;color:#594900;font-weight:700;margin-top:12px
+}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.mini{padding:14px;border-radius:16px;background:#f4f8ff;border:1px solid #dbe8ff}
+.mini b{display:block;color:var(--blue);margin-bottom:5px}
+.primary,.secondary,.speak,.nextbtn{
+  border:none;border-radius:14px;padding:12px 16px;font-weight:900
+}
+.primary{background:linear-gradient(135deg,var(--blue),var(--blue2));color:#fff;box-shadow:0 8px 18px rgba(0,79,230,.22)}
+.secondary{background:#edf4ff;color:var(--blue)}
+.speak{background:#eaf8ef;color:#13863a;padding:8px 11px;margin-left:8px}
+.nextbtn{width:100%;margin-top:13px;background:var(--navy);color:#fff;display:none}
+.qhead{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:10px}
+.qnum{font-weight:900;color:var(--blue)}
+.question{font-size:21px;line-height:1.45;font-weight:850;margin:12px 0}
+.options{display:grid;gap:10px}
+.option{
+  width:100%;text-align:left;border:2px solid #dde7f8;background:white;padding:13px 14px;border-radius:14px;font-weight:750;color:#1f2944;
+}
+.option:hover{border-color:#8ab5ff;background:#f7fbff}
+.option.correct{border-color:#36b86b;background:#ebfff2;color:#116832}
+.option.wrong{border-color:#f26b6b;background:#fff0f0;color:#a41414}
+.feedback{display:none;margin-top:12px;border-radius:14px;padding:12px;font-weight:800}
+.feedback.good{display:block;background:#eafbef;color:#126b34}
+.feedback.bad{display:block;background:#fff0f0;color:#9c1818}
+.inputrow{display:flex;gap:8px;align-items:stretch}
+.answerinput{
+  flex:1;border:2px solid #d9e4f6;border-radius:14px;padding:13px 14px;outline:none;background:#fff;font-weight:700
+}
+.answerinput:focus{border-color:#78aaff;box-shadow:0 0 0 4px rgba(38,104,255,.1)}
+.words{display:flex;flex-wrap:wrap;gap:9px;padding:12px;background:#f7faff;border:1px dashed #a9c8ff;border-radius:16px;min-height:58px}
+.word{
+  border:1px solid #bcd2ff;background:white;color:var(--navy);padding:9px 12px;border-radius:12px;font-weight:800;box-shadow:0 3px 8px rgba(0,0,0,.06)
+}
+.word.used{opacity:.3;pointer-events:none}
+.build{
+  min-height:64px;border:2px solid #dbe7fb;border-radius:16px;padding:10px;display:flex;flex-wrap:wrap;gap:8px;margin:10px 0;background:#fff
+}
+.build .word{background:#eaf2ff}
+.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+.tlist{display:grid;gap:8px}
+.titem{
+  display:flex;align-items:center;justify-content:space-between;gap:12px;padding:11px 12px;border-radius:14px;background:#f7faff;border:1px solid #e2ebfb
+}
+.titem div:first-child{font-weight:800}
+.titem small{display:block;color:var(--muted);font-weight:650;margin-top:3px}
+.pill{padding:6px 9px;border-radius:999px;background:#eaf2ff;color:var(--blue);font-weight:900;font-size:12px}
+.footer{color:#73809c;text-align:center;font-size:12px;margin-top:25px}
+#toast{
+  position:fixed;left:50%;bottom:22px;transform:translateX(-50%) translateY(30px);
+  background:#07165f;color:white;padding:11px 16px;border-radius:14px;font-weight:800;opacity:0;pointer-events:none;transition:.25s;z-index:99;
+  box-shadow:0 10px 30px rgba(0,0,0,.25);white-space:nowrap
+}
+#toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+@media(max-width:650px){
+  .app{padding:8px 9px 80px}
+  .hero{border-radius:22px;padding:14px}
+  .logo{width:74px;height:61px;border-radius:16px}
+  .logo strong{font-size:20px}
+  .hero h1{font-size:26px}
+  .hero p{font-size:13px}
+  .stats{gap:5px}.stat{padding:8px 5px}.stat b{font-size:16px}.stat small{font-size:10px}
+  .card{border-radius:20px;padding:15px}
+  .grid2{grid-template-columns:1fr}
+  .question{font-size:18px}
+  .inputrow{flex-direction:column}
+}
+</style>
+</head>
+<body>
+<div class="app">
+  <header class="hero">
+    <div class="brandrow">
+      <div class="logo"><div><strong>DE-MAX</strong><small>TUTIN</small></div></div>
+      <div>
+        <h1><span>anstatt zu</span> + Infinitiv</h1>
+        <p>Interaktivni trener • B1 nemački jezik</p>
+      </div>
+    </div>
+    <div class="stats">
+      <div class="stat"><b id="score">0</b><small>bodova</small></div>
+      <div class="stat"><b id="done">0</b><small>urađeno</small></div>
+      <div class="stat"><b id="accuracy">0%</b><small>tačnost</small></div>
+    </div>
+    <div class="progressbar"><div id="progress"></div></div>
+  </header>
+
+  <nav class="tabs">
+    <button class="tab active" data-tab="lesson">📘 Pravilo</button>
+    <button class="tab" data-tab="choice">✅ Izbor</button>
+    <button class="tab" data-tab="fill">✍️ Dopuni</button>
+    <button class="tab" data-tab="order">🧩 Složi</button>
+    <button class="tab" data-tab="translate">🇷🇸 Prevod</button>
+    <button class="tab" data-tab="examples">🔊 Primeri</button>
+  </nav>
+
+  <section id="lesson" class="panel active">
+    <div class="card">
+      <h2 class="section-title">📘 Kako se koristi? <span class="badge">B1</span></h2>
+      <div class="rule">
+        <div class="rule-main"><span class="red">anstatt zu</span> + Infinitiv</div>
+        <div style="font-weight:750;margin-top:8px">Koristimo kada neko radi jednu radnju <b>umesto druge radnje</b>.</div>
+        <div class="translation">„umesto da…“</div>
+      </div>
+      <div class="example">
+        <div class="de">Anna spielt am Handy, <span class="hi">anstatt zu lernen.</span>
+          <button class="speak" onclick="speak('Anna spielt am Handy, anstatt zu lernen.')">🔊</button>
+        </div>
+        <div class="sr">Ana igra na telefonu, <b>umesto da uči.</b></div>
+      </div>
+      <div class="note">💡 Kod <b>anstatt zu + Infinitiv</b> subjekat je isti u obe radnje. Ako su subjekti različiti, često koristimo <b>anstatt dass</b>.</div>
+    </div>
+
+    <div class="card">
+      <h2 class="section-title">🧠 Formula</h2>
+      <div class="grid2">
+        <div class="mini"><b>Glavna rečenica</b>Er fährt mit dem Auto, ...</div>
+        <div class="mini"><b>anstatt zu + Infinitiv</b>... anstatt zu Fuß zu gehen.</div>
+      </div>
+      <div class="example">
+        <div class="de">Er fährt mit dem Auto, <span class="hi">anstatt zu Fuß zu gehen.</span></div>
+        <div class="sr">On ide automobilom, umesto da ide peške.</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2 class="section-title">⚡ Važne napomene</h2>
+      <div class="tlist">
+        <div class="titem"><div>Običan infinitiv<small>lernen → zu lernen</small></div><span class="pill">zu + infinitiv</span></div>
+        <div class="titem"><div>Razdvojivi glagol<small>aufräumen → aufzuräumen</small></div><span class="pill">zu u sredini</span></div>
+        <div class="titem"><div>Glagol na -ieren<small>telefonieren → zu telefonieren</small></div><span class="pill">bez ge- pravila</span></div>
+        <div class="titem"><div>Zarez<small>Glavna rečenica, anstatt ...</small></div><span class="pill">,</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="choice" class="panel">
+    <div class="card">
+      <div class="qhead"><span class="qnum" id="choiceNum">Pitanje 1</span><span class="badge">Izaberi tačno</span></div>
+      <div class="question" id="choiceQ"></div>
+      <div class="options" id="choiceOptions"></div>
+      <div class="feedback" id="choiceFeedback"></div>
+      <button class="nextbtn" id="choiceNext">Sledeće pitanje →</button>
+    </div>
+  </section>
+
+  <section id="fill" class="panel">
+    <div class="card">
+      <div class="qhead"><span class="qnum" id="fillNum">Zadatak 1</span><span class="badge">Dopuni</span></div>
+      <div class="question" id="fillQ"></div>
+      <div class="inputrow">
+        <input id="fillInput" class="answerinput" autocomplete="off" placeholder="Upiši nedostajući deo…">
+        <button class="primary" id="fillCheck">Proveri</button>
+      </div>
+      <div class="feedback" id="fillFeedback"></div>
+      <button class="nextbtn" id="fillNext">Sledeći zadatak →</button>
+    </div>
+  </section>
+
+  <section id="order" class="panel">
+    <div class="card">
+      <div class="qhead"><span class="qnum" id="orderNum">Zadatak 1</span><span class="badge">Složi rečenicu</span></div>
+      <div class="question" id="orderPrompt"></div>
+      <div class="build" id="build"></div>
+      <div class="words" id="words"></div>
+      <div class="actions">
+        <button class="secondary" id="undo">↩ Vrati</button>
+        <button class="secondary" id="clearBuild">🧹 Obriši</button>
+        <button class="primary" id="orderCheck">Proveri</button>
+      </div>
+      <div class="feedback" id="orderFeedback"></div>
+      <button class="nextbtn" id="orderNext">Sledeći zadatak →</button>
+    </div>
+  </section>
+
+  <section id="translate" class="panel">
+    <div class="card">
+      <div class="qhead"><span class="qnum" id="transNum">Prevod 1</span><span class="badge">SR → DE</span></div>
+      <div class="question" id="transQ"></div>
+      <div class="inputrow">
+        <input id="transInput" class="answerinput" autocomplete="off" placeholder="Napiši nemačku rečenicu…">
+        <button class="primary" id="transCheck">Proveri</button>
+      </div>
+      <div class="feedback" id="transFeedback"></div>
+      <button class="nextbtn" id="transNext">Sledeći prevod →</button>
+    </div>
+  </section>
+
+  <section id="examples" class="panel">
+    <div class="card">
+      <h2 class="section-title">🔊 Primeri iz svakodnevnog života</h2>
+      <div class="tlist" id="exampleList"></div>
+    </div>
+  </section>
+
+  <div class="card" style="text-align:center">
+    <button class="secondary" id="resetAll">🔄 Resetuj rezultat</button>
+  </div>
+  <div class="footer">DE-MAX TUTIN • Interaktivna vežba nemačkog jezika</div>
+</div>
+<div id="toast">Odlično!</div>
+
+<script>
+const choiceData = [
+ {q:"Welche Variante ist richtig?", o:["Lisa schaut fern, anstatt ihre Hausaufgaben zu machen.","Lisa schaut fern, anstatt zu ihre Hausaufgaben machen.","Lisa schaut fern, anstatt machen ihre Hausaufgaben."], a:0, exp:"Posle „anstatt“ ide konstrukcija „zu + Infinitiv“."},
+ {q:"Marko nimmt den Aufzug, ___ die Treppe zu benutzen.",o:["anstatt","weil","dass"],a:0,exp:"Značenje je: umesto da koristi stepenice."},
+ {q:"Welche Variante ist richtig?",o:["Wir bestellen Pizza, anstatt zu kochen.","Wir bestellen Pizza, anstatt kochen zu.","Wir bestellen Pizza, anstatt dass zu kochen."],a:0,exp:"Pravilno: anstatt + zu + Infinitiv."},
+ {q:"Sara bleibt lange wach, anstatt ___ schlafen.",o:["gehen zu","zu gehen","zu geht"],a:1,exp:"Kod dva infinitiva: „schlafen zu gehen“."},
+ {q:"Er spielt Computerspiele, anstatt ___ lernen.",o:["zu","um","dass"],a:0,exp:"„anstatt zu lernen“ = umesto da uči."},
+ {q:"Koji prevod odgovara rečenici: „Sie fährt mit dem Taxi, anstatt zu laufen.“",o:["Ona vozi taksi jer trči.","Ona ide taksijem umesto da hoda.","Ona hoda pre nego što uzme taksi."],a:1,exp:"„anstatt“ znači „umesto da“."},
+ {q:"Wähle den richtigen Satz.",o:["Paul ruft an, anstatt eine Nachricht zu schreiben.","Paul ruft an, anstatt zu eine Nachricht schreiben.","Paul anstatt ruft an, eine Nachricht zu schreiben."],a:0,exp:"Infinitivska konstrukcija stoji na kraju: „anstatt ... zu schreiben“."},
+ {q:"Sie kauft neue Kleidung, anstatt Geld ___.",o:["sparen zu","zu sparen","gespart"],a:1,exp:"„sparen“ → „zu sparen“."},
+ {q:"Der Schüler redet, anstatt ___.",o:["aufzupassen","zu aufpassen","aufpassen zu"],a:0,exp:"Kod razdvojivog glagola: auf + zu + passen = aufzupassen."},
+ {q:"Mia geht spazieren, anstatt den ganzen Tag zu Hause ___.",o:["bleiben","zu bleiben","geblieben"],a:1,exp:"Pravilno je „zu Hause zu bleiben“."},
+ {q:"Er arbeitet weiter, anstatt eine Pause ___.",o:["machen","zu machen","gemacht"],a:1,exp:"„anstatt eine Pause zu machen“."},
+ {q:"Wir fahren ans Meer, anstatt zu Hause ___.",o:["bleiben","zu bleiben","bleibt"],a:1,exp:"„zu Hause zu bleiben“."},
+];
+
+const fillData = [
+ {q:"Anna hört Musik, anstatt ___ . (lernen)",a:"zu lernen",full:"Anna hört Musik, anstatt zu lernen."},
+ {q:"Tom fährt mit dem Auto, anstatt ___ . (laufen)",a:"zu laufen",full:"Tom fährt mit dem Auto, anstatt zu laufen."},
+ {q:"Lena schläft lange, anstatt früh ___ . (aufstehen)",a:"aufzustehen",full:"Lena schläft lange, anstatt früh aufzustehen."},
+ {q:"Wir essen im Restaurant, anstatt zu Hause ___ . (kochen)",a:"zu kochen",full:"Wir essen im Restaurant, anstatt zu Hause zu kochen."},
+ {q:"Er telefoniert, anstatt eine E-Mail ___ . (schreiben)",a:"zu schreiben",full:"Er telefoniert, anstatt eine E-Mail zu schreiben."},
+ {q:"Die Kinder spielen draußen, anstatt ihr Zimmer ___ . (aufräumen)",a:"aufzuräumen",full:"Die Kinder spielen draußen, anstatt ihr Zimmer aufzuräumen."},
+ {q:"Sie kauft Kaffee, anstatt ihn zu Hause ___ . (machen)",a:"zu machen",full:"Sie kauft Kaffee, anstatt ihn zu Hause zu machen."},
+ {q:"Ich bleibe im Bett, anstatt zur Arbeit ___ . (gehen)",a:"zu gehen",full:"Ich bleibe im Bett, anstatt zur Arbeit zu gehen."},
+ {q:"Er sieht Videos, anstatt für die Prüfung ___ . (lernen)",a:"zu lernen",full:"Er sieht Videos, anstatt für die Prüfung zu lernen."},
+ {q:"Nina nimmt den Bus, anstatt mit dem Fahrrad ___ . (fahren)",a:"zu fahren",full:"Nina nimmt den Bus, anstatt mit dem Fahrrad zu fahren."},
+ {q:"Der Junge beschwert sich, anstatt das Problem ___ . (lösen)",a:"zu lösen",full:"Der Junge beschwert sich, anstatt das Problem zu lösen."},
+ {q:"Sie gibt viel Geld aus, anstatt ___ . (sparen)",a:"zu sparen",full:"Sie gibt viel Geld aus, anstatt zu sparen."},
+];
+
+const orderData = [
+ {sr:"Ana igra na telefonu umesto da uči.",s:"Anna spielt am Handy, anstatt zu lernen."},
+ {sr:"On vozi automobil umesto da ide peške.",s:"Er fährt mit dem Auto, anstatt zu Fuß zu gehen."},
+ {sr:"Ona gleda televiziju umesto da radi domaći.",s:"Sie sieht fern, anstatt die Hausaufgaben zu machen."},
+ {sr:"Mi naručujemo picu umesto da kuvamo.",s:"Wir bestellen Pizza, anstatt zu kochen."},
+ {sr:"Paul priča umesto da sluša.",s:"Paul spricht, anstatt zuzuhören."},
+ {sr:"Lena dugo spava umesto da rano ustane.",s:"Lena schläft lange, anstatt früh aufzustehen."},
+ {sr:"Deca se igraju umesto da pospreme sobu.",s:"Die Kinder spielen, anstatt ihr Zimmer aufzuräumen."},
+ {sr:"On kupuje novu odeću umesto da štedi.",s:"Er kauft neue Kleidung, anstatt zu sparen."},
+ {sr:"Ja ostajem kod kuće umesto da izađem.",s:"Ich bleibe zu Hause, anstatt auszugehen."},
+ {sr:"Ona uzima lift umesto da koristi stepenice.",s:"Sie nimmt den Aufzug, anstatt die Treppe zu benutzen."}
+];
+
+const transData = [
+ {q:"Ana igra na telefonu, umesto da uči.",a:"Anna spielt am Handy, anstatt zu lernen."},
+ {q:"On gleda televiziju, umesto da čita knjigu.",a:"Er sieht fern, anstatt ein Buch zu lesen."},
+ {q:"Mi idemo automobilom, umesto da idemo peške.",a:"Wir fahren mit dem Auto, anstatt zu Fuß zu gehen."},
+ {q:"Sara telefonira, umesto da napiše poruku.",a:"Sara telefoniert, anstatt eine Nachricht zu schreiben."},
+ {q:"Deca se igraju, umesto da uče.",a:"Die Kinder spielen, anstatt zu lernen."},
+ {q:"On se žali, umesto da reši problem.",a:"Er beschwert sich, anstatt das Problem zu lösen."},
+ {q:"Ona troši novac, umesto da štedi.",a:"Sie gibt Geld aus, anstatt zu sparen."},
+ {q:"Tom ostaje u krevetu, umesto da ustane.",a:"Tom bleibt im Bett, anstatt aufzustehen."},
+ {q:"Mi jedemo napolju, umesto da kuvamo kod kuće.",a:"Wir essen draußen, anstatt zu Hause zu kochen."},
+ {q:"Lena gleda video-snimke, umesto da radi domaći.",a:"Lena sieht Videos, anstatt die Hausaufgaben zu machen."}
+];
+
+const examples = [
+ ["Ich nehme den Bus, anstatt zu Fuß zu gehen.","Idem autobusom, umesto da idem peške."],
+ ["Er trinkt Cola, anstatt Wasser zu trinken.","On pije kolu, umesto da pije vodu."],
+ ["Sie schreibt eine Nachricht, anstatt anzurufen.","Ona piše poruku, umesto da pozove."],
+ ["Wir bleiben zu Hause, anstatt ins Kino zu gehen.","Ostajemo kod kuće, umesto da idemo u bioskop."],
+ ["Du spielst, anstatt dein Zimmer aufzuräumen.","Igraš se, umesto da pospremiš svoju sobu."],
+ ["Mia kauft Brot, anstatt es selbst zu backen.","Mia kupuje hleb, umesto da ga sama ispeče."],
+ ["Er schaut aufs Handy, anstatt zuzuhören.","On gleda u telefon, umesto da sluša."],
+ ["Sie fährt mit dem Taxi, anstatt zu laufen.","Ona ide taksijem, umesto da hoda."],
+ ["Paul schläft, anstatt für die Prüfung zu lernen.","Paul spava, umesto da uči za ispit."],
+ ["Wir bestellen Essen, anstatt zu kochen.","Naručujemo hranu, umesto da kuvamo."],
+ ["Sie spricht laut, anstatt leise zu sein.","Ona govori glasno, umesto da bude tiha."],
+ ["Ich lese ein Buch, anstatt fernzusehen.","Čitam knjigu, umesto da gledam televiziju."],
+ ["Er kauft ein neues Handy, anstatt Geld zu sparen.","On kupuje novi telefon, umesto da štedi novac."],
+ ["Die Schüler reden, anstatt aufzupassen.","Učenici pričaju, umesto da paze."],
+ ["Nina geht spazieren, anstatt den ganzen Tag zu sitzen.","Nina ide u šetnju, umesto da sedi ceo dan."],
+ ["Wir lernen Deutsch, anstatt Zeit zu verschwenden.","Učimo nemački, umesto da gubimo vreme."],
+ ["Tom spielt Fußball, anstatt am Computer zu sitzen.","Tom igra fudbal, umesto da sedi za računarom."],
+ ["Sie macht Sport, anstatt auf dem Sofa zu liegen.","Ona vežba, umesto da leži na kauču."],
+ ["Er fragt den Lehrer, anstatt im Internet zu suchen.","On pita nastavnika, umesto da traži na internetu."],
+ ["Ich koche selbst, anstatt Fast Food zu bestellen.","Kuvam sam, umesto da naručujem brzu hranu."]
+];
+
+let state = JSON.parse(localStorage.getItem("demax_anstatt_state") || '{"score":0,"done":0,"correct":0}');
+function save(){localStorage.setItem("demax_anstatt_state",JSON.stringify(state)); updateStats()}
+function updateStats(){
+  document.getElementById("score").textContent=state.score;
+  document.getElementById("done").textContent=state.done;
+  const acc=state.done?Math.round(state.correct/state.done*100):0;
+  document.getElementById("accuracy").textContent=acc+"%";
+  document.getElementById("progress").style.width=Math.min(100,state.done/44*100)+"%";
+}
+function reward(ok){
+  state.done++;
+  if(ok){state.correct++;state.score+=10; toast("Tačno! +10 bodova ✅")}
+  else toast("Pokušaj sledeći zadatak 💪");
+  save();
+}
+function norm(s){
+  return s.trim().toLowerCase().replace(/[„“"']/g,"").replace(/[.!?]/g,"").replace(/\s+/g," ");
+}
+function speak(text){
+  if(!("speechSynthesis" in window)){toast("Izgovor nije podržan u ovom pregledaču.");return}
+  speechSynthesis.cancel();
+  const u=new SpeechSynthesisUtterance(text);
+  u.lang="de-DE";u.rate=.86;speechSynthesis.speak(u);
+}
+function toast(t){
+  const e=document.getElementById("toast");e.textContent=t;e.classList.add("show");
+  setTimeout(()=>e.classList.remove("show"),1700);
+}
+document.querySelectorAll(".tab").forEach(b=>b.onclick=()=>{
+  document.querySelectorAll(".tab").forEach(x=>x.classList.remove("active"));
+  document.querySelectorAll(".panel").forEach(x=>x.classList.remove("active"));
+  b.classList.add("active");document.getElementById(b.dataset.tab).classList.add("active");
+  window.scrollTo({top:150,behavior:"smooth"});
+});
+
+// CHOICE
+let ci=0,choiceLocked=false;
+function renderChoice(){
+  choiceLocked=false;
+  const d=choiceData[ci%choiceData.length];
+  choiceNum.textContent=`Pitanje ${ci%choiceData.length+1}/${choiceData.length}`;
+  choiceQ.textContent=d.q;
+  choiceOptions.innerHTML="";
+  choiceFeedback.className="feedback"; choiceFeedback.textContent="";
+  choiceNext.style.display="none";
+  d.o.forEach((t,i)=>{
+    const b=document.createElement("button");b.className="option";b.textContent=t;
+    b.onclick=()=>checkChoice(i,b);choiceOptions.appendChild(b);
+  });
+}
+function checkChoice(i,b){
+  if(choiceLocked)return; choiceLocked=true;
+  const d=choiceData[ci%choiceData.length];
+  [...choiceOptions.children].forEach((x,idx)=>{
+    if(idx===d.a)x.classList.add("correct");
+    if(idx===i && i!==d.a)x.classList.add("wrong");
+    x.disabled=true;
+  });
+  const ok=i===d.a; reward(ok);
+  choiceFeedback.className="feedback "+(ok?"good":"bad");
+  choiceFeedback.innerHTML=(ok?"✅ Tačno! ":"❌ Nije tačno. ")+d.exp+` <button class="speak" onclick="speak('${d.o[d.a].replace(/'/g,"\\'")}')">🔊</button>`;
+  choiceNext.style.display="block";
+}
+choiceNext.onclick=()=>{ci=(ci+1)%choiceData.length;renderChoice()};
+
+// FILL
+let fi=0,fillLocked=false;
+function renderFill(){
+  fillLocked=false; const d=fillData[fi%fillData.length];
+  fillNum.textContent=`Zadatak ${fi%fillData.length+1}/${fillData.length}`;
+  fillQ.textContent=d.q;fillInput.value="";fillInput.disabled=false;fillCheck.disabled=false;
+  fillFeedback.className="feedback";fillNext.style.display="none";setTimeout(()=>fillInput.focus(),100);
+}
+function checkFill(){
+  if(fillLocked)return; const d=fillData[fi%fillData.length]; const ok=norm(fillInput.value)===norm(d.a);
+  fillLocked=true;fillInput.disabled=true;fillCheck.disabled=true;reward(ok);
+  fillFeedback.className="feedback "+(ok?"good":"bad");
+  fillFeedback.innerHTML=(ok?"✅ Odlično!":"❌ Tačan odgovor je: <b>"+d.a+"</b>")+"<br>"+d.full+` <button class="speak" onclick="speak('${d.full.replace(/'/g,"\\'")}')">🔊</button>`;
+  fillNext.style.display="block";
+}
+fillCheck.onclick=checkFill;fillInput.addEventListener("keydown",e=>{if(e.key==="Enter")checkFill()});
+fillNext.onclick=()=>{fi=(fi+1)%fillData.length;renderFill()};
+
+// ORDER
+let oi=0,selected=[],tokens=[];
+function shuffle(a){return [...a].sort(()=>Math.random()-.5)}
+function splitSentence(s){return s.replace(",", " ,").replace(".", " .").split(/\s+/)}
+function renderOrder(){
+  const d=orderData[oi%orderData.length];selected=[];tokens=shuffle(splitSentence(d.s));
+  orderNum.textContent=`Zadatak ${oi%orderData.length+1}/${orderData.length}`;
+  orderPrompt.textContent="Složi nemačku rečenicu: "+d.sr;
+  orderFeedback.className="feedback";orderNext.style.display="none";renderWords();
+}
+function renderWords(){
+  build.innerHTML=""; words.innerHTML="";
+  selected.forEach((obj,idx)=>{
+    const b=document.createElement("button");b.className="word";b.textContent=obj.w;
+    b.onclick=()=>{tokens.push(obj);selected.splice(idx,1);renderWords()};build.appendChild(b);
+  });
+  tokens.forEach((objOrW,idx)=>{
+    const obj=typeof objOrW==="string"?{w:obj,id:Math.random()}:objOrW;
+    if(typeof objOrW==="string")tokens[idx]=obj;
+    const b=document.createElement("button");b.className="word";b.textContent=obj.w;
+    b.onclick=()=>{selected.push(obj);tokens.splice(idx,1);renderWords()};words.appendChild(b);
+  });
+}
+orderCheck.onclick=()=>{
+  const d=orderData[oi%orderData.length];
+  let built=selected.map(x=>x.w).join(" ").replace(/\s+,/g,",").replace(/\s+\./g,".");
+  const ok=norm(built)===norm(d.s);reward(ok);
+  orderFeedback.className="feedback "+(ok?"good":"bad");
+  orderFeedback.innerHTML=(ok?"✅ Savršeno!":"❌ Tačan redosled:")+"<br><b>"+d.s+`</b> <button class="speak" onclick="speak('${d.s.replace(/'/g,"\\'")}')">🔊</button>`;
+  orderNext.style.display="block";
+}
+undo.onclick=()=>{if(selected.length){tokens.unshift(selected.pop());renderWords()}};
+clearBuild.onclick=()=>{tokens.push(...selected);selected=[];renderWords()};
+orderNext.onclick=()=>{oi=(oi+1)%orderData.length;renderOrder()};
+
+// TRANSLATE
+let ti=0,transLocked=false;
+function renderTrans(){
+  transLocked=false;const d=transData[ti%transData.length];
+  transNum.textContent=`Prevod ${ti%transData.length+1}/${transData.length}`;
+  transQ.textContent=d.q;transInput.value="";transInput.disabled=false;transCheck.disabled=false;
+  transFeedback.className="feedback";transNext.style.display="none";setTimeout(()=>transInput.focus(),100);
+}
+function checkTrans(){
+  if(transLocked)return;const d=transData[ti%transData.length];
+  const ok=norm(transInput.value)===norm(d.a);transLocked=true;transInput.disabled=true;transCheck.disabled=true;reward(ok);
+  transFeedback.className="feedback "+(ok?"good":"bad");
+  transFeedback.innerHTML=(ok?"✅ Tačan prevod!":"❌ Predlog tačnog prevoda:")+"<br><b>"+d.a+`</b> <button class="speak" onclick="speak('${d.a.replace(/'/g,"\\'")}')">🔊</button>`;
+  transNext.style.display="block";
+}
+transCheck.onclick=checkTrans;transInput.addEventListener("keydown",e=>{if(e.key==="Enter")checkTrans()});
+transNext.onclick=()=>{ti=(ti+1)%transData.length;renderTrans()};
+
+// EXAMPLES
+exampleList.innerHTML=examples.map((e,i)=>`
+<div class="titem">
+  <div>${i+1}. ${e[0]}<small>${e[1]}</small></div>
+  <button class="speak" onclick="speak('${e[0].replace(/'/g,"\\'")}')">🔊</button>
+</div>`).join("");
+
+resetAll.onclick=()=>{
+  if(confirm("Da li želiš da resetuješ bodove i napredak?")){
+    state={score:0,done:0,correct:0};save();toast("Rezultat je resetovan.");
+  }
+};
+
+renderChoice();renderFill();renderOrder();renderTrans();updateStats();
+</script>
+</body>
+</html>

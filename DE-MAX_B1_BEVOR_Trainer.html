@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="sr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>DE-MAX • Bevor Trainer B1</title>
+<style>
+:root{
+  --blue:#0b3b92;
+  --blue2:#1456c7;
+  --light:#eef5ff;
+  --ink:#10213d;
+  --green:#16833a;
+  --red:#e12424;
+  --gold:#f5bf2f;
+  --card:#ffffff;
+  --line:#dbe8ff;
+  --shadow:0 14px 36px rgba(11,59,146,.14);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;
+  font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+  color:var(--ink);
+  background:
+    radial-gradient(circle at 15% 0%, #dceaff 0, transparent 28%),
+    linear-gradient(180deg,#f6f9ff 0%,#eef4ff 45%,#f9fbff 100%);
+  min-height:100vh;
+}
+button,input{font:inherit}
+button{cursor:pointer}
+.app{
+  width:min(100%, 900px);
+  margin:0 auto;
+  padding:14px 14px 90px;
+}
+.topbar{
+  position:sticky; top:0; z-index:20;
+  margin:-14px -14px 16px;
+  padding:10px 14px 9px;
+  background:rgba(246,249,255,.92);
+  backdrop-filter:blur(14px);
+  border-bottom:1px solid rgba(11,59,146,.12);
+}
+.brandrow{display:flex;align-items:center;gap:10px}
+.logo{
+  width:46px;height:46px;border-radius:15px;
+  display:grid;place-items:center;color:#fff;
+  font-weight:900;font-size:14px;letter-spacing:.4px;
+  background:linear-gradient(145deg,var(--blue2),#062a70);
+  box-shadow:0 7px 18px rgba(11,59,146,.25);
+}
+.brand h1{font-size:18px;line-height:1.05;margin:0;color:var(--blue);font-weight:900}
+.brand small{font-size:12px;font-weight:700;color:#6b7b99}
+.progressWrap{margin-top:9px;display:flex;align-items:center;gap:10px}
+.progress{flex:1;height:8px;border-radius:999px;background:#dfe9f9;overflow:hidden}
+.progress>div{height:100%;width:0;background:linear-gradient(90deg,var(--blue2),#6e9cff);transition:.3s}
+.pct{font-size:12px;font-weight:900;color:var(--blue)}
+.hero{
+  background:linear-gradient(135deg,#082f80 0%,#0b4fc8 60%,#3a7be9 100%);
+  color:#fff;border-radius:28px;padding:24px 20px;box-shadow:var(--shadow);
+  position:relative;overflow:hidden;
+}
+.hero:after{
+  content:"";position:absolute;width:220px;height:220px;border-radius:50%;
+  right:-80px;top:-90px;background:rgba(255,255,255,.08)
+}
+.kicker{
+  display:inline-flex;gap:7px;align-items:center;
+  background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.24);
+  padding:6px 10px;border-radius:999px;font-size:12px;font-weight:800
+}
+.hero h2{font-size:34px;line-height:.98;margin:13px 0 8px;font-weight:1000}
+.hero h2 span{color:#ffe66b}
+.hero p{margin:0;max-width:650px;font-size:15px;line-height:1.45;color:#e8f0ff}
+.heroActions{display:flex;gap:9px;margin-top:16px;flex-wrap:wrap}
+.hero button{
+  border:0;border-radius:14px;padding:11px 14px;font-weight:900
+}
+.primary{background:#fff;color:var(--blue)}
+.secondary{background:rgba(255,255,255,.14);color:#fff;border:1px solid rgba(255,255,255,.26)!important}
+.sectionTitle{
+  display:flex;align-items:center;justify-content:space-between;
+  margin:22px 2px 10px
+}
+.sectionTitle h3{margin:0;color:var(--blue);font-size:20px;font-weight:1000}
+.sectionTitle span{font-size:12px;color:#6b7b99;font-weight:800}
+.card{
+  background:var(--card);border:1px solid var(--line);border-radius:22px;
+  padding:18px;box-shadow:var(--shadow);margin:10px 0
+}
+.ruleGrid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.rule{
+  border:1px solid #dce7ff;border-radius:18px;padding:16px;background:#f9fbff
+}
+.rule strong{display:block;color:var(--blue);margin-bottom:7px;font-size:15px}
+.formula{
+  background:#0c3e99;color:#fff;border-radius:12px;padding:10px 12px;
+  font-weight:900;text-align:center;margin:8px 0 10px;font-size:14px
+}
+.be{color:#ef2626;font-weight:1000}
+.verb{color:#145ee7;font-weight:1000}
+.subj{color:#18863e;font-weight:1000}
+.tip{
+  margin-top:12px;background:#fff6cf;border:1px solid #f0d466;
+  border-radius:15px;padding:12px;font-size:13px;line-height:1.4;font-weight:700
+}
+.examples{display:grid;gap:10px}
+.example{
+  padding:13px 13px 12px;border:1px solid #e1eaff;border-radius:15px;background:#fbfdff
+}
+.de{font-size:16px;font-weight:900;line-height:1.35}
+.sr{margin-top:5px;font-size:13px;color:#60708e}
+.speak{
+  float:right;border:0;background:#e8f0ff;color:var(--blue);width:34px;height:34px;
+  border-radius:12px;font-weight:900
+}
+.tabs{
+  display:flex;gap:8px;overflow:auto;padding:2px 1px 8px;scrollbar-width:none
+}
+.tabs::-webkit-scrollbar{display:none}
+.tab{
+  white-space:nowrap;border:1px solid #d7e4ff;background:#fff;color:var(--blue);
+  padding:10px 13px;border-radius:999px;font-size:13px;font-weight:900
+}
+.tab.active{background:var(--blue);color:#fff;border-color:var(--blue)}
+.exerciseHead{display:flex;gap:10px;align-items:flex-start;justify-content:space-between}
+.exerciseHead h4{margin:0;font-size:17px;line-height:1.25;color:#16305e}
+.counter{font-size:12px;background:#edf3ff;color:var(--blue);padding:6px 8px;border-radius:10px;font-weight:900}
+.prompt{margin:15px 0 12px;font-size:18px;line-height:1.4;font-weight:900}
+.translation{font-size:13px;color:#6a7893;margin-top:-6px;margin-bottom:12px}
+.options{display:grid;gap:9px}
+.option{
+  width:100%;text-align:left;border:1.5px solid #dbe7ff;background:#fff;border-radius:15px;
+  padding:12px 13px;font-weight:800;color:#213555;transition:.16s
+}
+.option:hover{transform:translateY(-1px);border-color:#8fb3ff}
+.option.good{border-color:#2ea457;background:#effbf3;color:#156c34}
+.option.bad{border-color:#e05c5c;background:#fff1f1;color:#a42727}
+.answerLine{display:flex;gap:8px}
+.answerLine input{
+  flex:1;border:1.5px solid #cfdfff;border-radius:14px;padding:12px 13px;outline:none;
+  background:#fbfdff;color:#172c52;font-weight:800
+}
+.answerLine input:focus{border-color:#4f83e5;box-shadow:0 0 0 4px rgba(79,131,229,.12)}
+.check{
+  border:0;border-radius:14px;padding:0 14px;background:var(--blue);color:#fff;font-weight:900
+}
+.feedback{
+  display:none;margin-top:12px;padding:12px 13px;border-radius:14px;font-size:13px;font-weight:800;line-height:1.45
+}
+.feedback.show{display:block}
+.feedback.ok{background:#ecf9f0;color:#156d35;border:1px solid #bfe8ca}
+.feedback.no{background:#fff2f2;color:#a02a2a;border:1px solid #f0c4c4}
+.tokens{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.token{
+  border:1px solid #cddcff;background:#fff;color:#17366e;border-radius:12px;
+  padding:9px 11px;font-weight:900
+}
+.token.used{opacity:.35;transform:scale(.96)}
+.build{
+  min-height:62px;border:2px dashed #bfd0ef;border-radius:16px;padding:10px;
+  display:flex;align-content:flex-start;flex-wrap:wrap;gap:8px;background:#f8fbff
+}
+.build .token{background:#eaf1ff;border-color:#b9cff6}
+.navrow{display:flex;justify-content:space-between;gap:10px;margin-top:14px}
+.navbtn{
+  flex:1;border:0;border-radius:14px;padding:12px;font-weight:1000
+}
+.prev{background:#e9f0fc;color:#32517f}
+.next{background:var(--blue);color:#fff}
+.summary{
+  text-align:center;padding:24px 16px
+}
+.scoreCircle{
+  width:128px;height:128px;border-radius:50%;margin:0 auto 15px;
+  background:conic-gradient(var(--blue) 0deg,#dfe9fa 0deg);
+  display:grid;place-items:center;position:relative
+}
+.scoreCircle:after{content:"";position:absolute;inset:11px;background:#fff;border-radius:50%}
+.scoreText{z-index:2;font-size:26px;font-weight:1000;color:var(--blue)}
+.miniStats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:16px 0}
+.stat{background:#f2f6ff;border:1px solid #dce7fa;border-radius:14px;padding:11px}
+.stat b{display:block;font-size:18px;color:var(--blue)}
+.stat span{font-size:11px;color:#6f7f9c;font-weight:800}
+.hidden{display:none!important}
+.footerNote{text-align:center;color:#7a8ba8;font-size:11px;margin-top:20px}
+@media(max-width:640px){
+  .app{padding-left:10px;padding-right:10px}
+  .topbar{margin-left:-10px;margin-right:-10px}
+  .ruleGrid{grid-template-columns:1fr}
+  .hero{border-radius:23px;padding:21px 17px}
+  .hero h2{font-size:30px}
+  .card{border-radius:19px;padding:15px}
+  .prompt{font-size:17px}
+}
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="topbar">
+    <div class="brandrow">
+      <div class="logo">DE<br>MAX</div>
+      <div class="brand">
+        <h1>BEVOR TRAINER</h1>
+        <small>Nemački jezik • B1</small>
+      </div>
+    </div>
+    <div class="progressWrap">
+      <div class="progress"><div id="progressBar"></div></div>
+      <div class="pct" id="progressPct">0%</div>
+    </div>
+  </div>
+
+  <section class="hero">
+    <div class="kicker">⏱️ Vremenski veznik</div>
+    <h2><span>bevor</span> = pre nego što</h2>
+    <p>Vežbaj red reči, položaj glagola, inverziju i razumevanje rečenica. Klikni na 🔊 za nemački izgovor.</p>
+    <div class="heroActions">
+      <button class="primary" onclick="document.getElementById('vezbe').scrollIntoView()">▶ Počni vežbanje</button>
+      <button class="secondary" onclick="speak('Bevor ich zur Arbeit gehe, esse ich.')">🔊 Čuj primer</button>
+    </div>
+  </section>
+
+  <div class="sectionTitle"><h3>📘 Pravilo</h3><span>B1 • Satzbau</span></div>
+  <section class="card">
+    <div class="ruleGrid">
+      <div class="rule">
+        <strong>1. Glavna + bevor + zavisna</strong>
+        <div class="formula">Hauptsatz + <span class="be">bevor</span> + Nebensatz</div>
+        <div class="de"><span class="subj">Ich</span> esse, <span class="be">bevor</span> <span class="subj">ich</span> zur Arbeit <span class="verb">gehe</span>.</div>
+        <div class="sr">Jedem pre nego što idem na posao.</div>
+      </div>
+      <div class="rule">
+        <strong>2. Bevor + zavisna, glavna</strong>
+        <div class="formula"><span class="be">Bevor</span> + Nebensatz, Verb + Subjekt</div>
+        <div class="de"><span class="be">Bevor</span> <span class="subj">ich</span> zur Arbeit <span class="verb">gehe</span>, <span class="verb">esse</span> <span class="subj">ich</span>.</div>
+        <div class="sr">Pre nego što idem na posao, jedem.</div>
+      </div>
+    </div>
+    <div class="tip">💡 <b>Zapamti:</b> u zavisnoj rečenici sa <span class="be">bevor</span> glagol ide na kraj. Ako rečenica počinje sa <span class="be">bevor</span>, posle zareza glavna rečenica počinje glagolom.</div>
+  </section>
+
+  <div class="sectionTitle"><h3>🔊 Primeri</h3><span>sa prevodom</span></div>
+  <section class="card examples" id="examples"></section>
+
+  <div class="sectionTitle" id="vezbe"><h3>🎯 Vežbe</h3><span>interaktivno</span></div>
+  <div class="tabs">
+    <button class="tab active" data-mode="choice">Izaberi</button>
+    <button class="tab" data-mode="fill">Dopuni</button>
+    <button class="tab" data-mode="order">Složi</button>
+    <button class="tab" data-mode="invert">Inverzija</button>
+    <button class="tab" data-mode="translate">Prevod</button>
+    <button class="tab" data-mode="final">Test</button>
+  </div>
+
+  <section class="card" id="exerciseCard">
+    <div class="exerciseHead">
+      <h4 id="exerciseTitle">Izaberi tačnu rečenicu</h4>
+      <div class="counter" id="counter">1 / 10</div>
+    </div>
+    <div id="exerciseBody"></div>
+    <div class="navrow">
+      <button class="navbtn prev" id="prevBtn">← Prethodno</button>
+      <button class="navbtn next" id="nextBtn">Sledeće →</button>
+    </div>
+  </section>
+
+  <section class="card hidden" id="summaryCard"></section>
+  <div class="footerNote">DE‑MAX • interaktivno učenje nemačkog jezika</div>
+</div>
+
+<script>
+const examples = [
+  ["Ich esse, bevor ich zur Arbeit gehe.","Jedem pre nego što idem na posao."],
+  ["Wir lernen die Wörter, bevor wir den Test schreiben.","Učimo reči pre nego što pišemo test."],
+  ["Sie ruft ihre Mutter an, bevor sie nach Hause geht.","Ona zove majku pre nego što ide kući."],
+  ["Bevor ich schlafe, lese ich ein Buch.","Pre nego što spavam, čitam knjigu."],
+  ["Bevor wir reisen, reservieren wir ein Hotel.","Pre nego što putujemo, rezervišemo hotel."],
+  ["Er duscht, bevor er zur Arbeit fährt.","On se tušira pre nego što ide na posao."]
+];
+
+const data = {
+choice:[
+{p:"Koja rečenica je tačna?",t:"Pre nego što idem na posao, jedem.",a:0,o:[
+"Bevor ich zur Arbeit gehe, esse ich.",
+"Bevor ich gehe zur Arbeit, ich esse.",
+"Bevor ich zur Arbeit gehe, ich esse."
+]},
+{p:"Izaberi pravilan red reči.",t:"Učimo reči pre nego što pišemo test.",a:1,o:[
+"Wir lernen die Wörter, bevor wir schreiben den Test.",
+"Wir lernen die Wörter, bevor wir den Test schreiben.",
+"Wir lernen bevor die Wörter, wir den Test schreiben."
+]},
+{p:"Koja rečenica je pravilna?",t:"Ona zove majku pre nego što ide kući.",a:2,o:[
+"Sie ruft ihre Mutter an, bevor sie geht nach Hause.",
+"Sie ruft bevor ihre Mutter an, sie nach Hause geht.",
+"Sie ruft ihre Mutter an, bevor sie nach Hause geht."
+]},
+{p:"Izaberi tačnu rečenicu sa „bevor“ na početku.",t:"Pre nego što spavam, perem zube.",a:1,o:[
+"Bevor ich schlafe, ich putze die Zähne.",
+"Bevor ich schlafe, putze ich die Zähne.",
+"Bevor schlafe ich, putze ich die Zähne."
+]},
+{p:"Koja rečenica ima dobru inverziju?",t:"Pre nego što izađemo, proveravamo vreme.",a:0,o:[
+"Bevor wir ausgehen, prüfen wir das Wetter.",
+"Bevor wir ausgehen, wir prüfen das Wetter.",
+"Bevor ausgehen wir, prüfen wir das Wetter."
+]},
+{p:"Izaberi pravilnu rečenicu.",t:"On pije kafu pre nego što počne da radi.",a:2,o:[
+"Er trinkt Kaffee, bevor er beginnt arbeiten.",
+"Er trinkt bevor Kaffee, er zu arbeiten beginnt.",
+"Er trinkt Kaffee, bevor er zu arbeiten beginnt."
+]},
+{p:"Koja je pravilna?",t:"Pre nego što kupim auto, upoređujem cene.",a:0,o:[
+"Bevor ich ein Auto kaufe, vergleiche ich die Preise.",
+"Bevor ich kaufe ein Auto, ich vergleiche die Preise.",
+"Bevor ein Auto ich kaufe, vergleiche die Preise ich."
+]},
+{p:"Izaberi pravilan red reči.",t:"Mi jedemo pre nego što film počne.",a:1,o:[
+"Wir essen, bevor beginnt der Film.",
+"Wir essen, bevor der Film beginnt.",
+"Wir essen bevor, der Film beginnt."
+]},
+{p:"Koja rečenica je pravilna?",t:"Pre nego što ona ode, razgovara sa šefom.",a:2,o:[
+"Bevor sie geht, sie spricht mit dem Chef.",
+"Bevor geht sie, spricht sie mit dem Chef.",
+"Bevor sie geht, spricht sie mit dem Chef."
+]},
+{p:"Izaberi tačnu rečenicu.",t:"Zatvaram prozor pre nego što izađem.",a:0,o:[
+"Ich schließe das Fenster, bevor ich hinausgehe.",
+"Ich schließe das Fenster, bevor ich gehe hinaus.",
+"Ich bevor schließe das Fenster, ich hinausgehe."
+]}],
+
+fill:[
+{p:"Ich frühstücke, bevor ich zur Schule _____.",t:"Doručkujem pre nego što idem u školu.",a:"gehe"},
+{p:"Bevor wir den Test _____, lernen wir die Wörter.",t:"Pre nego što pišemo test, učimo reči.",a:"schreiben"},
+{p:"Sie ruft ihre Mutter an, bevor sie nach Hause _____.",t:"Ona zove majku pre nego što ide kući.",a:"geht"},
+{p:"Bevor er ins Bett _____, duscht er.",t:"Pre nego što ode u krevet, tušira se.",a:"geht"},
+{p:"Wir kaufen die Tickets, bevor wir _____.",t:"Kupujemo karte pre nego što putujemo.",a:"reisen"},
+{p:"Bevor ich das Haus _____, mache ich das Licht aus.",t:"Pre nego što napustim kuću, gasim svetlo.",a:"verlasse"},
+{p:"Er prüft die Adresse, bevor er _____.",t:"Proverava adresu pre nego što krene.",a:"losfährt"},
+{p:"Bevor ihr _____, räumt ihr das Zimmer auf.",t:"Pre nego što dođu gosti, sređujete sobu.",a:"Besuch bekommt",alts:["Besuch bekommt"]},
+{p:"Ich lade den Akku, bevor ich das Handy _____.",t:"Punim bateriju pre nego što koristim telefon.",a:"benutze"},
+{p:"Bevor sie eine Entscheidung _____, spricht sie mit ihrer Familie.",t:"Pre nego što donese odluku, razgovara sa porodicom.",a:"trifft"}
+],
+
+order:[
+{w:["Ich","esse",",","bevor","ich","zur","Arbeit","gehe","."],a:"Ich esse, bevor ich zur Arbeit gehe.",t:"Jedem pre nego što idem na posao."},
+{w:["Bevor","wir","den","Test","schreiben",",","lernen","wir","die","Wörter","."],a:"Bevor wir den Test schreiben, lernen wir die Wörter.",t:"Pre nego što pišemo test, učimo reči."},
+{w:["Sie","ruft","ihre","Mutter","an",",","bevor","sie","nach","Hause","geht","."],a:"Sie ruft ihre Mutter an, bevor sie nach Hause geht.",t:"Ona zove majku pre nego što ide kući."},
+{w:["Bevor","ich","schlafe",",","lese","ich","ein","Buch","."],a:"Bevor ich schlafe, lese ich ein Buch.",t:"Pre nego što spavam, čitam knjigu."},
+{w:["Wir","reservieren","ein","Hotel",",","bevor","wir","reisen","."],a:"Wir reservieren ein Hotel, bevor wir reisen.",t:"Rezervišemo hotel pre nego što putujemo."},
+{w:["Bevor","er","arbeitet",",","trinkt","er","Kaffee","."],a:"Bevor er arbeitet, trinkt er Kaffee.",t:"Pre nego što radi, pije kafu."},
+{w:["Ich","prüfe","die","Adresse",",","bevor","ich","losfahre","."],a:"Ich prüfe die Adresse, bevor ich losfahre.",t:"Proveravam adresu pre nego što krenem."},
+{w:["Bevor","sie","einkauft",",","schreibt","sie","eine","Liste","."],a:"Bevor sie einkauft, schreibt sie eine Liste.",t:"Pre nego što kupuje, piše spisak."}
+],
+
+invert:[
+{p:"Preoblikuj: Ich trinke Kaffee, bevor ich arbeite.",t:"Počni sa „Bevor“.",a:"Bevor ich arbeite, trinke ich Kaffee."},
+{p:"Preoblikuj: Wir lernen die Wörter, bevor wir den Test schreiben.",t:"Počni sa „Bevor“.",a:"Bevor wir den Test schreiben, lernen wir die Wörter."},
+{p:"Preoblikuj: Sie macht das Fenster zu, bevor sie geht.",t:"Počni sa „Bevor“.",a:"Bevor sie geht, macht sie das Fenster zu."},
+{p:"Preoblikuj: Er kauft ein Ticket, bevor er fährt.",t:"Počni sa „Bevor“.",a:"Bevor er fährt, kauft er ein Ticket."},
+{p:"Preoblikuj: Ich rufe dich an, bevor ich komme.",t:"Počni sa „Bevor“.",a:"Bevor ich komme, rufe ich dich an."},
+{p:"Preoblikuj: Wir essen, bevor der Film beginnt.",t:"Počni sa „Bevor“.",a:"Bevor der Film beginnt, essen wir."},
+{p:"Preoblikuj: Sie liest die E-Mail, bevor sie antwortet.",t:"Počni sa „Bevor“.",a:"Bevor sie antwortet, liest sie die E-Mail."},
+{p:"Preoblikuj: Er zieht die Jacke an, bevor er hinausgeht.",t:"Počni sa „Bevor“.",a:"Bevor er hinausgeht, zieht er die Jacke an."}
+],
+
+translate:[
+{p:"Pre nego što idem na posao, doručkujem.",a:"Bevor ich zur Arbeit gehe, frühstücke ich."},
+{p:"Učimo reči pre nego što pišemo test.",a:"Wir lernen die Wörter, bevor wir den Test schreiben."},
+{p:"Pre nego što spava, on čita.",a:"Bevor er schläft, liest er."},
+{p:"Ona proverava adresu pre nego što krene.",a:"Sie prüft die Adresse, bevor sie losfährt."},
+{p:"Pre nego što kupimo karte, proveravamo cenu.",a:"Bevor wir die Tickets kaufen, prüfen wir den Preis."},
+{p:"Ja zatvaram prozor pre nego što izađem.",a:"Ich schließe das Fenster, bevor ich hinausgehe."},
+{p:"Pre nego što ona odgovori, čita poruku.",a:"Bevor sie antwortet, liest sie die Nachricht."},
+{p:"Mi rezervišemo hotel pre nego što putujemo.",a:"Wir reservieren ein Hotel, bevor wir reisen."}
+]
+};
+
+data.final = [
+  ...data.choice.slice(0,3).map(x=>({...x,type:"choice"})),
+  ...data.fill.slice(0,3).map(x=>({...x,type:"fill"})),
+  ...data.order.slice(0,2).map(x=>({...x,type:"order"})),
+  ...data.invert.slice(0,1).map(x=>({...x,type:"invert"})),
+  ...data.translate.slice(0,1).map(x=>({...x,type:"translate"}))
+];
+
+let mode="choice", index=0, answered=false;
+let scores={choice:0,fill:0,order:0,invert:0,translate:0,final:0};
+let attempts={choice:0,fill:0,order:0,invert:0,translate:0,final:0};
+let built=[];
+
+const titles={
+choice:"Izaberi tačnu rečenicu",
+fill:"Dopuni rečenicu",
+order:"Složi rečenicu",
+invert:"Vežbaj inverziju",
+translate:"Prevedi na nemački",
+final:"Završni test"
+};
+
+function speak(txt){
+  if(!("speechSynthesis" in window)) return;
+  speechSynthesis.cancel();
+  const u=new SpeechSynthesisUtterance(txt);
+  u.lang="de-DE";
+  u.rate=.85;
+  speechSynthesis.speak(u);
+}
+
+function norm(s){
+  return (s||"").toLowerCase()
+  .replace(/[„“"']/g,"")
+  .replace(/\s+/g," ")
+  .replace(/\s+([,.!?])/g,"$1")
+  .replace(/([,.!?])(?=\S)/g,"$1 ")
+  .trim();
+}
+
+function similarity(a,b){
+  a=norm(a); b=norm(b);
+  if(a===b) return 1;
+  const aw=a.split(" "), bw=b.split(" ");
+  let hit=0; aw.forEach(w=>{if(bw.includes(w))hit++});
+  return hit/Math.max(aw.length,bw.length);
+}
+
+function mark(correct, answerText){
+  if(answered) return;
+  answered=true;
+  attempts[mode]++;
+  if(correct) scores[mode]++;
+  const f=document.getElementById("feedback");
+  f.className="feedback show "+(correct?"ok":"no");
+  f.innerHTML=correct
+    ? "✅ Tačno! <button class='speak' style='float:none;margin-left:6px' onclick='speak("+JSON.stringify(answerText)+")'>🔊</button>"
+    : "❌ Nije tačno.<br><b>Rešenje:</b> "+answerText+" <button class='speak' style='float:none;margin-left:6px' onclick='speak("+JSON.stringify(answerText)+")'>🔊</button>";
+  updateProgress();
+}
+
+function renderExamples(){
+  document.getElementById("examples").innerHTML=examples.map(e=>`
+    <div class="example">
+      <button class="speak" onclick='speak(${JSON.stringify(e[0])})'>🔊</button>
+      <div class="de">${e[0].replace(/bevor/gi,m=>`<span class="be">${m}</span>`)}</div>
+      <div class="sr">${e[1]}</div>
+    </div>`).join("");
+}
+
+function currentItem(){
+  const arr=data[mode];
+  return arr[Math.min(index,arr.length-1)];
+}
+
+function render(){
+  const arr=data[mode];
+  if(index>=arr.length){showSummary();return}
+  document.getElementById("summaryCard").classList.add("hidden");
+  document.getElementById("exerciseCard").classList.remove("hidden");
+  document.getElementById("exerciseTitle").textContent=titles[mode];
+  document.getElementById("counter").textContent=`${index+1} / ${arr.length}`;
+  answered=false; built=[];
+  const x=currentItem();
+  let type=mode==="final"?x.type:mode;
+  let html="";
+  if(type==="choice"){
+    html=`<div class="prompt">${x.p}</div><div class="translation">${x.t||""}</div>
+    <div class="options">${x.o.map((o,i)=>`<button class="option" onclick="choiceAnswer(this,${i})">${o}</button>`).join("")}</div>
+    <div id="feedback" class="feedback"></div>`;
+  } else if(type==="fill"){
+    html=`<div class="prompt">${x.p}</div><div class="translation">${x.t||""}</div>
+      <div class="answerLine"><input id="answerInput" autocomplete="off" placeholder="Upiši odgovor..."><button class="check" onclick="textAnswer()">Proveri</button></div>
+      <div id="feedback" class="feedback"></div>`;
+  } else if(type==="order"){
+    const shuffled=[...x.w].sort(()=>Math.random()-.5);
+    html=`<div class="translation">${x.t||""}</div>
+      <div class="build" id="build"></div>
+      <div class="tokens" id="tokens">${shuffled.map((w,i)=>`<button class="token" data-i="${i}" data-w="${encodeURIComponent(w)}" onclick="pickToken(this)">${w}</button>`).join("")}</div>
+      <div class="navrow" style="margin-top:10px"><button class="navbtn prev" onclick="resetBuild()">↺ Ponovo</button><button class="navbtn next" onclick="checkBuild()">Proveri</button></div>
+      <div id="feedback" class="feedback"></div>`;
+  } else if(type==="invert" || type==="translate"){
+    html=`<div class="prompt">${x.p}</div><div class="translation">${x.t||""}</div>
+      <div class="answerLine"><input id="answerInput" autocomplete="off" placeholder="Napiši celu rečenicu..."><button class="check" onclick="textAnswer()">Proveri</button></div>
+      <div id="feedback" class="feedback"></div>`;
+  }
+  document.getElementById("exerciseBody").innerHTML=html;
+  document.getElementById("prevBtn").disabled=index===0;
+  document.getElementById("prevBtn").style.opacity=index===0?".45":"1";
+}
+
+function choiceAnswer(btn,i){
+  if(answered) return;
+  const x=currentItem();
+  const correct = i===x.a;
+  [...document.querySelectorAll(".option")].forEach((b,j)=>{
+    if(j===x.a)b.classList.add("good");
+    else if(j===i)b.classList.add("bad");
+  });
+  mark(correct,x.o[x.a]);
+}
+
+function textAnswer(){
+  if(answered) return;
+  const x=currentItem();
+  const val=document.getElementById("answerInput").value.trim();
+  if(!val)return;
+  let ok=similarity(val,x.a)>.88;
+  mark(ok,x.a);
+}
+
+function pickToken(btn){
+  if(btn.classList.contains("used"))return;
+  btn.classList.add("used");
+  const w=decodeURIComponent(btn.dataset.w);
+  built.push({w,btn});
+  const b=document.createElement("button");
+  b.className="token";
+  b.textContent=w;
+  b.onclick=()=>{
+    const idx=built.findIndex(z=>z.btn===btn);
+    if(idx>=0)built.splice(idx,1);
+    btn.classList.remove("used");b.remove();
+  };
+  document.getElementById("build").appendChild(b);
+}
+function resetBuild(){
+  built=[];render();
+}
+function joinTokens(arr){
+  return arr.map(x=>x.w).join(" ")
+   .replace(/\s+([,.!?])/g,"$1")
+   .replace(/,\s*/g,", ")
+   .trim();
+}
+function checkBuild(){
+  if(answered)return;
+  const x=currentItem();
+  const val=joinTokens(built);
+  mark(norm(val)===norm(x.a),x.a);
+}
+
+function next(){
+  if(index<data[mode].length-1){index++;render();}
+  else showSummary();
+}
+function prev(){
+  if(index>0){index--;render();}
+}
+
+function showSummary(){
+  document.getElementById("exerciseCard").classList.add("hidden");
+  const c=document.getElementById("summaryCard");
+  c.classList.remove("hidden");
+  const total=attempts[mode], sc=scores[mode], pct=total?Math.round(sc/total*100):0;
+  c.innerHTML=`<div class="summary">
+    <div class="scoreCircle" style="background:conic-gradient(var(--blue) ${pct*3.6}deg,#dfe9fa 0deg)">
+      <div class="scoreText">${pct}%</div>
+    </div>
+    <h3 style="margin:4px 0;color:var(--blue);font-size:24px">${pct>=80?"Odlično! 🎉":pct>=60?"Vrlo dobro! 👏":"Nastavi da vežbaš 💪"}</h3>
+    <p style="color:#6b7b99;margin:7px 0 14px">Rezultat za ovu oblast</p>
+    <div class="miniStats">
+      <div class="stat"><b>${sc}</b><span>tačno</span></div>
+      <div class="stat"><b>${Math.max(0,total-sc)}</b><span>netačno</span></div>
+      <div class="stat"><b>${total}</b><span>urađeno</span></div>
+    </div>
+    <button class="navbtn next" onclick="restartMode()">↺ Vežbaj ponovo</button>
+  </div>`;
+  updateProgress();
+}
+
+function restartMode(){
+  index=0;scores[mode]=0;attempts[mode]=0;render();updateProgress();
+}
+function updateProgress(){
+  const keys=["choice","fill","order","invert","translate","final"];
+  let done=0,total=0;
+  keys.forEach(k=>{done+=attempts[k]; total+=data[k].length});
+  const p=Math.min(100,Math.round(done/total*100));
+  document.getElementById("progressBar").style.width=p+"%";
+  document.getElementById("progressPct").textContent=p+"%";
+}
+
+document.querySelectorAll(".tab").forEach(tab=>{
+  tab.addEventListener("click",()=>{
+    document.querySelectorAll(".tab").forEach(t=>t.classList.remove("active"));
+    tab.classList.add("active");
+    mode=tab.dataset.mode;index=0;render();
+  });
+});
+document.getElementById("nextBtn").onclick=next;
+document.getElementById("prevBtn").onclick=prev;
+
+document.addEventListener("keydown",e=>{
+  if(e.key==="Enter" && document.getElementById("answerInput")) textAnswer();
+});
+renderExamples();
+render();
+updateProgress();
+</script>
+</body>
+</html>

@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<html lang="sr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>DE-MAX • um … zu + Infinitiv</title>
+<style>
+:root{
+  --blue:#0d6efd;
+  --blue2:#4ea5ff;
+  --navy:#0b1f3a;
+  --sky:#eef7ff;
+  --white:#ffffff;
+  --red:#ef2b2d;
+  --green:#16a34a;
+  --amber:#f59e0b;
+  --muted:#64748b;
+  --line:#d9e8ff;
+  --shadow:0 14px 36px rgba(13,110,253,.15);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;
+  font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+  color:var(--navy);
+  background:
+    radial-gradient(circle at 15% 5%, rgba(78,165,255,.22), transparent 24%),
+    linear-gradient(180deg,#f8fcff 0%,#edf6ff 100%);
+  min-height:100vh;
+}
+button,input,select{font:inherit}
+button{cursor:pointer}
+.app{
+  width:min(100%,760px);
+  margin:0 auto;
+  min-height:100vh;
+  padding:16px 14px 92px;
+}
+.hero{
+  background:linear-gradient(135deg,#0d6efd 0%,#57b0ff 100%);
+  color:#fff;
+  border-radius:30px;
+  padding:22px 20px;
+  box-shadow:var(--shadow);
+  position:relative;
+  overflow:hidden;
+}
+.hero:after{
+  content:"";
+  position:absolute;
+  width:180px;height:180px;
+  right:-55px;top:-55px;
+  background:rgba(255,255,255,.13);
+  border-radius:50%;
+}
+.brand{display:flex;align-items:center;gap:12px;position:relative;z-index:1}
+.logo{
+  width:58px;height:58px;border-radius:18px;background:#fff;color:var(--blue);
+  display:grid;place-items:center;font-weight:900;font-size:18px;box-shadow:0 8px 20px rgba(0,0,0,.12)
+}
+.brand h1{font-size:clamp(24px,6vw,38px);line-height:1.05;margin:0}
+.brand p{margin:6px 0 0;opacity:.95;font-weight:600}
+.rule-pill{
+  margin-top:18px;
+  background:rgba(255,255,255,.16);
+  border:1px solid rgba(255,255,255,.35);
+  border-radius:18px;
+  padding:12px 14px;
+  font-weight:700;
+  position:relative;z-index:1;
+}
+.progress-wrap{
+  margin:16px 0 2px;
+  display:grid;grid-template-columns:1fr auto;gap:10px;align-items:center;
+}
+.progress{
+  height:14px;border-radius:99px;background:#dfeeff;overflow:hidden;border:1px solid #c9e1ff
+}
+.progress > span{
+  display:block;height:100%;width:0%;
+  background:linear-gradient(90deg,#0d6efd,#66b7ff);
+  border-radius:99px;transition:width .35s ease
+}
+.progress-text{font-size:13px;font-weight:800;color:#31567f}
+.tabs{
+  display:flex;gap:8px;overflow-x:auto;padding:14px 1px 8px;scrollbar-width:none;
+}
+.tabs::-webkit-scrollbar{display:none}
+.tab{
+  border:none;background:#fff;color:#31567f;padding:11px 14px;border-radius:14px;
+  font-weight:800;white-space:nowrap;box-shadow:0 4px 14px rgba(15,54,97,.08)
+}
+.tab.active{background:var(--navy);color:#fff}
+.panel{display:none}
+.panel.active{display:block}
+.card{
+  background:#fff;border:1px solid var(--line);border-radius:24px;padding:18px;
+  margin:12px 0;box-shadow:0 8px 28px rgba(15,54,97,.08)
+}
+.card h2,.card h3{margin:0 0 12px}
+.note{
+  background:#f3f8ff;border-left:5px solid var(--blue);padding:13px 14px;border-radius:14px;margin:10px 0
+}
+.pattern{
+  display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:12px 0
+}
+.chip{
+  background:#eef6ff;border:1px solid #cfe4ff;padding:8px 11px;border-radius:12px;font-weight:800
+}
+.chip.red{color:#d91f26;background:#fff0f0;border-color:#ffd3d3}
+.example{
+  padding:14px;border-radius:18px;background:linear-gradient(180deg,#f8fbff,#eef6ff);
+  border:1px solid #d6e9ff;margin:10px 0
+}
+.de{font-size:19px;font-weight:850;line-height:1.35}
+.sr{margin-top:5px;color:#465d78}
+.red{color:var(--red)}
+.controls{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.btn{
+  border:none;border-radius:14px;padding:11px 14px;font-weight:850;
+  background:var(--blue);color:#fff;box-shadow:0 6px 14px rgba(13,110,253,.18)
+}
+.btn.secondary{background:#eaf4ff;color:#155da6}
+.btn.dark{background:var(--navy)}
+.btn.green{background:var(--green)}
+.btn.ghost{background:#fff;color:#31567f;border:1px solid #d8e8fb;box-shadow:none}
+.exercise-title{display:flex;justify-content:space-between;gap:10px;align-items:center;margin-bottom:10px}
+.badge{font-size:12px;font-weight:900;background:#eaf4ff;color:#1768b8;padding:7px 9px;border-radius:999px}
+.question{font-size:19px;font-weight:850;line-height:1.45;margin:10px 0}
+.options{display:grid;gap:9px;margin-top:12px}
+.option{
+  width:100%;text-align:left;border:1px solid #dce9f7;background:#fff;border-radius:15px;padding:13px 14px;
+  font-weight:750;color:var(--navy)
+}
+.option:hover{border-color:#9ccaff;background:#f8fcff}
+.option.correct{border-color:#7ad99a;background:#edfff3;color:#126c33}
+.option.wrong{border-color:#ff9a9a;background:#fff0f0;color:#a11c1c}
+.feedback{min-height:26px;margin-top:10px;font-weight:800}
+.feedback.ok{color:#12833a}.feedback.no{color:#c42626}
+.builder-zone{
+  min-height:62px;border:2px dashed #b9d9ff;border-radius:16px;padding:10px;
+  display:flex;flex-wrap:wrap;gap:8px;background:#f8fbff;margin:12px 0
+}
+.word-bank{display:flex;flex-wrap:wrap;gap:8px}
+.word{
+  border:none;background:#e8f3ff;color:#0c4e91;padding:9px 11px;border-radius:12px;font-weight:850
+}
+.word.used{opacity:.35;pointer-events:none}
+.inputrow{display:flex;gap:8px;align-items:stretch}
+.inputrow input{
+  flex:1;min-width:0;border:1px solid #bfd9f6;border-radius:14px;padding:13px 14px;outline:none
+}
+.inputrow input:focus{border-color:#55a7ff;box-shadow:0 0 0 4px rgba(78,165,255,.13)}
+.quiz-nav{display:flex;gap:8px;justify-content:space-between;margin-top:14px}
+.stat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.stat{background:#f4f9ff;border:1px solid #dbeaff;border-radius:16px;padding:12px;text-align:center}
+.stat b{display:block;font-size:22px}
+.small{font-size:13px;color:var(--muted)}
+.table-wrap{overflow:auto}
+table{width:100%;border-collapse:collapse;min-width:520px}
+th,td{padding:10px 9px;border-bottom:1px solid #e5eef9;text-align:left}
+th{background:#f6faff}
+.footer{
+  position:fixed;left:50%;bottom:10px;transform:translateX(-50%);
+  width:min(calc(100% - 24px),736px);
+  background:rgba(10,31,58,.96);backdrop-filter:blur(12px);
+  border-radius:19px;padding:9px 10px;display:flex;gap:7px;z-index:20;
+  box-shadow:0 12px 30px rgba(0,0,0,.18)
+}
+.footer button{
+  flex:1;border:none;background:transparent;color:#d8e8ff;border-radius:13px;padding:9px 6px;font-weight:800;font-size:12px
+}
+.footer button.active{background:#fff;color:#0b1f3a}
+@media (max-width:520px){
+  .app{padding:10px 10px 88px}
+  .hero{border-radius:24px;padding:18px 15px}
+  .logo{width:50px;height:50px;border-radius:15px}
+  .card{padding:15px;border-radius:20px}
+  .stat-grid{grid-template-columns:1fr 1fr}
+  .stat:last-child{grid-column:1/-1}
+}
+@media (prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important}}
+</style>
+</head>
+<body>
+<div class="app">
+  <section class="hero">
+    <div class="brand">
+      <div class="logo">DE<br>MAX</div>
+      <div>
+        <h1>„um … zu“ + Infinitiv</h1>
+        <p>B1 • da bi / kako bi</p>
+      </div>
+    </div>
+    <div class="rule-pill">
+      Koristi se kada je <b>subjekat isti</b> u glavnoj i zavisnoj rečenici.<br>
+      <span style="opacity:.9">Ich lerne Deutsch, <b>um</b> in Deutschland <b>zu arbeiten</b>.</span>
+    </div>
+  </section>
+
+  <div class="progress-wrap">
+    <div class="progress"><span id="progressBar"></span></div>
+    <div class="progress-text" id="progressText">0%</div>
+  </div>
+
+  <div class="tabs">
+    <button class="tab active" data-tab="lernen">📘 Učenje</button>
+    <button class="tab" data-tab="wahl">✅ Izaberi</button>
+    <button class="tab" data-tab="satz">🧩 Složi</button>
+    <button class="tab" data-tab="prevod">✍️ Prevod</button>
+    <button class="tab" data-tab="test">🏆 Test</button>
+  </div>
+
+  <section class="panel active" id="lernen">
+    <div class="card">
+      <h2>Brzo pravilo</h2>
+      <div class="note">
+        <b>um</b> uvodi cilj ili nameru. Glagol u infinitivu ide na kraj, a <b>zu</b> stoji neposredno ispred infinitiva.
+      </div>
+      <div class="pattern">
+        <span class="chip">Hauptsatz</span>
+        <span>+</span>
+        <span class="chip red">um</span>
+        <span class="chip">...</span>
+        <span class="chip red">zu</span>
+        <span class="chip">Infinitiv</span>
+      </div>
+      <div class="note">
+        Kod razdvojivih glagola <b>zu</b> ide između prefiksa i osnove:<br>
+        <b>einkaufen → einzukaufen</b>, <b>aufstehen → aufzustehen</b>.
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>Primeri</h3>
+      <div class="example">
+        <div class="de">Marko fährt nach Deutschland, <span class="red">um</span> dort <span class="red">zu arbeiten</span>.</div>
+        <div class="sr">Marko ide u Nemačku da bi tamo radio.</div>
+        <div class="controls"><button class="btn secondary speak" data-say="Marko fährt nach Deutschland, um dort zu arbeiten.">🔊 Izgovor</button></div>
+      </div>
+      <div class="example">
+        <div class="de">Sie liest jeden Tag, <span class="red">um</span> ihren Wortschatz <span class="red">zu verbessern</span>.</div>
+        <div class="sr">Ona čita svaki dan da bi poboljšala svoj fond reči.</div>
+        <div class="controls"><button class="btn secondary speak" data-say="Sie liest jeden Tag, um ihren Wortschatz zu verbessern.">🔊 Izgovor</button></div>
+      </div>
+      <div class="example">
+        <div class="de">Ich gehe ins Fitnessstudio, <span class="red">um</span> gesund <span class="red">zu bleiben</span>.</div>
+        <div class="sr">Idem u teretanu da bih ostao zdrav.</div>
+        <div class="controls"><button class="btn secondary speak" data-say="Ich gehe ins Fitnessstudio, um gesund zu bleiben.">🔊 Izgovor</button></div>
+      </div>
+      <div class="example">
+        <div class="de">Wir sparen Geld, <span class="red">um</span> ein Auto <span class="red">zu kaufen</span>.</div>
+        <div class="sr">Štedimo novac da bismo kupili automobil.</div>
+        <div class="controls"><button class="btn secondary speak" data-say="Wir sparen Geld, um ein Auto zu kaufen.">🔊 Izgovor</button></div>
+      </div>
+      <div class="example">
+        <div class="de">Er steht früh auf, <span class="red">um</span> pünktlich <span class="red">anzukommen</span>.</div>
+        <div class="sr">On ustaje rano da bi stigao na vreme.</div>
+        <div class="controls"><button class="btn secondary speak" data-say="Er steht früh auf, um pünktlich anzukommen.">🔊 Izgovor</button></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>Važno: „um … zu“ ili „damit“?</h3>
+      <div class="note"><b>Isti subjekat:</b> Ich lerne viel, <b>um</b> die Prüfung <b>zu bestehen</b>.</div>
+      <div class="note" style="border-left-color:#ef2b2d;background:#fff6f6"><b>Različiti subjekti:</b> Ich spreche langsam, <b>damit du mich verstehst</b>.</div>
+    </div>
+  </section>
+
+  <section class="panel" id="wahl">
+    <div class="card">
+      <div class="exercise-title">
+        <h2>Izaberi tačan odgovor</h2><span class="badge" id="choiceCounter">1 / 12</span>
+      </div>
+      <div class="question" id="choiceQuestion"></div>
+      <div class="options" id="choiceOptions"></div>
+      <div class="feedback" id="choiceFeedback"></div>
+      <div class="quiz-nav">
+        <button class="btn ghost" id="choicePrev">← Nazad</button>
+        <button class="btn dark" id="choiceNext">Dalje →</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="panel" id="satz">
+    <div class="card">
+      <div class="exercise-title">
+        <h2>Složi rečenicu</h2><span class="badge" id="buildCounter">1 / 10</span>
+      </div>
+      <div class="small">Klikni reči pravilnim redom.</div>
+      <div class="builder-zone" id="buildZone"></div>
+      <div class="word-bank" id="wordBank"></div>
+      <div class="feedback" id="buildFeedback"></div>
+      <div class="controls">
+        <button class="btn" id="checkBuild">Proveri</button>
+        <button class="btn secondary" id="clearBuild">Očisti</button>
+      </div>
+      <div class="quiz-nav">
+        <button class="btn ghost" id="buildPrev">← Nazad</button>
+        <button class="btn dark" id="buildNext">Dalje →</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="panel" id="prevod">
+    <div class="card">
+      <div class="exercise-title">
+        <h2>Prevedi na nemački</h2><span class="badge" id="translateCounter">1 / 10</span>
+      </div>
+      <div class="question" id="translateSr"></div>
+      <div class="inputrow">
+        <input id="translateInput" autocomplete="off" placeholder="Upiši nemačku rečenicu…">
+        <button class="btn" id="checkTranslate">Proveri</button>
+      </div>
+      <div class="feedback" id="translateFeedback"></div>
+      <div class="quiz-nav">
+        <button class="btn ghost" id="translatePrev">← Nazad</button>
+        <button class="btn dark" id="translateNext">Dalje →</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="panel" id="test">
+    <div class="card">
+      <h2>Završni test</h2>
+      <div class="stat-grid">
+        <div class="stat"><span class="small">Tačno</span><b id="statCorrect">0</b></div>
+        <div class="stat"><span class="small">Pokušano</span><b id="statTried">0</b></div>
+        <div class="stat"><span class="small">Napredak</span><b id="statProgress">0%</b></div>
+      </div>
+      <div class="note" style="margin-top:14px">
+        Test ima 15 pitanja: izbor oblika, red reči i „um … zu“ / „damit“.
+      </div>
+      <button class="btn green" id="startFinal">Pokreni test</button>
+    </div>
+    <div class="card" id="finalCard" style="display:none">
+      <div class="exercise-title">
+        <h3>Test</h3><span class="badge" id="finalCounter"></span>
+      </div>
+      <div class="question" id="finalQuestion"></div>
+      <div class="options" id="finalOptions"></div>
+      <div class="feedback" id="finalFeedback"></div>
+      <button class="btn dark" id="finalNext">Sledeće</button>
+    </div>
+  </section>
+</div>
+
+<nav class="footer">
+  <button class="active" data-tab="lernen">📘<br>Učenje</button>
+  <button data-tab="wahl">✅<br>Izaberi</button>
+  <button data-tab="satz">🧩<br>Složi</button>
+  <button data-tab="prevod">✍️<br>Prevod</button>
+  <button data-tab="test">🏆<br>Test</button>
+</nav>
+
+<script>
+const state = JSON.parse(localStorage.getItem("demax_umzu_state") || '{"done":{},"correct":0,"tried":0}');
+function save(){ localStorage.setItem("demax_umzu_state", JSON.stringify(state)); updateProgress(); }
+function markDone(key, ok){
+  state.tried++;
+  if(ok) state.correct++;
+  if(ok) state.done[key]=true;
+  save();
+}
+function updateProgress(){
+  const total = 47;
+  const done = Object.keys(state.done).length;
+  const pct = Math.min(100, Math.round(done/total*100));
+  document.getElementById("progressBar").style.width = pct+"%";
+  document.getElementById("progressText").textContent = pct+"%";
+  document.getElementById("statCorrect").textContent = state.correct;
+  document.getElementById("statTried").textContent = state.tried;
+  document.getElementById("statProgress").textContent = pct+"%";
+}
+updateProgress();
+
+function showTab(id){
+  document.querySelectorAll(".panel").forEach(p=>p.classList.toggle("active",p.id===id));
+  document.querySelectorAll("[data-tab]").forEach(b=>b.classList.toggle("active",b.dataset.tab===id));
+  window.scrollTo({top:0,behavior:"smooth"});
+}
+document.querySelectorAll("[data-tab]").forEach(b=>b.addEventListener("click",()=>showTab(b.dataset.tab)));
+
+let speechRate = 0.92;
+function speak(text){
+  if(!("speechSynthesis" in window)) return;
+  speechSynthesis.cancel();
+  const u = new SpeechSynthesisUtterance(text);
+  u.lang="de-DE"; u.rate=speechRate; u.pitch=1;
+  const voices=speechSynthesis.getVoices();
+  const de=voices.find(v=>/^de[-_]/i.test(v.lang));
+  if(de)u.voice=de;
+  speechSynthesis.speak(u);
+}
+document.addEventListener("click",e=>{
+  const b=e.target.closest(".speak");
+  if(b) speak(b.dataset.say);
+});
+
+const choiceData = [
+ {q:"Ich lerne jeden Abend, ___ die B1-Prüfung zu bestehen.",o:["um","damit","weil"],a:0,s:"Ich lerne jeden Abend, um die B1-Prüfung zu bestehen."},
+ {q:"Sie fährt mit dem Bus, um pünktlich ___ kommen.",o:["zu","zum","zu zu"],a:0,s:"Sie fährt mit dem Bus, um pünktlich zu kommen."},
+ {q:"Wir sparen Geld, um im Sommer nach Spanien ___.",o:["zu fahren","fahren zu","gefahren"],a:0,s:"Wir sparen Geld, um im Sommer nach Spanien zu fahren."},
+ {q:"Er ruft seine Mutter an, um ihr alles ___.",o:["zu erzählen","erzählen zu","erzählt"],a:0,s:"Er ruft seine Mutter an, um ihr alles zu erzählen."},
+ {q:"Ich mache das Fenster auf, ___ frische Luft hereinzulassen.",o:["um","dass","ob"],a:0,s:"Ich mache das Fenster auf, um frische Luft hereinzulassen."},
+ {q:"Sie geht früher ins Bett, um morgen fit ___.",o:["zu sein","sein zu","zu ist"],a:0,s:"Sie geht früher ins Bett, um morgen fit zu sein."},
+ {q:"Wir nehmen ein Taxi, um den Zug nicht ___.",o:["zu verpassen","verpassen zu","zu verpasst"],a:0,s:"Wir nehmen ein Taxi, um den Zug nicht zu verpassen."},
+ {q:"Du musst leise sprechen, damit das Baby nicht ___.",o:["aufwacht","aufzuwachen","zu aufwachen"],a:0,s:"Du musst leise sprechen, damit das Baby nicht aufwacht."},
+ {q:"Ich kaufe Gemüse, um eine Suppe ___.",o:["zu kochen","kochen zu","gekocht"],a:0,s:"Ich kaufe Gemüse, um eine Suppe zu kochen."},
+ {q:"Er trainiert regelmäßig, um stärker ___.",o:["zu werden","werden zu","geworden"],a:0,s:"Er trainiert regelmäßig, um stärker zu werden."},
+ {q:"Wir gehen früh los, um rechtzeitig ___.",o:["anzukommen","zu ankommen","ankommen zu"],a:0,s:"Wir gehen früh los, um rechtzeitig anzukommen."},
+ {q:"Sie schreibt alles auf, um nichts ___.",o:["zu vergessen","vergessen zu","zu vergesst"],a:0,s:"Sie schreibt alles auf, um nichts zu vergessen."}
+];
+let ci=0;
+function renderChoice(){
+  const d=choiceData[ci];
+  choiceCounter.textContent=`${ci+1} / ${choiceData.length}`;
+  choiceQuestion.textContent=d.q;
+  choiceFeedback.textContent=""; choiceFeedback.className="feedback";
+  choiceOptions.innerHTML="";
+  d.o.forEach((x,i)=>{
+    const b=document.createElement("button"); b.className="option"; b.textContent=x;
+    b.onclick=()=>{
+      [...choiceOptions.children].forEach(x=>x.disabled=true);
+      const ok=i===d.a;
+      b.classList.add(ok?"correct":"wrong");
+      if(!ok) choiceOptions.children[d.a].classList.add("correct");
+      choiceFeedback.textContent=ok?"Tačno! 🎉":"Nije tačno. Pogledaj označeno rešenje.";
+      choiceFeedback.className="feedback "+(ok?"ok":"no");
+      markDone("c"+ci,ok);
+      if(ok) speak(d.s);
+    };
+    choiceOptions.appendChild(b);
+  });
+}
+choicePrev.onclick=()=>{ci=(ci-1+choiceData.length)%choiceData.length;renderChoice()};
+choiceNext.onclick=()=>{ci=(ci+1)%choiceData.length;renderChoice()};
+renderChoice();
+
+const buildData = [
+ "Ich lerne Deutsch, um in Deutschland zu arbeiten.",
+ "Sie liest viel, um ihren Wortschatz zu verbessern.",
+ "Wir sparen Geld, um ein neues Auto zu kaufen.",
+ "Er steht früh auf, um pünktlich anzukommen.",
+ "Ich mache Sport, um gesund zu bleiben.",
+ "Anna fährt in die Stadt, um ein Geschenk zu kaufen.",
+ "Wir gehen zum Supermarkt, um Lebensmittel einzukaufen.",
+ "Paul nimmt den Bus, um nicht zu spät zu kommen.",
+ "Ich schreibe eine Liste, um nichts zu vergessen.",
+ "Sie übt jeden Tag, um besser Deutsch zu sprechen."
+];
+let bi=0, selected=[];
+function shuffled(arr){return [...arr].sort(()=>Math.random()-.5)}
+let bank=[];
+function renderBuild(){
+  selected=[];
+  buildCounter.textContent=`${bi+1} / ${buildData.length}`;
+  buildFeedback.textContent=""; buildFeedback.className="feedback";
+  buildZone.innerHTML="";
+  bank=shuffled(buildData[bi].replace(/[,.]/g,m=>" "+m).split(/\s+/).filter(Boolean));
+  wordBank.innerHTML="";
+  bank.forEach((w,i)=>{
+    const b=document.createElement("button"); b.className="word"; b.textContent=w; b.dataset.i=i;
+    b.onclick=()=>{selected.push({w,i});b.classList.add("used");drawSelected()};
+    wordBank.appendChild(b);
+  });
+}
+function drawSelected(){
+  buildZone.innerHTML="";
+  selected.forEach((x,idx)=>{
+    const b=document.createElement("button"); b.className="word"; b.textContent=x.w;
+    b.onclick=()=>{
+      const rem=selected.splice(idx,1)[0];
+      wordBank.querySelector(`[data-i="${rem.i}"]`).classList.remove("used");
+      drawSelected();
+    };
+    buildZone.appendChild(b);
+  });
+}
+function normalize(s){return s.toLowerCase().replace(/\s+([,.!?])/g,"$1").replace(/[“”„"]/g,"").replace(/\s+/g," ").trim()}
+checkBuild.onclick=()=>{
+  const ans=selected.map(x=>x.w).join(" ");
+  const ok=normalize(ans)===normalize(buildData[bi]);
+  buildFeedback.textContent=ok?"Odlično! Rečenica je pravilna. ✅":"Još nije tačno. Proveri red reči i položaj „zu“.";
+  buildFeedback.className="feedback "+(ok?"ok":"no");
+  markDone("b"+bi,ok);
+  if(ok) speak(buildData[bi]);
+};
+clearBuild.onclick=()=>renderBuild();
+buildPrev.onclick=()=>{bi=(bi-1+buildData.length)%buildData.length;renderBuild()};
+buildNext.onclick=()=>{bi=(bi+1)%buildData.length;renderBuild()};
+renderBuild();
+
+const translateData = [
+ ["Učim nemački da bih radio u Nemačkoj.","Ich lerne Deutsch, um in Deutschland zu arbeiten."],
+ ["Ona čita mnogo da bi poboljšala svoj nemački.","Sie liest viel, um ihr Deutsch zu verbessern."],
+ ["Štedimo novac da bismo kupili automobil.","Wir sparen Geld, um ein Auto zu kaufen."],
+ ["On ustaje rano da bi stigao na vreme.","Er steht früh auf, um pünktlich anzukommen."],
+ ["Idem u teretanu da bih ostao zdrav.","Ich gehe ins Fitnessstudio, um gesund zu bleiben."],
+ ["Kupujem hleb da bih napravio sendviče.","Ich kaufe Brot, um Sandwiches zu machen."],
+ ["Ona ide u biblioteku da bi učila.","Sie geht in die Bibliothek, um zu lernen."],
+ ["Uzimamo taksi da ne bismo zakasnili.","Wir nehmen ein Taxi, um nicht zu spät zu kommen."],
+ ["Pišem sve da ništa ne bih zaboravio.","Ich schreibe alles auf, um nichts zu vergessen."],
+ ["Vežbaju svakog dana da bi bolje govorili nemački.","Sie üben jeden Tag, um besser Deutsch zu sprechen."]
+];
+let ti=0;
+function renderTranslate(){
+  translateCounter.textContent=`${ti+1} / ${translateData.length}`;
+  translateSr.textContent=translateData[ti][0];
+  translateInput.value="";
+  translateFeedback.textContent=""; translateFeedback.className="feedback";
+}
+checkTranslate.onclick=()=>{
+  const user=normalize(translateInput.value);
+  const correct=normalize(translateData[ti][1]);
+  const ok=user===correct || similarity(user,correct)>.93;
+  translateFeedback.innerHTML=ok
+    ?"Tačno! ✅"
+    :"Rešenje: <b>"+translateData[ti][1]+"</b>";
+  translateFeedback.className="feedback "+(ok?"ok":"no");
+  markDone("t"+ti,ok);
+  if(ok) speak(translateData[ti][1]);
+};
+function similarity(a,b){
+  if(!a||!b)return 0;
+  const aa=a.split(" "), bb=b.split(" ");
+  const same=aa.filter(x=>bb.includes(x)).length;
+  return (2*same)/(aa.length+bb.length);
+}
+translatePrev.onclick=()=>{ti=(ti-1+translateData.length)%translateData.length;renderTranslate()};
+translateNext.onclick=()=>{ti=(ti+1)%translateData.length;renderTranslate()};
+translateInput.addEventListener("keydown",e=>{if(e.key==="Enter")checkTranslate.click()});
+renderTranslate();
+
+const finalData = [
+ {q:"Koja rečenica je pravilna?",o:["Ich lerne viel, um die Prüfung zu bestehen.","Ich lerne viel, um zu die Prüfung bestehen.","Ich lerne viel, die Prüfung um bestehen zu."],a:0},
+ {q:"Odaberi pravilno: Wir gehen früh los, um pünktlich ___.",o:["anzukommen","zu ankommen","ankommen zu"],a:0},
+ {q:"Isti subjekat u obe radnje → najčešće koristimo:",o:["um … zu","damit","ob"],a:0},
+ {q:"Različiti subjekti → obično koristimo:",o:["damit","um … zu","ohne … zu"],a:0},
+ {q:"einkaufen sa „zu“ glasi:",o:["einzukaufen","zu einkaufen","einkaufenzu"],a:0},
+ {q:"Ich fahre zum Bahnhof, ___ meinen Freund abzuholen.",o:["um","damit","weil"],a:0},
+ {q:"Sie macht Sport, um fit ___.",o:["zu bleiben","bleiben zu","geblieben"],a:0},
+ {q:"Er spart, um ein Haus ___.",o:["zu kaufen","kaufen zu","gekauft"],a:0},
+ {q:"Wir sprechen langsam, damit die Kinder uns ___.",o:["verstehen","zu verstehen","versteht"],a:0},
+ {q:"Ich rufe an, um einen Termin ___.",o:["zu vereinbaren","vereinbaren zu","zu vereinbart"],a:0},
+ {q:"aufstehen + zu =",o:["aufzustehen","zu aufstehen","aufstehen zu"],a:0},
+ {q:"Sie geht zur Arbeit, um Geld ___.",o:["zu verdienen","verdienen zu","verdient"],a:0},
+ {q:"Ich öffne die Tür, um die Gäste ___.",o:["hereinzulassen","zu hereinlassen","hereinlassen zu"],a:0},
+ {q:"Er liest Nachrichten, um informiert ___.",o:["zu bleiben","bleiben zu","zu blieb"],a:0},
+ {q:"Wir fahren ans Meer, um uns ___.",o:["zu erholen","erholen zu","erholt"],a:0}
+];
+let fi=0, fscore=0, finalStarted=false;
+startFinal.onclick=()=>{
+  fi=0; fscore=0; finalStarted=true;
+  finalCard.style.display="block";
+  renderFinal();
+  finalCard.scrollIntoView({behavior:"smooth"});
+};
+function renderFinal(){
+  const d=finalData[fi];
+  finalCounter.textContent=`${fi+1} / ${finalData.length}`;
+  finalQuestion.textContent=d.q;
+  finalFeedback.textContent="";
+  finalOptions.innerHTML="";
+  finalNext.disabled=true;
+  d.o.forEach((x,i)=>{
+    const b=document.createElement("button"); b.className="option"; b.textContent=x;
+    b.onclick=()=>{
+      [...finalOptions.children].forEach(x=>x.disabled=true);
+      const ok=i===d.a; if(ok)fscore++;
+      b.classList.add(ok?"correct":"wrong");
+      if(!ok) finalOptions.children[d.a].classList.add("correct");
+      finalFeedback.textContent=ok?"Tačno! ✅":"Netačno.";
+      finalFeedback.className="feedback "+(ok?"ok":"no");
+      markDone("f"+fi,ok);
+      finalNext.disabled=false;
+    };
+    finalOptions.appendChild(b);
+  });
+}
+finalNext.onclick=()=>{
+  if(fi<finalData.length-1){fi++;renderFinal()}
+  else{
+    finalQuestion.innerHTML=`Rezultat: <b>${fscore} / ${finalData.length}</b>`;
+    finalOptions.innerHTML="";
+    finalFeedback.textContent=fscore>=12?"Odlično! 🎉":fscore>=9?"Vrlo dobro! Nastavi još malo da vežbaš.":"Ponovi pravilo i uradi test još jednom.";
+    finalFeedback.className="feedback ok";
+    finalCounter.textContent="Završeno";
+    finalNext.disabled=true;
+  }
+};
+</script>
+</body>
+</html>

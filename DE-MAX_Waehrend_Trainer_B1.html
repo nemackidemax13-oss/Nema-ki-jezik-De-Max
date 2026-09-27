@@ -1,0 +1,601 @@
+<!DOCTYPE html>
+<html lang="sr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#071b44">
+<title>DE-MAX • während Trainer B1</title>
+<style>
+:root{
+  --navy:#071b44;
+  --navy2:#0c2f73;
+  --blue:#1747e8;
+  --red:#e60012;
+  --yellow:#ffd300;
+  --white:#ffffff;
+  --ink:#0e1830;
+  --muted:#667085;
+  --line:#d7e2f4;
+  --soft:#f4f8ff;
+  --good:#178a4a;
+  --bad:#d52b2b;
+  --shadow:0 14px 36px rgba(7,27,68,.13);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;
+  font-family:Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Arial, sans-serif;
+  color:var(--ink);
+  background:
+    radial-gradient(circle at 90% 0%,rgba(23,71,232,.12),transparent 28%),
+    linear-gradient(180deg,#fff 0%,#eef5ff 100%);
+  min-height:100vh;
+}
+button,input{font:inherit}
+button{cursor:pointer}
+.app{width:min(980px,100%);margin:0 auto;min-height:100vh}
+.topbar{
+  position:sticky;top:0;z-index:20;
+  display:flex;align-items:center;justify-content:space-between;gap:12px;
+  padding:10px 14px;
+  background:rgba(255,255,255,.92);
+  border-bottom:1px solid rgba(23,71,232,.15);
+  backdrop-filter:blur(14px);
+}
+.brand{display:flex;align-items:center;gap:10px}
+.logo{
+  border:2px solid var(--blue);border-radius:14px;background:#fff;
+  padding:6px 10px;line-height:.85;text-align:center;font-weight:1000;
+  box-shadow:0 5px 14px rgba(23,71,232,.12)
+}
+.logo .de{font-size:17px;color:var(--red);font-style:italic}
+.logo .tu{font-size:11px;color:#111;letter-spacing:1px}
+.title-mini{font-weight:900;color:var(--navy);font-size:14px}
+.progress-pill{
+  min-width:125px;background:var(--soft);border:1px solid #cbdaf6;
+  padding:7px 10px;border-radius:999px;font-size:12px;font-weight:800;color:var(--navy);
+}
+.progress-track{height:6px;background:#dce6f6;border-radius:999px;overflow:hidden;margin-top:4px}
+.progress-fill{height:100%;width:0;background:linear-gradient(90deg,var(--blue),var(--red));transition:.35s}
+.hero{padding:18px 14px 12px}
+.hero-card{
+  color:#fff;background:linear-gradient(135deg,var(--navy),var(--navy2));
+  border-radius:25px;padding:22px;box-shadow:var(--shadow);position:relative;overflow:hidden
+}
+.hero-card:after{
+  content:"";position:absolute;width:210px;height:210px;border-radius:50%;
+  right:-80px;top:-95px;background:rgba(255,255,255,.07)
+}
+.eyebrow{font-size:12px;font-weight:900;letter-spacing:1.5px;text-transform:uppercase;color:#cfe0ff}
+h1{margin:4px 0 8px;font-size:clamp(31px,7vw,56px);line-height:1}
+h1 span{color:#ff2a33}
+.hero p{margin:0;color:#edf4ff;font-size:15px;line-height:1.55;max-width:760px}
+.quick-rule{
+  margin-top:15px;display:grid;grid-template-columns:repeat(3,1fr);gap:8px
+}
+.rule-chip{background:#fff;color:var(--navy);padding:10px 9px;border-radius:15px;font-size:12px;font-weight:850;text-align:center}
+.rule-chip b{color:var(--red)}
+.tabs{
+  display:flex;gap:8px;overflow:auto;padding:5px 14px 10px;scrollbar-width:none
+}
+.tabs::-webkit-scrollbar{display:none}
+.tab{
+  flex:0 0 auto;border:1px solid #ccdaf3;background:#fff;color:var(--navy);
+  border-radius:999px;padding:9px 13px;font-weight:850;font-size:13px
+}
+.tab.active{background:var(--blue);color:#fff;border-color:var(--blue)}
+.section{display:none;padding:4px 14px 24px}
+.section.active{display:block}
+.card{
+  background:#fff;border:1px solid rgba(23,71,232,.13);border-radius:21px;
+  padding:17px;box-shadow:0 9px 24px rgba(14,35,82,.08);margin-bottom:13px
+}
+.card h2{margin:0 0 8px;color:var(--navy);font-size:20px}
+.card h3{margin:0 0 7px;color:var(--navy);font-size:17px}
+.note{
+  background:linear-gradient(135deg,#eef5ff,#fff);border-left:5px solid var(--blue);
+  padding:13px;border-radius:12px;line-height:1.55
+}
+.example{
+  border:2px solid #d8e4fb;background:#fff;border-radius:15px;padding:13px;margin-top:10px
+}
+.de-sentence{font-size:20px;font-weight:900;color:#101010;line-height:1.35}
+.de-sentence .w{color:var(--red)}
+.translation{font-size:16px;font-weight:850;color:var(--navy2);margin-top:5px}
+.tags{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+.tag{font-size:11px;font-weight:900;padding:5px 8px;border-radius:999px;background:#eef3ff;color:var(--blue)}
+.speak{
+  border:0;background:var(--navy);color:white;border-radius:999px;padding:8px 11px;font-weight:800
+}
+.primary,.secondary,.danger{
+  border:0;border-radius:13px;padding:11px 14px;font-weight:900
+}
+.primary{background:var(--blue);color:#fff}
+.secondary{background:#edf3ff;color:var(--navy)}
+.danger{background:#fff0f0;color:var(--bad)}
+.row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.exercise-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:10px}
+.counter{font-size:12px;font-weight:900;color:var(--blue);background:#eef3ff;border-radius:999px;padding:6px 9px}
+.prompt{font-size:19px;font-weight:900;color:var(--navy);line-height:1.4;margin:6px 0 14px}
+.options{display:grid;gap:9px}
+.option{
+  width:100%;text-align:left;border:2px solid #d9e4f7;background:#fff;border-radius:14px;
+  padding:12px 13px;font-weight:750;color:#202b43;transition:.18s
+}
+.option:hover{border-color:#9ab3f4;transform:translateY(-1px)}
+.option.correct{border-color:#39a76a;background:#eefbf4;color:#0b6d38}
+.option.wrong{border-color:#e56b6b;background:#fff2f2;color:#ad2323}
+.feedback{min-height:28px;margin-top:10px;font-weight:900}
+.feedback.good{color:var(--good)} .feedback.bad{color:var(--bad)}
+.input-line{
+  width:100%;padding:12px 13px;border:2px solid #d7e2f4;border-radius:13px;outline:none
+}
+.input-line:focus{border-color:var(--blue)}
+.word-bank,.answer-bank{
+  display:flex;flex-wrap:wrap;gap:8px;min-height:52px;padding:10px;border-radius:14px;background:#f7f9fd;border:1px dashed #b8c9ea
+}
+.word{
+  border:0;background:#fff;border:1px solid #ccd8ef;border-radius:11px;padding:9px 10px;
+  box-shadow:0 2px 6px rgba(0,0,0,.05);font-weight:800;color:#26334c
+}
+.answer-bank{background:#eef5ff;margin-bottom:10px}
+.answer-bank .word{background:var(--navy);color:#fff;border-color:var(--navy)}
+.score-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin-top:12px}
+.scorebox{background:var(--soft);border-radius:15px;padding:12px;text-align:center}
+.scorebox strong{display:block;font-size:24px;color:var(--navy)}
+.small{font-size:12px;color:var(--muted)}
+.footer{
+  color:#6d7891;text-align:center;padding:6px 14px 28px;font-size:12px
+}
+.legend{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}
+.legend div{border:1px solid #d4e0f6;border-radius:12px;padding:9px;font-weight:800}
+.hidden{display:none!important}
+@media(max-width:600px){
+  .topbar{padding:8px 10px}
+  .hero{padding:12px 10px 8px}
+  .hero-card{padding:18px;border-radius:20px}
+  .quick-rule{grid-template-columns:1fr}
+  .tabs{padding-left:10px;padding-right:10px}
+  .section{padding-left:10px;padding-right:10px}
+  .de-sentence{font-size:18px}
+  .prompt{font-size:18px}
+  .title-mini{display:none}
+}
+</style>
+</head>
+<body>
+<div class="app">
+  <header class="topbar">
+    <div class="brand">
+      <div class="logo"><div class="de">DE-MAX</div><div class="tu">TUTIN</div></div>
+      <div class="title-mini">Deutsch lernen • B1</div>
+    </div>
+    <div class="progress-pill">
+      Napredak <span id="progressText">0%</span>
+      <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="hero-card">
+        <div class="eyebrow">Konjunkcija • Veznik</div>
+        <h1><span>während</span></h1>
+        <p><b>während</b> znači <b>dok</b> i povezuje dve radnje koje se dešavaju istovremeno. U zavisnoj rečenici glagol ide na kraj.</p>
+        <div class="quick-rule">
+          <div class="rule-chip">HS + <b>während</b> + NS</div>
+          <div class="rule-chip"><b>während</b> + NS, + HS</div>
+          <div class="rule-chip">Glagol u NS → <b>na kraj</b></div>
+        </div>
+      </div>
+    </section>
+
+    <nav class="tabs">
+      <button class="tab active" data-tab="learn">📘 Pravilo</button>
+      <button class="tab" data-tab="choice">✅ Izaberi</button>
+      <button class="tab" data-tab="order">🧩 Složi</button>
+      <button class="tab" data-tab="fill">✍️ Dopuni</button>
+      <button class="tab" data-tab="translate">🌍 Prevod</button>
+      <button class="tab" data-tab="result">🏆 Rezultat</button>
+    </nav>
+
+    <section id="learn" class="section active">
+      <div class="card">
+        <h2>Kako se koristi „während“?</h2>
+        <div class="note">
+          <b>Während</b> uvodi zavisnu rečenicu. Glagol u toj rečenici ide na kraj.
+          Ako zavisna rečenica stoji prva, u glavnoj rečenici posle zareza prvo dolazi glagol.
+        </div>
+        <div class="example">
+          <div class="de-sentence">Ich höre Musik, <span class="w">während</span> ich Deutsch <u>lerne</u>.</div>
+          <div class="translation">Slušam muziku dok učim nemački.</div>
+          <div class="tags"><span class="tag">HS</span><span class="tag">NS</span><span class="tag">glagol: lerne → kraj</span></div>
+          <div class="row" style="margin-top:9px">
+            <button class="speak" onclick="speak('Ich höre Musik, während ich Deutsch lerne.')">🔊 Izgovor</button>
+          </div>
+        </div>
+        <div class="example">
+          <div class="de-sentence"><span class="w">Während</span> ich Deutsch <u>lerne</u>, höre ich Musik.</div>
+          <div class="translation">Dok učim nemački, slušam muziku.</div>
+          <div class="tags"><span class="tag">NS prvo</span><span class="tag">posle zareza: höre ich</span></div>
+          <div class="row" style="margin-top:9px">
+            <button class="speak" onclick="speak('Während ich Deutsch lerne, höre ich Musik.')">🔊 Izgovor</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>Još primera</h3>
+        <div id="exampleList"></div>
+      </div>
+    </section>
+
+    <section id="choice" class="section">
+      <div class="card">
+        <div class="exercise-head"><h2>Izaberi tačnu rečenicu</h2><span class="counter" id="choiceCounter"></span></div>
+        <div id="choicePrompt" class="prompt"></div>
+        <div id="choiceOptions" class="options"></div>
+        <div id="choiceFeedback" class="feedback"></div>
+        <div class="row">
+          <button class="secondary" id="choiceSpeak">🔊 Čuj rečenicu</button>
+          <button class="primary" id="choiceNext">Sledeće →</button>
+        </div>
+      </div>
+    </section>
+
+    <section id="order" class="section">
+      <div class="card">
+        <div class="exercise-head"><h2>Složi rečenicu</h2><span class="counter" id="orderCounter"></span></div>
+        <div class="prompt">Klikni reči pravilnim redosledom.</div>
+        <div id="answerBank" class="answer-bank"></div>
+        <div id="wordBank" class="word-bank"></div>
+        <div id="orderFeedback" class="feedback"></div>
+        <div class="row">
+          <button class="secondary" id="orderReset">↺ Ponovo</button>
+          <button class="primary" id="orderCheck">Proveri</button>
+          <button class="primary" id="orderNext">Sledeće →</button>
+        </div>
+      </div>
+    </section>
+
+    <section id="fill" class="section">
+      <div class="card">
+        <div class="exercise-head"><h2>Dopuni rečenicu</h2><span class="counter" id="fillCounter"></span></div>
+        <div id="fillPrompt" class="prompt"></div>
+        <input id="fillInput" class="input-line" placeholder="Upiši odgovor..." autocomplete="off">
+        <div id="fillFeedback" class="feedback"></div>
+        <div class="row">
+          <button class="primary" id="fillCheck">Proveri</button>
+          <button class="secondary" id="fillSolution">Rešenje</button>
+          <button class="primary" id="fillNext">Sledeće →</button>
+        </div>
+      </div>
+    </section>
+
+    <section id="translate" class="section">
+      <div class="card">
+        <div class="exercise-head"><h2>Prevedi na nemački</h2><span class="counter" id="transCounter"></span></div>
+        <div id="transPrompt" class="prompt"></div>
+        <input id="transInput" class="input-line" placeholder="Napiši nemačku rečenicu..." autocomplete="off">
+        <div id="transFeedback" class="feedback"></div>
+        <div class="row">
+          <button class="primary" id="transCheck">Proveri</button>
+          <button class="secondary" id="transSolution">Rešenje</button>
+          <button class="primary" id="transNext">Sledeće →</button>
+        </div>
+      </div>
+    </section>
+
+    <section id="result" class="section">
+      <div class="card">
+        <h2>Tvoj rezultat</h2>
+        <p class="small">Rezultat se čuva na ovom uređaju.</p>
+        <div class="score-grid">
+          <div class="scorebox"><strong id="scoreCorrect">0</strong><span class="small">tačno</span></div>
+          <div class="scorebox"><strong id="scoreAttempts">0</strong><span class="small">pokušaja</span></div>
+          <div class="scorebox"><strong id="scorePercent">0%</strong><span class="small">uspeh</span></div>
+        </div>
+        <div class="legend">
+          <div>🎯 Cilj: najmanje 80%</div>
+          <div>🔁 Greške su deo učenja</div>
+        </div>
+        <div class="row" style="margin-top:13px">
+          <button class="danger" id="resetAll">Obriši rezultat</button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">DE-MAX Tutin • während Trainer • B1</footer>
+</div>
+
+<script>
+const examples = [
+  ["Ich koche, während meine Kinder Hausaufgaben machen.","Kuvam dok moja deca rade domaći."],
+  ["Während er arbeitet, trinkt er Kaffee.","Dok radi, pije kafu."],
+  ["Sie telefoniert, während sie zur Arbeit fährt.","Telefonira dok ide na posao."],
+  ["Während wir essen, sprechen wir über den Urlaub.","Dok jedemo, razgovaramo o odmoru."],
+  ["Ich lerne neue Wörter, während ich einen Podcast höre.","Učim nove reči dok slušam podkast."],
+  ["Während der Lehrer erklärt, machen die Schüler Notizen.","Dok nastavnik objašnjava, učenici beleže."],
+  ["Er hört Musik, während er sein Zimmer aufräumt.","Sluša muziku dok sređuje sobu."],
+  ["Während ich auf den Bus warte, lese ich Nachrichten.","Dok čekam autobus, čitam vesti."]
+];
+
+const choiceData = [
+  {q:"Koja rečenica je pravilna?", a:[
+    "Ich lese ein Buch, während ich im Zug fahre.",
+    "Ich lese ein Buch, während ich fahre im Zug.",
+    "Ich lese ein Buch während, ich im Zug fahre."
+  ], correct:0},
+  {q:"Izaberi pravilnu rečenicu kada „während“ stoji na početku.", a:[
+    "Während ich koche, ich höre Musik.",
+    "Während ich koche, höre ich Musik.",
+    "Während ich koche, ich Musik höre."
+  ], correct:1},
+  {q:"Koja rečenica ima pravilan red reči?", a:[
+    "Sie lernt Deutsch, während ihr Bruder fernsieht.",
+    "Sie lernt Deutsch, während ihr Bruder sieht fern.",
+    "Sie lernt Deutsch, während sieht ihr Bruder fern."
+  ], correct:0},
+  {q:"Izaberi tačan prevod: „Dok pada kiša, ostajemo kod kuće.“", a:[
+    "Während es regnet, bleiben wir zu Hause.",
+    "Während regnet es, wir bleiben zu Hause.",
+    "Während es regnet, wir bleiben zu Hause."
+  ], correct:0},
+  {q:"Koja varijanta je tačna?", a:[
+    "Ich esse, während sehe ich fern.",
+    "Ich esse, während ich fernsehe.",
+    "Ich esse während, ich fernsehe."
+  ], correct:1},
+  {q:"Izaberi pravilnu inverziju.", a:[
+    "Während sie duscht, hört sie Musik.",
+    "Während sie duscht, sie hört Musik.",
+    "Während sie duscht, Musik sie hört."
+  ], correct:0},
+  {q:"Gde treba da stoji glagol u zavisnoj rečenici sa „während“?", a:[
+    "Na drugom mestu",
+    "Na kraju",
+    "Odmah iza veznika"
+  ], correct:1},
+  {q:"Koji prevod je tačan?", a:[
+    "während = zato što",
+    "während = dok",
+    "während = uprkos tome"
+  ], correct:1},
+  {q:"Izaberi pravilnu rečenicu.", a:[
+    "Wir reden, während wir spazieren gehen.",
+    "Wir reden, während wir gehen spazieren.",
+    "Wir reden, während gehen wir spazieren."
+  ], correct:0},
+  {q:"Koja rečenica je gramatički pravilna?", a:[
+    "Während ich lerne, mein Freund spielt Fußball.",
+    "Während ich lerne, spielt mein Freund Fußball.",
+    "Während lerne ich, spielt mein Freund Fußball."
+  ], correct:1},
+  {q:"Izaberi tačnu rečenicu.", a:[
+    "Er putzt die Küche, während seine Frau telefoniert.",
+    "Er putzt die Küche, während telefoniert seine Frau.",
+    "Er putzt die Küche, seine Frau während telefoniert."
+  ], correct:0},
+  {q:"Koja je tačna?", a:[
+    "Während die Kinder schlafen, sehen wir einen Film.",
+    "Während die Kinder schlafen, wir sehen einen Film.",
+    "Während schlafen die Kinder, sehen wir einen Film."
+  ], correct:0}
+];
+
+const orderData = [
+  "Ich höre Musik, während ich Deutsch lerne.",
+  "Während ich koche, hört mein Mann Radio.",
+  "Sie trinkt Kaffee, während sie ihre E-Mails liest.",
+  "Während wir spazieren gehen, sprechen wir über die Arbeit.",
+  "Er macht Sport, während seine Kinder im Garten spielen.",
+  "Während der Lehrer spricht, schreiben die Schüler mit.",
+  "Ich räume die Wohnung auf, während ich Musik höre.",
+  "Während meine Mutter kocht, decke ich den Tisch.",
+  "Wir warten draußen, während der Arzt mit dem Patienten spricht.",
+  "Während ich frühstücke, lese ich die Nachrichten."
+];
+
+const fillData = [
+  {q:"Ich höre Musik, ______ ich meine Hausaufgaben mache.", a:"während"},
+  {q:"Während ich Deutsch lerne, ______ ich einen Kaffee. (trinken)", a:"trinke"},
+  {q:"Er telefoniert, während er nach Hause ______. (fahren)", a:"fährt"},
+  {q:"Während sie kocht, ______ die Kinder im Wohnzimmer. (spielen)", a:"spielen"},
+  {q:"Wir sprechen nicht, während der Lehrer ______. (erklären)", a:"erklärt"},
+  {q:"Während ich auf den Bus warte, ______ ich Musik. (hören)", a:"höre"},
+  {q:"Sie liest ein Buch, während ihr Mann ______. (schlafen)", a:"schläft"},
+  {q:"Während wir essen, ______ wir über unsere Reise. (sprechen)", a:"sprechen"},
+  {q:"Ich lerne neue Wörter, während ich einen Podcast ______. (hören)", a:"höre"},
+  {q:"Während es draußen ______, bleiben wir zu Hause. (regnen)", a:"regnet"},
+  {q:"Er putzt das Auto, während seine Tochter Fahrrad ______. (fahren)", a:"fährt"},
+  {q:"Während die Kinder schlafen, ______ die Eltern fern. (sehen)", a:"sehen"}
+];
+
+const transData = [
+  {sr:"Slušam muziku dok učim nemački.", de:"Ich höre Musik, während ich Deutsch lerne."},
+  {sr:"Dok kuvam, moja deca rade domaći.", de:"Während ich koche, machen meine Kinder Hausaufgaben."},
+  {sr:"Ona pije kafu dok čita imejlove.", de:"Sie trinkt Kaffee, während sie ihre E-Mails liest."},
+  {sr:"Dok čekamo autobus, razgovaramo.", de:"Während wir auf den Bus warten, sprechen wir."},
+  {sr:"On sluša radio dok vozi.", de:"Er hört Radio, während er fährt."},
+  {sr:"Dok pada kiša, ostajemo kod kuće.", de:"Während es regnet, bleiben wir zu Hause."},
+  {sr:"Učim reči dok slušam podkast.", de:"Ich lerne Wörter, während ich einen Podcast höre."},
+  {sr:"Dok nastavnik govori, učenici pišu.", de:"Während der Lehrer spricht, schreiben die Schüler."},
+  {sr:"Ona telefonira dok ide na posao.", de:"Sie telefoniert, während sie zur Arbeit fährt."},
+  {sr:"Dok deca spavaju, gledamo film.", de:"Während die Kinder schlafen, sehen wir einen Film."}
+];
+
+let state = JSON.parse(localStorage.getItem("waehrendState") || '{"correct":0,"attempts":0,"done":0}');
+let ci=0, oi=0, fi=0, ti=0, orderPicked=[], orderWords=[];
+
+function save(){ localStorage.setItem("waehrendState", JSON.stringify(state)); updateScores(); }
+function mark(correct){
+  state.attempts++;
+  if(correct) state.correct++;
+  state.done = Math.min(44, state.done + (correct ? 1 : 0.35));
+  save();
+}
+function norm(s){
+  return s.toLowerCase()
+    .replace(/[.,!?;:„“"']/g,"")
+    .replace(/\s+/g," ")
+    .trim()
+    .replace(/ä/g,"ae").replace(/ö/g,"oe").replace(/ü/g,"ue").replace(/ß/g,"ss");
+}
+function updateScores(){
+  const pct = state.attempts ? Math.round(state.correct/state.attempts*100) : 0;
+  document.getElementById("scoreCorrect").textContent=state.correct;
+  document.getElementById("scoreAttempts").textContent=state.attempts;
+  document.getElementById("scorePercent").textContent=pct+"%";
+  const progress=Math.min(100,Math.round(state.done/44*100));
+  document.getElementById("progressText").textContent=progress+"%";
+  document.getElementById("progressFill").style.width=progress+"%";
+}
+function speak(text){
+  if(!("speechSynthesis" in window)) return alert("Ovaj pregledač ne podržava izgovor.");
+  speechSynthesis.cancel();
+  const u=new SpeechSynthesisUtterance(text);
+  u.lang="de-DE"; u.rate=.9;
+  speechSynthesis.speak(u);
+}
+window.speak=speak;
+
+document.querySelectorAll(".tab").forEach(btn=>{
+  btn.addEventListener("click",()=>{
+    document.querySelectorAll(".tab").forEach(b=>b.classList.remove("active"));
+    document.querySelectorAll(".section").forEach(s=>s.classList.remove("active"));
+    btn.classList.add("active");
+    document.getElementById(btn.dataset.tab).classList.add("active");
+    window.scrollTo({top:0,behavior:"smooth"});
+  });
+});
+
+document.getElementById("exampleList").innerHTML = examples.map((e,i)=>`
+  <div class="example">
+    <div class="de-sentence">${e[0].replace(/während/ig,'<span class="w">$&</span>')}</div>
+    <div class="translation">${e[1]}</div>
+    <div class="row" style="margin-top:8px"><button class="speak" onclick='speak(${JSON.stringify(e[0])})'>🔊 Izgovor</button></div>
+  </div>`).join("");
+
+function loadChoice(){
+  const x=choiceData[ci];
+  document.getElementById("choiceCounter").textContent=(ci+1)+" / "+choiceData.length;
+  document.getElementById("choicePrompt").textContent=x.q;
+  document.getElementById("choiceFeedback").textContent="";
+  document.getElementById("choiceFeedback").className="feedback";
+  const box=document.getElementById("choiceOptions");
+  box.innerHTML="";
+  x.a.forEach((opt,idx)=>{
+    const b=document.createElement("button");
+    b.className="option"; b.textContent=opt;
+    b.onclick=()=>{
+      if([...box.children].some(el=>el.classList.contains("correct")||el.classList.contains("wrong"))) return;
+      const ok=idx===x.correct; mark(ok);
+      [...box.children].forEach((el,j)=>{ if(j===x.correct) el.classList.add("correct"); });
+      if(!ok) b.classList.add("wrong");
+      const f=document.getElementById("choiceFeedback");
+      f.textContent=ok?"✓ Tačno!":"✗ Pogledaj red reči i probaj sledeći primer.";
+      f.className="feedback "+(ok?"good":"bad");
+    };
+    box.appendChild(b);
+  });
+}
+document.getElementById("choiceNext").onclick=()=>{ci=(ci+1)%choiceData.length;loadChoice()};
+document.getElementById("choiceSpeak").onclick=()=>speak(choiceData[ci].a[choiceData[ci].correct]);
+
+function splitSentence(s){
+  return s.replace(/([,.!?])/g," $1 ").split(/\s+/).filter(Boolean);
+}
+function shuffle(a){
+  const arr=[...a];
+  for(let i=arr.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[arr[i],arr[j]]=[arr[j],arr[i]]}
+  return arr;
+}
+function renderOrder(){
+  const target=orderData[oi];
+  document.getElementById("orderCounter").textContent=(oi+1)+" / "+orderData.length;
+  document.getElementById("orderFeedback").textContent="";
+  document.getElementById("orderFeedback").className="feedback";
+  orderPicked=[];
+  orderWords=shuffle(splitSentence(target));
+  drawOrder();
+}
+function drawOrder(){
+  const wb=document.getElementById("wordBank"), ab=document.getElementById("answerBank");
+  wb.innerHTML="";ab.innerHTML="";
+  orderPicked.forEach((w,i)=>{
+    const b=document.createElement("button");b.className="word";b.textContent=w;
+    b.onclick=()=>{orderWords.push(w);orderPicked.splice(i,1);drawOrder()};ab.appendChild(b);
+  });
+  orderWords.forEach((w,i)=>{
+    const b=document.createElement("button");b.className="word";b.textContent=w;
+    b.onclick=()=>{orderPicked.push(w);orderWords.splice(i,1);drawOrder()};wb.appendChild(b);
+  });
+}
+document.getElementById("orderReset").onclick=renderOrder;
+document.getElementById("orderCheck").onclick=()=>{
+  const user=orderPicked.join(" ").replace(/\s+([,.!?])/g,"$1");
+  const ok=norm(user)===norm(orderData[oi]);
+  mark(ok);
+  const f=document.getElementById("orderFeedback");
+  f.textContent=ok?"✓ Odlično! Rečenica je tačna.":"✗ Nije još tačno. Tačno: "+orderData[oi];
+  f.className="feedback "+(ok?"good":"bad");
+  if(ok) speak(orderData[oi]);
+};
+document.getElementById("orderNext").onclick=()=>{oi=(oi+1)%orderData.length;renderOrder()};
+
+function loadFill(){
+  const x=fillData[fi];
+  document.getElementById("fillCounter").textContent=(fi+1)+" / "+fillData.length;
+  document.getElementById("fillPrompt").textContent=x.q;
+  document.getElementById("fillInput").value="";
+  document.getElementById("fillFeedback").textContent="";
+  document.getElementById("fillFeedback").className="feedback";
+}
+document.getElementById("fillCheck").onclick=()=>{
+  const x=fillData[fi], val=document.getElementById("fillInput").value;
+  const ok=norm(val)===norm(x.a); mark(ok);
+  const f=document.getElementById("fillFeedback");
+  f.textContent=ok?"✓ Tačno!":"✗ Tačan odgovor: "+x.a;
+  f.className="feedback "+(ok?"good":"bad");
+};
+document.getElementById("fillSolution").onclick=()=>{
+  document.getElementById("fillFeedback").textContent="Rešenje: "+fillData[fi].a;
+};
+document.getElementById("fillNext").onclick=()=>{fi=(fi+1)%fillData.length;loadFill()};
+
+function loadTrans(){
+  const x=transData[ti];
+  document.getElementById("transCounter").textContent=(ti+1)+" / "+transData.length;
+  document.getElementById("transPrompt").textContent=x.sr;
+  document.getElementById("transInput").value="";
+  document.getElementById("transFeedback").textContent="";
+  document.getElementById("transFeedback").className="feedback";
+}
+document.getElementById("transCheck").onclick=()=>{
+  const x=transData[ti], val=document.getElementById("transInput").value;
+  const ok=norm(val)===norm(x.de); mark(ok);
+  const f=document.getElementById("transFeedback");
+  f.textContent=ok?"✓ Tačno!":"✗ Predlog rešenja: "+x.de;
+  f.className="feedback "+(ok?"good":"bad");
+  if(ok) speak(x.de);
+};
+document.getElementById("transSolution").onclick=()=>{
+  document.getElementById("transFeedback").textContent="Rešenje: "+transData[ti].de;
+  speak(transData[ti].de);
+};
+document.getElementById("transNext").onclick=()=>{ti=(ti+1)%transData.length;loadTrans()};
+
+document.getElementById("fillInput").addEventListener("keydown",e=>{if(e.key==="Enter")document.getElementById("fillCheck").click()});
+document.getElementById("transInput").addEventListener("keydown",e=>{if(e.key==="Enter")document.getElementById("transCheck").click()});
+document.getElementById("resetAll").onclick=()=>{
+  if(confirm("Da li želiš da obrišeš sačuvan rezultat?")){
+    state={correct:0,attempts:0,done:0};save();
+  }
+};
+
+loadChoice();renderOrder();loadFill();loadTrans();updateScores();
+</script>
+</body>
+</html>
