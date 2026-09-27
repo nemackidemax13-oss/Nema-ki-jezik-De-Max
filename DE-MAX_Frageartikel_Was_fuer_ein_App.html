@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<html lang="sr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>De-Max | Frageartikel: Was für ein ...?</title>
+<style>
+:root{
+  --red:#cf0010;
+  --red2:#a9000c;
+  --blue:#0a5ca8;
+  --blue2:#073d79;
+  --gold:#ffc400;
+  --ink:#17233b;
+  --muted:#69768a;
+  --line:#d9e5f3;
+  --soft:#f7fbff;
+  --ok:#168a49;
+  --bad:#c92b3a;
+  --shadow:0 15px 40px rgba(30,65,120,.14);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;
+  font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+  color:var(--ink);
+  background:
+    radial-gradient(circle at 4% 0%,rgba(31,126,220,.14),transparent 27rem),
+    linear-gradient(180deg,#f9fcff,#fff 45%,#f7fbff);
+  min-height:100vh;
+}
+button,input{font:inherit}
+button{cursor:pointer}
+.app{width:min(100%,1060px);margin:auto;padding:12px 12px 44px}
+.hero{
+  position:relative;overflow:hidden;
+  border-radius:30px;
+  padding:25px 22px 24px;
+  color:#fff;
+  background:linear-gradient(135deg,var(--red) 0%,#e31522 40%,var(--blue2) 100%);
+  border:3px solid #fff;
+  box-shadow:var(--shadow)
+}
+.hero:before,.hero:after{
+  content:"";position:absolute;border-radius:50%;background:rgba(255,255,255,.08)
+}
+.hero:before{width:220px;height:220px;right:-80px;top:-95px}
+.hero:after{width:150px;height:150px;right:120px;bottom:-110px}
+.brand{
+  display:inline-flex;align-items:center;
+  background:#fff;color:var(--red);
+  padding:8px 13px;border-radius:12px;
+  font-weight:1000;margin-bottom:12px;
+  box-shadow:0 6px 16px rgba(0,0,0,.18)
+}
+.hero h1{
+  position:relative;z-index:2;
+  margin:0;font-size:clamp(32px,6vw,58px);
+  line-height:1;letter-spacing:-1.2px
+}
+.hero h1 span{
+  display:block;font-size:.59em;color:#e5f2ff;
+  margin-top:10px;letter-spacing:-.3px
+}
+.hero p{
+  position:relative;z-index:2;
+  max-width:860px;margin:12px 0 0;
+  font-size:clamp(15px,2.4vw,19px);line-height:1.5
+}
+.hero p b{color:#fff2a6}
+.heroSpeak{
+  position:absolute;right:18px;bottom:17px;z-index:3;
+  width:52px;height:52px;border:0;border-radius:50%;
+  background:#fff;color:var(--red);font-size:24px;
+  box-shadow:0 8px 18px rgba(0,0,0,.18)
+}
+.stats{
+  position:sticky;top:8px;z-index:60;
+  margin:12px 0;padding:10px 12px;
+  background:rgba(255,255,255,.95);backdrop-filter:blur(14px);
+  border:1px solid #dbe7f7;border-radius:18px;
+  box-shadow:0 10px 25px rgba(11,63,165,.08)
+}
+.statrow{display:flex;align-items:center;gap:10px}
+.progress{height:11px;flex:1;background:#e7eef8;border-radius:999px;overflow:hidden}
+.progress span{
+  display:block;height:100%;width:0;
+  background:linear-gradient(90deg,var(--red),#f05660,var(--blue));
+  border-radius:inherit;transition:.25s
+}
+.stattext{font-size:13px;font-weight:900;color:var(--blue2);white-space:nowrap}
+.tabs{
+  display:grid;grid-template-columns:repeat(4,1fr);
+  gap:8px;margin:12px 0 16px
+}
+.tab{
+  min-height:48px;border:1px solid #d9e6f8;background:#fff;color:var(--blue2);
+  border-radius:14px;padding:10px 8px;font-weight:900;transition:.18s
+}
+.tab:hover,.tab.active{
+  background:linear-gradient(135deg,var(--red),#e23d49);
+  color:#fff;border-color:var(--red);transform:translateY(-1px)
+}
+.panel{display:none}.panel.active{display:block}
+.card{
+  background:#fff;border:1px solid #dbe7f7;border-radius:24px;
+  padding:20px;box-shadow:var(--shadow)
+}
+.section-title{display:flex;align-items:center;gap:12px;margin-bottom:16px}
+.badge{
+  width:46px;height:46px;flex:0 0 auto;
+  display:grid;place-items:center;border-radius:14px;
+  background:linear-gradient(135deg,var(--blue),#2e86d8);
+  color:#fff;font-weight:1000;
+  box-shadow:0 7px 16px rgba(11,92,168,.23)
+}
+.section-title h2{margin:0;color:var(--blue2);font-size:clamp(22px,4vw,34px)}
+.section-title p{margin:4px 0 0;color:var(--muted);font-weight:650}
+.rulegrid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.rule{
+  border:1px solid #dbe7f7;border-radius:18px;
+  padding:15px;background:linear-gradient(180deg,#fff,#f6f9ff)
+}
+.rule h3{margin:0 0 8px;color:var(--blue);font-size:20px}
+.rule p{margin:0;line-height:1.5;font-weight:700}
+.rule b{color:var(--red)}
+.table{
+  width:100%;border-collapse:separate;border-spacing:0;
+  overflow:hidden;border:1px solid #d8e5f7;border-radius:18px;margin-top:14px
+}
+.table th,.table td{
+  padding:10px 8px;text-align:center;border-bottom:1px solid #e4edf8;
+  border-right:1px solid #e4edf8;font-weight:800
+}
+.table th:last-child,.table td:last-child{border-right:0}
+.table tr:last-child td{border-bottom:0}
+.table th{background:linear-gradient(135deg,var(--blue),var(--blue2));color:#fff}
+.table td strong{color:var(--red)}
+.examples{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px}
+.example{
+  padding:13px;border:1px solid #dbe6f6;border-radius:15px;
+  background:#f8fbff;font-weight:750;line-height:1.5
+}
+.example b{color:var(--red)}
+.note{
+  margin-top:12px;padding:12px 14px;border-radius:14px;
+  border:1px solid #efd16d;border-left:5px solid var(--gold);
+  background:#fff8da;line-height:1.45;font-weight:700
+}
+.qtop{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:14px}
+.qcount{
+  background:#eef5ff;color:var(--blue);
+  border:1px solid #d7e5fa;border-radius:999px;
+  padding:7px 11px;font-size:14px;font-weight:950
+}
+.speaker{
+  width:43px;height:43px;border-radius:12px;
+  border:1px solid #d7e4f6;background:#fff;color:var(--red);font-size:20px
+}
+.prompt{
+  font-size:clamp(23px,5vw,37px);line-height:1.35;
+  color:var(--blue2);font-weight:950;margin:5px 0 18px
+}
+.subprompt{
+  font-size:17px;line-height:1.45;color:var(--muted);
+  font-weight:750;margin:-7px 0 14px
+}
+.blank{
+  display:inline-block;min-width:130px;text-align:center;
+  border-bottom:4px solid var(--red);color:var(--red);padding:0 7px 2px
+}
+.options{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+.options.three{grid-template-columns:repeat(3,1fr)}
+.option{
+  border:2px solid #d9e4f3;background:#fff;color:var(--blue2);
+  border-radius:16px;padding:14px 11px;
+  font-weight:900;font-size:17px;transition:.16s
+}
+.option:hover{border-color:#5b91dc;transform:translateY(-1px)}
+.option.correct{background:#eaf8ef;border-color:#64b985;color:#0d7439}
+.option.wrong{background:#fff0f1;border-color:#e5737c;color:#ad1522}
+.option:disabled{cursor:default}
+.feedback{
+  display:none;margin-top:14px;border-radius:16px;padding:12px 14px;
+  line-height:1.5;border:1px solid #e3e9f1;background:#f7f9fc
+}
+.feedback.show{display:block}
+.feedback.ok{background:#edf9f1;border-color:#b9dfc5}
+.feedback.bad{background:#fff1f2;border-color:#efbdc2}
+.feedback strong{color:var(--blue2)}
+.translation{margin-top:4px;color:var(--muted);font-weight:700}
+.controls{display:flex;justify-content:space-between;gap:10px;margin-top:14px}
+.ctrl{border:0;border-radius:14px;padding:12px 16px;font-weight:900}
+.ctrl.primary{background:linear-gradient(135deg,var(--red),#e53b46);color:#fff}
+.ctrl.secondary{background:#eef2f7;color:#2c3c50}
+.ctrl.danger{background:#fff0f1;color:#b61724}
+.ctrl:disabled{opacity:.45;cursor:not-allowed}
+.wordbank,.sentence{
+  min-height:66px;border-radius:16px;padding:11px;
+  display:flex;flex-wrap:wrap;gap:8px
+}
+.wordbank{border:2px dashed #bad1ee;background:#f8fbff}
+.sentence{border:2px solid #dbe5f2;background:#fff;margin-bottom:10px}
+.word{
+  border:0;border-radius:12px;padding:10px 13px;font-weight:850;
+  background:linear-gradient(135deg,var(--blue),#3b80e6);
+  color:#fff;box-shadow:0 4px 10px rgba(11,63,165,.17)
+}
+.sentence .word{
+  background:#eef5ff;color:var(--blue);
+  border:1px solid #cbdcf3;box-shadow:none
+}
+.dialog{
+  padding:14px;border:1px solid #dce8f8;border-radius:17px;
+  background:#f9fbff;margin-bottom:12px
+}
+.dialog .a{font-size:18px;font-weight:900;color:var(--blue2);line-height:1.45}
+.dialog .b{font-size:16px;font-weight:800;color:var(--red);margin-top:6px}
+.result{text-align:center;padding:28px 14px}
+.result .circle{
+  width:118px;height:118px;border-radius:50%;margin:0 auto 12px;
+  display:grid;place-items:center;
+  background:linear-gradient(135deg,var(--red),#ec4a56);
+  color:#fff;font-size:30px;font-weight:1000;
+  box-shadow:0 13px 30px rgba(207,0,16,.24)
+}
+.result h3{margin:6px 0;color:var(--blue2);font-size:30px}
+.result p{color:var(--muted);font-weight:700}
+.footer{text-align:center;margin-top:18px;color:#8993a3;font-size:12px;font-weight:750}
+@media(max-width:760px){
+  .tabs{grid-template-columns:repeat(2,1fr)}
+  .rulegrid,.examples{grid-template-columns:1fr}
+  .hero{padding:22px 16px;border-radius:22px}
+  .hero p{padding-right:45px}
+  .card{padding:16px;border-radius:20px}
+  .options.three{grid-template-columns:repeat(2,1fr)}
+}
+@media(max-width:440px){
+  .app{padding:8px 8px 30px}
+  .options,.options.three{grid-template-columns:1fr 1fr}
+  .option{font-size:15px;padding:12px 8px}
+}
+</style>
+</head>
+<body>
+<div class="app">
+
+<header class="hero">
+  <div class="brand">DE-MAX TUTIN</div>
+  <h1>Frageartikel: „Was für ein ...?“
+    <span>Upitni član • Kakav? Kakva? Kakvo? Kakvi?</span>
+  </h1>
+  <p>Vežbaj upitni izraz <b>was für ein</b> u nominativu i akuzativu. Nauči razliku: <b>ein / eine / einen</b> i oblik bez člana u množini.</p>
+  <button class="heroSpeak" id="heroSpeak" title="Poslušaj">🔊</button>
+</header>
+
+<div class="stats">
+  <div class="statrow">
+    <div class="progress"><span id="bar"></span></div>
+    <div class="stattext"><span id="done">0</span>/<span id="total">60</span> završeno • <span id="right">0</span> tačno</div>
+  </div>
+</div>
+
+<nav class="tabs">
+  <button class="tab active" data-panel="rules">Pravilo</button>
+  <button class="tab" data-panel="ex1">1. Oblik</button>
+  <button class="tab" data-panel="ex2">2. Nominativ</button>
+  <button class="tab" data-panel="ex3">3. Akkusativ</button>
+  <button class="tab" data-panel="ex4">4. Izaberi pitanje</button>
+  <button class="tab" data-panel="ex5">5. Dijalozi</button>
+  <button class="tab" data-panel="ex6">6. Složi pitanje</button>
+  <button class="tab" data-panel="final">Rezultat</button>
+</nav>
+
+<section id="rules" class="panel active">
+<div class="card">
+  <div class="section-title">
+    <div class="badge">?</div>
+    <div><h2>Was für ein ...?</h2><p>Pitamo za vrstu, osobinu ili tip osobe/stvari.</p></div>
+  </div>
+
+  <div class="rulegrid">
+    <div class="rule">
+      <h3>Nominativ</h3>
+      <p><b>Was für ein Mann?</b><br><b>Was für eine Frau?</b><br><b>Was für ein Kind?</b><br><b>Was für Pläne?</b></p>
+    </div>
+    <div class="rule">
+      <h3>Akkusativ</h3>
+      <p><b>Was für einen Mann?</b><br><b>Was für eine Frau?</b><br><b>Was für ein Kind?</b><br><b>Was für Pläne?</b></p>
+    </div>
+  </div>
+
+  <table class="table">
+    <tr><th>Padež</th><th>Maskulin</th><th>Feminin</th><th>Neutrum</th><th>Plural</th></tr>
+    <tr><td>Nominativ</td><td>was für <strong>ein</strong></td><td>was für <strong>eine</strong></td><td>was für <strong>ein</strong></td><td>was für —</td></tr>
+    <tr><td>Akkusativ</td><td>was für <strong>einen</strong></td><td>was für <strong>eine</strong></td><td>was für <strong>ein</strong></td><td>was für —</td></tr>
+  </table>
+
+  <div class="examples">
+    <div class="example"><b>Was für ein Auto</b> ist das?<br><span class="translation">Kakav je to auto?</span></div>
+    <div class="example"><b>Was für eine Musik</b> hörst du?<br><span class="translation">Kakvu muziku slušaš?</span></div>
+    <div class="example"><b>Was für einen Film</b> siehst du?<br><span class="translation">Kakav film gledaš?</span></div>
+    <div class="example"><b>Was für Bücher</b> liest du?<br><span class="translation">Kakve knjige čitaš?</span></div>
+  </div>
+
+  <div class="note">💡 Najvažnija promena je u <b>muškom rodu u akuzativu</b>: <b>ein → einen</b>. U množini nema <b>ein</b>: <b>Was für Bücher?</b></div>
+</div>
+</section>
+
+<section id="ex1" class="panel"><div class="card"><div class="section-title"><div class="badge">1</div><div><h2>Izaberi oblik</h2><p>ein, eine, einen ili bez člana?</p></div></div><div id="ex1box"></div></div></section>
+<section id="ex2" class="panel"><div class="card"><div class="section-title"><div class="badge">2</div><div><h2>Nominativ</h2><p>Vežbaj pitanje za subjekat / opis.</p></div></div><div id="ex2box"></div></div></section>
+<section id="ex3" class="panel"><div class="card"><div class="section-title"><div class="badge">3</div><div><h2>Akkusativ</h2><p>Posebno vežbaj muški rod: einen.</p></div></div><div id="ex3box"></div></div></section>
+<section id="ex4" class="panel"><div class="card"><div class="section-title"><div class="badge">4</div><div><h2>Koje pitanje je tačno?</h2><p>Izaberi pravilnu nemačku rečenicu.</p></div></div><div id="ex4box"></div></div></section>
+<section id="ex5" class="panel"><div class="card"><div class="section-title"><div class="badge">5</div><div><h2>Svakodnevni dijalozi</h2><p>Izaberi najprirodnije pitanje.</p></div></div><div id="ex5box"></div></div></section>
+<section id="ex6" class="panel"><div class="card"><div class="section-title"><div class="badge">6</div><div><h2>Složi pitanje</h2><p>Klikni reči pravilnim redosledom.</p></div></div><div id="ex6box"></div></div></section>
+<section id="final" class="panel"><div class="card"><div id="finalbox"></div></div></section>
+
+<div class="footer">De-Max Tutin • Frageartikel „Was für ein ...?“ • A1/A2</div>
+</div>
+
+<script>
+const ex1=[
+{s:"Was für ___ Mann ist das?",a:"ein",o:["ein","eine","einen"],t:"Kakav je to čovek?"},
+{s:"Was für ___ Frau ist das?",a:"eine",o:["ein","eine","einen"],t:"Kakva je to žena?"},
+{s:"Was für ___ Kind ist das?",a:"ein",o:["ein","eine","einen"],t:"Kakvo je to dete?"},
+{s:"Was für ___ Bücher sind das?",a:"—",o:["ein","eine","—"],t:"Kakve su to knjige?"},
+{s:"Was für ___ Film siehst du?",a:"einen",o:["ein","eine","einen"],t:"Kakav film gledaš?"},
+{s:"Was für ___ Tasche kaufst du?",a:"eine",o:["ein","eine","einen"],t:"Kakvu torbu kupuješ?"},
+{s:"Was für ___ Auto fährst du?",a:"ein",o:["ein","eine","einen"],t:"Kakav auto voziš?"},
+{s:"Was für ___ Schuhe trägst du?",a:"—",o:["eine","einen","—"],t:"Kakve cipele nosiš?"},
+{s:"Was für ___ Lehrer ist er?",a:"ein",o:["ein","eine","einen"],t:"Kakav je on nastavnik?"},
+{s:"Was für ___ Musik hörst du?",a:"eine",o:["ein","eine","einen"],t:"Kakvu muziku slušaš?"}
+];
+
+const ex2=[
+{s:"___ Arzt ist das?",a:"Was für ein",o:["Was für ein","Was für einen","Was für eine"],t:"Kakav je to lekar?"},
+{s:"___ Wohnung ist das?",a:"Was für eine",o:["Was für ein","Was für eine","Was für einen"],t:"Kakav je to stan?"},
+{s:"___ Hotel ist das?",a:"Was für ein",o:["Was für ein","Was für eine","Was für einen"],t:"Kakav je to hotel?"},
+{s:"___ Leute sind das?",a:"Was für",o:["Was für","Was für ein","Was für eine"],t:"Kakvi su to ljudi?"},
+{s:"___ Student ist Peter?",a:"Was für ein",o:["Was für ein","Was für einen","Was für"],t:"Kakav je student Peter?"},
+{s:"___ Stadt ist Berlin?",a:"Was für eine",o:["Was für eine","Was für ein","Was für einen"],t:"Kakav je grad Berlin?"},
+{s:"___ Problem ist das?",a:"Was für ein",o:["Was für ein","Was für eine","Was für einen"],t:"Kakav je to problem?"},
+{s:"___ Fragen sind das?",a:"Was für",o:["Was für","Was für ein","Was für eine"],t:"Kakva su to pitanja?"},
+{s:"___ Tag ist heute?",a:"Was für ein",o:["Was für ein","Was für einen","Was für eine"],t:"Kakav je danas dan?"},
+{s:"___ Idee ist das?",a:"Was für eine",o:["Was für ein","Was für eine","Was für"],t:"Kakva je to ideja?"}
+];
+
+const ex3=[
+{s:"___ Mann suchst du?",a:"Was für einen",o:["Was für ein","Was für einen","Was für eine"],t:"Kakvog čoveka tražiš?"},
+{s:"___ Film möchtest du sehen?",a:"Was für einen",o:["Was für ein","Was für einen","Was für eine"],t:"Kakav film želiš da gledaš?"},
+{s:"___ Kuchen kaufst du?",a:"Was für einen",o:["Was für einen","Was für eine","Was für ein"],t:"Kakav kolač kupuješ?"},
+{s:"___ Beruf möchtest du lernen?",a:"Was für einen",o:["Was für ein","Was für einen","Was für eine"],t:"Kakvo zanimanje želiš da učiš?"},
+{s:"___ Tasche brauchst du?",a:"Was für eine",o:["Was für ein","Was für eine","Was für einen"],t:"Kakva torba ti treba?"},
+{s:"___ Zeitung liest du?",a:"Was für eine",o:["Was für eine","Was für einen","Was für ein"],t:"Kakve novine čitaš?"},
+{s:"___ Handy willst du kaufen?",a:"Was für ein",o:["Was für ein","Was für eine","Was für einen"],t:"Kakav telefon želiš da kupiš?"},
+{s:"___ Auto hast du?",a:"Was für ein",o:["Was für ein","Was für einen","Was für eine"],t:"Kakav auto imaš?"},
+{s:"___ Bücher liest du gern?",a:"Was für",o:["Was für","Was für ein","Was für einen"],t:"Kakve knjige rado čitaš?"},
+{s:"___ Pläne hast du für morgen?",a:"Was für",o:["Was für","Was für ein","Was für eine"],t:"Kakve planove imaš za sutra?"}
+];
+
+const ex4=[
+{s:"Izaberi tačno pitanje.",a:"Was für einen Film siehst du?",o:["Was für ein Film siehst du?","Was für einen Film siehst du?","Was für eine Film siehst du?"],t:"Kakav film gledaš?"},
+{s:"Izaberi tačno pitanje.",a:"Was für eine Musik hörst du?",o:["Was für eine Musik hörst du?","Was für ein Musik hörst du?","Was für einen Musik hörst du?"],t:"Kakvu muziku slušaš?"},
+{s:"Izaberi tačno pitanje.",a:"Was für ein Auto ist das?",o:["Was für einen Auto ist das?","Was für ein Auto ist das?","Was für eine Auto ist das?"],t:"Kakav je to auto?"},
+{s:"Izaberi tačno pitanje.",a:"Was für Bücher liest du?",o:["Was für ein Bücher liest du?","Was für eine Bücher liest du?","Was für Bücher liest du?"],t:"Kakve knjige čitaš?"},
+{s:"Izaberi tačno pitanje.",a:"Was für einen Computer kaufst du?",o:["Was für einen Computer kaufst du?","Was für ein Computer kaufst du?","Was für eine Computer kaufst du?"],t:"Kakav računar kupuješ?"},
+{s:"Izaberi tačno pitanje.",a:"Was für eine Wohnung suchst du?",o:["Was für ein Wohnung suchst du?","Was für eine Wohnung suchst du?","Was für einen Wohnung suchst du?"],t:"Kakav stan tražiš?"},
+{s:"Izaberi tačno pitanje.",a:"Was für ein Hotel ist das?",o:["Was für ein Hotel ist das?","Was für eine Hotel ist das?","Was für einen Hotel ist das?"],t:"Kakav je to hotel?"},
+{s:"Izaberi tačno pitanje.",a:"Was für Pläne habt ihr?",o:["Was für ein Pläne habt ihr?","Was für Pläne habt ihr?","Was für eine Pläne habt ihr?"],t:"Kakve planove imate?"},
+{s:"Izaberi tačno pitanje.",a:"Was für einen Kaffee trinkst du?",o:["Was für ein Kaffee trinkst du?","Was für einen Kaffee trinkst du?","Was für eine Kaffee trinkst du?"],t:"Kakvu kafu piješ?"},
+{s:"Izaberi tačno pitanje.",a:"Was für eine Sprache lernst du?",o:["Was für eine Sprache lernst du?","Was für ein Sprache lernst du?","Was für einen Sprache lernst du?"],t:"Koji jezik učiš / kakav jezik učiš?"}
+];
+
+const ex5=[
+{s:"A: Ich möchte einen Film sehen. B: ?",a:"Was für einen Film möchtest du sehen?",o:["Was für einen Film möchtest du sehen?","Was für ein Film möchtest du sehen?","Was für eine Film möchtest du sehen?"],t:"Kakav film želiš da gledaš?"},
+{s:"A: Ich brauche eine neue Tasche. B: ?",a:"Was für eine Tasche brauchst du?",o:["Was für ein Tasche brauchst du?","Was für eine Tasche brauchst du?","Was für einen Tasche brauchst du?"],t:"Kakva torba ti treba?"},
+{s:"A: Ich will ein Auto kaufen. B: ?",a:"Was für ein Auto willst du kaufen?",o:["Was für ein Auto willst du kaufen?","Was für einen Auto willst du kaufen?","Was für eine Auto willst du kaufen?"],t:"Kakav auto želiš da kupiš?"},
+{s:"A: Ich lese gern. B: ?",a:"Was für Bücher liest du gern?",o:["Was für Bücher liest du gern?","Was für ein Bücher liest du gern?","Was für eine Bücher liest du gern?"],t:"Kakve knjige rado čitaš?"},
+{s:"A: Ich suche einen Job. B: ?",a:"Was für einen Job suchst du?",o:["Was für ein Job suchst du?","Was für einen Job suchst du?","Was für eine Job suchst du?"],t:"Kakav posao tražiš?"},
+{s:"A: Ich höre jeden Tag Musik. B: ?",a:"Was für eine Musik hörst du?",o:["Was für ein Musik hörst du?","Was für eine Musik hörst du?","Was für einen Musik hörst du?"],t:"Kakvu muziku slušaš?"},
+{s:"A: Ich brauche Schuhe. B: ?",a:"Was für Schuhe brauchst du?",o:["Was für Schuhe brauchst du?","Was für ein Schuhe brauchst du?","Was für eine Schuhe brauchst du?"],t:"Kakve cipele ti trebaju?"},
+{s:"A: Ich möchte einen Kuchen backen. B: ?",a:"Was für einen Kuchen möchtest du backen?",o:["Was für ein Kuchen möchtest du backen?","Was für einen Kuchen möchtest du backen?","Was für eine Kuchen möchtest du backen?"],t:"Kakav kolač želiš da ispečeš?"},
+{s:"A: Ich lerne eine Fremdsprache. B: ?",a:"Was für eine Sprache lernst du?",o:["Was für eine Sprache lernst du?","Was für ein Sprache lernst du?","Was für einen Sprache lernst du?"],t:"Koji jezik učiš?"},
+{s:"A: Wir haben viele Pläne. B: ?",a:"Was für Pläne habt ihr?",o:["Was für ein Pläne habt ihr?","Was für Pläne habt ihr?","Was für einen Pläne habt ihr?"],t:"Kakve planove imate?"}
+];
+
+const ex6=[
+{a:"Was für ein Auto hast du?",t:"Kakav auto imaš?"},
+{a:"Was für eine Musik hörst du?",t:"Kakvu muziku slušaš?"},
+{a:"Was für einen Film siehst du?",t:"Kakav film gledaš?"},
+{a:"Was für Bücher liest du gern?",t:"Kakve knjige rado čitaš?"},
+{a:"Was für einen Job suchst du?",t:"Kakav posao tražiš?"},
+{a:"Was für eine Wohnung brauchst du?",t:"Kakav stan ti treba?"},
+{a:"Was für ein Hotel ist das?",t:"Kakav je to hotel?"},
+{a:"Was für Schuhe trägst du?",t:"Kakve cipele nosiš?"},
+{a:"Was für einen Kaffee möchtest du?",t:"Kakvu kafu želiš?"},
+{a:"Was für Pläne habt ihr?",t:"Kakve planove imate?"}
+];
+
+const total=ex1.length+ex2.length+ex3.length+ex4.length+ex5.length+ex6.length;
+document.getElementById("total").textContent=total;
+
+let done=0,right=0;
+const mastered=new Set();
+
+function mark(key){
+  if(mastered.has(key)) return;
+  mastered.add(key); done++; right++;
+  document.getElementById("done").textContent=done;
+  document.getElementById("right").textContent=right;
+  document.getElementById("bar").style.width=(done/total*100)+"%";
+  renderFinal();
+}
+function speak(text,rate=.92){
+  if(!("speechSynthesis" in window))return;
+  speechSynthesis.cancel();
+  const u=new SpeechSynthesisUtterance(text.replace("—",""));
+  u.lang="de-DE";u.rate=rate;
+  const voices=speechSynthesis.getVoices();
+  const v=voices.find(x=>x.lang&&x.lang.toLowerCase().startsWith("de"));
+  if(v)u.voice=v;
+  speechSynthesis.speak(u);
+}
+document.getElementById("heroSpeak").onclick=()=>speak("Was für ein Auto ist das? Was für einen Film siehst du? Was für eine Musik hörst du? Was für Bücher liest du?");
+
+function showPanel(id){
+  document.querySelectorAll(".panel").forEach(p=>p.classList.toggle("active",p.id===id));
+  document.querySelectorAll(".tab").forEach(t=>t.classList.toggle("active",t.dataset.panel===id));
+  window.scrollTo({top:0,behavior:"smooth"});
+}
+document.querySelectorAll(".tab").forEach(b=>b.onclick=()=>showPanel(b.dataset.panel));
+
+function renderMCQ(id,data,prefix){
+  const el=document.getElementById(id);let i=0;
+  function draw(){
+    const q=data[i],key=prefix+i;
+    el.innerHTML=`
+      <div class="qtop">
+        <span class="qcount">${i+1} / ${data.length}</span>
+        <button class="speaker">🔊</button>
+      </div>
+      <div class="prompt">${q.s.replace("___",'<span class="blank">?</span>')}</div>
+      <div class="options ${q.o.length===3?'three':''}">
+        ${q.o.map(x=>`<button class="option" data-v="${x.replace(/"/g,'&quot;')}">${x}</button>`).join("")}
+      </div>
+      <div class="feedback" id="fb"></div>
+      <div class="controls">
+        <button class="ctrl secondary" id="prev" ${i===0?'disabled':''}>← Nazad</button>
+        <button class="ctrl primary" id="next">${i===data.length-1?'Završi':'Sledeće →'}</button>
+      </div>`;
+    el.querySelector(".speaker").onclick=()=>speak(q.a.length>22?q.a:q.s.replace("___",q.a==="—"?"":q.a));
+    const fb=el.querySelector("#fb");
+    if(mastered.has(key)){
+      fb.className="feedback show ok";
+      fb.innerHTML=`<strong>✓ Rešeno.</strong> Tačno: <b>${q.a}</b><div class="translation">${q.t}</div>`;
+      el.querySelectorAll(".option").forEach(b=>{if(b.dataset.v===q.a)b.classList.add("correct")});
+    }
+    el.querySelectorAll(".option").forEach(btn=>{
+      btn.onclick=()=>{
+        if(mastered.has(key))return;
+        if(btn.dataset.v===q.a){
+          btn.classList.add("correct");
+          fb.className="feedback show ok";
+          fb.innerHTML=`<strong>✓ Tačno!</strong><div class="translation">${q.t}</div>`;
+          mark(key);
+          speak(q.a.length>22?q.a:q.s.replace("___",q.a==="—"?"":q.a));
+          el.querySelectorAll(".option").forEach(b=>b.disabled=true);
+        }else{
+          btn.classList.add("wrong");
+          fb.className="feedback show bad";
+          fb.innerHTML=`<strong>✗ Pokušaj ponovo.</strong> Obrati pažnju na rod i padež.`;
+          setTimeout(()=>btn.classList.remove("wrong"),650);
+        }
+      }
+    });
+    el.querySelector("#prev").onclick=()=>{if(i>0){i--;draw()}};
+    el.querySelector("#next").onclick=()=>{if(i<data.length-1){i++;draw()}else showPanel("final")};
+  }
+  draw();
+}
+renderMCQ("ex1box",ex1,"a");
+renderMCQ("ex2box",ex2,"b");
+renderMCQ("ex3box",ex3,"c");
+renderMCQ("ex4box",ex4,"d");
+renderMCQ("ex5box",ex5,"e");
+
+(function builder(){
+  const el=document.getElementById("ex6box");let i=0;
+  function shuffled(words){
+    const a=[...words];
+    for(let j=a.length-1;j>0;j--){
+      const k=(j*7+3)%(j+1);
+      [a[j],a[k]]=[a[k],a[j]];
+    } return a;
+  }
+  function norm(s){return s.trim().replace(/\s+/g," ").replace(/[?]+$/,"").toLowerCase()}
+  function draw(){
+    const q=ex6[i],key="f"+i;
+    let selected=[],bank=shuffled(q.a.replace(/[?]+$/,"").split(" "));
+    el.innerHTML=`
+      <div class="qtop">
+        <span class="qcount">${i+1} / ${ex6.length}</span>
+        <button class="speaker">🔊</button>
+      </div>
+      <div class="translation" style="font-size:18px;margin-bottom:10px">${q.t}</div>
+      <div class="sentence" id="built"></div>
+      <div class="wordbank" id="bank"></div>
+      <div class="feedback" id="bfb"></div>
+      <div class="controls">
+        <button class="ctrl danger" id="clear">Obriši</button>
+        <button class="ctrl primary" id="check">Proveri</button>
+      </div>
+      <div class="controls">
+        <button class="ctrl secondary" id="prev" ${i===0?'disabled':''}>← Nazad</button>
+        <button class="ctrl primary" id="next">${i===ex6.length-1?'Završi':'Sledeće →'}</button>
+      </div>`;
+    const bankEl=el.querySelector("#bank"),built=el.querySelector("#built"),fb=el.querySelector("#bfb");
+    el.querySelector(".speaker").onclick=()=>speak(q.a);
+
+    function paint(){
+      bankEl.innerHTML="";built.innerHTML="";
+      bank.forEach((w,idx)=>{
+        const b=document.createElement("button");
+        b.className="word";b.textContent=w;
+        b.onclick=()=>{selected.push(w);bank.splice(idx,1);paint()};
+        bankEl.appendChild(b);
+      });
+      selected.forEach((w,idx)=>{
+        const b=document.createElement("button");
+        b.className="word";b.textContent=w;
+        b.onclick=()=>{bank.push(w);selected.splice(idx,1);paint()};
+        built.appendChild(b);
+      });
+    }
+    paint();
+
+    if(mastered.has(key)){
+      bank=[];selected=q.a.replace(/[?]+$/,"").split(" ");paint();
+      fb.className="feedback show ok";
+      fb.innerHTML=`<strong>✓ Rešeno.</strong> ${q.a}`;
+    }
+
+    el.querySelector("#clear").onclick=()=>{
+      if(mastered.has(key))return;
+      selected=[];bank=shuffled(q.a.replace(/[?]+$/,"").split(" "));
+      paint();fb.className="feedback";
+    };
+    el.querySelector("#check").onclick=()=>{
+      if(mastered.has(key))return;
+      const made=selected.join(" ")+"?";
+      if(norm(made)===norm(q.a)){
+        fb.className="feedback show ok";
+        fb.innerHTML=`<strong>✓ Tačno!</strong> ${q.a}`;
+        mark(key);speak(q.a);
+      }else{
+        fb.className="feedback show bad";
+        fb.innerHTML=`<strong>✗ Pokušaj ponovo.</strong> Obrati pažnju na: <b>Was für + član + imenica + glagol</b>.`;
+      }
+    };
+    el.querySelector("#prev").onclick=()=>{if(i>0){i--;draw()}};
+    el.querySelector("#next").onclick=()=>{if(i<ex6.length-1){i++;draw()}else showPanel("final")};
+  }
+  draw();
+})();
+
+function renderFinal(){
+  const pct=Math.round(done/total*100);
+  let msg="Kreni od oblika ein / eine / einen.";
+  if(done>=20)msg="Dobro ide — nastavi dalje.";
+  if(done>=40)msg="Sjajan napredak — još malo do kraja!";
+  if(done===total)msg="Odlično! Završio/la si svih 60 zadataka.";
+  document.getElementById("finalbox").innerHTML=`
+    <div class="result">
+      <div class="circle">${pct}%</div>
+      <h3>Tvoj napredak</h3>
+      <p>${msg}</p>
+      <p><b>${done}</b> od <b>${total}</b> zadataka završeno tačno.</p>
+      <div class="controls" style="justify-content:center">
+        <button class="ctrl primary" onclick="showPanel('ex1')">Nastavi vežbanje</button>
+        <button class="ctrl secondary" onclick="showPanel('rules')">Ponovi pravilo</button>
+      </div>
+    </div>`;
+}
+renderFinal();
+</script>
+</body>
+</html>
