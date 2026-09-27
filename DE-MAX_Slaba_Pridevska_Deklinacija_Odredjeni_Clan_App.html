@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="sr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>DE-MAX • Slaba pridevska deklinacija</title>
+<style>
+:root{
+  --navy:#082f7d; --blue:#0d55c7; --blue2:#1671ee; --soft:#eef6ff;
+  --line:#cfe1ff; --ink:#133764; --muted:#60799d;
+  --nom:#d71920; --akk:#0c4eb6; --dat:#119447;
+  --good:#11864b; --bad:#c92c35; --shadow:0 16px 40px rgba(7,58,150,.13);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;
+  color:var(--ink);min-height:100vh;
+  background:
+    radial-gradient(circle at 12% 7%,#dcecff 0,transparent 20%),
+    radial-gradient(circle at 90% 90%,#e5f1ff 0,transparent 24%),
+    linear-gradient(180deg,#f8fbff,#edf5ff);
+}
+.app{width:min(100%,570px);margin:auto;min-height:100vh;background:rgba(255,255,255,.95);box-shadow:0 0 42px rgba(8,47,125,.08)}
+header{position:sticky;top:0;z-index:30;background:rgba(255,255,255,.96);backdrop-filter:blur(12px);border-bottom:1px solid #deebff}
+.top{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:11px 14px 9px}
+.brand{display:flex;align-items:center;gap:10px;min-width:0}
+.logo{width:66px;height:48px;object-fit:cover;object-position:center;border-radius:12px;border:1px solid #d7e4f7;box-shadow:0 5px 14px rgba(0,0,0,.06)}
+.brandText{min-width:0}.brand h1{margin:0;font-size:17px;line-height:1.12;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.brand small{display:block;color:var(--muted);font-weight:800;margin-top:2px}
+.score{text-align:right;font-weight:1000;color:var(--navy);font-size:19px;white-space:nowrap}.score small{display:block;font-size:10px;color:var(--muted);font-weight:800}
+.progressWrap{height:6px;background:#edf4ff}.progress{height:100%;width:0;background:linear-gradient(90deg,var(--blue2),var(--navy));transition:.25s}
+main{padding:14px 14px 96px}
+.hero{
+  background:linear-gradient(135deg,#0e58c8,#072f7c);color:white;border-radius:27px;padding:17px;
+  box-shadow:0 17px 42px rgba(8,58,150,.22);margin-bottom:14px
+}
+.hero .kicker{font-size:11px;font-weight:950;letter-spacing:.08em;text-transform:uppercase;opacity:.9}
+.hero h2{margin:5px 0 7px;font-size:28px;line-height:1.03}.hero p{margin:0;color:#eaf2ff;font-weight:650;line-height:1.5}
+.casePills{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:13px}
+.casePill{padding:9px 7px;border-radius:14px;text-align:center;font-size:12px;font-weight:950;background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.19)}
+.section{background:#fff;border:1px solid var(--line);border-radius:23px;padding:15px;box-shadow:var(--shadow);margin-bottom:14px}
+.sectionTitle{font-size:14px;font-weight:1000;color:var(--navy);text-transform:uppercase;letter-spacing:.04em;margin-bottom:10px}
+.rule{
+  border:1px solid #d9e8ff;background:linear-gradient(180deg,#fbfdff,#eff6ff);border-radius:18px;padding:13px;margin-bottom:10px
+}
+.rule:last-child{margin-bottom:0}.rule h3{margin:0 0 7px;color:var(--navy);font-size:17px}.rule p{margin:0;color:#405d86;font-weight:670;line-height:1.5}
+.rule strong{color:var(--navy)}
+.ref{width:100%;border-collapse:separate;border-spacing:0;margin-top:10px;overflow:hidden;border-radius:15px;font-size:13px}
+.ref th,.ref td{padding:8px 5px;text-align:center;border-right:1px solid #dfebff;border-bottom:1px solid #dfebff;font-weight:900}
+.ref th{color:#fff;background:linear-gradient(180deg,#1766df,#093b96)}
+.ref th:first-child{border-radius:12px 0 0 0}.ref th:last-child{border-radius:0 12px 0 0}
+.ref tr:last-child td{border-bottom:0}.ref td:last-child,.ref th:last-child{border-right:0}
+.ref .case{color:white}.ref .nom{background:var(--nom)}.ref .akk{background:var(--akk)}.ref .dat{background:var(--dat)}
+.end{color:#e02222;font-size:18px}
+.examples{display:grid;gap:7px;margin-top:10px}
+.ex{padding:9px 10px;border-radius:12px;background:#fff;border:1px solid #dfeaff;font-weight:850;color:#173f7c;line-height:1.45}
+.ex b{color:#e02424}
+.tabs{display:grid;grid-template-columns:repeat(6,1fr);gap:7px;margin-bottom:14px}
+.tab{border:1px solid var(--line);background:#fff;color:var(--navy);border-radius:14px;padding:9px 4px;font-size:10.5px;font-weight:950;min-height:46px;cursor:pointer}
+.tab.active{background:linear-gradient(180deg,#1872ed,#0b4fb8);color:#fff;border-color:#0d55c7;box-shadow:0 8px 18px rgba(13,85,199,.2)}
+.badgeRow{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:10px}
+.badge{display:inline-flex;align-items:center;padding:7px 10px;border-radius:999px;background:#eef5ff;border:1px solid #d7e5ff;color:var(--navy);font-size:12px;font-weight:950}
+.counter{font-size:12px;color:var(--muted);font-weight:850}
+.prompt{font-size:21px;line-height:1.34;font-weight:1000;color:#123d80;margin:8px 0}
+.sub{color:var(--muted);font-size:13.5px;font-weight:700;line-height:1.5;margin-bottom:12px}
+.caseTag{display:inline-block;color:#fff;border-radius:999px;padding:4px 9px;font-size:11px;font-weight:950;vertical-align:middle}
+.caseTag.nom{background:var(--nom)}.caseTag.akk{background:var(--akk)}.caseTag.dat{background:var(--dat)}
+.answers{display:grid;gap:9px}
+.answer{width:100%;text-align:left;border:1px solid #d9e6ff;background:#f8fbff;color:#173d73;border-radius:15px;padding:12px 13px;font-size:15px;font-weight:880;cursor:pointer;transition:.15s}
+.answer:hover{transform:translateY(-1px);border-color:#89b2ff}.answer.correct{background:#ecfff4;border-color:#a6e4bf;color:#0d743d}.answer.wrong{background:#fff2f3;border-color:#ffd0d5;color:#a82128}
+.input{width:100%;border:2px solid #d5e4ff;border-radius:15px;padding:13px 14px;font-size:16px;font-weight:850;color:#123764;outline:none}.input:focus{border-color:#77a9ff}
+.actions{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:13px}
+button.primary,button.secondary{border:0;border-radius:14px;padding:12px 13px;font-weight:950;font-size:14px;cursor:pointer}
+button.primary{background:linear-gradient(180deg,#1671ee,#0b4fb8);color:white}.secondary{background:#eff6ff;color:var(--navy);border:1px solid #d7e6ff!important}
+.feedback{display:none;margin-top:13px;padding:11px 12px;border-radius:15px;font-weight:850;line-height:1.48}.feedback.good{display:block;background:#ecfff4;border:1px solid #b4ebc9;color:#0c6d39}.feedback.bad{display:block;background:#fff2f3;border:1px solid #ffd3d7;color:#a82128}.feedback .trans{display:block;margin-top:4px;color:#516b88;font-size:13px;font-weight:700}
+.tokens{display:flex;flex-wrap:wrap;gap:8px;padding:11px;min-height:62px;border-radius:15px;border:1px dashed #b7d1ff;background:#f6faff}
+.token{border:1px solid #d5e3ff;background:white;color:#143d7a;border-radius:11px;padding:9px 10px;font-weight:900;cursor:pointer}.token.used{opacity:.32;pointer-events:none}
+.build{min-height:62px;padding:11px;border-radius:15px;border:2px solid #d5e4ff;display:flex;flex-wrap:wrap;gap:7px;background:white}
+.built{background:#0d55c7;color:white;padding:8px 10px;border-radius:10px;font-weight:900;cursor:pointer}
+.quickGrid{display:grid;grid-template-columns:repeat(2,1fr);gap:9px}
+.quickCard{border:1px solid #d9e7ff;border-radius:15px;padding:11px;background:#f9fbff}.quickCard strong{display:block;color:#103b7a;font-size:15px}.quickCard span{font-size:12px;color:#60789b;font-weight:750}
+.reviewGrid{display:grid;gap:10px}.reviewCard{border:1px solid #d9e7ff;border-radius:17px;padding:12px;background:#fbfdff}.reviewCard .head{display:flex;justify-content:space-between;align-items:center;gap:8px}.reviewCard h4{margin:0;color:#123d80;font-size:16px}.speak{width:40px;height:40px;border-radius:12px;border:1px solid #d7e5ff;background:#edf5ff;color:#0b4fb8;font-size:17px;cursor:pointer}
+.footerbar{position:fixed;left:50%;transform:translateX(-50%);bottom:0;width:min(100%,570px);display:flex;gap:9px;padding:9px 14px calc(9px + env(safe-area-inset-bottom));background:rgba(255,255,255,.96);backdrop-filter:blur(10px);border-top:1px solid #dce9ff;z-index:35}.footerbar button{flex:1}
+@media(max-width:430px){.tabs{grid-template-columns:repeat(3,1fr)}.hero h2{font-size:25px}.prompt{font-size:19px}.logo{width:58px;height:44px}.brand h1{font-size:15px}}
+</style>
+</head>
+<body>
+<div class="app">
+<header>
+  <div class="top">
+    <div class="brand">
+      <img class="logo" src="data:image/jpeg;base64,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" alt="DE-MAX Tutin">
+      <div class="brandText"><h1>Slaba pridevska deklinacija</h1><small>određeni član • A2</small></div>
+    </div>
+    <div class="score"><span id="score">0</span> / <span id="total">0</span><small>tačno</small></div>
+  </div>
+  <div class="progressWrap"><div class="progress" id="progress"></div></div>
+</header>
+
+<main>
+<section class="hero">
+  <div class="kicker">Adjektivdeklination • bestimmter Artikel</div>
+  <h2>Slaba pridevska deklinacija</h2>
+  <p>Kada ispred prideva stoji <b>određeni član</b>, pridev najčešće dobija nastavke <b>-e</b> ili <b>-en</b>. Vežbaj kroz padeže, pune oblike, rečenice, prevod i slaganje reči.</p>
+  <div class="casePills"><div class="casePill">Nominativ<br><b>-e / -en</b></div><div class="casePill">Akkusativ<br><b>-en / -e</b></div><div class="casePill">Dativ<br><b>sve -en</b></div></div>
+</section>
+
+<section class="section">
+  <div class="sectionTitle">Brzo pravilo</div>
+  <div class="rule">
+    <h3>Nominativ, Akkusativ i Dativ</h3>
+    <p>Sa određenim članom (<strong>der, die, das, die / den / dem, der, dem, den</strong>) pridev se menja po slaboj deklinaciji.</p>
+    <table class="ref">
+      <tr><th>Padež</th><th>Maskulin</th><th>Feminin</th><th>Neutral</th><th>Plural</th></tr>
+      <tr><td class="case nom">Nom.</td><td class="end">-e</td><td class="end">-e</td><td class="end">-e</td><td class="end">-en</td></tr>
+      <tr><td class="case akk">Akk.</td><td class="end">-en</td><td class="end">-e</td><td class="end">-e</td><td class="end">-en</td></tr>
+      <tr><td class="case dat">Dat.</td><td class="end">-en</td><td class="end">-en</td><td class="end">-en</td><td class="end">-en</td></tr>
+    </table>
+    <div class="examples">
+      <div class="ex"><span class="caseTag nom">NOM</span> der schön<b>e</b> Mann • die schön<b>e</b> Frau • das schön<b>e</b> Haus • die schön<b>en</b> Häuser</div>
+      <div class="ex"><span class="caseTag akk">AKK</span> den schön<b>en</b> Mann • die schön<b>e</b> Frau • das schön<b>e</b> Haus • die schön<b>en</b> Häuser</div>
+      <div class="ex"><span class="caseTag dat">DAT</span> dem schön<b>en</b> Mann • der schön<b>en</b> Frau • dem schön<b>en</b> Haus • den schön<b>en</b> Häusern</div>
+    </div>
+  </div>
+</section>
+
+<div class="tabs">
+  <button class="tab active" data-mode="ending">1. Nastavak</button>
+  <button class="tab" data-mode="form">2. Oblik</button>
+  <button class="tab" data-mode="case">3. Padež</button>
+  <button class="tab" data-mode="fill">4. Upiši</button>
+  <button class="tab" data-mode="order">5. Složi</button>
+  <button class="tab" data-mode="translate">6. Prevod</button>
+</div>
+
+<section class="section">
+  <div class="badgeRow"><span class="badge" id="badge">✓ Izaberi nastavak</span><span class="counter" id="counter"></span></div>
+  <div id="exercise"></div>
+  <div id="feedback" class="feedback"></div>
+</section>
+</main>
+
+<div class="footerbar"><button class="secondary" id="resetBtn">↻ Ponovo</button><button class="primary" id="nextBtn">Sledeće →</button></div>
+</div>
+
+<script>
+const ENDING = [
+{q:"Der schön__ Mann kommt.",a:"e",case:"nom",full:"Der schöne Mann kommt.",sr:"Lepi čovek dolazi."},
+{q:"Die nett__ Frau spricht.",a:"e",case:"nom",full:"Die nette Frau spricht.",sr:"Ljubazna žena govori."},
+{q:"Das klein__ Kind spielt.",a:"e",case:"nom",full:"Das kleine Kind spielt.",sr:"Malo dete se igra."},
+{q:"Die gut__ Schüler lernen.",a:"en",case:"nom",full:"Die guten Schüler lernen.",sr:"Dobri učenici uče."},
+{q:"Der neu__ Computer ist schnell.",a:"e",case:"nom",full:"Der neue Computer ist schnell.",sr:"Novi računar je brz."},
+{q:"Die alt__ Häuser sind schön.",a:"en",case:"nom",full:"Die alten Häuser sind schön.",sr:"Stare kuće su lepe."},
+{q:"Ich sehe den schön__ Mann.",a:"en",case:"akk",full:"Ich sehe den schönen Mann.",sr:"Vidim lepog čoveka."},
+{q:"Ich kenne die nett__ Frau.",a:"e",case:"akk",full:"Ich kenne die nette Frau.",sr:"Poznajem ljubaznu ženu."},
+{q:"Wir kaufen das neu__ Auto.",a:"e",case:"akk",full:"Wir kaufen das neue Auto.",sr:"Kupujemo novi auto."},
+{q:"Er besucht die alt__ Freunde.",a:"en",case:"akk",full:"Er besucht die alten Freunde.",sr:"On posećuje stare prijatelje."},
+{q:"Sie liest den interessant__ Artikel.",a:"en",case:"akk",full:"Sie liest den interessanten Artikel.",sr:"Ona čita zanimljiv članak."},
+{q:"Ich brauche die rot__ Tasche.",a:"e",case:"akk",full:"Ich brauche die rote Tasche.",sr:"Potrebna mi je crvena torba."},
+{q:"Ich helfe dem alt__ Mann.",a:"en",case:"dat",full:"Ich helfe dem alten Mann.",sr:"Pomažem starom čoveku."},
+{q:"Ich danke der nett__ Lehrerin.",a:"en",case:"dat",full:"Ich danke der netten Lehrerin.",sr:"Zahvaljujem ljubaznoj nastavnici."},
+{q:"Wir spielen mit dem klein__ Kind.",a:"en",case:"dat",full:"Wir spielen mit dem kleinen Kind.",sr:"Igramo se sa malim detetom."},
+{q:"Er spricht mit den neu__ Schülern.",a:"en",case:"dat",full:"Er spricht mit den neuen Schülern.",sr:"On razgovara sa novim učenicima."},
+{q:"Sie fährt mit dem schnell__ Zug.",a:"en",case:"dat",full:"Sie fährt mit dem schnellen Zug.",sr:"Ona putuje brzim vozom."},
+{q:"Ich wohne bei der jung__ Familie.",a:"en",case:"dat",full:"Ich wohne bei der jungen Familie.",sr:"Stanujem kod mlade porodice."}
+];
+
+const FORM = [
+{q:"Koji oblik je tačan?",a:"der große Tisch",o:["der große Tisch","der großen Tisch","der großer Tisch"],say:"Der große Tisch ist neu.",sr:"Veliki sto je nov."},
+{q:"Koji oblik je tačan?",a:"die schöne Stadt",o:["die schönen Stadt","die schöne Stadt","die schöner Stadt"],say:"Die schöne Stadt ist alt.",sr:"Lep grad je star."},
+{q:"Koji oblik je tačan?",a:"das kalte Wasser",o:["das kalten Wasser","das kalte Wasser","das kaltes Wasser"],say:"Das kalte Wasser ist gut.",sr:"Hladna voda je dobra."},
+{q:"Koji oblik je tačan?",a:"die kleinen Kinder",o:["die kleine Kinder","die kleinen Kinder","die kleines Kinder"],say:"Die kleinen Kinder spielen.",sr:"Mala deca se igraju."},
+{q:"Koji oblik je tačan u akuzativu?",a:"den neuen Lehrer",o:["den neue Lehrer","den neuen Lehrer","der neuen Lehrer"],say:"Ich sehe den neuen Lehrer.",sr:"Vidim novog nastavnika."},
+{q:"Koji oblik je tačan u akuzativu?",a:"die rote Jacke",o:["die roten Jacke","die rote Jacke","den rote Jacke"],say:"Ich kaufe die rote Jacke.",sr:"Kupujem crvenu jaknu."},
+{q:"Koji oblik je tačan u akuzativu?",a:"das alte Haus",o:["das alten Haus","das alte Haus","dem alte Haus"],say:"Wir sehen das alte Haus.",sr:"Vidimo staru kuću."},
+{q:"Koji oblik je tačan u akuzativu?",a:"die interessanten Bücher",o:["die interessante Bücher","die interessanten Bücher","den interessanten Bücher"],say:"Ich lese die interessanten Bücher.",sr:"Čitam zanimljive knjige."},
+{q:"Koji oblik je tačan u dativu?",a:"dem netten Nachbarn",o:["dem nette Nachbarn","dem netten Nachbarn","den netten Nachbarn"],say:"Ich helfe dem netten Nachbarn.",sr:"Pomažem ljubaznom komšiji."},
+{q:"Koji oblik je tačan u dativu?",a:"der jungen Frau",o:["der junge Frau","der jungen Frau","die jungen Frau"],say:"Ich danke der jungen Frau.",sr:"Zahvaljujem mladoj ženi."},
+{q:"Koji oblik je tačan u dativu?",a:"dem guten Kind",o:["dem gute Kind","dem guten Kind","das guten Kind"],say:"Ich gebe dem guten Kind ein Buch.",sr:"Dajem dobrom detetu knjigu."},
+{q:"Koji oblik je tačan u dativu?",a:"den alten Freunden",o:["den alte Freunden","die alten Freunden","den alten Freunden"],say:"Ich spreche mit den alten Freunden.",sr:"Razgovaram sa starim prijateljima."},
+{q:"Izaberi tačan oblik.",a:"der schnelle Bus",o:["der schnellen Bus","der schnelle Bus","den schnelle Bus"],say:"Der schnelle Bus kommt.",sr:"Brzi autobus dolazi."},
+{q:"Izaberi tačan oblik.",a:"den schnellen Bus",o:["den schnellen Bus","den schnelle Bus","dem schnellen Bus"],say:"Ich nehme den schnellen Bus.",sr:"Idem brzim autobusom / uzimam brzi autobus."},
+{q:"Izaberi tačan oblik.",a:"dem schnellen Bus",o:["dem schnelle Bus","dem schnellen Bus","der schnellen Bus"],say:"Ich fahre mit dem schnellen Bus.",sr:"Vozim se brzim autobusom."},
+{q:"Izaberi tačan oblik.",a:"die neuen Schuhe",o:["die neue Schuhe","die neuen Schuhe","den neuen Schuhe"],say:"Die neuen Schuhe sind bequem.",sr:"Nove cipele su udobne."}
+];
+
+const CASES = [
+{q:"Der freundliche Arzt kommt gleich.",a:"Nominativ",case:"nom",sr:"Ljubazni lekar dolazi uskoro."},
+{q:"Ich sehe den freundlichen Arzt.",a:"Akkusativ",case:"akk",sr:"Vidim ljubaznog lekara."},
+{q:"Ich spreche mit dem freundlichen Arzt.",a:"Dativ",case:"dat",sr:"Razgovaram sa ljubaznim lekarom."},
+{q:"Die neue Lehrerin erklärt die Aufgabe.",a:"Nominativ",case:"nom",sr:"Nova nastavnica objašnjava zadatak."},
+{q:"Ich frage die neue Lehrerin.",a:"Akkusativ",case:"akk",sr:"Pitam novu nastavnicu."},
+{q:"Ich danke der neuen Lehrerin.",a:"Dativ",case:"dat",sr:"Zahvaljujem novoj nastavnici."},
+{q:"Das kleine Mädchen lacht.",a:"Nominativ",case:"nom",sr:"Mala devojčica se smeje."},
+{q:"Ich sehe das kleine Mädchen.",a:"Akkusativ",case:"akk",sr:"Vidim malu devojčicu."},
+{q:"Ich gebe dem kleinen Mädchen ein Eis.",a:"Dativ",case:"dat",sr:"Dajem maloj devojčici sladoled."},
+{q:"Die alten Männer sitzen im Park.",a:"Nominativ",case:"nom",sr:"Stari muškarci sede u parku."},
+{q:"Wir besuchen die alten Männer.",a:"Akkusativ",case:"akk",sr:"Posećujemo stare muškarce."},
+{q:"Wir sprechen mit den alten Männern.",a:"Dativ",case:"dat",sr:"Razgovaramo sa starim muškarcima."}
+];
+
+const FILL = [
+{q:"Dopuni pridev.",base:"Der ___ Mann arbeitet hier. (fleißig)",a:"fleißige",full:"Der fleißige Mann arbeitet hier.",sr:"Vredni čovek radi ovde."},
+{q:"Dopuni pridev.",base:"Die ___ Frau wartet draußen. (jung)",a:"junge",full:"Die junge Frau wartet draußen.",sr:"Mlada žena čeka napolju."},
+{q:"Dopuni pridev.",base:"Das ___ Zimmer ist frei. (groß)",a:"große",full:"Das große Zimmer ist frei.",sr:"Velika soba je slobodna."},
+{q:"Dopuni pridev.",base:"Die ___ Autos stehen draußen. (neu)",a:"neuen",full:"Die neuen Autos stehen draußen.",sr:"Novi automobili stoje napolju."},
+{q:"Dopuni pridev.",base:"Ich kaufe den ___ Mantel. (schwarz)",a:"schwarzen",full:"Ich kaufe den schwarzen Mantel.",sr:"Kupujem crni kaput."},
+{q:"Dopuni pridev.",base:"Sie trägt die ___ Bluse. (weiß)",a:"weiße",full:"Sie trägt die weiße Bluse.",sr:"Ona nosi belu bluzu."},
+{q:"Dopuni pridev.",base:"Wir brauchen das ___ Wörterbuch. (neu)",a:"neue",full:"Wir brauchen das neue Wörterbuch.",sr:"Potreban nam je novi rečnik."},
+{q:"Dopuni pridev.",base:"Ich sehe die ___ Berge. (hoch)",a:"hohen",full:"Ich sehe die hohen Berge.",sr:"Vidim visoke planine."},
+{q:"Dopuni pridev.",base:"Ich rede mit dem ___ Chef. (streng)",a:"strengen",full:"Ich rede mit dem strengen Chef.",sr:"Razgovaram sa strogim šefom."},
+{q:"Dopuni pridev.",base:"Er hilft der ___ Nachbarin. (alt)",a:"alten",full:"Er hilft der alten Nachbarin.",sr:"On pomaže staroj komšinici."},
+{q:"Dopuni pridev.",base:"Wir fahren mit dem ___ Auto. (rot)",a:"roten",full:"Wir fahren mit dem roten Auto.",sr:"Vozimo se crvenim autom."},
+{q:"Dopuni pridev.",base:"Sie spricht mit den ___ Kollegen. (neu)",a:"neuen",full:"Sie spricht mit den neuen Kollegen.",sr:"Ona razgovara sa novim kolegama."},
+{q:"Dopuni pridev.",base:"Der ___ Kaffee ist heiß. (stark)",a:"starke",full:"Der starke Kaffee ist heiß.",sr:"Jaka kafa je vruća."},
+{q:"Dopuni pridev.",base:"Ich bestelle den ___ Kaffee. (stark)",a:"starken",full:"Ich bestelle den starken Kaffee.",sr:"Naručujem jaku kafu."},
+{q:"Dopuni pridev.",base:"Ich bin mit dem ___ Kaffee zufrieden. (stark)",a:"starken",full:"Ich bin mit dem starken Kaffee zufrieden.",sr:"Zadovoljan sam jakom kafom."},
+{q:"Dopuni pridev.",base:"Die ___ Aufgaben sind leicht. (kurz)",a:"kurzen",full:"Die kurzen Aufgaben sind leicht.",sr:"Kratki zadaci su laki."}
+];
+
+const ORDER = [
+{tokens:["Der","nette","Mann","hilft","mir."],a:"Der nette Mann hilft mir.",sr:"Ljubazni čovek mi pomaže."},
+{tokens:["Die","kleine","Katze","schläft","hier."],a:"Die kleine Katze schläft hier.",sr:"Mala mačka spava ovde."},
+{tokens:["Das","neue","Handy","ist","teuer."],a:"Das neue Handy ist teuer.",sr:"Novi telefon je skup."},
+{tokens:["Die","guten","Schüler","lernen","viel."],a:"Die guten Schüler lernen viel.",sr:"Dobri učenici mnogo uče."},
+{tokens:["Ich","sehe","den","alten","Mann."],a:"Ich sehe den alten Mann.",sr:"Vidim starog čoveka."},
+{tokens:["Wir","kaufen","die","rote","Tasche."],a:"Wir kaufen die rote Tasche.",sr:"Kupujemo crvenu torbu."},
+{tokens:["Er","öffnet","das","große","Fenster."],a:"Er öffnet das große Fenster.",sr:"On otvara veliki prozor."},
+{tokens:["Sie","besucht","die","neuen","Freunde."],a:"Sie besucht die neuen Freunde.",sr:"Ona posećuje nove prijatelje."},
+{tokens:["Ich","helfe","dem","kranken","Mann."],a:"Ich helfe dem kranken Mann.",sr:"Pomažem bolesnom čoveku."},
+{tokens:["Wir","danken","der","netten","Frau."],a:"Wir danken der netten Frau.",sr:"Zahvaljujemo ljubaznoj ženi."},
+{tokens:["Er","spielt","mit","dem","kleinen","Kind."],a:"Er spielt mit dem kleinen Kind.",sr:"On se igra sa malim detetom."},
+{tokens:["Sie","spricht","mit","den","jungen","Leuten."],a:"Sie spricht mit den jungen Leuten.",sr:"Ona razgovara sa mladim ljudima."},
+{tokens:["Der","interessante","Film","beginnt","gleich."],a:"Der interessante Film beginnt gleich.",sr:"Zanimljiv film uskoro počinje."},
+{tokens:["Ich","sehe","den","interessanten","Film."],a:"Ich sehe den interessanten Film.",sr:"Gledam zanimljiv film."},
+{tokens:["Wir","sprechen","über","die","neue","Arbeit."],a:"Wir sprechen über die neue Arbeit.",sr:"Razgovaramo o novom poslu."},
+{tokens:["Ich","fahre","mit","dem","schnellen","Zug."],a:"Ich fahre mit dem schnellen Zug.",sr:"Putujem brzim vozom."}
+];
+
+const TRANSLATE = [
+{sr:"Lepi čovek dolazi.",a:"Der schöne Mann kommt.",o:["Der schöne Mann kommt.","Der schönen Mann kommt.","Den schöne Mann kommt."]},
+{sr:"Vidim lepog čoveka.",a:"Ich sehe den schönen Mann.",o:["Ich sehe der schöne Mann.","Ich sehe den schönen Mann.","Ich sehe dem schönen Mann."]},
+{sr:"Pomažem lepom čoveku.",a:"Ich helfe dem schönen Mann.",o:["Ich helfe den schönen Mann.","Ich helfe dem schönen Mann.","Ich helfe der schöne Mann."]},
+{sr:"Ljubazna žena govori.",a:"Die nette Frau spricht.",o:["Die nette Frau spricht.","Die netten Frau spricht.","Der nette Frau spricht."]},
+{sr:"Poznajem ljubaznu ženu.",a:"Ich kenne die nette Frau.",o:["Ich kenne die nette Frau.","Ich kenne die netten Frau.","Ich kenne der netten Frau."]},
+{sr:"Zahvaljujem ljubaznoj ženi.",a:"Ich danke der netten Frau.",o:["Ich danke die nette Frau.","Ich danke der netten Frau.","Ich danke dem netten Frau."]},
+{sr:"Malo dete se igra.",a:"Das kleine Kind spielt.",o:["Das kleine Kind spielt.","Das kleinen Kind spielt.","Dem kleine Kind spielt."]},
+{sr:"Vidim malo dete.",a:"Ich sehe das kleine Kind.",o:["Ich sehe das kleine Kind.","Ich sehe dem kleinen Kind.","Ich sehe den kleine Kind."]},
+{sr:"Pomažem malom detetu.",a:"Ich helfe dem kleinen Kind.",o:["Ich helfe das kleine Kind.","Ich helfe dem kleinen Kind.","Ich helfe den kleinen Kind."]},
+{sr:"Dobri učenici uče.",a:"Die guten Schüler lernen.",o:["Die gute Schüler lernen.","Die guten Schüler lernen.","Den guten Schüler lernen."]},
+{sr:"Vidim dobre učenike.",a:"Ich sehe die guten Schüler.",o:["Ich sehe die guten Schüler.","Ich sehe den guten Schüler.","Ich sehe die gute Schüler."]},
+{sr:"Pomažem dobrim učenicima.",a:"Ich helfe den guten Schülern.",o:["Ich helfe die guten Schüler.","Ich helfe den guten Schülern.","Ich helfe den gute Schülern."]},
+{sr:"Kupujemo novi auto.",a:"Wir kaufen das neue Auto.",o:["Wir kaufen das neue Auto.","Wir kaufen dem neuen Auto.","Wir kaufen das neuen Auto."]},
+{sr:"Vozimo se novim autom.",a:"Wir fahren mit dem neuen Auto.",o:["Wir fahren mit das neue Auto.","Wir fahren mit dem neuen Auto.","Wir fahren mit den neue Auto."]}
+];
+
+const TOTAL=ENDING.length+FORM.length+CASES.length+FILL.length+ORDER.length+TRANSLATE.length;
+let state={mode:"ending",idx:{ending:0,form:0,case:0,fill:0,order:0,translate:0},
+ solved:{ending:new Set(),form:new Set(),case:new Set(),fill:new Set(),order:new Set(),translate:new Set()},score:0};
+
+document.getElementById("total").textContent=TOTAL;
+const badge=document.getElementById("badge"),counter=document.getElementById("counter"),exercise=document.getElementById("exercise"),feedback=document.getElementById("feedback");
+function speak(t){if(!("speechSynthesis" in window))return;speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(t);u.lang="de-DE";u.rate=.92;speechSynthesis.speak(u)}
+function norm(s){return s.trim().replace(/\s+/g," ").replace(/\s+([.,!?])/g,"$1").toLowerCase()}
+function shuffle(a){a=[...a];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+function clearFb(){feedback.className="feedback";feedback.innerHTML=""}
+function fb(ok,html){feedback.className="feedback "+(ok?"good":"bad");feedback.innerHTML=html}
+function add(mode,i){if(!state.solved[mode].has(i)){state.solved[mode].add(i);state.score++;document.getElementById("score").textContent=state.score;document.getElementById("progress").style.width=(state.score/TOTAL*100)+"%"}}
+function tag(c){return `<span class="caseTag ${c}">${c==="nom"?"NOM":c==="akk"?"AKK":"DAT"}</span>`}
+function choices(arr,answer,onGood){exercise.querySelectorAll(".answer").forEach(b=>b.onclick=()=>{if(b.textContent===answer){b.classList.add("correct");onGood();exercise.querySelectorAll(".answer").forEach(x=>x.disabled=true)}else{b.classList.add("wrong");fb(false,"❌ Nije tačno. Pokušaj ponovo.")}})}
+
+function renderEnding(){
+ const i=state.idx.ending,x=ENDING[i];badge.textContent="✓ Izaberi nastavak";counter.textContent=`${i+1} / ${ENDING.length}`;
+ exercise.innerHTML=`<div class="prompt">${tag(x.case)} ${x.q}</div><div class="sub">Da li pridev dobija <b>-e</b> ili <b>-en</b>?</div><div class="answers"><button class="answer">e</button><button class="answer">en</button></div>`;
+ choices(["e","en"],x.a,()=>{add("ending",i);fb(true,`✅ Tačno: <b>${x.full}</b><span class="trans">${x.sr}</span>`);speak(x.full)})
+}
+function renderForm(){
+ const i=state.idx.form,x=FORM[i];badge.textContent="🧩 Izaberi ceo oblik";counter.textContent=`${i+1} / ${FORM.length}`;
+ exercise.innerHTML=`<div class="prompt">${x.q}</div><div class="sub">Pazi na član, padež i nastavak prideva.</div><div class="answers">${x.o.map(v=>`<button class="answer">${v}</button>`).join("")}</div>`;
+ choices(x.o,x.a,()=>{add("form",i);fb(true,`✅ Tačno: <b>${x.a}</b><span class="trans">${x.sr}</span>`);speak(x.say)})
+}
+function renderCase(){
+ const i=state.idx.case,x=CASES[i];badge.textContent="🎯 Prepoznaj padež";counter.textContent=`${i+1} / ${CASES.length}`;
+ exercise.innerHTML=`<div class="prompt">${x.q}</div><div class="sub">U kom padežu je označena imenička grupa sa pridevom?</div><div class="answers"><button class="answer">Nominativ</button><button class="answer">Akkusativ</button><button class="answer">Dativ</button></div>`;
+ choices([],x.a,()=>{add("case",i);fb(true,`✅ ${x.a}. <span class="trans">${x.sr}</span>`);speak(x.q)})
+}
+function renderFill(){
+ const i=state.idx.fill,x=FILL[i];badge.textContent="✍️ Upiši oblik prideva";counter.textContent=`${i+1} / ${FILL.length}`;
+ exercise.innerHTML=`<div class="prompt">${x.q}</div><div class="sub">${x.base}</div><input id="inp" class="input" placeholder="npr. schönen" autocomplete="off"><div class="actions"><button id="show" class="secondary">Prikaži</button><button id="check" class="primary">Proveri</button></div>`;
+ document.getElementById("check").onclick=()=>{const v=norm(document.getElementById("inp").value);if(v===norm(x.a)){add("fill",i);fb(true,`✅ <b>${x.full}</b><span class="trans">${x.sr}</span>`);speak(x.full)}else fb(false,`❌ Tačan oblik je <b>${x.a}</b>.`)};
+ document.getElementById("show").onclick=()=>{document.getElementById("inp").value=x.a;speak(x.full)};
+ document.getElementById("inp").addEventListener("keydown",e=>{if(e.key==="Enter")document.getElementById("check").click()})
+}
+function renderOrder(){
+ const i=state.idx.order,x=ORDER[i],words=shuffle(x.tokens);badge.textContent="↕ Složi rečenicu";counter.textContent=`${i+1} / ${ORDER.length}`;
+ exercise.innerHTML=`<div class="prompt">Složi pravilnu rečenicu.</div><div class="sub">Klikći reči pravilnim redosledom.</div><div id="build" class="build"></div><div style="height:9px"></div><div class="tokens">${words.map((w,k)=>`<button class="token" data-k="${k}" data-w="${encodeURIComponent(w)}">${w}</button>`).join("")}</div><div class="actions"><button id="clear" class="secondary">Obriši</button><button id="check" class="primary">Proveri</button></div>`;
+ const build=document.getElementById("build"),buttons=[...exercise.querySelectorAll(".token")];let picked=[];
+ function redraw(){build.innerHTML=picked.map((o,k)=>`<span class="built" data-i="${k}">${o.w}</span>`).join("");build.querySelectorAll(".built").forEach(b=>b.onclick=()=>{const k=+b.dataset.i;buttons[picked[k].idx].classList.remove("used");picked.splice(k,1);redraw()})}
+ buttons.forEach((b,idx)=>b.onclick=()=>{picked.push({w:decodeURIComponent(b.dataset.w),idx});b.classList.add("used");redraw()});
+ document.getElementById("clear").onclick=()=>{picked=[];buttons.forEach(b=>b.classList.remove("used"));redraw();clearFb()};
+ document.getElementById("check").onclick=()=>{const s=picked.map(x=>x.w).join(" ");if(norm(s)===norm(x.a)){add("order",i);fb(true,`✅ <b>${x.a}</b><span class="trans">${x.sr}</span>`);speak(x.a)}else fb(false,`❌ Redosled još nije tačan.`)}
+}
+function renderTranslate(){
+ const i=state.idx.translate,x=TRANSLATE[i];badge.textContent="🌍 Prevod";counter.textContent=`${i+1} / ${TRANSLATE.length}`;
+ exercise.innerHTML=`<div class="prompt">${x.sr}</div><div class="sub">Izaberi tačan nemački prevod.</div><div class="answers">${x.o.map(v=>`<button class="answer">${v}</button>`).join("")}</div>`;
+ choices(x.o,x.a,()=>{add("translate",i);fb(true,`✅ <b>${x.a}</b><span class="trans">${x.sr}</span>`);speak(x.a)})
+}
+function render(){
+ clearFb();document.querySelectorAll(".tab").forEach(t=>t.classList.toggle("active",t.dataset.mode===state.mode));
+ if(state.mode==="ending")renderEnding();if(state.mode==="form")renderForm();if(state.mode==="case")renderCase();if(state.mode==="fill")renderFill();if(state.mode==="order")renderOrder();if(state.mode==="translate")renderTranslate()
+}
+document.querySelectorAll(".tab").forEach(t=>t.onclick=()=>{state.mode=t.dataset.mode;render()});
+document.getElementById("nextBtn").onclick=()=>{
+ const lists={ending:ENDING,form:FORM,case:CASES,fill:FILL,order:ORDER,translate:TRANSLATE};
+ state.idx[state.mode]=(state.idx[state.mode]+1)%lists[state.mode].length;render()
+};
+document.getElementById("resetBtn").onclick=()=>{state={mode:"ending",idx:{ending:0,form:0,case:0,fill:0,order:0,translate:0},solved:{ending:new Set(),form:new Set(),case:new Set(),fill:new Set(),order:new Set(),translate:new Set()},score:0};document.getElementById("score").textContent=0;document.getElementById("progress").style.width="0%";render()};
+render();
+</script>
+</body>
+</html>
