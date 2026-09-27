@@ -1,0 +1,693 @@
+<!DOCTYPE html>
+<html lang="sr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DE-MAX • Veznik ALS</title>
+<style>
+:root{
+  --navy:#07285f;
+  --blue:#0a5ed1;
+  --blue2:#1a8dff;
+  --sky:#edf7ff;
+  --line:#cfe4fb;
+  --text:#16335f;
+  --muted:#7089a7;
+  --white:#fff;
+  --green:#0b9e58;
+  --red:#e53333;
+  --gold:#ffd44f;
+  --shadow:0 18px 48px rgba(7,48,108,.14);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;
+  font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",Arial,sans-serif;
+  color:var(--text);
+  background:
+    radial-gradient(circle at 8% 0%,rgba(26,141,255,.14),transparent 27%),
+    radial-gradient(circle at 97% 20%,rgba(10,94,209,.08),transparent 28%),
+    linear-gradient(180deg,#fbfdff,#eef7ff 55%,#fbfdff);
+}
+button,input{font:inherit}
+.app{width:min(1240px,100%);margin:auto;padding:14px 12px 64px}
+.hero{
+  position:relative;overflow:hidden;border-radius:30px;
+  background:linear-gradient(135deg,#06245a 0%,#0a5ed1 60%,#1a8dff 100%);
+  color:#fff;padding:28px 24px;box-shadow:var(--shadow)
+}
+.hero:before,.hero:after{
+  content:"";position:absolute;border-radius:999px;background:rgba(255,255,255,.08)
+}
+.hero:before{width:300px;height:300px;right:-110px;top:-120px}
+.hero:after{width:180px;height:180px;left:-60px;bottom:-88px}
+.brandline{position:relative;z-index:2;display:flex;justify-content:space-between;align-items:center;gap:14px}
+.brand{display:flex;align-items:center;gap:11px;font-weight:1000;letter-spacing:.5px}
+.logo{
+  width:58px;height:58px;border-radius:18px;background:#fff;color:var(--blue);
+  display:grid;place-items:center;font-weight:1000;box-shadow:0 8px 24px rgba(0,0,0,.13)
+}
+.brand small{display:block;font-weight:750;opacity:.82;letter-spacing:1.5px;font-size:11px}
+.pill{
+  background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.22);
+  border-radius:999px;padding:10px 14px;font-size:13px;font-weight:900
+}
+.hero h1{position:relative;z-index:2;margin:24px 0 8px;font-size:clamp(40px,7vw,75px);line-height:.98;letter-spacing:-2px}
+.hero h1 span{color:#d7edff}
+.hero p{position:relative;z-index:2;margin:0;max-width:960px;line-height:1.58;font-size:clamp(15px,2vw,20px)}
+.hero-stats{position:relative;z-index:2;display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:23px}
+.hstat{background:rgba(255,255,255,.13);border:1px solid rgba(255,255,255,.19);border-radius:18px;padding:14px 16px}
+.hstat b{display:block;font-size:24px}.hstat span{font-size:12px;opacity:.9}
+
+.tabs{display:flex;gap:8px;overflow:auto;padding:16px 1px 6px;scrollbar-width:none}
+.tabs::-webkit-scrollbar{display:none}
+.tabs button{
+  border:1px solid var(--line);background:#fff;color:var(--text);font-weight:900;
+  padding:11px 15px;border-radius:14px;cursor:pointer;white-space:nowrap;
+  box-shadow:0 7px 20px rgba(5,43,104,.06)
+}
+.tabs button.active{background:var(--blue);color:#fff;border-color:var(--blue)}
+.section{display:none;margin-top:16px}.section.active{display:block}
+.card{
+  background:rgba(255,255,255,.97);border:1px solid var(--line);border-radius:27px;
+  padding:22px;box-shadow:var(--shadow)
+}
+.card+.card{margin-top:15px}
+.head{display:flex;justify-content:space-between;gap:12px;align-items:flex-start;margin-bottom:17px}
+.kicker{
+  display:inline-flex;align-items:center;gap:7px;background:#e8f4ff;color:var(--blue);
+  padding:8px 11px;border-radius:999px;font-size:12px;font-weight:950;text-transform:uppercase;letter-spacing:.8px
+}
+.head h2{margin:8px 0 0;font-size:clamp(25px,4vw,35px);letter-spacing:-.6px}
+.rule-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.rulebox{border:1px solid var(--line);border-radius:22px;overflow:hidden;background:linear-gradient(180deg,#fff,#f2f8ff)}
+.rulebox .title{padding:15px 18px;background:linear-gradient(90deg,var(--navy),var(--blue));color:#fff;font-weight:950;font-size:21px}
+.rulebox .body{padding:16px 18px;line-height:1.65;font-weight:720}
+.formula{
+  font-size:clamp(18px,3vw,25px);font-weight:1000;text-align:center;
+  background:#fff7e8;border:1px solid #ffd1a6;color:#d75100;border-radius:18px;padding:15px;margin-top:13px
+}
+.example{border:1px solid var(--line);background:#f8fbff;border-radius:16px;padding:13px 15px;margin-top:10px}
+.example .de{font-size:18px;font-weight:880}.example .sr{font-size:14px;color:var(--muted);margin-top:4px}
+.red{color:var(--red);font-weight:1000}.green{color:var(--green);font-weight:1000}.blue{color:var(--blue);font-weight:1000}
+.note{
+  margin-top:15px;background:#fff7d2;border:1px solid #f2dc78;color:#5f4d00;
+  border-radius:18px;padding:14px 16px;font-weight:760;line-height:1.55
+}
+.compare{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:14px}
+.compare .box{border:1px solid var(--line);border-radius:20px;padding:16px;background:linear-gradient(180deg,#fff,#f4f9ff)}
+.compare h3{margin:0 0 10px;font-size:22px}
+.compare ul{margin:0;padding-left:20px;line-height:1.7;font-weight:740}
+
+.exercise{display:grid;grid-template-columns:1fr 290px;gap:16px}
+.qbox{
+  min-height:315px;border:1px solid var(--line);border-radius:24px;padding:22px;
+  background:linear-gradient(180deg,#fff,#f4faff);display:flex;flex-direction:column;justify-content:center
+}
+.qtop{font-size:13px;font-weight:950;text-transform:uppercase;letter-spacing:.9px;color:var(--muted)}
+.question{font-size:clamp(25px,4.4vw,41px);line-height:1.28;font-weight:950;margin:12px 0 18px}
+.blank{display:inline-block;min-width:120px;text-align:center;color:var(--red);border-bottom:4px solid var(--blue);padding:0 8px}
+.options{display:flex;flex-wrap:wrap;gap:10px}
+.opt{
+  border:2px solid var(--line);background:#fff;color:var(--text);border-radius:15px;
+  padding:13px 17px;font-weight:950;cursor:pointer;transition:.18s
+}
+.opt:hover{transform:translateY(-2px);border-color:var(--blue);box-shadow:0 8px 20px rgba(7,89,202,.12)}
+.opt.correct{background:#eafff2;border-color:#50cf91;color:#07864d}
+.opt.wrong{background:#fff0f0;border-color:#ef9595;color:#ca2c2c}
+.feedback{min-height:30px;margin-top:14px;font-weight:900}
+.feedback.ok{color:var(--green)}.feedback.no{color:var(--red)}
+.actions{display:flex;flex-wrap:wrap;gap:9px;margin-top:14px}
+.btn{border:0;border-radius:14px;padding:12px 16px;font-weight:950;cursor:pointer}
+.btn.primary{background:linear-gradient(90deg,var(--navy),var(--blue));color:#fff}
+.btn.ghost{background:#edf6ff;color:var(--blue);border:1px solid var(--line)}
+.btn.audio{background:#fff6d8;color:#655000;border:1px solid #f1dc82}
+.side{border:1px solid var(--line);border-radius:24px;padding:16px;background:linear-gradient(180deg,#edf7ff,#fff)}
+.ring{
+  width:120px;height:120px;border-radius:50%;margin:5px auto 13px;display:grid;place-items:center;
+  position:relative;background:conic-gradient(var(--blue) 0deg,#dcecff 0deg)
+}
+.ring:after{content:"";position:absolute;width:88px;height:88px;border-radius:50%;background:#fff}
+.ring span{position:relative;z-index:1;font-size:24px;font-weight:1000}
+.side h3{text-align:center;margin:0 0 12px}
+.mini{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.mini div{text-align:center;background:#fff;border:1px solid var(--line);border-radius:14px;padding:10px}
+.mini b{display:block;font-size:20px}
+.translate{background:#f5faff;border:1px solid var(--line);border-radius:18px;padding:14px 16px;margin-top:12px}
+.translate .label{font-size:12px;text-transform:uppercase;letter-spacing:.7px;color:var(--muted);font-weight:900}
+.translate .text{margin-top:5px;font-weight:850;font-size:17px}
+.answerline{
+  min-height:80px;border:2px dashed #a8d1f7;background:#f7fbff;border-radius:18px;padding:12px;
+  display:flex;flex-wrap:wrap;gap:9px;align-items:center
+}
+.wordbank{display:flex;flex-wrap:wrap;gap:9px;margin-top:12px}
+.word{border:2px solid var(--line);background:#fff;border-radius:13px;padding:10px 13px;font-weight:900;cursor:pointer}
+.word.used{opacity:.33;pointer-events:none}
+.token{background:var(--blue);color:#fff;border-radius:12px;padding:9px 12px;font-weight:900;cursor:pointer}
+.search{width:100%;border:1px solid var(--line);border-radius:16px;padding:13px 15px;font:inherit;font-weight:750;outline:none}
+.search:focus{border-color:var(--blue);box-shadow:0 0 0 4px rgba(7,89,202,.08)}
+.tablewrap{overflow:auto;margin-top:12px}
+table.list{width:100%;border-collapse:separate;border-spacing:0 9px}
+table.list th{text-align:left;color:var(--muted);font-size:12px;text-transform:uppercase;letter-spacing:.7px;padding:0 12px 4px}
+table.list td{background:#f7fbff;border-top:1px solid #d9ebfb;border-bottom:1px solid #d9ebfb;padding:12px;font-weight:750}
+table.list td:first-child{border-left:1px solid #d9ebfb;border-radius:14px 0 0 14px}
+table.list td:last-child{border-right:1px solid #d9ebfb;border-radius:0 14px 14px 0}
+.tag{display:inline-block;background:#e6f2ff;color:var(--blue);padding:4px 8px;border-radius:999px;font-size:11px;font-weight:950}
+.footer{text-align:center;color:#6e8dad;font-size:13px;margin-top:25px}
+@media(max-width:860px){
+  .app{padding:10px 10px 52px}.hero{padding:22px 17px;border-radius:24px}.pill{display:none}
+  .hero-stats,.rule-grid,.compare,.exercise{grid-template-columns:1fr}.side{order:-1}
+  .card{padding:16px;border-radius:22px}.question{font-size:28px}
+  .ring{width:96px;height:96px}.ring:after{width:68px;height:68px}.ring span{font-size:20px}
+}
+</style>
+</head>
+<body>
+<div class="app">
+<header class="hero">
+  <div class="brandline">
+    <div class="brand"><div class="logo">DM</div><div>DE-MAX<small>ALS TRAINER</small></div></div>
+    <div class="pill">A2–B1 • temporaler Konnektor</div>
+  </div>
+  <h1>Veznik <span>als</span></h1>
+  <p>Vežbaj nemački veznik <b>als</b>. Uči kada se koristi za <b>jednokratnu radnju u prošlosti</b>, kako izgleda red reči, kako glagol ide na kraj zavisne rečenice i kako se razlikuje od <b>wenn</b>.</p>
+  <div class="hero-stats">
+    <div class="hstat"><b id="allDone">0</b><span>urađenih zadataka</span></div>
+    <div class="hstat"><b id="allGood">0</b><span>tačnih odgovora</span></div>
+    <div class="hstat"><b id="allRate">0%</b><span>ukupna uspešnost</span></div>
+  </div>
+</header>
+
+<nav class="tabs">
+  <button class="active" data-tab="pravilo">📘 Pravilo</button>
+  <button data-tab="alswenn">✅ Als ili wenn?</button>
+  <button data-tab="glagol">🔚 Glagol na kraju</button>
+  <button data-tab="spoji">🔗 Spoji rečenice</button>
+  <button data-tab="redosled">🧩 Složi rečenicu</button>
+  <button data-tab="prevod">🌍 Prevod</button>
+  <button data-tab="primeri">📚 40 primera</button>
+  <button data-tab="test">🏁 Test</button>
+</nav>
+
+<section id="pravilo" class="section active">
+  <div class="card">
+    <div class="head"><div><div class="kicker">Pravilo</div><h2>Kada koristimo <span class="red">als</span>?</h2></div></div>
+    <div class="rule-grid">
+      <div class="rulebox">
+        <div class="title">Jednom u prošlosti</div>
+        <div class="body">
+          Veznik <b>als</b> koristimo kada govorimo o <b>jednokratnoj radnji ili situaciji u prošlosti</b>.
+          <div class="formula">Als + subjekt + ostalo + glagol, + glagol + subjekt ...</div>
+          <div class="example">
+            <div class="de"><span class="red">Als</span> ich klein <span class="green">war</span>, <span class="blue">spielte</span> ich oft im Park.</div>
+            <div class="sr">Kada sam bio mali, često sam se igrao u parku.</div>
+          </div>
+          <div class="example">
+            <div class="de">Ich war zu Hause, <span class="red">als</span> es stark <span class="green">regnete</span>.</div>
+            <div class="sr">Bio sam kod kuće kada je padala jaka kiša.</div>
+          </div>
+        </div>
+      </div>
+      <div class="rulebox">
+        <div class="title">Red reči</div>
+        <div class="body">
+          Kao i kod drugih zavisnih rečenica, u rečenici sa <b>als</b> glagol ide na <b>kraj</b>.
+          <div class="formula">Hauptsatz + als + subjekt + ostalo + glagol</div>
+          <div class="example">
+            <div class="de">Ich rief meine Mutter an, <span class="red">als</span> ich in Berlin <span class="green">ankam</span>.</div>
+            <div class="sr">Pozvao sam majku kada sam stigao u Berlin.</div>
+          </div>
+          <div class="example">
+            <div class="de"><span class="red">Als</span> der Unterricht zu Ende <span class="green">war</span>, <span class="blue">gingen</span> wir nach Hause.</div>
+            <div class="sr">Kada se nastava završila, otišli smo kući.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="compare">
+      <div class="box">
+        <h3><span class="red">als</span></h3>
+        <ul>
+          <li>jednom u prošlosti</li>
+          <li>konkretan događaj</li>
+          <li>npr. <i>Als ich 10 Jahre alt war ...</i></li>
+        </ul>
+      </div>
+      <div class="box">
+        <h3><span class="blue">wenn</span></h3>
+        <ul>
+          <li>ponavljanje / navika</li>
+          <li>sadašnjost ili budućnost</li>
+          <li>npr. <i>Wenn ich Zeit habe, lerne ich Deutsch.</i></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="note"><b>Zapamti:</b> <b>als</b> = jednom u prošlosti. Ako se nešto ponavlja ili važi uvek / u sadašnjosti / budućnosti, češće ide <b>wenn</b>.</div>
+  </div>
+</section>
+
+<section id="alswenn" class="section">
+  <div class="card">
+    <div class="head"><div><div class="kicker">Vežba 1</div><h2>Izaberi: als ili wenn?</h2></div></div>
+    <div class="exercise">
+      <div class="qbox">
+        <div class="qtop" id="awNo"></div>
+        <div class="question" id="awQ"></div>
+        <div class="options" id="awOpts"></div>
+        <div class="feedback" id="awFb"></div>
+        <div class="translate" id="awTr"></div>
+        <div class="actions"><button class="btn primary" id="awNext">Sledeće →</button><button class="btn audio" id="awSpeak">🔊 Izgovor</button></div>
+      </div>
+      <div class="side">
+        <div class="ring" id="awRing"><span id="awPct">0%</span></div>
+        <h3>Napredak</h3>
+        <div class="mini"><div><b id="awDone">0</b><span>urađeno</span></div><div><b id="awGood">0</b><span>tačno</span></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="glagol" class="section">
+  <div class="card">
+    <div class="head"><div><div class="kicker">Vežba 2</div><h2>Glagol na kraju u als-rečenici</h2></div></div>
+    <div class="exercise">
+      <div class="qbox">
+        <div class="qtop" id="verbNo"></div>
+        <div class="question" id="verbQ"></div>
+        <div class="options" id="verbOpts"></div>
+        <div class="feedback" id="verbFb"></div>
+        <div class="translate" id="verbTr"></div>
+        <div class="actions"><button class="btn primary" id="verbNext">Sledeće →</button><button class="btn audio" id="verbSpeak">🔊 Izgovor</button></div>
+      </div>
+      <div class="side">
+        <div class="ring" id="verbRing"><span id="verbPct">0%</span></div>
+        <h3>Napredak</h3>
+        <div class="mini"><div><b id="verbDone">0</b><span>urađeno</span></div><div><b id="verbGood">0</b><span>tačno</span></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="spoji" class="section">
+  <div class="card">
+    <div class="head"><div><div class="kicker">Vežba 3</div><h2>Spoji dve rečenice veznikom als</h2></div></div>
+    <div class="exercise">
+      <div class="qbox">
+        <div class="qtop" id="joinNo"></div>
+        <div class="question" style="font-size:26px" id="joinQ"></div>
+        <div class="options" id="joinOpts"></div>
+        <div class="feedback" id="joinFb"></div>
+        <div class="translate" id="joinTr"></div>
+        <div class="actions"><button class="btn primary" id="joinNext">Sledeće →</button><button class="btn audio" id="joinSpeak">🔊 Izgovor</button></div>
+      </div>
+      <div class="side">
+        <div class="ring" id="joinRing"><span id="joinPct">0%</span></div>
+        <h3>Napredak</h3>
+        <div class="mini"><div><b id="joinDone">0</b><span>urađeno</span></div><div><b id="joinGood">0</b><span>tačno</span></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="redosled" class="section">
+  <div class="card">
+    <div class="head"><div><div class="kicker">Vežba 4</div><h2>Složi pravilnu rečenicu</h2></div></div>
+    <div class="qbox">
+      <div class="qtop" id="orderNo"></div>
+      <div class="question" style="font-size:25px" id="orderHint"></div>
+      <div class="answerline" id="answerLine"></div>
+      <div class="wordbank" id="wordBank"></div>
+      <div class="feedback" id="orderFb"></div>
+      <div class="translate" id="orderTr"></div>
+      <div class="actions">
+        <button class="btn primary" id="orderCheck">Proveri</button>
+        <button class="btn ghost" id="orderReset">Ponovo</button>
+        <button class="btn ghost" id="orderShow">Rešenje</button>
+        <button class="btn audio" id="orderSpeak">🔊 Izgovor</button>
+        <button class="btn primary" id="orderNext">Sledeće →</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="prevod" class="section">
+  <div class="card">
+    <div class="head"><div><div class="kicker">Vežba 5</div><h2>Izaberi tačan prevod</h2></div></div>
+    <div class="exercise">
+      <div class="qbox">
+        <div class="qtop" id="transNo"></div>
+        <div class="question" id="transQ"></div>
+        <div class="options" id="transOpts"></div>
+        <div class="feedback" id="transFb"></div>
+        <div class="actions"><button class="btn primary" id="transNext">Sledeće →</button><button class="btn audio" id="transSpeak">🔊 Izgovor</button></div>
+      </div>
+      <div class="side">
+        <div class="ring" id="transRing"><span id="transPct">0%</span></div>
+        <h3>Napredak</h3>
+        <div class="mini"><div><b id="transDone">0</b><span>urađeno</span></div><div><b id="transGood">0</b><span>tačno</span></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="primeri" class="section">
+  <div class="card">
+    <div class="head"><div><div class="kicker">Baza primera</div><h2>40 korisnih primera sa als</h2></div></div>
+    <input id="exSearch" class="search" placeholder="Pretraži npr. klein, Berlin, Unterricht, regnete..." />
+    <div class="tablewrap">
+      <table class="list">
+        <thead><tr><th>Nemački</th><th>Prevod</th><th>Tip</th><th>Izgovor</th></tr></thead>
+        <tbody id="exTable"></tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<section id="test" class="section">
+  <div class="card">
+    <div class="head"><div><div class="kicker">Završni test</div><h2>20 mešovitih pitanja</h2></div></div>
+    <div class="exercise">
+      <div class="qbox">
+        <div class="qtop" id="testNo"></div>
+        <div class="question" id="testQ"></div>
+        <div class="options" id="testOpts"></div>
+        <div class="feedback" id="testFb"></div>
+        <div class="translate" id="testTr"></div>
+        <div class="actions"><button class="btn primary" id="testNext">Sledeće →</button><button class="btn audio" id="testSpeak">🔊 Izgovor</button></div>
+      </div>
+      <div class="side">
+        <div class="ring" id="testRing"><span id="testPct">0%</span></div>
+        <h3>Rezultat</h3>
+        <div class="mini"><div><b id="testDone">0</b><span>od 20</span></div><div><b id="testGood">0</b><span>tačno</span></div></div>
+        <div class="note" id="testResult">Odgovori na svih 20 pitanja.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="footer">DE-MAX • ALS Trainer • Jednokratna radnja u prošlosti</div>
+</div>
+
+<script>
+const $=id=>document.getElementById(id);
+const shuffle=a=>[...a].sort(()=>Math.random()-.5);
+let total={done:0,good:0};
+
+function updateAll(){
+  $("allDone").textContent=total.done;
+  $("allGood").textContent=total.good;
+  $("allRate").textContent=total.done?Math.round(total.good/total.done*100)+"%":"0%";
+}
+function ring(id,pct){$(id).style.background=`conic-gradient(var(--blue) ${pct*3.6}deg,#dcecff 0deg)`}
+function speak(text){
+  if(!("speechSynthesis" in window))return;
+  speechSynthesis.cancel();
+  const u=new SpeechSynthesisUtterance(text);u.lang="de-DE";u.rate=.88;speechSynthesis.speak(u);
+}
+document.querySelectorAll(".tabs button").forEach(b=>b.onclick=()=>{
+  document.querySelectorAll(".tabs button").forEach(x=>x.classList.remove("active"));
+  document.querySelectorAll(".section").forEach(x=>x.classList.remove("active"));
+  b.classList.add("active");$(b.dataset.tab).classList.add("active");
+});
+
+const alsWennData=[
+["___ ich klein war, spielte ich oft im Park.","als",["als","wenn"],"Als ich klein war, spielte ich oft im Park.","Kada sam bio mali, često sam se igrao u parku."],
+["___ ich Zeit habe, lerne ich Deutsch.","wenn",["als","wenn"],"Wenn ich Zeit habe, lerne ich Deutsch.","Kada imam vremena, učim nemački."],
+["Ich rief ihn an, ___ ich in Berlin ankam.","als",["als","wenn"],"Ich rief ihn an, als ich in Berlin ankam.","Pozvao sam ga kada sam stigao u Berlin."],
+["___ es regnet, bleibe ich zu Hause.","wenn",["als","wenn"],"Wenn es regnet, bleibe ich zu Hause.","Kada pada kiša, ostajem kod kuće."],
+["___ wir Kinder waren, wohnten wir in Tutin.","als",["als","wenn"],"Als wir Kinder waren, wohnten wir in Tutin.","Kada smo bili deca, živeli smo u Tutinu."],
+["___ ich müde bin, trinke ich Kaffee.","wenn",["als","wenn"],"Wenn ich müde bin, trinke ich Kaffee.","Kada sam umoran, pijem kafu."],
+["___ der Unterricht zu Ende war, gingen wir nach Hause.","als",["als","wenn"],"Als der Unterricht zu Ende war, gingen wir nach Hause.","Kada se nastava završila, otišli smo kući."],
+["___ ich Urlaub habe, fahre ich ans Meer.","wenn",["als","wenn"],"Wenn ich Urlaub habe, fahre ich ans Meer.","Kada imam odmor, idem na more."],
+["Ich war sehr glücklich, ___ ich die Prüfung bestand.","als",["als","wenn"],"Ich war sehr glücklich, als ich die Prüfung bestand.","Bio sam veoma srećan kada sam položio ispit."],
+["___ ich früh aufstehe, mache ich Sport.","wenn",["als","wenn"],"Wenn ich früh aufstehe, mache ich Sport.","Kada ustanem rano, vežbam."]
+];
+
+const verbData=[
+["Als ich klein ___, spielte ich oft Fußball.","war",["war","bin","ist","waren"],"Als ich klein war, spielte ich oft Fußball.","Kada sam bio mali, često sam igrao fudbal."],
+["Ich freute mich, als du mich ___ .","besuchtest",["besuchtest","besuchst","hast besucht","besucht"],"Ich freute mich, als du mich besuchtest.","Obradovao sam se kada si me posetio."],
+["Als der Film zu Ende ___, gingen wir nach Hause.","war",["war","ist","waren","seid"],"Als der Film zu Ende war, gingen wir nach Hause.","Kada se film završio, otišli smo kući."],
+["Ich rief meine Mutter an, als ich in Berlin ___ .","ankam",["ankam","ankomme","ankommt","bin angekommen"],"Ich rief meine Mutter an, als ich in Berlin ankam.","Pozvao sam majku kada sam stigao u Berlin."],
+["Als wir Kinder ___, spielten wir draußen.","waren",["waren","seid","sind","war"],"Als wir Kinder waren, spielten wir draußen.","Kada smo bili deca, igrali smo se napolju."],
+["Als es stark ___, blieb ich zu Hause.","regnete",["regnete","regnet","geregnet","regnen"],"Als es stark regnete, blieb ich zu Hause.","Kada je jaka kiša padala, ostao sam kod kuće."],
+["Als der Lehrer ins Klassenzimmer ___, wurden alle still.","kam",["kam","kommt","kommen","gekommen"],"Als der Lehrer ins Klassenzimmer kam, wurden alle still.","Kada je nastavnik ušao u učionicu, svi su utihnuli."],
+["Ich lernte viel, als die Prüfung näher ___ .","kam",["kam","kommt","gekommen","kommen"],"Ich lernte viel, als die Prüfung näher kam.","Mnogo sam učio kada se ispit približio."],
+["Als ich mein erstes Handy ___, war ich sehr froh.","bekam",["bekam","bekomme","bekommt","bekommen"],"Als ich mein erstes Handy bekam, war ich veoma srećan.","Kada sam dobio svoj prvi telefon, bio sam veoma srećan."],
+["Als wir in Deutschland ___, besuchten wir Berlin.","waren",["waren","sind","seid","war"],"Als wir in Deutschland waren, besuchten wir Berlin.","Kada smo bili u Nemačkoj, posetili smo Berlin."],
+["Als der Bus endlich ___, stiegen alle ein.","kam",["kam","kommt","kommen","gekommen"],"Als der Bus endlich kam, stiegen alle ein.","Kada je autobus konačno stigao, svi su ušli."],
+["Ich schlief ein, als ich sehr müde ___ .","war",["war","bin","bist","ist"],"Ich schlief ein, als ich sehr müde war.","Zaspao sam kada sam bio veoma umoran."]
+];
+
+const joinData=[
+["Ich war sehr froh. Ich bekam mein erstes Fahrrad.","Ich war sehr froh, als ich mein erstes Fahrrad bekam.",["Ich war sehr froh, als ich mein erstes Fahrrad bekam.","Ich war sehr froh, als bekam ich mein erstes Fahrrad.","Ich war sehr froh, ich mein erstes Fahrrad als bekam."],"Bio sam veoma srećan kada sam dobio svoj prvi bicikl."],
+["Wir gingen nach Hause. Der Unterricht war zu Ende.","Wir gingen nach Hause, als der Unterricht zu Ende war.",["Wir gingen nach Hause, als der Unterricht zu Ende war.","Wir gingen nach Hause, als war der Unterricht zu Ende.","Wir gingen nach Hause, der Unterricht als zu Ende war."],"Otišli smo kući kada se nastava završila."],
+["Ich rief dich an. Ich kam in Berlin an.","Ich rief dich an, als ich in Berlin ankam.",["Ich rief dich an, als ich in Berlin ankam.","Ich rief dich an, als kam ich in Berlin an.","Ich rief dich an, ich in Berlin als ankam."],"Pozvao sam te kada sam stigao u Berlin."],
+["Ich spielte im Hof. Ich war klein.","Ich spielte im Hof, als ich klein war.",["Ich spielte im Hof, als ich klein war.","Ich spielte im Hof, als war ich klein.","Ich spielte im Hof, ich klein als war."],"Igrao sam se u dvorištu kada sam bio mali."],
+["Ich blieb zu Hause. Es regnete stark.","Ich blieb zu Hause, als es stark regnete.",["Ich blieb zu Hause, als es stark regnete.","Ich blieb zu Hause, als regnete es stark.","Ich blieb zu Hause, es stark als regnete."],"Ostao sam kod kuće kada je jaka kiša padala."],
+["Alle wurden still. Der Lehrer kam herein.","Alle wurden still, als der Lehrer hereinkam.",["Alle wurden still, als der Lehrer hereinkam.","Alle wurden still, als kam der Lehrer herein.","Alle wurden still, der Lehrer als hereinkam."],"Svi su utihnuli kada je nastavnik ušao."],
+["Ich war nervös. Die Prüfung begann.","Ich war nervös, als die Prüfung begann.",["Ich war nervös, als die Prüfung begann.","Ich war nervös, als begann die Prüfung.","Ich war nervös, die Prüfung als begann."],"Bio sam nervozan kada je ispit počeo."],
+["Wir machten viele Fotos. Wir waren in Berlin.","Wir machten viele Fotos, als wir in Berlin waren.",["Wir machten viele Fotos, als wir in Berlin waren.","Wir machten viele Fotos, als waren wir in Berlin.","Wir machten viele Fotos, wir in Berlin als waren."],"Napravili smo mnogo fotografija kada smo bili u Berlinu."],
+["Ich war glücklich. Ich bestand die Prüfung.","Ich war glücklich, als ich die Prüfung bestand.",["Ich war glücklich, als ich die Prüfung bestand.","Ich war glücklich, als bestand ich die Prüfung.","Ich war glücklich, ich die Prüfung als bestand."],"Bio sam srećan kada sam položio ispit."],
+["Er lächelte. Er sah mich.","Er lächelte, als er mich sah.",["Er lächelte, als er mich sah.","Er lächelte, als sah er mich.","Er lächelte, er mich als sah."],"Nasmešio se kada me je video."]
+];
+
+const orderData=[
+{sr:"Kada sam bio mali, često sam vozio bicikl.",words:["Als","ich","klein","war,","fuhr","ich","oft","Fahrrad."],ans:"Als ich klein war, fuhr ich oft Fahrrad."},
+{sr:"Pozvao sam te kada sam stigao kući.",words:["Ich","rief","dich","an,","als","ich","nach","Hause","kam."],ans:"Ich rief dich an, als ich nach Hause kam."},
+{sr:"Kada se nastava završila, otišli smo kući.",words:["Als","der","Unterricht","zu","Ende","war,","gingen","wir","nach","Hause."],ans:"Als der Unterricht zu Ende war, gingen wir nach Hause."},
+{sr:"Bio sam srećan kada sam položio ispit.",words:["Ich","war","glücklich,","als","ich","die","Prüfung","bestand."],ans:"Ich war glücklich, als ich die Prüfung bestand."},
+{sr:"Kada je autobus stigao, svi su ušli.",words:["Als","der","Bus","kam,","stiegen","alle","ein."],ans:"Als der Bus kam, stiegen alle ein."},
+{sr:"Ostao sam kod kuće kada je padala jaka kiša.",words:["Ich","blieb","zu","Hause,","als","es","stark","regnete."],ans:"Ich blieb zu Hause, als es stark regnete."},
+{sr:"Kada smo bili deca, igrali smo se napolju.",words:["Als","wir","Kinder","waren,","spielten","wir","draußen."],ans:"Als wir Kinder waren, spielten wir draußen."},
+{sr:"Napravili smo mnogo fotografija kada smo bili u Berlinu.",words:["Wir","machten","viele","Fotos,","als","wir","in","Berlin","waren."],ans:"Wir machten viele Fotos, als wir in Berlin waren."},
+{sr:"Kada je nastavnik ušao, svi su utihnuli.",words:["Als","der","Lehrer","hereinkam,","wurden","alle","still."],ans:"Als der Lehrer hereinkam, wurden alle still."},
+{sr:"Nasmešio se kada me je video.",words:["Er","lächelte,","als","er","mich","sah."],ans:"Er lächelte, als er mich sah."},
+{sr:"Kada sam dobio prvi telefon, bio sam srećan.",words:["Als","ich","mein","erstes","Handy","bekam,","war","ich","glücklich."],ans:"Als ich mein erstes Handy bekam, war ich glücklich."},
+{sr:"Bio sam veoma umoran kada sam došao kući.",words:["Ich","war","sehr","müde,","als","ich","nach","Hause","kam."],ans:"Ich war sehr müde, als ich nach Hause kam."}
+];
+
+const transData=[
+["Kada sam bio mali, živeo sam u Tutinu.","Als ich klein war, wohnte ich in Tutin.",["Als ich klein war, wohnte ich in Tutin.","Wenn ich klein war, wohnte ich in Tutin.","Als ich war klein, wohnte ich in Tutin."]],
+["Pozvao sam majku kada sam stigao u Berlin.","Ich rief meine Mutter an, als ich in Berlin ankam.",["Ich rief meine Mutter an, als ich in Berlin ankam.","Ich rief meine Mutter an, wenn ich in Berlin ankam.","Ich rief meine Mutter an, als kam ich in Berlin an."]],
+["Kada se film završio, otišli smo kući.","Als der Film zu Ende war, gingen wir nach Hause.",["Als der Film zu Ende war, gingen wir nach Hause.","Wenn der Film zu Ende war, gingen wir nach Hause.","Als der Film war zu Ende, gingen wir nach Hause."]],
+["Bio sam srećan kada sam položio ispit.","Ich war glücklich, als ich die Prüfung bestand.",["Ich war glücklich, als ich die Prüfung bestand.","Ich war glücklich, wenn ich die Prüfung bestand.","Ich war glücklich, als bestand ich die Prüfung."]],
+["Ostao sam kod kuće kada je padala jaka kiša.","Ich blieb zu Hause, als es stark regnete.",["Ich blieb zu Hause, als es stark regnete.","Ich blieb zu Hause, wenn es stark regnete.","Ich blieb zu Hause, als regnete es stark."]],
+["Kada je autobus stigao, svi su ušli.","Als der Bus kam, stiegen alle ein.",["Als der Bus kam, stiegen alle ein.","Wenn der Bus kam, stiegen alle ein.","Als kam der Bus, stiegen alle ein."]],
+["Kada smo bili u Nemačkoj, posetili smo Berlin.","Als wir in Deutschland waren, besuchten wir Berlin.",["Als wir in Deutschland waren, besuchten wir Berlin.","Wenn wir in Deutschland waren, besuchten wir Berlin.","Als wir waren in Deutschland, besuchten wir Berlin."]],
+["Nasmešio se kada me je video.","Er lächelte, als er mich sah.",["Er lächelte, als er mich sah.","Er lächelte, wenn er mich sah.","Er lächelte, als sah er mich."]],
+["Kada sam dobio prvi bicikl, bio sam vrlo srećan.","Als ich mein erstes Fahrrad bekam, war ich sehr froh.",["Als ich mein erstes Fahrrad bekam, war ich sehr froh.","Wenn ich mein erstes Fahrrad bekam, war ich sehr froh.","Als ich bekam mein erstes Fahrrad, war ich sehr froh."]],
+["Kada je nastavnik ušao u učionicu, svi su utihnuli.","Als der Lehrer ins Klassenzimmer kam, wurden alle still.",["Als der Lehrer ins Klassenzimmer kam, wurden alle still.","Wenn der Lehrer ins Klassenzimmer kam, wurden alle still.","Als kam der Lehrer ins Klassenzimmer, wurden alle still."]],
+["Kada je počeo raspust, otišli smo na more.","Als die Ferien begannen, fuhren wir ans Meer.",["Als die Ferien begannen, fuhren wir ans Meer.","Wenn die Ferien begannen, fuhren wir ans Meer.","Als begannen die Ferien, fuhren wir ans Meer."]],
+["Bio sam kod kuće kada je nestala struja.","Ich war zu Hause, als der Strom ausfiel.",["Ich war zu Hause, als der Strom ausfiel.","Ich war zu Hause, wenn der Strom ausfiel.","Ich war zu Hause, als fiel der Strom aus."]]
+];
+
+const examples=[
+["Als ich klein war, spielte ich oft im Park.","Kada sam bio mali, često sam se igrao u parku.","als + prošlost"],
+["Als wir Kinder waren, wohnten wir in Tutin.","Kada smo bili deca, živeli smo u Tutinu.","als + prošlost"],
+["Als ich zehn Jahre alt war, bekam ich ein Fahrrad.","Kada sam imao deset godina, dobio sam bicikl.","als + prošlost"],
+["Als meine Schwester geboren wurde, war ich sehr glücklich.","Kada se moja sestra rodila, bio sam veoma srećan.","als + prošlost"],
+["Als der Unterricht zu Ende war, gingen wir nach Hause.","Kada se nastava završila, otišli smo kući.","als + prošlost"],
+["Als der Film begann, wurde es still.","Kada je film počeo, postalo je tiho.","als + prošlost"],
+["Als ich in Berlin ankam, rief ich meine Mutter an.","Kada sam stigao u Berlin, pozvao sam majku.","als + prošlost"],
+["Als der Zug abfuhr, winkten wir.","Kada je voz krenuo, mahali smo.","als + prošlost"],
+["Als ich mein erstes Handy bekam, war ich stolz.","Kada sam dobio svoj prvi telefon, bio sam ponosan.","als + prošlost"],
+["Als der Regen aufhörte, gingen wir spazieren.","Kada je kiša stala, otišli smo u šetnju.","als + prošlost"],
+["Als ich krank war, blieb ich zu Hause.","Kada sam bio bolestan, ostao sam kod kuće.","als + prošlost"],
+["Als es dunkel wurde, gingen wir hinein.","Kada je pao mrak, ušli smo unutra.","als + prošlost"],
+["Als der Lehrer hereinkam, wurden alle still.","Kada je nastavnik ušao, svi su utihnuli.","als + prošlost"],
+["Als der Bus endlich kam, stiegen alle ein.","Kada je autobus konačno stigao, svi su ušli.","als + prošlost"],
+["Als ich die Prüfung bestand, feierte ich mit Freunden.","Kada sam položio ispit, slavio sam sa prijateljima.","als + prošlost"],
+["Als wir in Deutschland waren, besuchten wir Berlin.","Kada smo bili u Nemačkoj, posetili smo Berlin.","als + prošlost"],
+["Als die Ferien begannen, fuhren wir ans Meer.","Kada je raspust počeo, otišli smo na more.","als + prošlost"],
+["Als ich zu Hause ankam, war niemand da.","Kada sam stigao kući, nikoga nije bilo.","als + prošlost"],
+["Als der Strom ausfiel, saßen wir im Dunkeln.","Kada je nestala struja, sedeli smo u mraku.","als + prošlost"],
+["Als ich ihn sah, lächelte ich.","Kada sam ga video, nasmešio sam se.","als + prošlost"],
+["Ich war im Garten, als es zu regnen begann.","Bio sam u bašti kada je počela kiša.","HS + als"],
+["Ich schlief ein, als ich sehr müde war.","Zaspao sam kada sam bio veoma umoran.","HS + als"],
+["Wir aßen zu Abend, als der Vater nach Hause kam.","Večerali smo kada je otac došao kući.","HS + als"],
+["Er rief mich an, als er in Novi Pazar war.","Pozvao me je kada je bio u Novom Pazaru.","HS + als"],
+["Ich freute mich, als du mich besucht hast.","Obradovao sam se kada si me posetio.","HS + als"],
+["Wir machten Fotos, als wir am See waren.","Fotografisali smo se kada smo bili na jezeru.","HS + als"],
+["Sie weinte, als sie die Nachricht hörte.","Plakala je kada je čula vest.","HS + als"],
+["Ich blieb zu Hause, als es stark regnete.","Ostao sam kod kuće kada je jaka kiša padala.","HS + als"],
+["Er lächelte, als er mich sah.","Nasmešio se kada me je video.","HS + als"],
+["Ich kaufte ein Eis, als ich in der Stadt war.","Kupio sam sladoled kada sam bio u gradu.","HS + als"],
+["Als ich Student war, lernte ich viel.","Kada sam bio student, mnogo sam učio.","als + prošlost"],
+["Als meine Oma noch lebte, besuchten wir sie oft.","Kada je moja baka još bila živa, često smo je posećivali.","als + prošlost"],
+["Als ich den Brief las, verstand ich alles.","Kada sam pročitao pismo, sve sam razumeo.","als + prošlost"],
+["Als wir uns trafen, war das Wetter schön.","Kada smo se sreli, vreme je bilo lepo.","als + prošlost"],
+["Als die Schule begann, war ich nervös.","Kada je škola počela, bio sam nervozan.","als + prošlost"],
+["Als ich mein Zimmer aufräumte, fand ich alte Fotos.","Kada sam sređivao sobu, našao sam stare fotografije.","als + prošlost"],
+["Als wir am Bahnhof ankamen, war der Zug schon da.","Kada smo stigli na stanicu, voz je već bio tamo.","als + prošlost"],
+["Als ich zum ersten Mal Deutsch sprach, hatte ich Angst.","Kada sam prvi put govorio nemački, plašio sam se.","als + prošlost"],
+["Als das Baby schlief, sprachen wir leise.","Kada je beba spavala, pričali smo tiho.","als + prošlost"],
+["Als der Arzt kam, fühlte ich mich besser.","Kada je lekar došao, osećao sam se bolje.","als + prošlost"]
+];
+
+function buildMC(prefix,data,answerIndex=1,optionsIndex=2,fullIndex=3,transIndex=4){
+  let i=0,done=0,good=0,locked=false,current="";
+  function render(){
+    locked=false; const row=data[i]; current=row[fullIndex];
+    $(prefix+"No").textContent=`Zadatak ${i+1} / ${data.length}`;
+    $(prefix+"Q").innerHTML=row[0].replace("___",'<span class="blank">?</span>');
+    $(prefix+"Fb").textContent=""; $(prefix+"Fb").className="feedback";
+    if($(prefix+"Tr")) $(prefix+"Tr").innerHTML=`<div class="label">Prevod / pomoć</div><div class="text">${row[transIndex]||""}</div>`;
+    const box=$(prefix+"Opts"); box.innerHTML="";
+    shuffle(row[optionsIndex]).forEach(op=>{
+      const b=document.createElement("button"); b.className="opt"; b.textContent=op;
+      b.onclick=()=>{
+        if(locked) return; locked=true; done++; total.done++;
+        $(prefix+"Q").innerHTML=row[0].replace("___",`<span class="blank">${op}</span>`);
+        if(op===row[answerIndex]){
+          b.classList.add("correct"); good++; total.good++;
+          $(prefix+"Fb").textContent="✓ Tačno!"; $(prefix+"Fb").className="feedback ok"; speak(current);
+        }else{
+          b.classList.add("wrong"); $(prefix+"Fb").textContent="✗ Tačno: "+row[answerIndex]; $(prefix+"Fb").className="feedback no";
+        }
+        $(prefix+"Done").textContent=done; $(prefix+"Good").textContent=good;
+        let p=Math.round(done/data.length*100); $(prefix+"Pct").textContent=p+"%"; ring(prefix+"Ring",p); updateAll();
+      };
+      box.appendChild(b);
+    });
+  }
+  $(prefix+"Next").onclick=()=>{i=(i+1)%data.length; render()};
+  $(prefix+"Speak").onclick=()=>speak(current);
+  render();
+}
+buildMC("aw",alsWennData);
+buildMC("verb",verbData);
+buildMC("join",joinData);
+
+let oi=0,selected=[];
+function renderOrder(){
+  selected=[]; const row=orderData[oi];
+  $("orderNo").textContent=`Zadatak ${oi+1} / ${orderData.length}`;
+  $("orderHint").textContent=row.sr; $("orderFb").textContent=""; $("orderFb").className="feedback";
+  $("orderTr").innerHTML='<div class="label">Zadatak</div><div class="text">Složi nemačku rečenicu. Obrati pažnju na red reči i na mesto glagola u als-rečenici.</div>';
+  $("answerLine").innerHTML=""; $("wordBank").innerHTML="";
+  shuffle(row.words.map((w,i)=>({w,i}))).forEach(o=>{
+    const b=document.createElement("button"); b.className="word"; b.textContent=o.w;
+    b.onclick=()=>{selected.push({w:o.w,el:b}); b.classList.add("used"); drawOrder()};
+    $("wordBank").appendChild(b);
+  });
+}
+function drawOrder(){
+  $("answerLine").innerHTML="";
+  selected.forEach((o,i)=>{
+    const t=document.createElement("span"); t.className="token"; t.textContent=o.w;
+    t.onclick=()=>{o.el.classList.remove("used"); selected.splice(i,1); drawOrder()};
+    $("answerLine").appendChild(t);
+  });
+}
+$("orderCheck").onclick=()=>{
+  const user=selected.map(x=>x.w).join(" "), ans=orderData[oi].ans; total.done++;
+  if(user===ans){ $("orderFb").textContent="✓ Tačno!"; $("orderFb").className="feedback ok"; total.good++; speak(ans); }
+  else{ $("orderFb").textContent="✗ Pokušaj ponovo."; $("orderFb").className="feedback no"; }
+  updateAll();
+};
+$("orderReset").onclick=renderOrder;
+$("orderShow").onclick=()=>{$("orderFb").textContent="Rešenje: "+orderData[oi].ans; $("orderFb").className="feedback ok"};
+$("orderSpeak").onclick=()=>speak(orderData[oi].ans);
+$("orderNext").onclick=()=>{oi=(oi+1)%orderData.length; renderOrder()};
+renderOrder();
+
+let ti2=0,done2=0,good2=0,lock2=false,cur2="";
+function renderTrans(){
+  lock2=false; const row=transData[ti2]; cur2=row[1];
+  $("transNo").textContent=`Zadatak ${ti2+1} / ${transData.length}`;
+  $("transQ").textContent=row[0]; $("transFb").textContent=""; $("transFb").className="feedback";
+  $("transOpts").innerHTML="";
+  shuffle(row[2]).forEach(op=>{
+    const b=document.createElement("button"); b.className="opt"; b.textContent=op;
+    b.onclick=()=>{
+      if(lock2) return; lock2=true; done2++; total.done++;
+      if(op===row[1]){
+        b.classList.add("correct"); good2++; total.good++;
+        $("transFb").textContent="✓ Tačno!"; $("transFb").className="feedback ok"; speak(row[1]);
+      }else{
+        b.classList.add("wrong"); $("transFb").textContent="✗ Tačno: "+row[1]; $("transFb").className="feedback no";
+      }
+      $("transDone").textContent=done2; $("transGood").textContent=good2;
+      let p=Math.round(done2/transData.length*100); $("transPct").textContent=p+"%"; ring("transRing",p); updateAll();
+    };
+    $("transOpts").appendChild(b);
+  });
+}
+$("transNext").onclick=()=>{ti2=(ti2+1)%transData.length; renderTrans()};
+$("transSpeak").onclick=()=>speak(cur2);
+renderTrans();
+
+function renderExamples(filter=""){
+  $("exTable").innerHTML="";
+  examples.filter(x=>x.join(" ").toLowerCase().includes(filter.toLowerCase())).forEach(x=>{
+    const tr=document.createElement("tr");
+    tr.innerHTML=`<td>${x[0]}</td><td>${x[1]}</td><td><span class="tag">${x[2]}</span></td><td><button class="btn audio">🔊</button></td>`;
+    tr.querySelector("button").onclick=()=>speak(x[0]);
+    $("exTable").appendChild(tr);
+  });
+}
+$("exSearch").oninput=e=>renderExamples(e.target.value);
+renderExamples();
+
+const testData=[
+["___ ich klein war, spielte ich oft im Park.","als",["als","wenn"],"Als ich klein war, spielte ich oft im Park.","Kada sam bio mali, često sam se igrao u parku."],
+["___ ich Zeit habe, lerne ich Deutsch.","wenn",["als","wenn"],"Wenn ich Zeit habe, lerne ich Deutsch.","Kada imam vremena, učim nemački."],
+["Als ich klein ___, spielte ich oft Fußball.","war",["war","bin","ist","waren"],"Als ich klein war, spielte ich oft Fußball.","Kada sam bio mali, često sam igrao fudbal."],
+["Ich rief ihn an, ___ ich in Berlin ankam.","als",["als","wenn"],"Ich rief ihn an, als ich in Berlin ankam.","Pozvao sam ga kada sam stigao u Berlin."],
+["Ich war sehr froh. Ich bekam mein erstes Fahrrad.","Ich war sehr froh, als ich mein erstes Fahrrad bekam.",["Ich war sehr froh, als ich mein erstes Fahrrad bekam.","Ich war sehr froh, als bekam ich mein erstes Fahrrad.","Ich war sehr froh, ich mein erstes Fahrrad als bekam."],"Bio sam veoma srećan kada sam dobio svoj prvi bicikl."],
+["Ich blieb zu Hause. Es regnete stark.","Ich blieb zu Hause, als es stark regnete.",["Ich blieb zu Hause, als es stark regnete.","Ich blieb zu Hause, als regnete es stark.","Ich blieb zu Hause, es stark als regnete."],"Ostao sam kod kuće kada je jaka kiša padala."],
+["Bio sam srećan kada sam položio ispit.","Ich war glücklich, als ich die Prüfung bestand.",["Ich war glücklich, als ich die Prüfung bestand.","Ich war glücklich, wenn ich die Prüfung bestand.","Ich war glücklich, als bestand ich die Prüfung."],"Prevod"],
+["Kada je autobus stigao, svi su ušli.","Als der Bus kam, stiegen alle ein.",["Als der Bus kam, stiegen alle ein.","Wenn der Bus kam, stiegen alle ein.","Als kam der Bus, stiegen alle ein."],"Prevod"],
+["___ der Unterricht zu Ende war, gingen wir nach Hause.","Als",["Als","Wenn"],"Als der Unterricht zu Ende war, gingen wir nach Hause.","Kada se nastava završila, otišli smo kući."],
+["Ich freute mich, als du mich ___ .","besuchtest",["besuchtest","besuchst","besucht","hast besucht"],"Ich freute mich, als du mich besuchtest.","Obradovao sam se kada si me posetio."],
+["___ ich müde bin, trinke ich Kaffee.","wenn",["als","wenn"],"Wenn ich müde bin, trinke ich Kaffee.","Kada sam umoran, pijem kafu."],
+["Ich war zu Hause, ___ der Strom ausfiel.","als",["als","wenn"],"Ich war zu Hause, als der Strom ausfiel.","Bio sam kod kuće kada je nestala struja."],
+["Als der Lehrer ins Klassenzimmer ___, wurden alle still.","kam",["kam","kommt","kommen","gekommen"],"Als der Lehrer ins Klassenzimmer kam, wurden alle still.","Kada je nastavnik ušao u učionicu, svi su utihnuli."],
+["Nasmešio se kada me je video.","Er lächelte, als er mich sah.",["Er lächelte, als er mich sah.","Er lächelte, wenn er mich sah.","Er lächelte, als sah er mich."],"Prevod"],
+["Kada je raspust počeo, otišli smo na more.","Als die Ferien begannen, fuhren wir ans Meer.",["Als die Ferien begannen, fuhren wir ans Meer.","Wenn die Ferien begannen, fuhren wir ans Meer.","Als begannen die Ferien, fuhren wir ans Meer."],"Prevod"],
+["___ es regnet, bleibe ich zu Hause.","wenn",["als","wenn"],"Wenn es regnet, bleibe ich zu Hause.","Kada pada kiša, ostajem kod kuće."],
+["Ich schlief ein, als ich sehr müde ___ .","war",["war","bin","bist","ist"],"Ich schlief ein, als ich sehr müde war.","Zaspao sam kada sam bio veoma umoran."],
+["Wir machten viele Fotos. Wir waren in Berlin.","Wir machten viele Fotos, als wir in Berlin waren.",["Wir machten viele Fotos, als wir in Berlin waren.","Wir machten viele Fotos, als waren wir in Berlin.","Wir machten viele Fotos, wir in Berlin als waren."],"Napravili smo mnogo fotografija kada smo bili u Berlinu."],
+["Kada sam bio mali, živeo sam u Tutinu.","Als ich klein war, wohnte ich in Tutin.",["Als ich klein war, wohnte ich in Tutin.","Wenn ich klein war, wohnte ich in Tutin.","Als ich war klein, wohnte ich in Tutin."],"Prevod"],
+["___ ich Urlaub habe, fahre ich ans Meer.","wenn",["als","wenn"],"Wenn ich Urlaub habe, fahre ich ans Meer.","Kada imam odmor, idem na more."]
+];
+
+let ti=0,td=0,tg=0,tlock=false,tcur="";
+function renderTest(){
+  if(ti>=20){
+    $("testNo").textContent="Rezultat"; $("testQ").textContent="Test je završen."; $("testOpts").innerHTML=""; $("testTr").innerHTML="";
+    let p=Math.round(tg/20*100); $("testPct").textContent=p+"%"; ring("testRing",p);
+    $("testResult").innerHTML=`Rezultat: <b>${tg}/20</b> (${p}%). ${p>=85?"Odlično!":p>=65?"Vrlo dobro — još malo vežbaj razliku als / wenn.":"Vrati se na pravilo i ponovi red reči."}`;
+    return;
+  }
+  tlock=false; const row=testData[ti]; tcur=row[3];
+  $("testNo").textContent=`Pitanje ${ti+1} / 20`;
+  $("testQ").innerHTML=row[0].replace("___",'<span class="blank">?</span>');
+  $("testFb").textContent=""; $("testFb").className="feedback";
+  $("testTr").innerHTML=`<div class="label">Prevod / pomoć</div><div class="text">${row[4]}</div>`;
+  $("testOpts").innerHTML="";
+  shuffle(row[2]).forEach(op=>{
+    const b=document.createElement("button"); b.className="opt"; b.textContent=op;
+    b.onclick=()=>{
+      if(tlock) return; tlock=true; td++; total.done++;
+      $("testQ").innerHTML=row[0].replace("___",`<span class="blank">${op}</span>`);
+      if(op===row[1]){
+        b.classList.add("correct"); tg++; total.good++;
+        $("testFb").textContent="✓ Tačno!"; $("testFb").className="feedback ok"; speak(row[3]);
+      }else{
+        b.classList.add("wrong"); $("testFb").textContent="✗ Tačno: "+row[1]; $("testFb").className="feedback no";
+      }
+      $("testDone").textContent=td; $("testGood").textContent=tg; let p=Math.round(td/20*100); $("testPct").textContent=p+"%"; ring("testRing",p); updateAll();
+    };
+    $("testOpts").appendChild(b);
+  });
+}
+$("testNext").onclick=()=>{if(!tlock&&ti<20)return; ti++; renderTest()};
+$("testSpeak").onclick=()=>speak(tcur);
+renderTest(); updateAll();
+</script>
+</body>
+</html>
