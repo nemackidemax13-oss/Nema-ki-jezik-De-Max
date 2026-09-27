@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="sr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>De-Max | Glagol lassen – Interaktivne vežbe</title>
+<style>
+:root{
+  --blue:#0b3fa5;
+  --blue2:#072b78;
+  --sky:#eaf4ff;
+  --red:#e31b23;
+  --pink:#ff3d72;
+  --green:#20a35a;
+  --ink:#132238;
+  --muted:#667389;
+  --line:#d7e4f6;
+  --card:#ffffff;
+  --soft:#f5f9ff;
+  --shadow:0 16px 42px rgba(15,55,120,.13);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;
+  font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+  color:var(--ink);
+  background:
+    radial-gradient(circle at 8% -5%, rgba(35,124,255,.14), transparent 30rem),
+    radial-gradient(circle at 100% 20%, rgba(227,27,35,.08), transparent 25rem),
+    linear-gradient(180deg,#f7fbff,#ffffff 42%,#f8fbff);
+  min-height:100vh;
+}
+button{font:inherit;cursor:pointer}
+.app{width:min(100%,1050px);margin:auto;padding:12px 12px 44px}
+.hero{
+  position:relative;overflow:hidden;
+  border-radius:30px;
+  background:linear-gradient(135deg,#0b4fc8 0%,#0a3593 58%,#061f5d 100%);
+  color:white;
+  border:3px solid #fff;
+  box-shadow:var(--shadow);
+  padding:25px 22px 24px;
+}
+.hero:before,.hero:after{
+  content:"";position:absolute;border-radius:50%;background:rgba(255,255,255,.08)
+}
+.hero:before{width:220px;height:220px;right:-85px;top:-90px}
+.hero:after{width:150px;height:150px;right:130px;bottom:-105px}
+.brand{
+  display:inline-flex;align-items:center;gap:8px;
+  background:#fff;color:var(--red);font-weight:1000;
+  padding:8px 13px;border-radius:13px;margin-bottom:12px;
+  box-shadow:0 6px 16px rgba(0,0,0,.18)
+}
+.hero h1{margin:0;font-size:clamp(32px,6vw,58px);line-height:1.0;letter-spacing:-1.5px;position:relative;z-index:2}
+.hero h1 span{display:block;color:#d9ebff;font-size:.63em;margin-top:9px;letter-spacing:-.7px}
+.hero p{position:relative;z-index:2;max-width:820px;font-size:clamp(15px,2.5vw,19px);line-height:1.5;margin:12px 0 0}
+.hero p b{color:#ffd7d9}
+.audio-top{
+  position:absolute;right:20px;bottom:18px;z-index:3;
+  border:0;border-radius:50%;width:52px;height:52px;
+  font-size:24px;background:#fff;color:var(--blue);
+  box-shadow:0 8px 18px rgba(0,0,0,.18)
+}
+.stats{
+  position:sticky;top:8px;z-index:50;
+  margin:12px 0;background:rgba(255,255,255,.95);backdrop-filter:blur(14px);
+  border:1px solid #dbe7f7;border-radius:18px;padding:10px 12px;
+  box-shadow:0 10px 25px rgba(11,63,165,.08)
+}
+.statrow{display:flex;align-items:center;gap:10px}
+.progress{height:11px;flex:1;background:#e6eef8;border-radius:999px;overflow:hidden}
+.progress span{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--blue),#4d91ff,var(--red));border-radius:inherit;transition:.25s}
+.stattext{font-size:13px;font-weight:900;color:var(--blue);white-space:nowrap}
+.tabs{
+  display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:12px 0 16px
+}
+.tab{
+  min-height:48px;border:1px solid #d9e6f8;background:#fff;color:var(--blue);
+  border-radius:14px;font-weight:900;padding:10px 8px;transition:.18s
+}
+.tab:hover,.tab.active{
+  background:linear-gradient(135deg,var(--blue),#286cd3);color:#fff;border-color:var(--blue);transform:translateY(-1px)
+}
+.panel{display:none}.panel.active{display:block}
+.card{
+  background:#fff;border:1px solid #dbe7f7;border-radius:24px;padding:20px;
+  box-shadow:var(--shadow)
+}
+.card+.card{margin-top:14px}
+.section-title{display:flex;gap:12px;align-items:center;margin-bottom:16px}
+.badge{
+  width:46px;height:46px;flex:0 0 auto;display:grid;place-items:center;
+  border-radius:14px;background:linear-gradient(135deg,var(--blue),#3983ef);color:#fff;font-weight:1000;
+  box-shadow:0 7px 16px rgba(11,63,165,.23)
+}
+.section-title h2{margin:0;color:var(--blue2);font-size:clamp(22px,4vw,34px)}
+.section-title p{margin:4px 0 0;color:var(--muted);font-weight:650}
+.rule-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.rule{
+  border-radius:18px;padding:15px;background:linear-gradient(180deg,#fff,#f5f9ff);
+  border:1px solid #d9e6f8
+}
+.rule h3{margin:0 0 8px;color:var(--blue);font-size:20px}
+.rule p{margin:0;line-height:1.5;font-weight:700}
+.rule .red{color:var(--red)} .rule .blue{color:var(--blue)}
+.conj{
+  width:100%;border-collapse:separate;border-spacing:0;overflow:hidden;border:1px solid #d7e4f6;border-radius:18px;margin-top:14px
+}
+.conj th,.conj td{padding:11px 10px;border-bottom:1px solid #e4edf8;text-align:center;font-weight:850}
+.conj th{background:linear-gradient(135deg,var(--blue),#174baf);color:#fff}
+.conj tr:last-child td{border-bottom:0}
+.conj td:nth-child(2){color:var(--red);font-size:18px}
+.examples{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px}
+.example{
+  border-radius:15px;padding:13px;background:#fff8f8;border:1px solid #f1d8db;font-weight:750;line-height:1.5
+}
+.example b{color:var(--red)}
+.note{
+  margin-top:12px;background:#fff8dd;border:1px solid #f1d67b;border-left:5px solid #f0bd10;border-radius:14px;padding:12px 14px;line-height:1.45;font-weight:700
+}
+.qtop{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:14px}
+.qcount{background:#eef5ff;color:var(--blue);border:1px solid #d7e5fa;border-radius:999px;padding:7px 11px;font-size:14px;font-weight:950}
+.speaker{border:1px solid #d6e3f7;background:#fff;color:var(--blue);border-radius:12px;width:43px;height:43px;font-size:20px}
+.prompt{font-size:clamp(23px,5vw,37px);line-height:1.35;color:var(--blue2);font-weight:950;margin:5px 0 18px}
+.blank{display:inline-block;min-width:125px;border-bottom:4px solid var(--red);text-align:center;color:var(--red);padding:0 7px 2px}
+.options{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+.options.three{grid-template-columns:repeat(3,1fr)}
+.option{
+  border:2px solid #d9e4f3;background:#fff;color:var(--blue2);border-radius:16px;padding:14px 11px;font-weight:900;font-size:18px;transition:.16s
+}
+.option:hover{border-color:#5b91dc;transform:translateY(-1px)}
+.option.correct{background:#eaf8ef;border-color:#64b985;color:#0d7439}
+.option.wrong{background:#fff0f1;border-color:#e5737c;color:#ad1522}
+.feedback{display:none;margin-top:14px;border-radius:16px;padding:12px 14px;line-height:1.5;border:1px solid #e3e9f1;background:#f7f9fc}
+.feedback.show{display:block}.feedback.ok{background:#edf9f1;border-color:#b9dfc5}.feedback.bad{background:#fff1f2;border-color:#efbdc2}
+.feedback strong{color:var(--blue2)}.translation{margin-top:4px;color:#667389;font-weight:700}
+.controls{display:flex;justify-content:space-between;gap:10px;margin-top:14px}
+.ctrl{border:0;border-radius:14px;padding:12px 16px;font-weight:900}
+.ctrl.primary{background:linear-gradient(135deg,var(--blue),#2f73db);color:#fff}
+.ctrl.secondary{background:#eef2f7;color:#2c3c50}
+.ctrl.danger{background:#fff0f1;color:#b61724}
+.ctrl:disabled{opacity:.45;cursor:not-allowed}
+.sentence,.wordbank{
+  min-height:66px;border-radius:16px;padding:11px;display:flex;flex-wrap:wrap;gap:8px
+}
+.sentence{border:2px solid #dbe5f2;background:#fff;margin-bottom:10px}
+.wordbank{border:2px dashed #bad1ee;background:#f8fbff}
+.word{
+  border:0;border-radius:12px;padding:10px 13px;font-weight:850;
+  background:linear-gradient(135deg,var(--blue),#3b80e6);color:#fff;box-shadow:0 4px 10px rgba(11,63,165,.17)
+}
+.sentence .word{background:#eef5ff;color:var(--blue);border:1px solid #cbdcf3;box-shadow:none}
+.task-label{font-weight:850;color:var(--muted);font-size:13px;margin-bottom:7px}
+.transform-box{
+  border:1px solid #d9e6f8;background:#f9fbff;border-radius:16px;padding:14px;margin-bottom:12px
+}
+.transform-box .src{font-size:20px;font-weight:900;color:var(--blue2);line-height:1.4}
+.transform-box .arrow{color:var(--red);font-weight:1000;margin:7px 0}
+.inputline{
+  width:100%;border:2px solid #cbdcf3;border-radius:14px;padding:13px 14px;font-size:18px;font-weight:750;outline:none
+}
+.inputline:focus{border-color:#4c87db;box-shadow:0 0 0 4px rgba(76,135,219,.1)}
+.quick-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+.chip{border:1px solid #cbdcf3;background:#fff;color:var(--blue);border-radius:999px;padding:8px 11px;font-weight:850}
+.result{text-align:center;padding:28px 14px}
+.result .circle{
+  width:118px;height:118px;border-radius:50%;margin:0 auto 12px;display:grid;place-items:center;
+  background:linear-gradient(135deg,var(--blue),#3f84eb);color:#fff;font-size:30px;font-weight:1000;
+  box-shadow:0 13px 30px rgba(11,63,165,.25)
+}
+.result h3{margin:6px 0;color:var(--blue2);font-size:30px}.result p{color:var(--muted);font-weight:700}
+.footer{text-align:center;margin-top:18px;color:#8993a3;font-size:12px;font-weight:750}
+@media(max-width:760px){
+  .tabs{grid-template-columns:repeat(2,1fr)}
+  .rule-grid,.examples{grid-template-columns:1fr}
+  .hero{padding:22px 16px;border-radius:22px}
+  .audio-top{right:14px;bottom:14px}
+  .card{padding:16px;border-radius:20px}
+  .options.three{grid-template-columns:repeat(2,1fr)}
+}
+@media(max-width:440px){
+  .app{padding:8px 8px 30px}
+  .options,.options.three{grid-template-columns:1fr 1fr}
+  .option{font-size:16px;padding:12px 8px}
+  .hero p{padding-right:48px}
+}
+</style>
+</head>
+<body>
+<div class="app">
+  <header class="hero">
+    <div class="brand">DE-MAX TUTIN</div>
+    <h1>Glagol „lassen“
+      <span>Konjugacija • lassen + Infinitiv • modalni glagoli</span>
+    </h1>
+    <p>Vežbaj kako se koristi <b>lassen</b> u svakodnevnom nemačkom: kada nešto prepustimo drugome, kada nešto damo da se uradi i kada koristimo <b>müssen + Infinitiv + lassen</b>.</p>
+    <button class="audio-top" id="heroSpeak" title="Poslušaj">🔊</button>
+  </header>
+
+  <div class="stats">
+    <div class="statrow">
+      <div class="progress"><span id="bar"></span></div>
+      <div class="stattext"><span id="done">0</span>/<span id="total">72</span> završeno • <span id="right">0</span> tačno</div>
+    </div>
+  </div>
+
+  <nav class="tabs">
+    <button class="tab active" data-panel="rules">Pravilo</button>
+    <button class="tab" data-panel="ex1">1. Konjugacija</button>
+    <button class="tab" data-panel="ex2">2. Dopuni</button>
+    <button class="tab" data-panel="ex3">3. Red reči</button>
+    <button class="tab" data-panel="ex4">4. Preoblikuj</button>
+    <button class="tab" data-panel="ex5">5. Svakodnevno</button>
+    <button class="tab" data-panel="ex6">6. Složi rečenicu</button>
+    <button class="tab" data-panel="final">Rezultat</button>
+  </nav>
+
+  <section id="rules" class="panel active">
+    <div class="card">
+      <div class="section-title">
+        <div class="badge">L</div>
+        <div><h2>Glagol lassen</h2><p>Najvažnije pravilo i konjugacija.</p></div>
+      </div>
+
+      <div class="rule-grid">
+        <div class="rule">
+          <h3>1. lassen + Infinitiv</h3>
+          <p>Kada <span class="blue">ne radimo nešto sami</span>, već to neko drugi radi za nas:<br><b class="red">Ich lasse mein Auto waschen.</b></p>
+        </div>
+        <div class="rule">
+          <h3>2. Modalni glagol + lassen</h3>
+          <p>Uz modalni glagol oba infinitiva idu na kraj:<br><b class="red">Ich muss mein Auto waschen lassen.</b></p>
+        </div>
+      </div>
+
+      <table class="conj">
+        <tr><th>Lice</th><th>lassen</th><th>Primer</th></tr>
+        <tr><td>ich</td><td>lasse</td><td>Ich lasse das Auto reparieren.</td></tr>
+        <tr><td>du</td><td>lässt</td><td>Du lässt die Fenster putzen.</td></tr>
+        <tr><td>er / sie / es</td><td>lässt</td><td>Er lässt die Reifen wechseln.</td></tr>
+        <tr><td>wir</td><td>lassen</td><td>Wir lassen die Wohnung streichen.</td></tr>
+        <tr><td>ihr</td><td>lasst</td><td>Ihr lasst das Fahrrad reparieren.</td></tr>
+        <tr><td>sie / Sie</td><td>lassen</td><td>Sie lassen den Rasen mähen.</td></tr>
+      </table>
+
+      <div class="examples">
+        <div class="example"><b>Ich lasse</b> mir eine Karte ausstellen.<br><span class="translation">Dajem da mi izdaju karticu.</span></div>
+        <div class="example">Ich muss mir eine Karte <b>ausstellen lassen</b>.<br><span class="translation">Moram da dam da mi izdaju karticu.</span></div>
+        <div class="example"><b>Ich lasse</b> das Fahrrad reparieren.<br><span class="translation">Dajem bicikl na popravku.</span></div>
+        <div class="example">Ich muss das Fahrrad <b>reparieren lassen</b>.<br><span class="translation">Moram da dam bicikl na popravku.</span></div>
+      </div>
+
+      <div class="note">💡 U <b>2. i 3. licu jednine</b> dolazi do promene samoglasnika: <b>a → ä</b>: <b>du lässt, er/sie/es lässt</b>.</div>
+    </div>
+  </section>
+
+  <section id="ex1" class="panel"><div class="card"><div class="section-title"><div class="badge">1</div><div><h2>Konjugacija</h2><p>Izaberi pravilan oblik glagola <b>lassen</b>.</p></div></div><div id="ex1box"></div></div></section>
+
+  <section id="ex2" class="panel"><div class="card"><div class="section-title"><div class="badge">2</div><div><h2>Dopuni rečenicu</h2><p>Izaberi izraz koji pravilno završava rečenicu.</p></div></div><div id="ex2box"></div></div></section>
+
+  <section id="ex3" class="panel"><div class="card"><div class="section-title"><div class="badge">3</div><div><h2>Red reči</h2><p>Izaberi rečenicu sa pravilnim redosledom.</p></div></div><div id="ex3box"></div></div></section>
+
+  <section id="ex4" class="panel"><div class="card"><div class="section-title"><div class="badge">4</div><div><h2>Preoblikuj rečenicu</h2><p>Od <b>Ich lasse...</b> napravi rečenicu sa <b>müssen</b>.</p></div></div><div id="ex4box"></div></div></section>
+
+  <section id="ex5" class="panel"><div class="card"><div class="section-title"><div class="badge">5</div><div><h2>Svakodnevne situacije</h2><p>Izaberi prirodan odgovor sa glagolom <b>lassen</b>.</p></div></div><div id="ex5box"></div></div></section>
+
+  <section id="ex6" class="panel"><div class="card"><div class="section-title"><div class="badge">6</div><div><h2>Složi rečenicu</h2><p>Klikni reči pravilnim redosledom.</p></div></div><div id="ex6box"></div></div></section>
+
+  <section id="final" class="panel">
+    <div class="card"><div id="finalbox"></div></div>
+  </section>
+
+  <div class="footer">De-Max Tutin • Interaktivna vežba • Glagol lassen • A2/B1</div>
+</div>
+
+<script>
+const ex1 = [
+{s:"Ich ___ mein Auto waschen.",a:"lasse",o:["lasse","lässt","lassen"],t:"Dajem da mi operu auto."},
+{s:"Du ___ dein Fahrrad reparieren.",a:"lässt",o:["lasse","lässt","lasst"],t:"Daješ bicikl na popravku."},
+{s:"Er ___ die Fenster putzen.",a:"lässt",o:["lässt","lasst","lassen"],t:"On daje da se prozori očiste."},
+{s:"Wir ___ den Rasen mähen.",a:"lassen",o:["lässt","lassen","lasst"],t:"Dajemo da se trava pokosi."},
+{s:"Ihr ___ die Wohnung streichen.",a:"lasst",o:["lasse","lasst","lassen"],t:"Dajete da se stan okreči."},
+{s:"Sie ___ die Reifen wechseln.",a:"lassen",o:["lässt","lasst","lassen"],t:"Oni daju da se gume zamene."},
+{s:"Ich ___ mir die Haare schneiden.",a:"lasse",o:["lasse","lässt","lassen"],t:"Šišam se kod frizera."},
+{s:"Du ___ dir einen Pass ausstellen.",a:"lässt",o:["lässt","lasst","lassen"],t:"Daješ da ti izdaju pasoš."},
+{s:"Sie ___ ihr Handy reparieren.",a:"lässt",o:["lasse","lässt","lassen"],t:"Ona daje telefon na popravku."},
+{s:"Wir ___ die Küche renovieren.",a:"lassen",o:["lassen","lasst","lässt"],t:"Dajemo da se kuhinja renovira."},
+{s:"Ihr ___ die Kleidung bügeln.",a:"lasst",o:["lasst","lassen","lässt"],t:"Dajete da se odeća ispegla."},
+{s:"Sie ___ für sich einkaufen.",a:"lassen",o:["lassen","lässt","lasst"],t:"Daju da neko kupuje za njih."}
+];
+
+const ex2 = [
+{s:"Ich lasse mein Auto ___.",a:"waschen",o:["waschen","wäscht","gewaschen"],t:"Dajem da mi operu auto."},
+{s:"Ich lasse das Fahrrad ___.",a:"reparieren",o:["reparieren","repariert","repariere"],t:"Dajem bicikl na popravku."},
+{s:"Wir lassen die Fenster ___.",a:"putzen",o:["putzen","geputzt","putzt"],t:"Dajemo da se prozori očiste."},
+{s:"Er lässt die Reifen ___.",a:"wechseln",o:["wechseln","gewechselt","wechselt"],t:"On daje da se gume zamene."},
+{s:"Sie lässt ihr Kleid ___.",a:"ändern",o:["ändern","geändert","ändert"],t:"Ona daje da joj preprave haljinu."},
+{s:"Ich lasse mir die Haare ___.",a:"schneiden",o:["schneiden","geschnitten","schneide"],t:"Šišam se kod frizera."},
+{s:"Du lässt die Wohnung ___.",a:"streichen",o:["streichen","gestrichen","streichst"],t:"Daješ da se stan okreči."},
+{s:"Wir lassen das Essen ___.",a:"liefern",o:["liefern","geliefert","liefert"],t:"Naručujemo dostavu hrane."},
+{s:"Sie lassen den Rasen ___.",a:"mähen",o:["mähen","gemäht","mäht"],t:"Daju da se trava pokosi."},
+{s:"Ich lasse mir eine Karte ___.",a:"ausstellen",o:["ausstellen","ausgestellt","stelle aus"],t:"Dajem da mi izdaju karticu."},
+{s:"Er lässt seinen Hund ___.",a:"ausführen",o:["ausführen","ausgeführt","führt aus"],t:"On daje da mu izvedu psa."},
+{s:"Wir lassen die Möbel ___.",a:"transportieren",o:["transportieren","transportiert","transportieren lassen"],t:"Dajemo da se nameštaj preveze."}
+];
+
+const ex3 = [
+{s:"Koja rečenica je pravilna?",a:"Ich muss mein Auto waschen lassen.",o:["Ich muss lassen mein Auto waschen.","Ich muss mein Auto waschen lassen.","Ich mein Auto muss waschen lassen."],t:"Moram da dam da mi operu auto."},
+{s:"Koja rečenica je pravilna?",a:"Du musst dein Fahrrad reparieren lassen.",o:["Du musst dein Fahrrad reparieren lassen.","Du reparieren musst dein Fahrrad lassen.","Du musst lassen dein Fahrrad reparieren."],t:"Moraš da daš bicikl na popravku."},
+{s:"Koja rečenica je pravilna?",a:"Wir müssen die Fenster putzen lassen.",o:["Wir müssen putzen die Fenster lassen.","Wir müssen die Fenster putzen lassen.","Wir die Fenster müssen lassen putzen."],t:"Moramo da damo da se prozori očiste."},
+{s:"Koja rečenica je pravilna?",a:"Er muss die Reifen wechseln lassen.",o:["Er muss die Reifen wechseln lassen.","Er die Reifen wechseln muss lassen.","Er muss lassen die Reifen wechseln."],t:"On mora da da da se gume zamene."},
+{s:"Koja rečenica je pravilna?",a:"Sie muss ihr Handy reparieren lassen.",o:["Sie ihr Handy muss reparieren lassen.","Sie muss ihr Handy reparieren lassen.","Sie muss reparieren lassen ihr Handy."],t:"Ona mora da da telefon na popravku."},
+{s:"Koja rečenica je pravilna?",a:"Ich muss mir die Haare schneiden lassen.",o:["Ich muss mir die Haare schneiden lassen.","Ich muss schneiden mir die Haare lassen.","Ich mir muss die Haare lassen schneiden."],t:"Moram da se ošišam."},
+{s:"Koja rečenica je pravilna?",a:"Ihr müsst die Wohnung streichen lassen.",o:["Ihr müsst die Wohnung streichen lassen.","Ihr müsst streichen lassen die Wohnung.","Ihr die Wohnung müsst lassen streichen."],t:"Morate da date da se stan okreči."},
+{s:"Koja rečenica je pravilna?",a:"Wir müssen das Essen liefern lassen.",o:["Wir müssen das Essen liefern lassen.","Wir müssen liefern das Essen lassen.","Wir das Essen müssen lassen liefern."],t:"Moramo da naručimo dostavu hrane."},
+{s:"Koja rečenica je pravilna?",a:"Du musst dir einen Pass ausstellen lassen.",o:["Du musst dir einen Pass ausstellen lassen.","Du musst ausstellen dir einen Pass lassen.","Du dir musst lassen einen Pass ausstellen."],t:"Moraš da daš da ti izdaju pasoš."},
+{s:"Koja rečenica je pravilna?",a:"Sie müssen den Rasen mähen lassen.",o:["Sie müssen den Rasen mähen lassen.","Sie müssen mähen lassen den Rasen.","Sie den Rasen müssen lassen mähen."],t:"Moraju da daju da se trava pokosi."},
+{s:"Koja rečenica je pravilna?",a:"Ich muss meine Kleidung bügeln lassen.",o:["Ich muss meine Kleidung bügeln lassen.","Ich bügeln muss meine Kleidung lassen.","Ich muss lassen meine Kleidung bügeln."],t:"Moram da dam da se moja odeća ispegla."},
+{s:"Koja rečenica je pravilna?",a:"Er muss die Küche renovieren lassen.",o:["Er muss die Küche renovieren lassen.","Er muss renovieren lassen die Küche.","Er die Küche muss lassen renovieren."],t:"On mora da da da se kuhinja renovira."}
+];
+
+const ex4 = [
+{src:"Ich lasse mein Auto waschen.",ans:"Ich muss mein Auto waschen lassen.",t:"Moram da dam da mi operu auto."},
+{src:"Ich lasse das Fahrrad reparieren.",ans:"Ich muss das Fahrrad reparieren lassen.",t:"Moram da dam bicikl na popravku."},
+{src:"Ich lasse die Fenster putzen.",ans:"Ich muss die Fenster putzen lassen.",t:"Moram da dam da se prozori očiste."},
+{src:"Ich lasse die Reifen wechseln.",ans:"Ich muss die Reifen wechseln lassen.",t:"Moram da dam da se gume zamene."},
+{src:"Ich lasse meine Kleidung bügeln.",ans:"Ich muss meine Kleidung bügeln lassen.",t:"Moram da dam da se odeća ispegla."},
+{src:"Ich lasse mein Handy reparieren.",ans:"Ich muss mein Handy reparieren lassen.",t:"Moram da dam telefon na popravku."},
+{src:"Ich lasse mir die Haare schneiden.",ans:"Ich muss mir die Haare schneiden lassen.",t:"Moram da se ošišam."},
+{src:"Ich lasse mir eine Karte ausstellen.",ans:"Ich muss mir eine Karte ausstellen lassen.",t:"Moram da dam da mi izdaju karticu."},
+{src:"Ich lasse die Wohnung streichen.",ans:"Ich muss die Wohnung streichen lassen.",t:"Moram da dam da se stan okreči."},
+{src:"Ich lasse den Rasen mähen.",ans:"Ich muss den Rasen mähen lassen.",t:"Moram da dam da se trava pokosi."},
+{src:"Ich lasse das Essen liefern.",ans:"Ich muss das Essen liefern lassen.",t:"Moram da naručim dostavu hrane."},
+{src:"Ich lasse den Hund ausführen.",ans:"Ich muss den Hund ausführen lassen.",t:"Moram da dam da neko izvede psa."}
+];
+
+const ex5 = [
+{s:"Was lässt du machen, wenn dein Auto schmutzig ist?",a:"Ich lasse mein Auto waschen.",o:["Ich lasse mein Auto waschen.","Ich lasse den Rasen mähen.","Ich lasse meine Haare schneiden."],t:"Dajem da mi operu auto."},
+{s:"Dein Fahrrad ist kaputt. Was machst du?",a:"Ich lasse mein Fahrrad reparieren.",o:["Ich lasse mein Fahrrad reparieren.","Ich lasse das Zimmer putzen.","Ich lasse Essen liefern."],t:"Dajem bicikl na popravku."},
+{s:"Die Fenster sind sehr schmutzig.",a:"Ich lasse die Fenster putzen.",o:["Ich lasse die Fenster putzen.","Ich lasse die Reifen wechseln.","Ich lasse den Hund ausführen."],t:"Dajem da se prozori očiste."},
+{s:"Deine Haare sind zu lang.",a:"Ich lasse mir die Haare schneiden.",o:["Ich lasse mir die Haare schneiden.","Ich lasse das Auto waschen.","Ich lasse den Rasen mähen."],t:"Šišam se kod frizera."},
+{s:"Du brauchst neue Reifen am Auto.",a:"Ich lasse die Reifen wechseln.",o:["Ich lasse die Reifen wechseln.","Ich lasse die Küche streichen.","Ich lasse mein Handy laden."],t:"Dajem da se gume zamene."},
+{s:"Du hast keine Zeit zum Kochen.",a:"Ich lasse das Essen liefern.",o:["Ich lasse das Essen liefern.","Ich lasse den Rasen mähen.","Ich lasse die Fenster putzen."],t:"Naručujem dostavu hrane."},
+{s:"Dein Handy funktioniert nicht.",a:"Ich lasse mein Handy reparieren.",o:["Ich lasse mein Handy reparieren.","Ich lasse meine Kleidung bügeln.","Ich lasse den Hund waschen."],t:"Dajem telefon na popravku."},
+{s:"Der Garten ist sehr ungepflegt.",a:"Ich lasse den Rasen mähen.",o:["Ich lasse den Rasen mähen.","Ich lasse das Essen liefern.","Ich lasse die Wäsche waschen."],t:"Dajem da se trava pokosi."},
+{s:"Du brauchst einen neuen Pass.",a:"Ich lasse mir einen Pass ausstellen.",o:["Ich lasse mir einen Pass ausstellen.","Ich lasse das Zimmer streichen.","Ich lasse die Fenster öffnen."],t:"Dajem da mi izdaju pasoš."},
+{s:"Die Wohnung braucht neue Farbe.",a:"Ich lasse die Wohnung streichen.",o:["Ich lasse die Wohnung streichen.","Ich lasse mein Auto reparieren.","Ich lasse die Kleidung waschen."],t:"Dajem da se stan okreči."},
+{s:"Du bist den ganzen Tag beschäftigt und dein Hund muss raus.",a:"Ich lasse meinen Hund ausführen.",o:["Ich lasse meinen Hund ausführen.","Ich lasse die Fenster putzen.","Ich lasse mein Auto waschen."],t:"Dajem da neko izvede mog psa."},
+{s:"Du willst die Hemden glatt haben.",a:"Ich lasse meine Hemden bügeln.",o:["Ich lasse meine Hemden bügeln.","Ich lasse den Rasen mähen.","Ich lasse die Reifen wechseln."],t:"Dajem da se košulje ispeglaju."}
+];
+
+const ex6 = [
+{a:"Ich lasse mein Auto waschen.",t:"Dajem da mi operu auto."},
+{a:"Du lässt dein Fahrrad reparieren.",t:"Daješ bicikl na popravku."},
+{a:"Er lässt die Fenster putzen.",t:"On daje da se prozori očiste."},
+{a:"Wir lassen den Rasen mähen.",t:"Dajemo da se trava pokosi."},
+{a:"Ihr lasst die Wohnung streichen.",t:"Dajete da se stan okreči."},
+{a:"Sie lassen die Reifen wechseln.",t:"Oni daju da se gume zamene."},
+{a:"Ich muss mein Handy reparieren lassen.",t:"Moram da dam telefon na popravku."},
+{a:"Du musst dir die Haare schneiden lassen.",t:"Moraš da se ošišaš."},
+{a:"Wir müssen das Essen liefern lassen.",t:"Moramo da naručimo dostavu hrane."},
+{a:"Er muss die Küche renovieren lassen.",t:"On mora da da da se kuhinja renovira."},
+{a:"Sie muss sich ein Kleid nähen lassen.",t:"Ona mora da da da joj sašiju haljinu."},
+{a:"Ich muss mir einen Pass ausstellen lassen.",t:"Moram da dam da mi izdaju pasoš."}
+];
+
+const total = ex1.length+ex2.length+ex3.length+ex4.length+ex5.length+ex6.length;
+document.getElementById("total").textContent=total;
+let done=0,right=0;
+const mastered=new Set();
+
+function normalize(s){
+  return s.trim().replace(/\s+/g," ").replace(/[“”„"]/g,'"').replace(/[.]+$/,"").toLowerCase();
+}
+function mark(key){
+  if(mastered.has(key)) return;
+  mastered.add(key); done++; right++;
+  document.getElementById("done").textContent=done;
+  document.getElementById("right").textContent=right;
+  document.getElementById("bar").style.width=(done/total*100)+"%";
+  renderFinal();
+}
+function speak(text,rate=.92){
+  if(!("speechSynthesis" in window)) return;
+  speechSynthesis.cancel();
+  const u=new SpeechSynthesisUtterance(text);
+  u.lang="de-DE";u.rate=rate;
+  const vs=speechSynthesis.getVoices();
+  const v=vs.find(x=>x.lang&&x.lang.toLowerCase().startsWith("de"));
+  if(v)u.voice=v;
+  speechSynthesis.speak(u);
+}
+document.getElementById("heroSpeak").onclick=()=>speak("Ich lasse mein Auto waschen. Du lässt dein Fahrrad reparieren. Wir lassen die Fenster putzen.");
+
+function showPanel(id){
+  document.querySelectorAll(".panel").forEach(p=>p.classList.toggle("active",p.id===id));
+  document.querySelectorAll(".tab").forEach(t=>t.classList.toggle("active",t.dataset.panel===id));
+  window.scrollTo({top:0,behavior:"smooth"});
+}
+document.querySelectorAll(".tab").forEach(b=>b.onclick=()=>showPanel(b.dataset.panel));
+
+function renderMCQ(id,data,prefix){
+  const el=document.getElementById(id); let i=0;
+  function draw(){
+    const q=data[i]; const key=prefix+i;
+    el.innerHTML=`
+      <div class="qtop"><span class="qcount">${i+1} / ${data.length}</span><button class="speaker">🔊</button></div>
+      <div class="prompt">${q.s.replace("___",'<span class="blank">?</span>')}</div>
+      <div class="options ${q.o.length===3?'three':''}">
+        ${q.o.map(x=>`<button class="option" data-v="${x.replace(/"/g,'&quot;')}">${x}</button>`).join("")}
+      </div>
+      <div class="feedback" id="fb"></div>
+      <div class="controls">
+        <button class="ctrl secondary" id="prev" ${i===0?'disabled':''}>← Nazad</button>
+        <button class="ctrl primary" id="next">${i===data.length-1?'Završi':'Sledeće →'}</button>
+      </div>`;
+    el.querySelector(".speaker").onclick=()=>speak(q.s.replace("___",q.a));
+    const fb=el.querySelector("#fb");
+    if(mastered.has(key)){
+      fb.className="feedback show ok";fb.innerHTML=`<strong>✓ Rešeno.</strong> Tačno: <b>${q.a}</b><div class="translation">${q.t}</div>`;
+      el.querySelectorAll(".option").forEach(b=>{if(b.dataset.v===q.a)b.classList.add("correct")});
+    }
+    el.querySelectorAll(".option").forEach(btn=>{
+      btn.onclick=()=>{
+        if(mastered.has(key)) return;
+        const ok=btn.dataset.v===q.a;
+        if(ok){
+          btn.classList.add("correct");
+          fb.className="feedback show ok";
+          fb.innerHTML=`<strong>✓ Tačno!</strong><div class="translation">${q.t}</div>`;
+          mark(key);speak(q.s.replace("___",q.a));
+          el.querySelectorAll(".option").forEach(b=>b.disabled=true);
+        }else{
+          btn.classList.add("wrong");
+          fb.className="feedback show bad";
+          fb.innerHTML=`<strong>✗ Pokušaj ponovo.</strong> Obrati pažnju na oblik i red reči.`;
+          setTimeout(()=>btn.classList.remove("wrong"),650);
+        }
+      }
+    });
+    el.querySelector("#prev").onclick=()=>{if(i>0){i--;draw()}};
+    el.querySelector("#next").onclick=()=>{if(i<data.length-1){i++;draw()}else showPanel("final")};
+  }
+  draw();
+}
+
+renderMCQ("ex1box",ex1,"a");
+renderMCQ("ex2box",ex2,"b");
+renderMCQ("ex3box",ex3,"c");
+renderMCQ("ex5box",ex5,"e");
+
+(function renderTransform(){
+  const el=document.getElementById("ex4box");let i=0;
+  function draw(){
+    const q=ex4[i],key="d"+i;
+    el.innerHTML=`
+      <div class="qtop"><span class="qcount">${i+1} / ${ex4.length}</span><button class="speaker">🔊</button></div>
+      <div class="transform-box">
+        <div class="src">${q.src}</div>
+        <div class="arrow">↓ sa „müssen“</div>
+        <input class="inputline" id="answer" placeholder="Napiši novu rečenicu..." autocomplete="off">
+        <div class="quick-actions"><button class="chip" id="hint">💡 Pomoć</button><button class="chip" id="solution">👁 Rešenje</button></div>
+      </div>
+      <div class="feedback" id="tfb"></div>
+      <div class="controls"><button class="ctrl secondary" id="tprev" ${i===0?'disabled':''}>← Nazad</button><button class="ctrl primary" id="check">Proveri</button><button class="ctrl primary" id="tnext">${i===ex4.length-1?'Završi':'Sledeće →'}</button></div>`;
+    const inp=el.querySelector("#answer"),fb=el.querySelector("#tfb");
+    el.querySelector(".speaker").onclick=()=>speak(q.ans);
+    if(mastered.has(key)){
+      inp.value=q.ans;inp.disabled=true;
+      fb.className="feedback show ok";fb.innerHTML=`<strong>✓ Rešeno.</strong><div class="translation">${q.t}</div>`;
+    }
+    el.querySelector("#hint").onclick=()=>{
+      fb.className="feedback show";
+      fb.innerHTML=`Pomoć: počni sa <b>Ich muss...</b>, a na kraju stavi <b>glavni infinitiv + lassen</b>.`;
+    };
+    el.querySelector("#solution").onclick=()=>{
+      fb.className="feedback show";
+      fb.innerHTML=`Rešenje: <b>${q.ans}</b>`;
+    };
+    el.querySelector("#check").onclick=()=>{
+      if(mastered.has(key))return;
+      if(normalize(inp.value)===normalize(q.ans)){
+        fb.className="feedback show ok";fb.innerHTML=`<strong>✓ Tačno!</strong><div class="translation">${q.t}</div>`;
+        inp.disabled=true;mark(key);speak(q.ans);
+      }else{
+        fb.className="feedback show bad";
+        fb.innerHTML=`<strong>✗ Još nije tačno.</strong> Proveri položaj <b>muss</b> i završetak <b>... infinitiv + lassen</b>.`;
+      }
+    };
+    inp.addEventListener("keydown",e=>{if(e.key==="Enter")el.querySelector("#check").click()});
+    el.querySelector("#tprev").onclick=()=>{if(i>0){i--;draw()}};
+    el.querySelector("#tnext").onclick=()=>{if(i<ex4.length-1){i++;draw()}else showPanel("final")};
+  } draw();
+})();
+
+(function renderBuilder(){
+  const el=document.getElementById("ex6box");let i=0;
+  function shuffled(words){
+    const a=[...words];
+    for(let j=a.length-1;j>0;j--){
+      const k=(j*7+3)%(j+1);[a[j],a[k]]=[a[k],a[j]];
+    }return a;
+  }
+  function draw(){
+    const q=ex6[i],key="f"+i;
+    let selected=[],bank=shuffled(q.a.replace(/[.]+$/,"").split(" "));
+    el.innerHTML=`
+      <div class="qtop"><span class="qcount">${i+1} / ${ex6.length}</span><button class="speaker">🔊</button></div>
+      <div class="task-label">Prevod:</div>
+      <div class="translation" style="font-size:18px;margin-bottom:10px">${q.t}</div>
+      <div class="task-label">Tvoja rečenica:</div>
+      <div class="sentence" id="built"></div>
+      <div class="task-label">Reči:</div>
+      <div class="wordbank" id="bank"></div>
+      <div class="feedback" id="bfb"></div>
+      <div class="controls"><button class="ctrl danger" id="clear">Obriši</button><button class="ctrl primary" id="check">Proveri</button></div>
+      <div class="controls"><button class="ctrl secondary" id="bprev" ${i===0?'disabled':''}>← Nazad</button><button class="ctrl primary" id="bnext">${i===ex6.length-1?'Završi':'Sledeće →'}</button></div>`;
+    const bankEl=el.querySelector("#bank"),builtEl=el.querySelector("#built"),fb=el.querySelector("#bfb");
+    el.querySelector(".speaker").onclick=()=>speak(q.a);
+    function paint(){
+      bankEl.innerHTML="";builtEl.innerHTML="";
+      bank.forEach((w,idx)=>{
+        const b=document.createElement("button");b.className="word";b.textContent=w;
+        b.onclick=()=>{selected.push(w);bank.splice(idx,1);paint()};bankEl.appendChild(b);
+      });
+      selected.forEach((w,idx)=>{
+        const b=document.createElement("button");b.className="word";b.textContent=w;
+        b.onclick=()=>{bank.push(w);selected.splice(idx,1);paint()};builtEl.appendChild(b);
+      });
+    } paint();
+    if(mastered.has(key)){
+      bank=[];selected=q.a.replace(/[.]+$/,"").split(" ");paint();
+      fb.className="feedback show ok";fb.innerHTML=`<strong>✓ Rešeno.</strong> ${q.a}`;
+    }
+    el.querySelector("#clear").onclick=()=>{if(mastered.has(key))return;selected=[];bank=shuffled(q.a.replace(/[.]+$/,"").split(" "));paint();fb.className="feedback"};
+    el.querySelector("#check").onclick=()=>{
+      if(mastered.has(key))return;
+      const made=selected.join(" ")+".";
+      if(normalize(made)===normalize(q.a)){
+        fb.className="feedback show ok";fb.innerHTML=`<strong>✓ Tačno!</strong> ${q.a}`;
+        mark(key);speak(q.a);
+      }else{
+        fb.className="feedback show bad";fb.innerHTML=`<strong>✗ Pokušaj ponovo.</strong> Obrati pažnju na položaj glagola <b>lassen</b>.`;
+      }
+    };
+    el.querySelector("#bprev").onclick=()=>{if(i>0){i--;draw()}};
+    el.querySelector("#bnext").onclick=()=>{if(i<ex6.length-1){i++;draw()}else showPanel("final")};
+  } draw();
+})();
+
+function renderFinal(){
+  const pct=Math.round((done/total)*100);
+  const msg=done===total?"Odlično! Završio/la si sve vežbe.":done>=50?"Sjajan napredak — nastavi do kraja!":done>=25?"Dobro ide — nastavi sa vežbanjem.":"Počni od konjugacije i idi redom.";
+  document.getElementById("finalbox").innerHTML=`
+    <div class="result">
+      <div class="circle">${pct}%</div>
+      <h3>Tvoj napredak</h3>
+      <p>${msg}</p>
+      <p><b>${done}</b> od <b>${total}</b> zadataka završeno tačno.</p>
+      <div class="controls" style="justify-content:center">
+        <button class="ctrl primary" onclick="showPanel('ex1')">Nastavi vežbanje</button>
+        <button class="ctrl secondary" onclick="showPanel('rules')">Ponovi pravilo</button>
+      </div>
+    </div>`;
+}
+renderFinal();
+</script>
+</body>
+</html>
