@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html lang="sr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>DE-MAX – Indirektna pitanja sa OB</title>
+<style>
+:root{
+  --blue:#0b4fb3;
+  --blue2:#176bd8;
+  --blue3:#eaf2ff;
+  --red:#e1262f;
+  --red2:#ff4a4f;
+  --green:#11884b;
+  --green2:#e9f9ef;
+  --gold:#f3a400;
+  --text:#153354;
+  --muted:#6a7c91;
+  --line:#d5e2f5;
+  --bg:#f5f9ff;
+  --white:#fff;
+  --shadow:0 16px 42px rgba(15,65,145,.13);
+}
+*{box-sizing:border-box}
+body{
+  margin:0;
+  font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;
+  color:var(--text);
+  background:
+    radial-gradient(circle at 10% 0%,rgba(23,107,216,.12),transparent 28%),
+    radial-gradient(circle at 95% 15%,rgba(225,38,47,.08),transparent 24%),
+    linear-gradient(180deg,#fbfdff,#eef5ff);
+  min-height:100vh;
+}
+.app{max-width:1100px;margin:0 auto;padding:14px 12px 36px}
+.hero{
+  background:linear-gradient(135deg,#093f98 0%,#0f59c5 55%,#1980e3 100%);
+  color:#fff;border-radius:28px;padding:22px;box-shadow:var(--shadow);position:relative;overflow:hidden;
+}
+.hero:before,.hero:after{content:"";position:absolute;border-radius:50%;background:rgba(255,255,255,.08)}
+.hero:before{width:220px;height:220px;right:-80px;top:-90px}
+.hero:after{width:160px;height:160px;left:-65px;bottom:-70px}
+.brand{display:flex;align-items:center;gap:12px;font-weight:950;position:relative;z-index:1}
+.logo{
+  width:58px;height:58px;border-radius:16px;background:#fff;color:var(--red);
+  display:grid;place-items:center;box-shadow:0 10px 26px rgba(0,0,0,.18);
+  font-size:18px;font-weight:1000;line-height:1;text-align:center
+}
+.logo small{display:block;color:#111;font-size:9px;letter-spacing:1px;margin-top:2px}
+.brand span small{display:block;font-weight:700;opacity:.9;margin-top:2px}
+h1{font-size:clamp(31px,5.8vw,58px);line-height:1;margin:18px 0 8px;position:relative;z-index:1}
+.hero p{max-width:860px;margin:0;font-size:16px;opacity:.97;position:relative;z-index:1}
+.ruleline{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px;position:relative;z-index:1}
+.rulechip{
+  background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.23);
+  padding:9px 12px;border-radius:999px;font-weight:850
+}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:18px;position:relative;z-index:1}
+.stat{background:#fff;color:var(--text);border-radius:17px;padding:11px 13px;box-shadow:0 9px 22px rgba(0,0,0,.08)}
+.stat b{display:block;font-size:22px}
+.card{
+  margin-top:15px;background:#fff;border:1px solid var(--line);border-radius:24px;padding:16px;
+  box-shadow:0 10px 28px rgba(20,61,128,.07)
+}
+.card h2{margin:0 0 8px;color:var(--blue)}
+.compare{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px}
+.example{border-radius:18px;padding:14px;border:1px solid var(--line)}
+.example.direct{background:#fff2f2;border-color:#ffd0d2}
+.example.indirect{background:#eef5ff;border-color:#d2e2fb}
+.example .label{font-size:12px;font-weight:950;letter-spacing:.6px;margin-bottom:7px}
+.direct .label{color:var(--red)}
+.indirect .label{color:var(--blue)}
+.ob{color:#0aa04f;font-weight:950}
+.verb{color:var(--gold);font-weight:950}
+.tabs{display:flex;gap:8px;overflow-x:auto;padding:10px 2px 10px;margin-top:8px;scrollbar-width:none}
+.tabs::-webkit-scrollbar{display:none}
+.tab{
+  white-space:nowrap;border:1px solid var(--line);background:#fff;color:var(--text);padding:12px 15px;
+  border-radius:999px;font-weight:900;cursor:pointer
+}
+.tab.active{background:var(--blue);color:#fff;border-color:var(--blue)}
+.panel{
+  background:#fff;border:1px solid var(--line);border-radius:26px;padding:18px;box-shadow:var(--shadow)
+}
+.toprow{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:12px}
+.badge{background:#eef4ff;color:var(--blue);padding:8px 12px;border-radius:999px;font-size:13px;font-weight:950}
+.counter{color:var(--muted);font-weight:800;font-size:14px}
+.question{font-size:clamp(21px,3.8vw,30px);font-weight:950;line-height:1.25;margin:8px 0 12px}
+.subq{color:var(--muted);font-size:14px;margin-top:-4px;margin-bottom:10px}
+.answers,.words{display:flex;flex-wrap:wrap;gap:10px;margin:14px 0}
+.opt,.word{
+  border:1px solid #cfdef3;background:#fbfdff;color:#17395f;border-radius:14px;padding:11px 14px;
+  font-size:16px;font-weight:850;cursor:pointer;transition:.15s
+}
+.opt:hover,.word:hover{transform:translateY(-1px);border-color:#84ace6}
+.opt.full{width:100%;text-align:left}
+.word.used{opacity:.35;pointer-events:none}
+.sentence{
+  min-height:66px;border:2px dashed #bfd4f4;background:#f7fbff;border-radius:18px;padding:12px;
+  display:flex;flex-wrap:wrap;gap:8px;align-items:center
+}
+.selected{
+  background:#edf5ff;border:1px solid #bfd7fb;color:#12468c;padding:9px 11px;border-radius:12px;
+  font-weight:850;cursor:pointer
+}
+.controls{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px}
+button{
+  appearance:none;border:0;border-radius:14px;padding:12px 16px;font-weight:900;cursor:pointer;font-size:15px
+}
+.primary{background:var(--blue);color:#fff}
+.secondary{background:#eaf2ff;color:#10499f}
+.redbtn{background:#fff0f0;color:#be1f26}
+.ghost{background:#f2f6fb;color:#596c7f}
+.feedback{display:none;margin-top:14px;padding:14px;border-radius:16px;font-weight:850}
+.feedback.ok{display:block;background:#eaf9ef;border:1px solid #c6edd5;color:#0d7b40}
+.feedback.bad{display:block;background:#fff1f1;border:1px solid #ffd0d0;color:#b82424}
+.translation{margin-top:7px;color:#4f687c;font-weight:750}
+.progress{height:12px;background:#edf2f8;border-radius:999px;overflow:hidden;margin-top:14px}
+.progress>div{height:100%;width:0;background:linear-gradient(90deg,var(--blue),#19a25d);transition:.25s}
+.input{
+  width:100%;border:2px solid #d5e3f6;background:#fcfdff;border-radius:15px;padding:13px 14px;
+  font-size:17px;font-weight:750;outline:none
+}
+.input:focus{border-color:#7aa5e6}
+.pair-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.paircol{display:grid;gap:9px}
+.pair{
+  width:100%;text-align:left;border:1px solid var(--line);background:#fbfdff;color:var(--text);
+  border-radius:14px;padding:12px;font-weight:850;cursor:pointer
+}
+.pair.active{outline:3px solid #9ebfee;background:#edf4ff}
+.dialogue{background:#f8fbff;border:1px solid #dce8fb;border-radius:18px;padding:14px}
+.line{padding:10px 12px;border-radius:14px;margin:8px 0;font-weight:850}
+.line.a{background:#eef4ff;color:#103f86}
+.line.b{background:#eefaf3;color:#12673c}
+.errorbox{
+  background:#fff6f6;border:1px solid #ffd6d8;border-radius:18px;padding:14px;font-size:18px;font-weight:850
+}
+.memory-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.memory-card{
+  min-height:94px;border:1px solid #cfdff4;border-radius:16px;background:#fbfdff;padding:10px;
+  display:grid;place-items:center;text-align:center;font-weight:900;cursor:pointer
+}
+.memory-card .front{display:none}
+.memory-card.revealed .back,.memory-card.matched .back{display:none}
+.memory-card.revealed .front,.memory-card.matched .front{display:block}
+.memory-card.revealed,.memory-card.matched{background:#edf5ff}
+.memory-card.matched{opacity:.6;pointer-events:none}
+.memory-card .back{font-size:30px;color:var(--blue)}
+.footer{text-align:center;color:#6e7d8f;font-size:13px;margin-top:16px}
+@media(max-width:850px){
+  .stats{grid-template-columns:repeat(2,1fr)}
+  .compare,.pair-grid{grid-template-columns:1fr}
+  .memory-grid{grid-template-columns:repeat(2,1fr)}
+}
+@media(max-width:560px){
+  .app{padding:10px 10px 30px}
+  .hero{padding:20px;border-radius:22px}
+  .panel{padding:15px;border-radius:22px}
+}
+</style>
+</head>
+<body>
+<div class="app">
+  <section class="hero">
+    <div class="brand">
+      <div class="logo">DE-MAX<small>TUTIN</small></div>
+      <span>DE-MAX • Nemački jezik<small>Interaktivna vežba</small></span>
+    </div>
+    <h1>Indirektna pitanja sa <span style="color:#7dffae">ob</span></h1>
+    <p>Vežbaj prelazak iz direktnog u indirektno pitanje, red reči, glagol na kraju, izbor tačne rečenice, dijaloge, prevod, ispravku grešaka i memory.</p>
+    <div class="ruleline">
+      <span class="rulechip">Direktno: Kommst du heute?</span>
+      <span class="rulechip">Indirektno: Ich möchte wissen, <b>ob</b> du heute <b>kommst</b>.</span>
+      <span class="rulechip">ob = da li</span>
+    </div>
+    <div class="stats">
+      <div class="stat"><b id="score">0</b><span>poena</span></div>
+      <div class="stat"><b id="done">0</b><span>tačnih</span></div>
+      <div class="stat"><b id="streak">0</b><span>niz</span></div>
+      <div class="stat"><b id="level">Početak</b><span>status</span></div>
+    </div>
+  </section>
+
+  <section class="card">
+    <h2>Pravilo</h2>
+    <div class="compare">
+      <div class="example direct">
+        <div class="label">DIREKTNO PITANJE</div>
+        <div><span class="verb">Kommst</span> du heute?</div>
+      </div>
+      <div class="example indirect">
+        <div class="label">INDIREKTNO PITANJE</div>
+        <div>Ich möchte wissen, <span class="ob">ob</span> du heute <span class="verb">kommst</span>.</div>
+      </div>
+    </div>
+    <p style="margin-bottom:0"><b>Važno:</b> posle <b>ob</b> glagol ide na <b>kraj zavisne rečenice</b>.</p>
+  </section>
+
+  <div class="tabs">
+    <button class="tab active" data-mode="choice">1. Izaberi</button>
+    <button class="tab" data-mode="order">2. Složi</button>
+    <button class="tab" data-mode="transform">3. Pretvori</button>
+    <button class="tab" data-mode="fill">4. Popuni</button>
+    <button class="tab" data-mode="pairs">5. Upari</button>
+    <button class="tab" data-mode="dialogue">6. Dijalog</button>
+    <button class="tab" data-mode="error">7. Ispravi grešku</button>
+    <button class="tab" data-mode="translate">8. Prevod</button>
+    <button class="tab" data-mode="memory">9. Memory</button>
+  </div>
+
+  <section class="panel">
+    <div class="toprow">
+      <div class="badge" id="modeBadge">IZABERI TAČNU REČENICU</div>
+      <div class="counter" id="counter"></div>
+    </div>
+    <div id="content"></div>
+    <div class="progress"><div id="bar"></div></div>
+  </section>
+
+  <div class="footer">DE-MAX • Indirekte Fragen mit ob • A1/A2/B1</div>
+</div>
+
+<script>
+const CHOICE = [
+ {q:"Koja rečenica je tačna?", opts:["Ich möchte wissen, ob du heute kommst.","Ich möchte wissen, ob kommst du heute.","Ich möchte wissen, du ob heute kommst."], c:0, tr:"Želim da znam da li dolaziš danas."},
+ {q:"Koja rečenica je tačna?", opts:["Wissen Sie, ob die Banken öffnen?","Wissen Sie, ob öffnen die Banken?","Wissen Sie, die Banken ob öffnen?"], c:0, tr:"Da li znate da li se banke otvaraju?"},
+ {q:"Koja rečenica je tačna?", opts:["Ich frage mich, ob er zu Hause ist.","Ich frage mich, ob ist er zu Hause.","Ich frage mich, er ob zu Hause ist."], c:0, tr:"Pitam se da li je on kod kuće."},
+ {q:"Koja rečenica je tačna?", opts:["Kannst du mir sagen, ob du Zeit hast?","Kannst du mir sagen, ob hast du Zeit?","Kannst du mir sagen, du Zeit ob hast?"], c:0, tr:"Možeš li mi reći da li imaš vremena?"},
+ {q:"Koja rečenica je tačna?", opts:["Ich weiß nicht, ob sie morgen arbeitet.","Ich weiß nicht, ob arbeitet sie morgen.","Ich weiß nicht, ob sie arbeitet morgen."], c:0, tr:"Ne znam da li ona radi sutra."},
+ {q:"Koja rečenica je tačna?", opts:["Mich interessiert, ob der Kurs heute beginnt.","Mich interessiert, ob beginnt der Kurs heute.","Mich interessiert, der Kurs ob heute beginnt."], c:0, tr:"Zanima me da li kurs počinje danas."},
+ {q:"Koja rečenica je tačna?", opts:["Ich wollte fragen, ob du Hunger hast.","Ich wollte fragen, ob hast du Hunger.","Ich wollte fragen, du ob Hunger hast."], c:0, tr:"Hteo sam da pitam da li si gladan."},
+ {q:"Koja rečenica je tačna?", opts:["Hast du gehört, ob Anna kommt?","Hast du gehört, ob kommt Anna?","Hast du gehört, Anna ob kommt?"], c:0, tr:"Da li si čuo da li Ana dolazi?"},
+ {q:"Koja rečenica je tačna?", opts:["Ich habe keine Ahnung, ob der Bus pünktlich kommt.","Ich habe keine Ahnung, ob kommt der Bus pünktlich.","Ich habe keine Ahnung, der Bus ob pünktlich kommt."], c:0, tr:"Nemam pojma da li autobus dolazi na vreme."},
+ {q:"Koja rečenica je tačna?", opts:["Kannst du prüfen, ob das Fenster offen ist?","Kannst du prüfen, ob ist das Fenster offen?","Kannst du prüfen, das Fenster ob offen ist?"], c:0, tr:"Možeš li proveriti da li je prozor otvoren?"}
+];
+
+const ORDER = [
+ {w:["Ich","möchte","wissen",",","ob","du","heute","kommst","."], a:"Ich möchte wissen, ob du heute kommst.", tr:"Želim da znam da li dolaziš danas."},
+ {w:["Kannst","du","mir","sagen",",","ob","du","Zeit","hast","?"], a:"Kannst du mir sagen, ob du Zeit hast?", tr:"Možeš li mi reći da li imaš vremena?"},
+ {w:["Ich","frage","mich",",","ob","er","zu Hause","ist","."], a:"Ich frage mich, ob er zu Hause ist.", tr:"Pitam se da li je on kod kuće."},
+ {w:["Ich","weiß","nicht",",","ob","sie","morgen","arbeitet","."], a:"Ich weiß nicht, ob sie morgen arbeitet.", tr:"Ne znam da li ona radi sutra."},
+ {w:["Mich","interessiert",",","ob","der Kurs","heute","beginnt","."], a:"Mich interessiert, ob der Kurs heute beginnt.", tr:"Zanima me da li kurs počinje danas."},
+ {w:["Ich","wollte","noch","fragen",",","ob","du","Hunger","hast","."], a:"Ich wollte noch fragen, ob du Hunger hast.", tr:"Hteo sam još da pitam da li si gladan."},
+ {w:["Hast","du","gehört",",","ob","Anna","heute","kommt","?"], a:"Hast du gehört, ob Anna heute kommt?", tr:"Da li si čuo da li Ana dolazi danas?"},
+ {w:["Ich","habe","keine Ahnung",",","ob","der Zug","pünktlich","ist","."], a:"Ich habe keine Ahnung, ob der Zug pünktlich ist.", tr:"Nemam pojma da li je voz tačan."},
+ {w:["Können","Sie","mir","sagen",",","ob","das Geschäft","offen","ist","?"], a:"Können Sie mir sagen, ob das Geschäft offen ist?", tr:"Možete li mi reći da li je prodavnica otvorena?"},
+ {w:["Ich","möchte","gerne","wissen",",","ob","du","Fußball","spielst","."], a:"Ich möchte gerne wissen, ob du Fußball spielst.", tr:"Voleo bih da znam da li igraš fudbal."}
+];
+
+const TRANSFORM = [
+ {direct:"Kommst du heute?", a:"Ich möchte wissen, ob du heute kommst.", tr:"Želim da znam da li dolaziš danas."},
+ {direct:"Öffnen die Banken heute?", a:"Wissen Sie, ob die Banken heute öffnen?", tr:"Da li znate da li se banke danas otvaraju?"},
+ {direct:"Hast du Hunger?", a:"Ich wollte fragen, ob du Hunger hast.", tr:"Hteo sam da pitam da li si gladan."},
+ {direct:"Arbeitest du morgen?", a:"Ich möchte wissen, ob du morgen arbeitest.", tr:"Želim da znam da li radiš sutra."},
+ {direct:"Ist er zu Hause?", a:"Ich frage mich, ob er zu Hause ist.", tr:"Pitam se da li je on kod kuće."},
+ {direct:"Spielst du Fußball?", a:"Ich möchte gerne wissen, ob du Fußball spielst.", tr:"Voleo bih da znam da li igraš fudbal."},
+ {direct:"Kommt der Bus pünktlich?", a:"Ich weiß nicht, ob der Bus pünktlich kommt.", tr:"Ne znam da li autobus dolazi na vreme."},
+ {direct:"Hat Anna Zeit?", a:"Kannst du mir sagen, ob Anna Zeit hat?", tr:"Možeš li mi reći da li Ana ima vremena?"},
+ {direct:"Ist das Fenster offen?", a:"Kannst du prüfen, ob das Fenster offen ist?", tr:"Možeš li proveriti da li je prozor otvoren?"},
+ {direct:"Beginnt der Kurs um acht?", a:"Mich interessiert, ob der Kurs um acht beginnt.", tr:"Zanima me da li kurs počinje u osam."}
+];
+
+const FILL = [
+ {text:"Ich möchte wissen, ___ du heute kommst.", a:"ob", tr:"Želim da znam da li dolaziš danas."},
+ {text:"Kannst du mir sagen, ob du morgen ___?", a:"arbeitest", tr:"Možeš li mi reći da li radiš sutra?"},
+ {text:"Ich frage mich, ob er zu Hause ___.", a:"ist", tr:"Pitam se da li je on kod kuće."},
+ {text:"Ich weiß nicht, ___ die Banken heute öffnen.", a:"ob", tr:"Ne znam da li se banke danas otvaraju."},
+ {text:"Mich interessiert, ob der Kurs heute ___.", a:"beginnt", tr:"Zanima me da li kurs počinje danas."},
+ {text:"Ich wollte fragen, ob du Hunger ___.", a:"hast", tr:"Hteo sam da pitam da li si gladan."},
+ {text:"Hast du gehört, ob Anna heute ___?", a:"kommt", tr:"Da li si čuo da li Ana dolazi danas?"},
+ {text:"Ich habe keine Ahnung, ob der Zug pünktlich ___.", a:"ist", tr:"Nemam pojma da li je voz tačan."},
+ {text:"Können Sie mir sagen, ob das Geschäft offen ___?", a:"ist", tr:"Možete li mi reći da li je prodavnica otvorena?"},
+ {text:"Ich möchte wissen, ob du Deutsch ___.", a:"lernst", tr:"Želim da znam da li učiš nemački."}
+];
+
+const PAIRS = [
+ ["Kommst du heute?","Ich möchte wissen, ob du heute kommst."],
+ ["Hast du Hunger?","Ich wollte fragen, ob du Hunger hast."],
+ ["Ist er zu Hause?","Ich frage mich, ob er zu Hause ist."],
+ ["Arbeitest du morgen?","Ich weiß nicht, ob du morgen arbeitest."],
+ ["Spielst du Fußball?","Ich möchte wissen, ob du Fußball spielst."],
+ ["Kommt Anna später?","Hast du gehört, ob Anna später kommt?"],
+ ["Ist das Geschäft offen?","Können Sie mir sagen, ob das Geschäft offen ist?"],
+ ["Beginnt der Kurs um acht?","Mich interessiert, ob der Kurs um acht beginnt."]
+];
+
+const DIALOGUES = [
+ {title:"Na recepciji", lines:["A: Können Sie mir sagen, ___ das Hotel WLAN hat?","B: Ja, ich glaube, dass es WLAN hat."], ans:"ob", full:"Können Sie mir sagen, ob das Hotel WLAN hat?", tr:"Možete li mi reći da li hotel ima Wi-Fi?"},
+ {title:"Na poslu", lines:["A: Ich wollte fragen, ___ du morgen arbeitest.","B: Ja, ich arbeite morgen."], ans:"ob", full:"Ich wollte fragen, ob du morgen arbeitest.", tr:"Hteo sam da pitam da li radiš sutra."},
+ {title:"U školi", lines:["A: Weißt du, ___ der Test heute ist?","B: Ja, der Test ist heute."], ans:"ob", full:"Weißt du, ob der Test heute ist?", tr:"Znaš li da li je test danas?"},
+ {title:"Na stanici", lines:["A: Wissen Sie, ___ der Bus pünktlich kommt?","B: Leider weiß ich es nicht."], ans:"ob", full:"Wissen Sie, ob der Bus pünktlich kommt?", tr:"Da li znate da li autobus dolazi na vreme?"},
+ {title:"Telefonski razgovor", lines:["A: Hast du gehört, ___ Anna heute kommt?","B: Ja, sie kommt um sieben."], ans:"ob", full:"Hast du gehört, ob Anna heute kommt?", tr:"Da li si čuo da li Ana dolazi danas?"},
+ {title:"Kupovina", lines:["A: Können Sie mir sagen, ___ die Größe M noch da ist?","B: Einen Moment, bitte."], ans:"ob", full:"Können Sie mir sagen, ob die Größe M noch da ist?", tr:"Možete li mi reći da li još ima veličine M?"}
+];
+
+const ERRORS = [
+ {bad:"Ich möchte wissen, ob kommst du heute.", good:"Ich möchte wissen, ob du heute kommst.", tr:"Želim da znam da li dolaziš danas."},
+ {bad:"Ich frage mich, ob ist er zu Hause.", good:"Ich frage mich, ob er zu Hause ist.", tr:"Pitam se da li je on kod kuće."},
+ {bad:"Wissen Sie, ob öffnen die Banken heute?", good:"Wissen Sie, ob die Banken heute öffnen?", tr:"Da li znate da li se banke danas otvaraju?"},
+ {bad:"Ich weiß nicht, ob arbeitet sie morgen.", good:"Ich weiß nicht, ob sie morgen arbeitet.", tr:"Ne znam da li ona radi sutra."},
+ {bad:"Kannst du mir sagen, ob hast du Zeit?", good:"Kannst du mir sagen, ob du Zeit hast?", tr:"Možeš li mi reći da li imaš vremena?"},
+ {bad:"Mich interessiert, ob beginnt der Kurs heute.", good:"Mich interessiert, ob der Kurs heute beginnt.", tr:"Zanima me da li kurs počinje danas."},
+ {bad:"Ich wollte fragen, ob hast du Hunger.", good:"Ich wollte fragen, ob du Hunger hast.", tr:"Hteo sam da pitam da li si gladan."},
+ {bad:"Hast du gehört, ob kommt Anna heute?", good:"Hast du gehört, ob Anna heute kommt?", tr:"Da li si čuo da li Ana dolazi danas?"}
+];
+
+const TRANSLATE = [
+ {sr:"Želim da znam da li dolaziš danas.", a:"Ich möchte wissen, ob du heute kommst."},
+ {sr:"Pitam se da li je on kod kuće.", a:"Ich frage mich, ob er zu Hause ist."},
+ {sr:"Ne znam da li ona radi sutra.", a:"Ich weiß nicht, ob sie morgen arbeitet."},
+ {sr:"Možeš li mi reći da li imaš vremena?", a:"Kannst du mir sagen, ob du Zeit hast?"},
+ {sr:"Zanima me da li kurs počinje danas.", a:"Mich interessiert, ob der Kurs heute beginnt."},
+ {sr:"Hteo sam da pitam da li si gladan.", a:"Ich wollte fragen, ob du Hunger hast."},
+ {sr:"Da li si čuo da li Ana dolazi danas?", a:"Hast du gehört, ob Anna heute kommt?"},
+ {sr:"Nemam pojma da li je prodavnica otvorena.", a:"Ich habe keine Ahnung, ob das Geschäft offen ist."},
+ {sr:"Voleo bih da znam da li igraš fudbal.", a:"Ich möchte gerne wissen, ob du Fußball spielst."},
+ {sr:"Možete li proveriti da li je prozor otvoren?", a:"Können Sie prüfen, ob das Fenster offen ist?"}
+];
+
+let mode="choice", idx=0, score=0, done=0, streak=0, selected=[];
+let leftDone=new Set(), rightDone=new Set(), pairA=null, pairB=null;
+let mem={cards:[],opened:[],matched:0,lock:false};
+
+const content=document.getElementById("content");
+const badge=document.getElementById("modeBadge");
+const counter=document.getElementById("counter");
+const bar=document.getElementById("bar");
+
+document.querySelectorAll(".tab").forEach(t=>t.addEventListener("click",()=>{
+  document.querySelectorAll(".tab").forEach(x=>x.classList.remove("active"));
+  t.classList.add("active");
+  mode=t.dataset.mode; idx=0; selected=[];
+  leftDone=new Set(); rightDone=new Set(); pairA=null; pairB=null;
+  if(mode==="memory") initMemory();
+  render();
+}));
+
+function normalize(s){
+  return (s||"").toLowerCase().replace(/[.,!?]/g,"").replace(/\s+/g," ").trim();
+}
+function speak(t){
+  if(!("speechSynthesis" in window)) return;
+  speechSynthesis.cancel();
+  const u=new SpeechSynthesisUtterance(t); u.lang="de-DE"; u.rate=.9; speechSynthesis.speak(u);
+}
+function stats(){
+  document.getElementById("score").textContent=score;
+  document.getElementById("done").textContent=done;
+  document.getElementById("streak").textContent=streak;
+  document.getElementById("level").textContent=
+    score>=220?"Odlično":score>=140?"Vrlo dobro":score>=60?"Napredak":"Početak";
+}
+function feedback(ok,msg,tr=""){
+  const el=document.getElementById("fb");
+  if(!el)return;
+  el.className="feedback "+(ok?"ok":"bad");
+  el.innerHTML=msg+(tr?`<div class="translation">${tr}</div>`:"");
+}
+function success(sent,tr=""){
+  score+=10;done++;streak++;stats();feedback(true,"✓ Tačno!",tr);speak(sent);
+}
+function fail(sol){
+  streak=0;stats();feedback(false,`✗ Pokušaj ponovo.<div class="translation">Rešenje: ${sol}</div>`);
+}
+function prog(total,current){
+  counter.textContent=`${current}/${total}`;
+  bar.style.width=(current/total*100)+"%";
+}
+function next(total){idx=(idx+1)%total;selected=[];render()}
+
+function render(){
+  stats();
+  if(mode==="choice") renderChoice();
+  if(mode==="order") renderOrder();
+  if(mode==="transform") renderTransform();
+  if(mode==="fill") renderFill();
+  if(mode==="pairs") renderPairs();
+  if(mode==="dialogue") renderDialogue();
+  if(mode==="error") renderError();
+  if(mode==="translate") renderTranslate();
+  if(mode==="memory") renderMemory();
+}
+
+function renderChoice(){
+  badge.textContent="IZABERI TAČNU REČENICU";
+  const x=CHOICE[idx]; prog(CHOICE.length,idx+1);
+  content.innerHTML=`<div class="question">${x.q}</div><div class="answers" id="answers"></div>
+  <div class="controls"><button class="ghost" id="next">Sledeće</button></div><div id="fb" class="feedback"></div>`;
+  const a=document.getElementById("answers");
+  x.opts.forEach((o,i)=>{
+    const b=document.createElement("button");b.className="opt full";b.textContent=o;
+    b.onclick=()=>i===x.c?success(o,x.tr):fail(x.opts[x.c]);a.appendChild(b);
+  });
+  document.getElementById("next").onclick=()=>next(CHOICE.length);
+}
+
+function renderOrder(){
+  badge.textContent="SLOŽI REČENICU";
+  const x=ORDER[idx];prog(ORDER.length,idx+1);selected=[];
+  const shuffled=[...x.w].sort(()=>Math.random()-.5);
+  content.innerHTML=`<div class="question">Složi pravilno indirektno pitanje.</div>
+  <div class="sentence" id="sentence"><span class="subq">Ovde složi rečenicu…</span></div>
+  <div class="words" id="words"></div>
+  <div class="controls"><button class="primary" id="check">Proveri</button><button class="secondary" id="clear">Obriši</button><button class="ghost" id="next">Sledeće</button></div>
+  <div id="fb" class="feedback"></div>`;
+  const wbox=document.getElementById("words");
+  shuffled.forEach(w=>{
+    const b=document.createElement("button");b.className="word";b.textContent=w;
+    b.onclick=()=>{if(b.classList.contains("used"))return;selected.push({w,b});b.classList.add("used");drawSentence()};
+    wbox.appendChild(b);
+  });
+  document.getElementById("check").onclick=()=>{
+    const built=selected.map(o=>o.w).join(" ").replace(/\s+([,.!?])/g,"$1").replace(/,\s*/g,", ").trim();
+    normalize(built)===normalize(x.a)?success(x.a,x.tr):fail(x.a);
+  };
+  document.getElementById("clear").onclick=()=>{selected.forEach(o=>o.b.classList.remove("used"));selected=[];drawSentence();document.getElementById("fb").className="feedback"};
+  document.getElementById("next").onclick=()=>next(ORDER.length);
+}
+function drawSentence(){
+  const s=document.getElementById("sentence");
+  if(!selected.length){s.innerHTML='<span class="subq">Ovde složi rečenicu…</span>';return}
+  s.innerHTML="";
+  selected.forEach((o,i)=>{
+    const e=document.createElement("span");e.className="selected";e.textContent=o.w;
+    e.onclick=()=>{o.b.classList.remove("used");selected.splice(i,1);drawSentence()};s.appendChild(e);
+  });
+}
+
+function renderTransform(){
+  badge.textContent="DIREKTNO → INDIREKTNO";
+  const x=TRANSFORM[idx];prog(TRANSFORM.length,idx+1);
+  content.innerHTML=`<div class="question">${x.direct}</div>
+  <div class="subq">Pretvori direktno pitanje u indirektno pitanje sa <b>ob</b>.</div>
+  <input class="input" id="inp" placeholder="Upiši indirektno pitanje..." autocomplete="off">
+  <div class="controls"><button class="primary" id="check">Proveri</button><button class="secondary" id="show">Prikaži rešenje</button><button class="ghost" id="next">Sledeće</button></div>
+  <div id="fb" class="feedback"></div>`;
+  document.getElementById("check").onclick=()=>{
+    const v=document.getElementById("inp").value;
+    normalize(v)===normalize(x.a)?success(x.a,x.tr):fail(x.a);
+  };
+  document.getElementById("show").onclick=()=>feedback(true,"Rešenje:",x.a);
+  document.getElementById("next").onclick=()=>next(TRANSFORM.length);
+}
+
+function renderFill(){
+  badge.textContent="POPUNI PRAZNO MESTO";
+  const x=FILL[idx];prog(FILL.length,idx+1);
+  content.innerHTML=`<div class="question">${x.text}</div>
+  <div class="subq">Upiši samo reč koja nedostaje.</div>
+  <input class="input" id="inp" placeholder="Nedostajuća reč..." autocomplete="off">
+  <div class="controls"><button class="primary" id="check">Proveri</button><button class="secondary" id="show">Prikaži rešenje</button><button class="ghost" id="next">Sledeće</button></div>
+  <div id="fb" class="feedback"></div>`;
+  document.getElementById("check").onclick=()=>{
+    const v=document.getElementById("inp").value;
+    normalize(v)===normalize(x.a)?success(x.text.replace("___",x.a),x.tr):fail(x.a);
+  };
+  document.getElementById("show").onclick=()=>feedback(true,"Rešenje:",x.a);
+  document.getElementById("next").onclick=()=>next(FILL.length);
+}
+
+function renderPairs(){
+  badge.textContent="UPARI DIREKTNO I INDIREKTNO PITANJE";
+  if(leftDone.size===PAIRS.length){
+    prog(PAIRS.length,PAIRS.length);
+    content.innerHTML=`<div class="question">Bravo! Svi parovi su spojeni.</div>
+    <div class="feedback ok" style="display:block">✓ Vežba završena.</div>
+    <div class="controls"><button class="primary" id="again">Ponovi</button></div>`;
+    document.getElementById("again").onclick=()=>{leftDone.clear();rightDone.clear();score+=20;stats();render()};return;
+  }
+  prog(PAIRS.length,leftDone.size);
+  const left=PAIRS.map((x,i)=>({i,t:x[0]})).filter(x=>!leftDone.has(x.i));
+  const right=PAIRS.map((x,i)=>({i,t:x[1]})).filter(x=>!rightDone.has(x.i)).sort(()=>Math.random()-.5);
+  content.innerHTML=`<div class="question">Spoji direktno pitanje sa odgovarajućim indirektnim pitanjem.</div>
+  <div class="pair-grid"><div class="paircol" id="left"></div><div class="paircol" id="right"></div></div><div id="fb" class="feedback"></div>`;
+  pairA=null;pairB=null;
+  const l=document.getElementById("left"),r=document.getElementById("right");
+  left.forEach(o=>{
+    const e=document.createElement("button");e.className="pair";e.textContent=o.t;
+    e.onclick=()=>{document.querySelectorAll("#left .pair").forEach(z=>z.classList.remove("active"));e.classList.add("active");pairA=o;checkPair()};l.appendChild(e);
+  });
+  right.forEach(o=>{
+    const e=document.createElement("button");e.className="pair";e.textContent=o.t;
+    e.onclick=()=>{document.querySelectorAll("#right .pair").forEach(z=>z.classList.remove("active"));e.classList.add("active");pairB=o;checkPair()};r.appendChild(e);
+  });
+}
+function checkPair(){
+  if(!pairA||!pairB)return;
+  if(pairA.i===pairB.i){
+    leftDone.add(pairA.i);rightDone.add(pairB.i);score+=10;done++;streak++;stats();
+    feedback(true,"✓ Tačan par!",PAIRS[pairA.i][1]);speak(PAIRS[pairA.i][1]);pairA=pairB=null;setTimeout(render,550);
+  }else{
+    streak=0;stats();feedback(false,"✗ Nije tačan par.");pairA=pairB=null;document.querySelectorAll(".pair").forEach(x=>x.classList.remove("active"));
+  }
+}
+
+function renderDialogue(){
+  badge.textContent="MINI-DIJALOG";
+  const x=DIALOGUES[idx];prog(DIALOGUES.length,idx+1);
+  content.innerHTML=`<div class="question">${x.title}</div>
+  <div class="dialogue">
+    <div class="line a">${x.lines[0].replace("___",'<input class="input" id="inp" style="max-width:110px;display:inline-block;margin:0 5px" placeholder="...">')}</div>
+    <div class="line b">${x.lines[1]}</div>
+  </div>
+  <div class="controls"><button class="primary" id="check">Proveri</button><button class="secondary" id="show">Rešenje</button><button class="ghost" id="next">Sledeće</button></div>
+  <div id="fb" class="feedback"></div>`;
+  document.getElementById("check").onclick=()=>{
+    const v=document.getElementById("inp").value;
+    normalize(v)===normalize(x.ans)?success(x.full,x.tr):fail(x.ans);
+  };
+  document.getElementById("show").onclick=()=>feedback(true,"Rešenje:",x.full);
+  document.getElementById("next").onclick=()=>next(DIALOGUES.length);
+}
+
+function renderError(){
+  badge.textContent="ISPRAVI GREŠKU";
+  const x=ERRORS[idx];prog(ERRORS.length,idx+1);
+  content.innerHTML=`<div class="question">Pronađi i ispravi grešku.</div>
+  <div class="errorbox">${x.bad}</div>
+  <input class="input" id="inp" style="margin-top:12px" placeholder="Napiši ispravnu rečenicu..." autocomplete="off">
+  <div class="controls"><button class="primary" id="check">Proveri</button><button class="secondary" id="show">Rešenje</button><button class="ghost" id="next">Sledeće</button></div>
+  <div id="fb" class="feedback"></div>`;
+  document.getElementById("check").onclick=()=>{
+    const v=document.getElementById("inp").value;
+    normalize(v)===normalize(x.good)?success(x.good,x.tr):fail(x.good);
+  };
+  document.getElementById("show").onclick=()=>feedback(true,"Rešenje:",x.good);
+  document.getElementById("next").onclick=()=>next(ERRORS.length);
+}
+
+function renderTranslate(){
+  badge.textContent="PREVOD";
+  const x=TRANSLATE[idx];prog(TRANSLATE.length,idx+1);
+  content.innerHTML=`<div class="question">${x.sr}</div>
+  <div class="subq">Prevedi na nemački koristeći <b>ob</b>.</div>
+  <input class="input" id="inp" placeholder="Upiši nemačku rečenicu..." autocomplete="off">
+  <div class="controls"><button class="primary" id="check">Proveri</button><button class="secondary" id="show">Rešenje</button><button class="ghost" id="next">Sledeće</button></div>
+  <div id="fb" class="feedback"></div>`;
+  document.getElementById("check").onclick=()=>{
+    const v=document.getElementById("inp").value;
+    normalize(v)===normalize(x.a)?success(x.a,x.sr):fail(x.a);
+  };
+  document.getElementById("show").onclick=()=>feedback(true,"Rešenje:",x.a);
+  document.getElementById("next").onclick=()=>next(TRANSLATE.length);
+}
+
+function initMemory(){
+  const base=[
+    ["Kommst du heute?","ob du heute kommst"],
+    ["Hast du Hunger?","ob du Hunger hast"],
+    ["Ist er zu Hause?","ob er zu Hause ist"],
+    ["Arbeitest du morgen?","ob du morgen arbeitest"],
+    ["Spielst du Fußball?","ob du Fußball spielst"],
+    ["Kommt Anna später?","ob Anna später kommt"]
+  ];
+  let cards=[];
+  base.forEach((p,i)=>{cards.push({g:i,t:p[0]});cards.push({g:i,t:p[1]})});
+  cards.sort(()=>Math.random()-.5);
+  mem={cards,opened:[],matched:0,lock:false};
+}
+function renderMemory(){
+  if(!mem.cards.length)initMemory();
+  badge.textContent="MEMORY";prog(mem.cards.length/2,mem.matched);
+  content.innerHTML=`<div class="question">Pronađi par: direktno pitanje + odgovarajući <b>ob</b>-deo.</div>
+  <div class="memory-grid" id="mem"></div>
+  <div class="controls"><button class="ghost" id="again">Ponovi</button></div>
+  <div id="fb" class="feedback"></div>`;
+  const box=document.getElementById("mem");
+  mem.cards.forEach((c,i)=>{
+    const e=document.createElement("div");e.className="memory-card"+(c.r?" revealed":"")+(c.m?" matched":"");
+    e.innerHTML=`<div class="back">?</div><div class="front">${c.t}</div>`;e.onclick=()=>flip(i);box.appendChild(e);
+  });
+  document.getElementById("again").onclick=()=>{initMemory();render()};
+}
+function flip(i){
+  if(mem.lock)return;
+  const c=mem.cards[i];if(c.m||c.r)return;
+  c.r=true;mem.opened.push(i);renderMemory();
+  if(mem.opened.length===2){
+    mem.lock=true;const [a,b]=mem.opened,ca=mem.cards[a],cb=mem.cards[b];
+    if(ca.g===cb.g){
+      ca.m=cb.m=true;mem.matched++;score+=10;done++;streak++;stats();speak(ca.t+" "+cb.t);
+      mem.opened=[];mem.lock=false;renderMemory();
+      if(mem.matched===mem.cards.length/2)feedback(true,"✓ Bravo! Svi parovi su pronađeni.");
+    }else{
+      streak=0;stats();
+      setTimeout(()=>{ca.r=false;cb.r=false;mem.opened=[];mem.lock=false;renderMemory()},800);
+    }
+  }
+}
+render();
+</script>
+</body>
+</html>
