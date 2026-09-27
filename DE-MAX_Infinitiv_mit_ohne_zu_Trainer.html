@@ -1,0 +1,241 @@
+<!doctype html>
+<html lang="sr">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+<title>DE-MAX | Infinitiv mit/ohne zu</title>
+<style>
+:root{
+  --blue:#0b4dbb; --blue2:#173b8f; --blue3:#eaf3ff; --red:#e23a3a;
+  --ink:#12203a; --muted:#66748b; --green:#1eaa67; --amber:#ffb020;
+  --card:#ffffff; --line:#d9e5f5; --shadow:0 20px 55px rgba(20,63,135,.16);
+}
+*{box-sizing:border-box}
+html,body{margin:0;min-height:100%;font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;background:#eef6ff;color:var(--ink)}
+body{background:
+ radial-gradient(circle at 12% -10%,rgba(71,147,255,.26),transparent 34%),
+ radial-gradient(circle at 94% 4%,rgba(255,198,79,.22),transparent 25%),
+ linear-gradient(180deg,#f9fcff 0%,#edf5ff 100%);}
+button,input{font:inherit}
+.app{max-width:1120px;margin:auto;padding:18px 18px 96px}
+.hero{position:relative;overflow:hidden;border-radius:30px;background:linear-gradient(135deg,#0a43a3 0%,#0f5cd7 58%,#1b76ef 100%);color:white;padding:26px 28px;box-shadow:0 24px 60px rgba(15,74,170,.28);isolation:isolate}
+.hero:before,.hero:after{content:"";position:absolute;border-radius:50%;background:rgba(255,255,255,.09);z-index:-1}
+.hero:before{width:260px;height:260px;right:-70px;top:-120px}.hero:after{width:180px;height:180px;left:-65px;bottom:-120px}
+.brand{display:flex;gap:14px;align-items:center}
+.logo{width:62px;height:62px;border-radius:18px;background:white;color:#e03434;display:grid;place-items:center;font-weight:900;line-height:.9;box-shadow:0 10px 24px rgba(0,0,0,.14);border:3px solid #fff;text-align:center;font-size:16px}.logo small{display:block;color:#123d91;font-size:9px;letter-spacing:.12em;margin-top:4px}
+.hero h1{font-size:clamp(28px,5vw,50px);line-height:1.02;margin:16px 0 8px;letter-spacing:-.04em}.hero h1 span{color:#ffe566}.hero p{margin:0;color:#eaf2ff;font-size:16px;max-width:760px;line-height:1.55}
+.hero-stats{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}.pill{background:rgba(255,255,255,.13);border:1px solid rgba(255,255,255,.22);padding:9px 12px;border-radius:999px;font-size:13px;font-weight:700;backdrop-filter:blur(8px)}
+.topbar{display:grid;grid-template-columns:1fr auto;gap:14px;align-items:center;margin:18px 0}
+.progress-wrap{background:rgba(255,255,255,.8);border:1px solid var(--line);border-radius:18px;padding:13px 15px;box-shadow:0 10px 30px rgba(31,78,150,.08)}
+.progress-line{height:10px;background:#dfeafa;border-radius:999px;overflow:hidden}.progress-line>div{height:100%;width:0;background:linear-gradient(90deg,#0c57d9,#37a4ff);border-radius:inherit;transition:.35s ease}.progress-meta{display:flex;justify-content:space-between;gap:12px;margin-bottom:8px;font-size:13px;font-weight:800;color:#4d5f79}
+.audio-toggle{border:none;background:white;border:1px solid var(--line);border-radius:16px;padding:13px 16px;font-weight:800;color:var(--blue2);cursor:pointer;box-shadow:0 10px 30px rgba(31,78,150,.08)}.audio-toggle.on{background:#eaf6ff;color:#0b65d5;border-color:#b8d8ff}
+.nav{position:sticky;top:10px;z-index:10;display:grid;grid-template-columns:repeat(4,1fr);gap:8px;background:rgba(255,255,255,.88);border:1px solid rgba(205,221,242,.88);backdrop-filter:blur(14px);padding:8px;border-radius:18px;box-shadow:0 12px 36px rgba(24,67,128,.12);margin-bottom:18px}.nav button{border:none;background:transparent;border-radius:13px;padding:11px 8px;font-weight:850;color:#6b7890;cursor:pointer}.nav button.active{background:linear-gradient(135deg,#0c4fbf,#1672e8);color:white;box-shadow:0 8px 20px rgba(16,87,196,.25)}
+.section{display:none}.section.active{display:block;animation:fade .25s ease}@keyframes fade{from{opacity:.2;transform:translateY(5px)}to{opacity:1;transform:none}}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}.card{background:rgba(255,255,255,.93);border:1px solid var(--line);border-radius:24px;padding:20px;box-shadow:var(--shadow)}
+.card h2,.card h3{margin:0 0 10px}.eyebrow{font-size:12px;font-weight:900;letter-spacing:.1em;text-transform:uppercase;color:#5680bd}.rule{border-left:5px solid #1763d5;background:#f6faff;padding:14px 15px;border-radius:14px;margin:12px 0;font-weight:750;line-height:1.45}.rule.red{border-left-color:var(--red);background:#fff7f7}.formula{font-weight:950;font-size:22px;letter-spacing:.01em;color:#0b51bc}.zu{color:var(--red)}
+.rule-list{display:grid;gap:10px;margin-top:12px}.mini{border:1px solid #dce8f6;border-radius:16px;padding:13px 14px;background:white}.mini b{color:#103f92}.ex{display:flex;align-items:flex-start;gap:10px;padding:12px;border-radius:15px;background:#f8fbff;margin-top:9px}.num{min-width:30px;height:30px;border-radius:10px;background:#0c4fbf;color:#fff;display:grid;place-items:center;font-weight:900}.de{font-weight:800}.sr{margin-top:3px;color:#5c6d86;font-style:italic}.speak{border:none;width:36px;height:36px;border-radius:12px;background:#eaf3ff;color:#0b55c1;cursor:pointer;font-size:17px;margin-left:auto;flex:none}
+.mode-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.mode{border:1px solid var(--line);border-radius:20px;background:white;padding:17px;text-align:left;cursor:pointer;transition:.2s ease;box-shadow:0 10px 26px rgba(32,79,142,.08)}.mode:hover{transform:translateY(-2px);box-shadow:0 16px 30px rgba(32,79,142,.13)}.mode .ico{font-size:25px}.mode b{display:block;margin-top:8px;color:#123e8b}.mode small{display:block;color:#718096;line-height:1.4;margin-top:3px}
+.exercise{margin-top:16px}.qtop{display:flex;justify-content:space-between;gap:10px;align-items:center}.counter{font-size:13px;font-weight:900;color:#63738c;background:#edf4ff;padding:7px 10px;border-radius:999px}.question{font-size:clamp(22px,4vw,34px);font-weight:900;line-height:1.24;letter-spacing:-.02em;margin:16px 0 8px}.translation{color:#6a7890;font-size:15px;margin-bottom:16px}.answers{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.answer{border:2px solid #d9e6f5;background:white;border-radius:16px;padding:14px;cursor:pointer;font-weight:850;text-align:left;transition:.15s}.answer:hover{border-color:#a9c9f2;background:#f8fbff}.answer.correct{border-color:#69ce9c;background:#edfff5;color:#16764a}.answer.wrong{border-color:#f3a7a7;background:#fff2f2;color:#a82020}.feedback{min-height:52px;margin-top:12px;border-radius:16px;padding:12px 14px;display:none;font-weight:800}.feedback.show{display:block}.feedback.ok{background:#ecfff5;color:#127149}.feedback.no{background:#fff1f1;color:#aa2525}.actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:12px}.btn{border:none;border-radius:14px;padding:12px 16px;font-weight:900;cursor:pointer}.primary{background:linear-gradient(135deg,#0b4fbd,#1673e7);color:white;box-shadow:0 10px 24px rgba(16,87,196,.22)}.ghost{background:#edf4ff;color:#174a98}.danger{background:#fff0f0;color:#ac2828}
+.wordbank,.built{display:flex;gap:8px;flex-wrap:wrap;min-height:54px;padding:12px;border:2px dashed #cbdcf1;border-radius:16px;background:#f9fcff}.built{border-style:solid;background:white;margin-bottom:10px}.token{border:none;background:#e9f2ff;color:#153f84;padding:9px 12px;border-radius:12px;font-weight:850;cursor:pointer;box-shadow:0 3px 8px rgba(32,79,142,.09)}.built .token{background:#0c55c8;color:#fff}
+.inputline{display:flex;gap:8px}.textinput{flex:1;border:2px solid #d5e3f4;border-radius:15px;padding:13px 14px;outline:none;font-weight:750}.textinput:focus{border-color:#7db1f0;box-shadow:0 0 0 4px #e8f2ff}
+.test-intro{text-align:center;padding:28px}.score-big{font-size:56px;font-weight:950;color:#0e53bd}.result-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:16px}.stat{background:#f7fbff;border:1px solid #dce8f6;border-radius:17px;padding:14px;text-align:center}.stat b{display:block;font-size:26px;color:#0b4eb7}.stat span{font-size:12px;color:#68778f;font-weight:800}
+.notice{background:#fffaf0;border:1px solid #f4dfae;border-radius:18px;padding:14px 16px;color:#725218;line-height:1.5}.footer{text-align:center;color:#77869a;font-size:12px;padding:24px 0 0}
+@media(max-width:780px){.app{padding:10px 10px 92px}.hero{border-radius:24px;padding:20px}.grid{grid-template-columns:1fr}.mode-grid{grid-template-columns:1fr 1fr}.answers{grid-template-columns:1fr}.result-grid{grid-template-columns:1fr 1fr}.topbar{grid-template-columns:1fr}.nav{top:6px}.nav button{font-size:13px;padding:10px 5px}.hero p{font-size:14px}}
+@media(max-width:430px){.mode-grid{grid-template-columns:1fr}.logo{width:54px;height:54px}.hero h1{font-size:31px}.card{padding:16px;border-radius:20px}.question{font-size:25px}}
+</style>
+</head>
+<body>
+<div class="app">
+  <header class="hero">
+    <div class="brand"><div class="logo">DE-MAX<small>TUTIN</small></div><div><b>DE-MAX • Nemački jezik</b><div style="opacity:.82;font-size:13px">Interaktivni gramatički trener</div></div></div>
+    <h1>Infinitiv <span>mit / ohne „zu“</span></h1>
+    <p>Nauči pravila kroz jasne primere, slaganje rečenica, izbor tačnog oblika, prevod i završni test. Aplikacija pamti napredak na uređaju.</p>
+    <div class="hero-stats"><span class="pill">📘 A1–B1</span><span class="pill">🎧 nemački izgovor</span><span class="pill">🧩 6 tipova vežbi</span><span class="pill">📱 prilagođeno telefonu</span></div>
+  </header>
+
+  <div class="topbar">
+    <div class="progress-wrap"><div class="progress-meta"><span>Ukupan napredak</span><span id="progressText">0%</span></div><div class="progress-line"><div id="progressFill"></div></div></div>
+    <button id="audioToggle" class="audio-toggle on">🔊 Automatski izgovor: uključen</button>
+  </div>
+
+  <nav class="nav">
+    <button class="active" data-tab="learn">📚 Uči</button>
+    <button data-tab="practice">✍️ Vežbaj</button>
+    <button data-tab="test">🏁 Test</button>
+    <button data-tab="stats">📊 Pregled</button>
+  </nav>
+
+  <section id="learn" class="section active">
+    <div class="grid">
+      <div class="card">
+        <div class="eyebrow">Infinitiv sa „zu“</div>
+        <h2>🔵 Kada koristimo <span class="zu">zu</span>?</h2>
+        <div class="rule"><div class="formula">glagol + <span class="zu">zu</span> + infinitiv</div><div style="margin-top:6px;color:#596c87">U konstrukciji sa dva glagola drugi glagol ostaje u infinitivu.</div></div>
+        <div class="rule-list">
+          <div class="mini"><b>1. sein / finden + pridev</b><div class="ex"><span class="num">1</span><div><div class="de">Er findet es schwierig, mit ihr <span class="zu">zu reden</span>.</div><div class="sr">On smatra da je teško razgovarati sa njom.</div></div><button class="speak" data-speak="Er findet es schwierig, mit ihr zu reden.">🔊</button></div></div>
+          <div class="mini"><b>2. haben + imenica</b><div class="ex"><span class="num">2</span><div><div class="de">Jana hat Angst, sich <span class="zu">zu verlaufen</span>.</div><div class="sr">Jana se plaši da će se izgubiti.</div></div><button class="speak" data-speak="Jana hat Angst, sich zu verlaufen.">🔊</button></div></div>
+          <div class="mini"><b>3. bezlični izrazi sa es</b><div class="ex"><span class="num">3</span><div><div class="de">Es ist gesund, viel Wasser <span class="zu">zu trinken</span>.</div><div class="sr">Zdravo je piti mnogo vode.</div></div><button class="speak" data-speak="Es ist gesund, viel Wasser zu trinken.">🔊</button></div></div>
+          <div class="mini"><b>4. mišljenje</b><div class="ex"><span class="num">4</span><div><div class="de">Ich hoffe, meine Tasche nicht <span class="zu">zu verlieren</span>.</div><div class="sr">Nadam se da neću izgubiti torbu.</div></div><button class="speak" data-speak="Ich hoffe, meine Tasche nicht zu verlieren.">🔊</button></div></div>
+          <div class="mini"><b>5. želja, plan ili namera</b><div class="ex"><span class="num">5</span><div><div class="de">Ich plane, meine Schwester <span class="zu">zu besuchen</span>.</div><div class="sr">Planiram da posetim sestru.</div></div><button class="speak" data-speak="Ich plane, meine Schwester zu besuchen.">🔊</button></div></div>
+          <div class="mini"><b>6. početak</b><div class="ex"><span class="num">6</span><div><div class="de">Ich beginne <span class="zu">zu arbeiten</span>.</div><div class="sr">Počinjem da radim.</div></div><button class="speak" data-speak="Ich beginne zu arbeiten.">🔊</button></div></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="eyebrow">Infinitiv bez „zu“</div>
+        <h2>🔴 Kada <span class="zu">ne</span> koristimo „zu“?</h2>
+        <div class="rule red"><b>Infinitiv ostaje bez „zu“</b> u nekoliko važnih konstrukcija iz lekcije.</div>
+        <div class="rule-list">
+          <div class="mini"><b>1. posle modalnih glagola</b><div class="ex"><span class="num">1</span><div><div class="de">Hier darf man nicht <span class="zu">rauchen</span>.</div><div class="sr">Ovde se ne sme pušiti.</div></div><button class="speak" data-speak="Hier darf man nicht rauchen.">🔊</button></div></div>
+          <div class="mini"><b>2. posle glagola kretanja</b><div class="ex"><span class="num">2</span><div><div class="de">Wir gehen gemeinsam <span class="zu">essen</span>.</div><div class="sr">Idemo zajedno da jedemo.</div></div><button class="speak" data-speak="Wir gehen gemeinsam essen.">🔊</button></div></div>
+          <div class="mini"><b>3. helfen, lehren, lassen</b><div class="ex"><span class="num">3</span><div><div class="de">Hilfst du mir <span class="zu">kochen</span>?</div><div class="sr">Pomažeš li mi da kuvam?</div></div><button class="speak" data-speak="Hilfst du mir kochen?">🔊</button></div></div>
+          <div class="mini"><b>4. Konjunktiv II sa würden</b><div class="ex"><span class="num">4</span><div><div class="de">Am liebsten würde ich ins Bett <span class="zu">gehen</span>.</div><div class="sr">Najradije bih išao u krevet.</div></div><button class="speak" data-speak="Am liebsten würde ich ins Bett gehen.">🔊</button></div></div>
+          <div class="mini"><b>5. imperativ</b><div class="ex"><span class="num">5</span><div><div class="de">Bitte langsam <span class="zu">sprechen</span>!</div><div class="sr">Molim govoriti polako!</div></div><button class="speak" data-speak="Bitte langsam sprechen!">🔊</button></div></div>
+          <div class="mini"><b>6. Futur I</b><div class="ex"><span class="num">6</span><div><div class="de">Mein Bruder wird ein neues Auto <span class="zu">kaufen</span>.</div><div class="sr">Moj brat će kupiti novi auto.</div></div><button class="speak" data-speak="Mein Bruder wird ein neues Auto kaufen.">🔊</button></div></div>
+          <div class="mini"><b>7. sehen / hören</b><div class="ex"><span class="num">7</span><div><div class="de">Sie sieht ihn <span class="zu">spielen</span>.</div><div class="sr">Ona vidi njega da se igra.</div></div><button class="speak" data-speak="Sie sieht ihn spielen.">🔊</button></div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="practice" class="section">
+    <div class="card">
+      <div class="eyebrow">Izaberi tip vežbe</div>
+      <h2>Vežbaj korak po korak</h2>
+      <div class="mode-grid" id="modeGrid">
+        <button class="mode" data-mode="choice"><span class="ico">✅</span><b>Mit oder ohne „zu“?</b><small>Odredi da li u rečenici ide „zu“.</small></button>
+        <button class="mode" data-mode="complete"><span class="ico">✍️</span><b>Dopuni rečenicu</b><small>Upiši odgovarajući oblik infinitiva.</small></button>
+        <button class="mode" data-mode="order"><span class="ico">🧩</span><b>Složi rečenicu</b><small>Klikni reči pravilnim redom.</small></button>
+        <button class="mode" data-mode="rule"><span class="ico">🧠</span><b>Prepoznaj pravilo</b><small>Izaberi zbog čega je „zu“ prisutno ili izostavljeno.</small></button>
+        <button class="mode" data-mode="translate"><span class="ico">🌍</span><b>Prevod</b><small>Prevedi kratku rečenicu na nemački.</small></button>
+        <button class="mode" data-mode="mixed"><span class="ico">⚡</span><b>Brzi miks</b><small>Nasumična kombinacija različitih zadataka.</small></button>
+      </div>
+    </div>
+    <div id="practiceArea" class="exercise"></div>
+  </section>
+
+  <section id="test" class="section">
+    <div class="card test-intro" id="testIntro">
+      <div class="eyebrow">Završni test</div>
+      <h2>20 pitanja • Infinitiv mit / ohne „zu“</h2>
+      <p style="color:#65748a;max-width:600px;margin:8px auto 18px;line-height:1.6">Test kombinuje prepoznavanje pravila, dopunjavanje i izbor tačnog oblika. Rezultat se čuva u pregledu.</p>
+      <button class="btn primary" id="startTest">Pokreni test</button>
+    </div>
+    <div id="testArea"></div>
+  </section>
+
+  <section id="stats" class="section">
+    <div class="grid">
+      <div class="card"><div class="eyebrow">Tvoj napredak</div><h2>Pregled rezultata</h2><div class="result-grid"><div class="stat"><b id="sAnswered">0</b><span>odgovora</span></div><div class="stat"><b id="sCorrect">0</b><span>tačnih</span></div><div class="stat"><b id="sAccuracy">0%</b><span>tačnost</span></div><div class="stat"><b id="sBest">—</b><span>najbolji test</span></div></div><div class="actions"><button class="btn danger" id="resetStats">Obriši napredak</button></div></div>
+      <div class="card"><div class="eyebrow">Brzi podsetnik</div><h2>Najvažnije</h2><div class="rule"><b>Sa „zu“:</b> sein/finden + pridev; haben + imenica; bezlični izrazi sa es; mišljenje; želja/plan/namera; početak.</div><div class="rule red"><b>Bez „zu“:</b> modalni glagoli; glagoli kretanja; helfen/lehren/lassen; würden; imperativ; Futur I; sehen/hören.</div></div>
+    </div>
+    <div class="notice" style="margin-top:16px">💡 Savet: prvo prouči kartice u odeljku <b>Uči</b>, zatim prođi bar tri vrste vežbi, pa tek onda uradi završni test.</div>
+  </section>
+
+  <div class="footer">DE-MAX • Infinitiv mit/ohne „zu“ • interaktivni trener</div>
+</div>
+<script>
+const choiceQs=[
+ {q:'Ich plane, morgen früher ___ kommen.',opts:['zu','— bez zu'],a:0,full:'Ich plane, morgen früher zu kommen.',tr:'Planiram da sutra dođem ranije.',why:'plan / namera → infinitiv sa „zu“'},
+ {q:'Wir möchten heute früh ___ aufstehen.',opts:['zu','— bez zu'],a:1,full:'Wir möchten heute früh aufstehen.',tr:'Mi bismo danas rano da ustanemo.',why:'modalni glagol → bez „zu“'},
+ {q:'Es ist gesund, viel Wasser ___ trinken.',opts:['zu','— bez zu'],a:0,full:'Es ist gesund, viel Wasser zu trinken.',tr:'Zdravo je piti mnogo vode.',why:'bezlični izraz sa es → sa „zu“'},
+ {q:'Ich komme dir ___ helfen.',opts:['zu','— bez zu'],a:1,full:'Ich komme dir helfen.',tr:'Dolazim da ti pomognem.',why:'glagol kretanja → bez „zu“'},
+ {q:'Ich hoffe, meine Tasche nicht ___ verlieren.',opts:['zu','— bez zu'],a:0,full:'Ich hoffe, meine Tasche nicht zu verlieren.',tr:'Nadam se da neću izgubiti torbu.',why:'glagol mišljenja / nade → sa „zu“'},
+ {q:'Bitte hier ___ warten!',opts:['zu','— bez zu'],a:1,full:'Bitte hier warten!',tr:'Molim sačekati ovde!',why:'imperativ → bez „zu“'},
+ {q:'Jana hat Angst, sich ___ verlaufen.',opts:['zu','— bez zu'],a:0,full:'Jana hat Angst, sich zu verlaufen.',tr:'Jana se plaši da će se izgubiti.',why:'haben + imenica → sa „zu“'},
+ {q:'Sie sieht ihn ___ spielen.',opts:['zu','— bez zu'],a:1,full:'Sie sieht ihn spielen.',tr:'Ona vidi njega da se igra.',why:'sehen / hören → bez „zu“'},
+ {q:'Ich beginne ___ arbeiten.',opts:['zu','— bez zu'],a:0,full:'Ich beginne zu arbeiten.',tr:'Počinjem da radim.',why:'glagol početka → sa „zu“'},
+ {q:'Mein Bruder wird ein neues Auto ___ kaufen.',opts:['zu','— bez zu'],a:1,full:'Mein Bruder wird ein neues Auto kaufen.',tr:'Moj brat će kupiti novi auto.',why:'Futur I → bez „zu“'},
+ {q:'Er findet es schwierig, mit ihr ___ reden.',opts:['zu','— bez zu'],a:0,full:'Er findet es schwierig, mit ihr zu reden.',tr:'On smatra da je teško razgovarati sa njom.',why:'finden + pridev → sa „zu“'},
+ {q:'Hilfst du mir ___ kochen?',opts:['zu','— bez zu'],a:1,full:'Hilfst du mir kochen?',tr:'Pomažeš li mi da kuvam?',why:'helfen → bez „zu“'}
+];
+const completeQs=[
+ {q:'Tom hatte Recht, ihr die Wahrheit ____.',tr:'Tom je bio u pravu da joj kaže istinu.',a:['zu sagen'],full:'Tom hatte Recht, ihr die Wahrheit zu sagen.'},
+ {q:'Ich versuche, die Tür ____.',tr:'Pokušavam da zatvorim vrata.',a:['zu schließen','zu schliessen'],full:'Ich versuche, die Tür zu schließen.'},
+ {q:'Wir fangen an, Deutsch ____.',tr:'Počinjemo da učimo nemački.',a:['zu lernen'],full:'Wir fangen an, Deutsch zu lernen.'},
+ {q:'Hier darf man nicht ____.',tr:'Ovde se ne sme pušiti.',a:['rauchen'],full:'Hier darf man nicht rauchen.'},
+ {q:'Wir gehen gemeinsam ____.',tr:'Idemo zajedno da jedemo.',a:['essen'],full:'Wir gehen gemeinsam essen.'},
+ {q:'Sie lehrt die Kinder ____.',tr:'Ona uči decu da računaju.',a:['rechnen'],full:'Sie lehrt die Kinder rechnen.'},
+ {q:'Am liebsten würde ich jetzt ins Bett ____.',tr:'Najradije bih sada išao u krevet.',a:['gehen'],full:'Am liebsten würde ich jetzt ins Bett gehen.'},
+ {q:'Unser Chef wird nächste Woche nach Amsterdam ____.',tr:'Naš šef će sledeće nedelje leteti za Amsterdam.',a:['fliegen'],full:'Unser Chef wird nächste Woche nach Amsterdam fliegen.'},
+ {q:'Er hört die Katze ____.',tr:'On čuje mačku da mjauče.',a:['miauen'],full:'Er hört die Katze miauen.'},
+ {q:'Wir sind sicher, die Tür geschlossen ____.',tr:'Sigurni smo da smo zatvorili vrata.',a:['zu haben'],full:'Wir sind sicher, die Tür geschlossen zu haben.'}
+];
+const orderQs=[
+ {w:['Ich','plane,','jedes','Wochenende','meine','Schwester','zu','besuchen.'],full:'Ich plane, jedes Wochenende meine Schwester zu besuchen.',tr:'Planiram da svakog vikenda posetim sestru.'},
+ {w:['Wir','möchten','heute','früh','aufstehen.'],full:'Wir möchten heute früh aufstehen.',tr:'Mi bismo danas rano da ustanemo.'},
+ {w:['Es','ist','nicht','stressig,','Deutsch','zu','lernen.'],full:'Es ist nicht stressig, Deutsch zu lernen.',tr:'Nije stresno učiti nemački.'},
+ {w:['Ich','fahre','meine','Oma','besuchen.'],full:'Ich fahre meine Oma besuchen.',tr:'Idem da posetim svoju baku.'},
+ {w:['Bitte','die','Tür','schließen!'],full:'Bitte die Tür schließen!',tr:'Molim zatvoriti vrata!'},
+ {w:['Sie','sieht','ihn','spielen.'],full:'Sie sieht ihn spielen.',tr:'Ona vidi njega da se igra.'},
+ {w:['Ich','beginne','zu','arbeiten.'],full:'Ich beginne zu arbeiten.',tr:'Počinjem da radim.'},
+ {w:['Ich','würde','heute','spazieren','gehen.'],full:'Ich würde heute spazieren gehen.',tr:'Danas bih išao u šetnju.'}
+];
+const ruleQs=[
+ {q:'Es ist nicht stressig, Deutsch zu lernen.',opts:['bezlični izraz sa es','modalni glagol','Futur I','sehen/hören'],a:0},
+ {q:'Sie will nicht mehr an ihn denken.',opts:['plan ili namera','modalni glagol','imperativ','kretanje'],a:1},
+ {q:'Ich fahre meine Oma besuchen.',opts:['glagol kretanja','haben + imenica','mišljenje','početak'],a:0},
+ {q:'Ich lasse mir die Haare schneiden.',opts:['Konjunktiv II','lassen','Futur I','sein + pridev'],a:1},
+ {q:'Ich hoffe, meine Tasche nicht zu verlieren.',opts:['mišljenje / nada','imperativ','modalni glagol','sehen/hören'],a:0},
+ {q:'Mein Bruder wird ein neues Auto kaufen.',opts:['početak','Futur I','haben + imenica','plan'],a:1},
+ {q:'Er findet es schwierig, mit ihr zu reden.',opts:['finden + pridev','kretanje','imperativ','würden'],a:0},
+ {q:'Er hört die Katze miauen.',opts:['haben + imenica','početak','sehen/hören','plan'],a:2}
+];
+const translateQs=[
+ {q:'Planiram da posetim svoju sestru.',a:['Ich plane, meine Schwester zu besuchen.'],full:'Ich plane, meine Schwester zu besuchen.'},
+ {q:'Ovde se ne sme pušiti.',a:['Hier darf man nicht rauchen.'],full:'Hier darf man nicht rauchen.'},
+ {q:'Zdravo je piti mnogo vode.',a:['Es ist gesund, viel Wasser zu trinken.'],full:'Es ist gesund, viel Wasser zu trinken.'},
+ {q:'Idemo zajedno da jedemo.',a:['Wir gehen gemeinsam essen.'],full:'Wir gehen gemeinsam essen.'},
+ {q:'Molim govoriti polako!',a:['Bitte langsam sprechen!'],full:'Bitte langsam sprechen!'},
+ {q:'Počinjem da radim.',a:['Ich beginne zu arbeiten.'],full:'Ich beginne zu arbeiten.'},
+ {q:'Ona vidi njega da se igra.',a:['Sie sieht ihn spielen.'],full:'Sie sieht ihn spielen.'},
+ {q:'Pokušavam da zatvorim vrata.',a:['Ich versuche, die Tür zu schließen.','Ich versuche, die Tür zu schliessen.'],full:'Ich versuche, die Tür zu schließen.'}
+];
+let audioOn=true, currentMode='choice', idx=0, orderBuilt=[];
+const stats=JSON.parse(localStorage.getItem('demaxInfStats')||'{"answered":0,"correct":0,"best":0,"seen":0}');
+function save(){localStorage.setItem('demaxInfStats',JSON.stringify(stats));renderStats();}
+function record(ok){stats.answered++; if(ok)stats.correct++; stats.seen=Math.min(100,stats.seen+2); save();}
+function norm(s){return s.trim().replace(/\s+/g,' ').replace(/[„“"]/g,'').replace(/ß/g,'ss').replace(/[.!?]+$/,'').toLowerCase()}
+function speak(t){if(!('speechSynthesis'in window))return; speechSynthesis.cancel(); const u=new SpeechSynthesisUtterance(t);u.lang='de-DE';u.rate=.9;speechSynthesis.speak(u)}
+function navTo(id){document.querySelectorAll('.section').forEach(x=>x.classList.remove('active'));document.getElementById(id).classList.add('active');document.querySelectorAll('.nav button').forEach(x=>x.classList.toggle('active',x.dataset.tab===id));if(id==='stats')renderStats();window.scrollTo({top:250,behavior:'smooth'})}
+document.querySelectorAll('.nav button').forEach(b=>b.onclick=()=>navTo(b.dataset.tab));
+document.querySelectorAll('[data-speak]').forEach(b=>b.onclick=()=>speak(b.dataset.speak));
+document.getElementById('audioToggle').onclick=()=>{audioOn=!audioOn;const b=document.getElementById('audioToggle');b.classList.toggle('on',audioOn);b.textContent=audioOn?'🔊 Automatski izgovor: uključen':'🔇 Automatski izgovor: isključen'};
+
+document.querySelectorAll('.mode').forEach(b=>b.onclick=()=>{currentMode=b.dataset.mode;idx=0;renderPractice()});
+function feedback(ok,msg,full){const f=document.getElementById('fb');f.className='feedback show '+(ok?'ok':'no');f.innerHTML=(ok?'✅ ':'❌ ')+msg+(full?`<div style="margin-top:5px;font-weight:700">${full}</div>`:''); if(ok&&audioOn&&full)speak(full);record(ok)}
+function nextBtn(){return `<div class="actions"><button class="btn primary" onclick="nextPractice()">Sledeće pitanje →</button><button class="btn ghost" onclick="navTo('learn')">Ponovi pravila</button></div>`}
+function nextPractice(){idx++;orderBuilt=[];renderPractice()}
+window.nextPractice=nextPractice;window.navTo=navTo;
+function renderPractice(){const a=document.getElementById('practiceArea');let mode=currentMode;if(mode==='mixed'){mode=['choice','complete','order','rule','translate'][idx%5]}
+ if(mode==='choice'){const q=choiceQs[idx%choiceQs.length];a.innerHTML=`<div class="card"><div class="qtop"><div class="eyebrow">Mit oder ohne „zu“?</div><span class="counter">${idx%choiceQs.length+1}/${choiceQs.length}</span></div><div class="question">${q.q}</div><div class="translation">${q.tr}</div><div class="answers">${q.opts.map((o,i)=>`<button class="answer" onclick="answerChoice(this,${i},${q.a},'${esc(q.why)}','${esc(q.full)}')">${o}</button>`).join('')}</div><div id="fb" class="feedback"></div>${nextBtn()}</div>`}
+ else if(mode==='complete'){const q=completeQs[idx%completeQs.length];a.innerHTML=`<div class="card"><div class="qtop"><div class="eyebrow">Dopuni rečenicu</div><span class="counter">${idx%completeQs.length+1}/${completeQs.length}</span></div><div class="question">${q.q}</div><div class="translation">${q.tr}</div><div class="inputline"><input id="txt" class="textinput" placeholder="Upiši odgovor…"><button class="btn primary" onclick='checkText(${JSON.stringify(q.a)},${JSON.stringify(q.full)})'>Proveri</button></div><div id="fb" class="feedback"></div>${nextBtn()}</div>`;setTimeout(()=>document.getElementById('txt')?.focus(),50)}
+ else if(mode==='order'){const q=orderQs[idx%orderQs.length];const shuffled=[...q.w].sort(()=>Math.random()-.5);a.innerHTML=`<div class="card"><div class="qtop"><div class="eyebrow">Složi rečenicu</div><span class="counter">${idx%orderQs.length+1}/${orderQs.length}</span></div><div class="translation">${q.tr}</div><div id="built" class="built"><span style="color:#93a0b2">Ovde složi rečenicu…</span></div><div id="bank" class="wordbank">${shuffled.map((w,i)=>`<button class="token" data-word="${esc(w)}" onclick="pickToken(this)">${w}</button>`).join('')}</div><div class="actions"><button class="btn primary" onclick='checkOrder(${JSON.stringify(q.full)})'>Proveri</button><button class="btn ghost" onclick="renderPractice()">Ponovo izmešaj</button></div><div id="fb" class="feedback"></div>${nextBtn()}</div>`}
+ else if(mode==='rule'){const q=ruleQs[idx%ruleQs.length];a.innerHTML=`<div class="card"><div class="qtop"><div class="eyebrow">Prepoznaj pravilo</div><span class="counter">${idx%ruleQs.length+1}/${ruleQs.length}</span></div><div class="question">${q.q}</div><div class="answers">${q.opts.map((o,i)=>`<button class="answer" onclick="answerChoice(this,${i},${q.a},'Tačno pravilo je: ${esc(q.opts[q.a])}','${esc(q.q)}')">${o}</button>`).join('')}</div><div id="fb" class="feedback"></div>${nextBtn()}</div>`}
+ else if(mode==='translate'){const q=translateQs[idx%translateQs.length];a.innerHTML=`<div class="card"><div class="qtop"><div class="eyebrow">Prevedi na nemački</div><span class="counter">${idx%translateQs.length+1}/${translateQs.length}</span></div><div class="question">${q.q}</div><div class="inputline"><input id="txt" class="textinput" placeholder="Napiši nemačku rečenicu…"><button class="btn primary" onclick='checkText(${JSON.stringify(q.a)},${JSON.stringify(q.full)})'>Proveri</button></div><div id="fb" class="feedback"></div>${nextBtn()}</div>`;setTimeout(()=>document.getElementById('txt')?.focus(),50)}
+}
+function esc(s){return s.replace(/'/g,"\\'").replace(/"/g,'&quot;')}
+function answerChoice(btn,i,a,why,full){if(document.querySelector('#fb.show'))return;document.querySelectorAll('.answer').forEach((b,j)=>{if(j===a)b.classList.add('correct');else if(j===i)b.classList.add('wrong')});feedback(i===a,i===a?why:`Tačan odgovor: ${document.querySelectorAll('.answer')[a].textContent}. ${why}`,full)}
+window.answerChoice=answerChoice;
+function checkText(arr,full){if(document.querySelector('#fb.show'))return;const v=document.getElementById('txt').value;const ok=arr.some(x=>norm(x)===norm(v));feedback(ok,ok?'Odlično!':'Tačan odgovor je:',full)}window.checkText=checkText;
+function pickToken(btn){if(btn.disabled)return;btn.disabled=true;orderBuilt.push(btn.dataset.word);const b=document.getElementById('built');b.innerHTML=orderBuilt.map((w,i)=>`<button class="token" onclick="unpick(${i})">${w}</button>`).join(' ')}window.pickToken=pickToken;
+function unpick(i){orderBuilt.splice(i,1);renderBuiltOnly()}window.unpick=unpick;
+function renderBuiltOnly(){const b=document.getElementById('built');b.innerHTML=orderBuilt.length?orderBuilt.map((w,i)=>`<button class="token" onclick="unpick(${i})">${w}</button>`).join(' '):'<span style="color:#93a0b2">Ovde složi rečenicu…</span>';document.querySelectorAll('#bank .token').forEach(t=>{const used=orderBuilt.filter(x=>x===t.dataset.word).length;const same=[...document.querySelectorAll('#bank .token')].filter(x=>x.dataset.word===t.dataset.word);t.disabled=same.indexOf(t)<used})}
+function checkOrder(full){if(document.querySelector('#fb.show'))return;const ok=norm(orderBuilt.join(' '))===norm(full);feedback(ok,ok?'Red reči je tačan!':'Tačan red je:',full)}window.checkOrder=checkOrder;
+
+let testQuestions=[],testIndex=0,testCorrect=0,testLocked=false;
+document.getElementById('startTest').onclick=startTest;
+function startTest(){testQuestions=[];const c=[...choiceQs].sort(()=>Math.random()-.5).slice(0,10).map(x=>({...x,type:'choice'}));const r=[...ruleQs].sort(()=>Math.random()-.5).slice(0,5).map(x=>({...x,type:'rule'}));const m=[...completeQs].sort(()=>Math.random()-.5).slice(0,5).map(x=>({...x,type:'complete'}));testQuestions=[...c,...r,...m].sort(()=>Math.random()-.5);testIndex=0;testCorrect=0;document.getElementById('testIntro').style.display='none';renderTest()}
+function renderTest(){const a=document.getElementById('testArea');if(testIndex>=testQuestions.length){const pct=Math.round(testCorrect/testQuestions.length*100);stats.best=Math.max(stats.best,pct);save();a.innerHTML=`<div class="card test-intro"><div class="eyebrow">Rezultat</div><div class="score-big">${pct}%</div><h2>${testCorrect}/${testQuestions.length} tačnih odgovora</h2><p style="color:#65748a">${pct>=85?'Odlično savladano!':pct>=65?'Vrlo dobro — još malo vežbe.':'Vrati se na pravila i ponovi vežbe.'}</p><div class="actions" style="justify-content:center"><button class="btn primary" onclick="startTest()">Ponovi test</button><button class="btn ghost" onclick="navTo('practice')">Vežbaj</button></div></div>`;return}testLocked=false;const q=testQuestions[testIndex];let html=`<div class="card"><div class="qtop"><div class="eyebrow">Završni test</div><span class="counter">${testIndex+1}/${testQuestions.length}</span></div>`;
+ if(q.type==='choice'||q.type==='rule'){html+=`<div class="question">${q.q}</div>${q.tr?`<div class="translation">${q.tr}</div>`:''}<div class="answers">${q.opts.map((o,i)=>`<button class="answer" onclick="testChoice(this,${i},${q.a},'${esc(q.full||q.q)}')">${o}</button>`).join('')}</div>`}
+ else{html+=`<div class="question">${q.q}</div><div class="translation">${q.tr}</div><div class="inputline"><input id="testTxt" class="textinput" placeholder="Upiši odgovor…"><button class="btn primary" onclick='testText(${JSON.stringify(q.a)},${JSON.stringify(q.full)})'>Proveri</button></div>`}
+ html+=`<div id="testFb" class="feedback"></div><div class="actions"><button id="testNext" class="btn primary" style="display:none" onclick="testIndex++;renderTest()">Sledeće →</button></div></div>`;a.innerHTML=html}
+function testFeedback(ok,full){const f=document.getElementById('testFb');f.className='feedback show '+(ok?'ok':'no');f.innerHTML=(ok?'✅ Tačno!':'❌ Nije tačno.')+`<div style="margin-top:5px">${full}</div>`;document.getElementById('testNext').style.display='inline-block';if(ok){testCorrect++; if(audioOn)speak(full)}record(ok);testLocked=true}
+function testChoice(btn,i,a,full){if(testLocked)return;document.querySelectorAll('#testArea .answer').forEach((b,j)=>{if(j===a)b.classList.add('correct');else if(j===i)b.classList.add('wrong')});testFeedback(i===a,full)}window.testChoice=testChoice;
+function testText(arr,full){if(testLocked)return;const ok=arr.some(x=>norm(x)===norm(document.getElementById('testTxt').value));testFeedback(ok,full)}window.testText=testText;window.renderTest=renderTest;window.startTest=startTest;
+function renderStats(){document.getElementById('sAnswered').textContent=stats.answered;document.getElementById('sCorrect').textContent=stats.correct;document.getElementById('sAccuracy').textContent=stats.answered?Math.round(stats.correct/stats.answered*100)+'%':'0%';document.getElementById('sBest').textContent=stats.best?stats.best+'%':'—';const p=Math.max(stats.seen,Math.min(100,stats.answered*2));document.getElementById('progressFill').style.width=p+'%';document.getElementById('progressText').textContent=p+'%'}
+document.getElementById('resetStats').onclick=()=>{if(confirm('Obrisati sačuvani napredak?')){stats.answered=0;stats.correct=0;stats.best=0;stats.seen=0;save()}};
+renderStats();
+</script>
+</body>
+</html>
