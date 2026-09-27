@@ -1,0 +1,639 @@
+<!DOCTYPE html>
+<html lang="sr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DE-MAX • Jaka pridevska deklinacija</title>
+<style>
+:root{
+  --navy:#0b2f70;
+  --blue:#0a58ca;
+  --blue2:#1888f8;
+  --red:#c90000;
+  --red2:#ef2020;
+  --green:#239761;
+  --sky:#eef7ff;
+  --line:#cfe3fa;
+  --white:#fff;
+  --text:#17345f;
+  --muted:#6f8aa8;
+  --gold:#ffd94c;
+  --shadow:0 18px 48px rgba(7,48,108,.14);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;
+  font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",Arial,sans-serif;
+  color:var(--text);
+  background:
+    radial-gradient(circle at 5% 0%,rgba(24,136,248,.15),transparent 28%),
+    radial-gradient(circle at 97% 15%,rgba(201,0,0,.07),transparent 26%),
+    linear-gradient(180deg,#fcfdff,#eef6ff 55%,#fbfdff);
+}
+button,input{font:inherit}
+.app{width:min(1240px,100%);margin:auto;padding:14px 12px 64px}
+.hero{
+  position:relative;overflow:hidden;border-radius:30px;
+  background:linear-gradient(135deg,#08265d 0%,#0a58ca 61%,#1888f8 100%);
+  color:#fff;padding:28px 24px;box-shadow:var(--shadow)
+}
+.hero:before,.hero:after{content:"";position:absolute;border-radius:999px;background:rgba(255,255,255,.08)}
+.hero:before{width:300px;height:300px;right:-105px;top:-120px}
+.hero:after{width:170px;height:170px;left:-60px;bottom:-82px}
+.brandline{position:relative;z-index:2;display:flex;justify-content:space-between;align-items:center;gap:14px}
+.brand{display:flex;align-items:center;gap:11px;font-weight:1000;letter-spacing:.5px}
+.logo{
+  width:57px;height:57px;border-radius:18px;background:#fff;color:var(--red);
+  display:grid;place-items:center;font-weight:1000;box-shadow:0 8px 22px rgba(0,0,0,.13)
+}
+.brand small{display:block;font-weight:750;opacity:.82;letter-spacing:1.5px;font-size:11px}
+.pill{background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.22);border-radius:999px;padding:10px 14px;font-size:13px;font-weight:900}
+.hero h1{
+  position:relative;z-index:2;margin:24px 0 8px;
+  font-size:clamp(38px,7vw,72px);line-height:.99;letter-spacing:-2px
+}
+.hero h1 span{color:#ffd9d9}
+.hero p{position:relative;z-index:2;margin:0;max-width:970px;line-height:1.58;font-size:clamp(15px,2vw,20px)}
+.hero-stats{position:relative;z-index:2;display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:23px}
+.hstat{background:rgba(255,255,255,.13);border:1px solid rgba(255,255,255,.19);border-radius:18px;padding:14px 16px}
+.hstat b{display:block;font-size:24px}.hstat span{font-size:12px;opacity:.9}
+
+.tabs{display:flex;gap:8px;overflow:auto;padding:16px 1px 6px;scrollbar-width:none}
+.tabs::-webkit-scrollbar{display:none}
+.tabs button{
+  border:1px solid var(--line);background:#fff;color:var(--text);font-weight:900;
+  padding:11px 15px;border-radius:14px;cursor:pointer;white-space:nowrap;box-shadow:0 7px 20px rgba(5,43,104,.06)
+}
+.tabs button.active{background:var(--blue);color:#fff;border-color:var(--blue)}
+.section{display:none;margin-top:16px}.section.active{display:block}
+.card{
+  background:rgba(255,255,255,.97);border:1px solid var(--line);border-radius:27px;
+  padding:22px;box-shadow:var(--shadow)
+}
+.card+.card{margin-top:15px}
+.head{display:flex;justify-content:space-between;gap:12px;align-items:flex-start;margin-bottom:17px}
+.kicker{
+  display:inline-flex;align-items:center;gap:7px;background:#e8f4ff;color:var(--blue);
+  padding:8px 11px;border-radius:999px;font-size:12px;font-weight:950;text-transform:uppercase;letter-spacing:.8px
+}
+.head h2{margin:8px 0 0;font-size:clamp(25px,4vw,35px);letter-spacing:-.6px}
+.rule-note{
+  background:#fff6dc;border:1px solid #f2dc88;border-radius:18px;padding:14px 16px;
+  font-weight:760;line-height:1.55;color:#654e00
+}
+.rule-table-wrap{overflow:auto;margin-top:16px}
+.rule-table{width:100%;border-collapse:separate;border-spacing:0}
+.rule-table th,.rule-table td{padding:14px 12px;text-align:center;font-weight:900;border-right:1px solid #fff;border-bottom:1px solid #fff}
+.rule-table thead th{background:var(--red);color:#fff;font-size:16px}
+.rule-table thead th:first-child{border-radius:16px 0 0 0}
+.rule-table thead th:last-child{border-radius:0 16px 0 0}
+.case{color:#fff;font-size:18px}
+.nom td{background:#ca0000;color:#fff}
+.akk td{background:#1411a8;color:#fff}
+.dat td{background:#359b6c;color:#fff}
+.gen td{background:#7b4bb1;color:#fff}
+.ending{display:inline-block;background:rgba(255,255,255,.17);padding:4px 9px;border-radius:9px;text-decoration:underline;font-size:20px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.info{
+  border:1px solid var(--line);border-radius:20px;padding:16px;background:linear-gradient(180deg,#fff,#f4f9ff)
+}
+.info h3{margin:0 0 9px;color:var(--blue)}
+.example{
+  padding:10px 0;border-bottom:1px dashed #d7e7f7;font-weight:780
+}
+.example:last-child{border-bottom:0}
+.example b{color:var(--red)}
+
+.exercise{display:grid;grid-template-columns:1fr 290px;gap:16px}
+.qbox{
+  min-height:315px;border:1px solid var(--line);border-radius:24px;padding:22px;
+  background:linear-gradient(180deg,#fff,#f4faff);display:flex;flex-direction:column;justify-content:center
+}
+.qtop{font-size:13px;font-weight:950;text-transform:uppercase;letter-spacing:.9px;color:var(--muted)}
+.question{font-size:clamp(25px,4.5vw,42px);line-height:1.28;font-weight:950;margin:12px 0 18px}
+.blank{display:inline-block;min-width:120px;text-align:center;color:var(--red);border-bottom:4px solid var(--blue);padding:0 8px}
+.options{display:flex;flex-wrap:wrap;gap:10px}
+.opt{
+  border:2px solid var(--line);background:#fff;color:var(--text);border-radius:15px;
+  padding:13px 17px;font-weight:950;cursor:pointer;transition:.18s
+}
+.opt:hover{transform:translateY(-2px);border-color:var(--blue);box-shadow:0 8px 20px rgba(7,89,202,.12)}
+.opt.correct{background:#eafff2;border-color:#50cf91;color:#07864d}
+.opt.wrong{background:#fff0f0;border-color:#ef9595;color:#ca2c2c}
+.feedback{min-height:30px;margin-top:14px;font-weight:900}.feedback.ok{color:#0b9958}.feedback.no{color:var(--red2)}
+.actions{display:flex;flex-wrap:wrap;gap:9px;margin-top:14px}
+.btn{border:0;border-radius:14px;padding:12px 16px;font-weight:950;cursor:pointer}
+.btn.primary{background:linear-gradient(90deg,var(--navy),var(--blue));color:#fff}
+.btn.ghost{background:#edf6ff;color:var(--blue);border:1px solid var(--line)}
+.btn.audio{background:#fff6d8;color:#655000;border:1px solid #f1dc82}
+.side{border:1px solid var(--line);border-radius:24px;padding:16px;background:linear-gradient(180deg,#edf7ff,#fff)}
+.ring{width:120px;height:120px;border-radius:50%;margin:5px auto 13px;display:grid;place-items:center;position:relative;background:conic-gradient(var(--blue) 0deg,#dcecff 0deg)}
+.ring:after{content:"";position:absolute;width:88px;height:88px;border-radius:50%;background:#fff}
+.ring span{position:relative;z-index:1;font-size:24px;font-weight:1000}
+.side h3{text-align:center;margin:0 0 12px}
+.mini{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.mini div{text-align:center;background:#fff;border:1px solid var(--line);border-radius:14px;padding:10px}
+.mini b{display:block;font-size:20px}
+.translate{background:#f5faff;border:1px solid var(--line);border-radius:18px;padding:14px 16px;margin-top:12px}
+.translate .label{font-size:12px;text-transform:uppercase;letter-spacing:.7px;color:var(--muted);font-weight:900}
+.translate .text{margin-top:5px;font-weight:850;font-size:17px}
+.answerline{min-height:80px;border:2px dashed #a8d1f7;background:#f7fbff;border-radius:18px;padding:12px;display:flex;flex-wrap:wrap;gap:9px;align-items:center}
+.wordbank{display:flex;flex-wrap:wrap;gap:9px;margin-top:12px}
+.word{border:2px solid var(--line);background:#fff;border-radius:13px;padding:10px 13px;font-weight:900;cursor:pointer}
+.word.used{opacity:.33;pointer-events:none}
+.token{background:var(--blue);color:#fff;border-radius:12px;padding:9px 12px;font-weight:900;cursor:pointer}
+.search{width:100%;border:1px solid var(--line);border-radius:16px;padding:13px 15px;font:inherit;font-weight:750;outline:none}
+.search:focus{border-color:var(--blue);box-shadow:0 0 0 4px rgba(7,89,202,.08)}
+.tablewrap{overflow:auto;margin-top:12px}
+table.list{width:100%;border-collapse:separate;border-spacing:0 9px}
+table.list th{text-align:left;color:var(--muted);font-size:12px;text-transform:uppercase;letter-spacing:.7px;padding:0 12px 4px}
+table.list td{background:#f7fbff;border-top:1px solid #d9ebfb;border-bottom:1px solid #d9ebfb;padding:12px;font-weight:750}
+table.list td:first-child{border-left:1px solid #d9ebfb;border-radius:14px 0 0 14px}
+table.list td:last-child{border-right:1px solid #d9ebfb;border-radius:0 14px 14px 0}
+.tag{display:inline-block;background:#e6f2ff;color:var(--blue);padding:4px 8px;border-radius:999px;font-size:11px;font-weight:950}
+.footer{text-align:center;color:#6e8dad;font-size:13px;margin-top:25px}
+@media(max-width:860px){
+  .app{padding:10px 10px 52px}.hero{padding:22px 17px;border-radius:24px}.pill{display:none}
+  .hero-stats,.grid2,.exercise{grid-template-columns:1fr}.side{order:-1}
+  .card{padding:16px;border-radius:22px}.question{font-size:28px}
+  .ring{width:96px;height:96px}.ring:after{width:68px;height:68px}.ring span{font-size:20px}
+  .rule-table th,.rule-table td{padding:11px 8px;font-size:14px}
+}
+</style>
+</head>
+<body>
+<div class="app">
+<header class="hero">
+  <div class="brandline">
+    <div class="brand"><div class="logo">DM</div><div>DE-MAX<small>ADJEKTIVDEKLINATION TRAINER</small></div></div>
+    <div class="pill">A2–B1 • ohne Artikel</div>
+  </div>
+  <h1>Jaka pridevska <span>deklinacija</span></h1>
+  <p>Vežbaj nemačku <b>jaku pridevsku deklinaciju bez člana</b>. Nauči nastavke po rodu i padežu, prepoznaj Nominativ, Akkusativ i Dativ, dopunjavaj prideve, slaži rečenice i proveri znanje završnim testom.</p>
+  <div class="hero-stats">
+    <div class="hstat"><b id="allDone">0</b><span>urađenih zadataka</span></div>
+    <div class="hstat"><b id="allGood">0</b><span>tačnih odgovora</span></div>
+    <div class="hstat"><b id="allRate">0%</b><span>ukupna uspešnost</span></div>
+  </div>
+</header>
+
+<nav class="tabs">
+  <button class="active" data-tab="pravilo">📘 Pravilo</button>
+  <button data-tab="nastavak">✅ Izaberi nastavak</button>
+  <button data-tab="dopuni">✍️ Dopuni pridev</button>
+  <button data-tab="padez">🎯 Padež i rod</button>
+  <button data-tab="redosled">🧩 Složi rečenicu</button>
+  <button data-tab="primeri">📚 40 primera</button>
+  <button data-tab="test">🏁 Test</button>
+</nav>
+
+<section id="pravilo" class="section active">
+  <div class="card">
+    <div class="head"><div><div class="kicker">Osnova</div><h2>Jaka deklinacija = pridev bez člana</h2></div></div>
+    <div class="rule-note">
+      Kada ispred prideva <b>nema člana</b> ni druge reči koja pokazuje rod, broj i padež, sam pridev preuzima jak nastavak.
+      Zato kažemo: <b>schöner Blick</b>, <b>schöne Lage</b>, <b>schönes Zimmer</b>, <b>schöne Räume</b>.
+    </div>
+
+    <div class="rule-table-wrap">
+      <table class="rule-table">
+        <thead>
+          <tr><th>Padež</th><th>Maskulin</th><th>Feminin</th><th>Neutrum</th><th>Plural</th></tr>
+        </thead>
+        <tbody>
+          <tr class="nom"><td class="case">Nominativ</td><td>schön<span class="ending">er</span> Blick</td><td>schön<span class="ending">e</span> Lage</td><td>schön<span class="ending">es</span> Zimmer</td><td>schön<span class="ending">e</span> Räume</td></tr>
+          <tr class="akk"><td class="case">Akkusativ</td><td>schön<span class="ending">en</span> Blick</td><td>schön<span class="ending">e</span> Lage</td><td>schön<span class="ending">es</span> Zimmer</td><td>schön<span class="ending">e</span> Räume</td></tr>
+          <tr class="dat"><td class="case">Dativ</td><td>schön<span class="ending">em</span> Blick</td><td>schön<span class="ending">er</span> Lage</td><td>schön<span class="ending">em</span> Zimmer</td><td>schön<span class="ending">en</span> Räumen</td></tr>
+          <tr class="gen"><td class="case">Genitiv*</td><td>schön<span class="ending">en</span> Blickes</td><td>schön<span class="ending">er</span> Lage</td><td>schön<span class="ending">en</span> Zimmers</td><td>schön<span class="ending">er</span> Räume</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="note" style="margin-top:14px">
+      <b>Najvažnije za A2/B1:</b> Nominativ: <b>-er / -e / -es / -e</b> • Akkusativ: <b>-en / -e / -es / -e</b> • Dativ: <b>-em / -er / -em / -en</b>. Genitiv je dodat kao bonus.
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="head"><div><div class="kicker">Brzi primeri</div><h2>Kako nastavci rade u rečenici?</h2></div></div>
+    <div class="grid2">
+      <div class="info">
+        <h3>Nominativ</h3>
+        <div class="example"><b>Frischer Kaffee</b> schmeckt gut.</div>
+        <div class="example"><b>Kalte Milch</b> steht im Kühlschrank.</div>
+        <div class="example"><b>Gutes Essen</b> ist wichtig.</div>
+        <div class="example"><b>Neue Bücher</b> sind teuer.</div>
+      </div>
+      <div class="info">
+        <h3>Akkusativ & Dativ</h3>
+        <div class="example">Ich trinke <b>frischen Kaffee</b>.</div>
+        <div class="example">Sie kauft <b>kalte Milch</b>.</div>
+        <div class="example">Mit <b>gutem Essen</b> bin ich zufrieden.</div>
+        <div class="example">Mit <b>neuen Freunden</b> spreche ich Deutsch.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="nastavak" class="section">
+  <div class="card">
+    <div class="head"><div><div class="kicker">Vežba 1</div><h2>Izaberi tačan nastavak</h2></div></div>
+    <div class="exercise">
+      <div class="qbox">
+        <div class="qtop" id="endNo"></div>
+        <div class="question" id="endQ"></div>
+        <div class="options" id="endOpts"></div>
+        <div class="feedback" id="endFb"></div>
+        <div class="translate" id="endTr"></div>
+        <div class="actions"><button class="btn primary" id="endNext">Sledeće →</button><button class="btn audio" id="endSpeak">🔊 Izgovor</button></div>
+      </div>
+      <div class="side">
+        <div class="ring" id="endRing"><span id="endPct">0%</span></div>
+        <h3>Napredak</h3>
+        <div class="mini"><div><b id="endDone">0</b><span>urađeno</span></div><div><b id="endGood">0</b><span>tačno</span></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="dopuni" class="section">
+  <div class="card">
+    <div class="head"><div><div class="kicker">Vežba 2</div><h2>Dopuni ceo oblik prideva</h2></div></div>
+    <div class="exercise">
+      <div class="qbox">
+        <div class="qtop" id="fillNo"></div>
+        <div class="question" id="fillQ"></div>
+        <div class="options" id="fillOpts"></div>
+        <div class="feedback" id="fillFb"></div>
+        <div class="translate" id="fillTr"></div>
+        <div class="actions"><button class="btn primary" id="fillNext">Sledeće →</button><button class="btn ghost" id="fillShow">Rešenje</button><button class="btn audio" id="fillSpeak">🔊 Izgovor</button></div>
+      </div>
+      <div class="side">
+        <div class="ring" id="fillRing"><span id="fillPct">0%</span></div>
+        <h3>Napredak</h3>
+        <div class="mini"><div><b id="fillDone">0</b><span>urađeno</span></div><div><b id="fillGood">0</b><span>tačno</span></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="padez" class="section">
+  <div class="card">
+    <div class="head"><div><div class="kicker">Vežba 3</div><h2>Prepoznaj padež i rod</h2></div></div>
+    <div class="exercise">
+      <div class="qbox">
+        <div class="qtop" id="caseNo"></div>
+        <div class="question" id="caseQ"></div>
+        <div class="options" id="caseOpts"></div>
+        <div class="feedback" id="caseFb"></div>
+        <div class="translate" id="caseTr"></div>
+        <div class="actions"><button class="btn primary" id="caseNext">Sledeće →</button><button class="btn audio" id="caseSpeak">🔊 Izgovor</button></div>
+      </div>
+      <div class="side">
+        <div class="ring" id="caseRing"><span id="casePct">0%</span></div>
+        <h3>Napredak</h3>
+        <div class="mini"><div><b id="caseDone">0</b><span>urađeno</span></div><div><b id="caseGood">0</b><span>tačno</span></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="redosled" class="section">
+  <div class="card">
+    <div class="head"><div><div class="kicker">Vežba 4</div><h2>Složi pravilnu nemačku rečenicu</h2></div></div>
+    <div class="qbox">
+      <div class="qtop" id="orderNo"></div>
+      <div class="question" style="font-size:25px" id="orderHint"></div>
+      <div class="answerline" id="answerLine"></div>
+      <div class="wordbank" id="wordBank"></div>
+      <div class="feedback" id="orderFb"></div>
+      <div class="translate" id="orderTr"></div>
+      <div class="actions">
+        <button class="btn primary" id="orderCheck">Proveri</button>
+        <button class="btn ghost" id="orderReset">Ponovo</button>
+        <button class="btn ghost" id="orderShow">Rešenje</button>
+        <button class="btn audio" id="orderSpeak">🔊 Izgovor</button>
+        <button class="btn primary" id="orderNext">Sledeće →</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="primeri" class="section">
+  <div class="card">
+    <div class="head"><div><div class="kicker">Baza primera</div><h2>40 primera jake deklinacije</h2></div></div>
+    <input id="exSearch" class="search" placeholder="Pretraži npr. Kaffee, Milch, Dativ, plural..." />
+    <div class="tablewrap">
+      <table class="list">
+        <thead><tr><th>Nemački</th><th>Prevod</th><th>Padež / rod</th><th>Izgovor</th></tr></thead>
+        <tbody id="exTable"></tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<section id="test" class="section">
+  <div class="card">
+    <div class="head"><div><div class="kicker">Završni test</div><h2>20 mešovitih pitanja</h2></div></div>
+    <div class="exercise">
+      <div class="qbox">
+        <div class="qtop" id="testNo"></div>
+        <div class="question" id="testQ"></div>
+        <div class="options" id="testOpts"></div>
+        <div class="feedback" id="testFb"></div>
+        <div class="translate" id="testTr"></div>
+        <div class="actions"><button class="btn primary" id="testNext">Sledeće →</button><button class="btn audio" id="testSpeak">🔊 Izgovor</button></div>
+      </div>
+      <div class="side">
+        <div class="ring" id="testRing"><span id="testPct">0%</span></div>
+        <h3>Rezultat</h3>
+        <div class="mini"><div><b id="testDone">0</b><span>od 20</span></div><div><b id="testGood">0</b><span>tačno</span></div></div>
+        <div class="note" id="testResult">Odgovori na svih 20 pitanja.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="footer">DE-MAX • Adjektivdeklination ohne Artikel • Jaka pridevska deklinacija</div>
+</div>
+
+<script>
+const $=id=>document.getElementById(id);
+const shuffle=a=>[...a].sort(()=>Math.random()-.5);
+let total={done:0,good:0};
+
+function updateAll(){
+  $("allDone").textContent=total.done;
+  $("allGood").textContent=total.good;
+  $("allRate").textContent=total.done?Math.round(total.good/total.done*100)+"%":"0%";
+}
+function ring(id,pct){$(id).style.background=`conic-gradient(var(--blue) ${pct*3.6}deg,#dcecff 0deg)`}
+function speak(text){
+  if(!("speechSynthesis" in window))return;
+  speechSynthesis.cancel();
+  const u=new SpeechSynthesisUtterance(text);u.lang="de-DE";u.rate=.88;speechSynthesis.speak(u);
+}
+document.querySelectorAll(".tabs button").forEach(b=>b.onclick=()=>{
+  document.querySelectorAll(".tabs button").forEach(x=>x.classList.remove("active"));
+  document.querySelectorAll(".section").forEach(x=>x.classList.remove("active"));
+  b.classList.add("active");$(b.dataset.tab).classList.add("active");
+});
+
+const endingData=[
+["Nominativ, muški rod: schön___ Blick","-er",["-er","-e","-es","-en"],"Schöner Blick gefällt mir.","Lep pogled mi se dopada."],
+["Nominativ, ženski rod: schön___ Lage","-e",["-er","-e","-es","-en"],"Schöne Lage ist wichtig.","Lep položaj je važan."],
+["Nominativ, srednji rod: schön___ Zimmer","-es",["-er","-e","-es","-en"],"Schönes Zimmer ist hell.","Lepa soba je svetla."],
+["Nominativ, množina: schön___ Räume","-e",["-er","-e","-es","-en"],"Schöne Räume sind groß.","Lepe prostorije su velike."],
+["Akkusativ, muški rod: schön___ Blick","-en",["-er","-e","-es","-en"],"Ich genieße schönen Blick.","Uživam u lepom pogledu."],
+["Akkusativ, ženski rod: kalt___ Milch","-e",["-er","-e","-es","-en"],"Ich kaufe kalte Milch.","Kupujem hladno mleko."],
+["Akkusativ, srednji rod: frisch___ Brot","-es",["-er","-e","-es","-en"],"Ich kaufe frisches Brot.","Kupujem svež hleb."],
+["Akkusativ, množina: neu___ Bücher","-e",["-er","-e","-es","-en"],"Ich kaufe neue Bücher.","Kupujem nove knjige."],
+["Dativ, muški rod: mit frisch___ Kaffee","-em",["-em","-er","-en","-es"],"Mit frischem Kaffee starte ich den Tag.","Dan počinjem svežom kafom."],
+["Dativ, ženski rod: mit kalt___ Milch","-er",["-em","-er","-en","-e"],"Mit kalter Milch schmeckt es besser.","Sa hladnim mlekom je ukusnije."],
+["Dativ, srednji rod: mit frisch___ Brot","-em",["-em","-er","-en","-es"],"Mit frischem Brot esse ich Käse.","Sa svežim hlebom jedem sir."],
+["Dativ, množina: mit neu___ Freunden","-en",["-em","-er","-en","-e"],"Mit neuen Freunden spreche ich Deutsch.","Sa novim prijateljima govorim nemački."],
+["Nominativ, muški: gut___ Wein","-er",["-er","-e","-es","-en"],"Guter Wein ist teuer.","Dobro vino je skupo."],
+["Akkusativ, muški: gut___ Wein","-en",["-er","-e","-es","-en"],"Ich kaufe guten Wein.","Kupujem dobro vino."],
+["Dativ, ženski: bei schön___ Aussicht","-er",["-em","-er","-en","-e"],"Bei schöner Aussicht trinken wir Kaffee.","Uz lep pogled pijemo kafu."],
+["Dativ, plural: mit nett___ Kollegen","-en",["-em","-er","-en","-e"],"Mit netten Kollegen arbeite ich gern.","Rado radim sa ljubaznim kolegama."]
+];
+
+const fillData=[
+["___ Kaffee schmeckt gut. (frisch)","Frischer",["Frischer","Frische","Frisches","Frischen"],"Frischer Kaffee schmeckt gut.","Sveža kafa je ukusna."],
+["Ich trinke ___ Kaffee. (frisch)","frischen",["frischer","frische","frisches","frischen"],"Ich trinke frischen Kaffee.","Pijem svežu kafu."],
+["Mit ___ Kaffee arbeite ich besser. (frisch)","frischem",["frischem","frischer","frischen","frisches"],"Mit frischem Kaffee arbeite ich besser.","Bolje radim uz svežu kafu."],
+["___ Milch steht im Kühlschrank. (kalt)","Kalte",["Kalter","Kalte","Kaltes","Kalten"],"Kalte Milch steht im Kühlschrank.","Hladno mleko je u frižideru."],
+["Ich kaufe ___ Milch. (kalt)","kalte",["kalter","kalte","kaltes","kalten"],"Ich kaufe kalte Milch.","Kupujem hladno mleko."],
+["Mit ___ Milch schmeckt der Kaffee gut. (kalt)","kalter",["kaltem","kalter","kalten","kalte"],"Mit kalter Milch schmeckt der Kaffee gut.","Sa hladnim mlekom kafa je ukusna."],
+["___ Brot liegt auf dem Tisch. (frisch)","Frisches",["Frischer","Frische","Frisches","Frischen"],"Frisches Brot liegt auf dem Tisch.","Svež hleb je na stolu."],
+["Ich kaufe ___ Brot. (frisch)","frisches",["frischer","frische","frisches","frischen"],"Ich kaufe frisches Brot.","Kupujem svež hleb."],
+["Mit ___ Brot essen wir Käse. (frisch)","frischem",["frischem","frischer","frischen","frisches"],"Mit frischem Brot essen wir Käse.","Sa svežim hlebom jedemo sir."],
+["___ Bücher sind interessant. (neu)","Neue",["Neuer","Neue","Neues","Neuen"],"Neue Bücher sind interessant.","Nove knjige su zanimljive."],
+["Ich lese ___ Bücher. (neu)","neue",["neuer","neue","neues","neuen"],"Ich lese neue Bücher.","Čitam nove knjige."],
+["Mit ___ Büchern lerne ich viel. (neu)","neuen",["neuem","neuer","neuen","neue"],"Mit neuen Büchern lerne ich viel.","Mnogo učim uz nove knjige."],
+["___ Mann wartet draußen. (alt)","Alter",["Alter","Alte","Altes","Alten"],"Alter Mann wartet draußen.","Star čovek čeka napolju."],
+["Ich sehe ___ Mann. (alt)","alten",["alter","alte","altes","alten"],"Ich sehe alten Mann.","Vidim starog čoveka."],
+["Mit ___ Mann spreche ich. (alt)","altem",["altem","alter","alten","altes"],"Mit altem Mann spreche ich.","Razgovaram sa starim čovekom."],
+["___ Kinder spielen im Park. (klein)","Kleine",["Kleiner","Kleine","Kleines","Kleinen"],"Kleine Kinder spielen im Park.","Mala deca se igraju u parku."]
+];
+
+const caseData=[
+["Frischer Kaffee schmeckt gut.","Nominativ • Maskulin",["Nominativ • Maskulin","Akkusativ • Maskulin","Dativ • Maskulin","Nominativ • Neutrum"],"Frischer Kaffee schmeckt gut.","Sveža kafa je ukusna."],
+["Ich trinke frischen Kaffee.","Akkusativ • Maskulin",["Nominativ • Maskulin","Akkusativ • Maskulin","Dativ • Maskulin","Akkusativ • Neutrum"],"Ich trinke frischen Kaffee.","Pijem svežu kafu."],
+["Mit frischem Kaffee arbeite ich besser.","Dativ • Maskulin",["Nominativ • Maskulin","Akkusativ • Maskulin","Dativ • Maskulin","Dativ • Plural"],"Mit frischem Kaffee arbeite ich besser.","Bolje radim uz svežu kafu."],
+["Kalte Milch steht im Kühlschrank.","Nominativ • Feminin",["Nominativ • Feminin","Akkusativ • Feminin","Dativ • Feminin","Nominativ • Plural"],"Kalte Milch steht im Kühlschrank.","Hladno mleko je u frižideru."],
+["Ich kaufe kalte Milch.","Akkusativ • Feminin",["Nominativ • Feminin","Akkusativ • Feminin","Dativ • Feminin","Akkusativ • Plural"],"Ich kaufe kalte Milch.","Kupujem hladno mleko."],
+["Mit kalter Milch schmeckt es besser.","Dativ • Feminin",["Nominativ • Feminin","Akkusativ • Feminin","Dativ • Feminin","Dativ • Neutrum"],"Mit kalter Milch schmeckt es besser.","Sa hladnim mlekom je ukusnije."],
+["Frisches Brot liegt auf dem Tisch.","Nominativ • Neutrum",["Nominativ • Neutrum","Akkusativ • Neutrum","Dativ • Neutrum","Nominativ • Maskulin"],"Frisches Brot liegt auf dem Tisch.","Svež hleb je na stolu."],
+["Ich kaufe frisches Brot.","Akkusativ • Neutrum",["Nominativ • Neutrum","Akkusativ • Neutrum","Dativ • Neutrum","Akkusativ • Maskulin"],"Ich kaufe frisches Brot.","Kupujem svež hleb."],
+["Mit frischem Brot essen wir Käse.","Dativ • Neutrum",["Nominativ • Neutrum","Akkusativ • Neutrum","Dativ • Neutrum","Dativ • Maskulin"],"Mit frischem Brot essen wir Käse.","Sa svežim hlebom jedemo sir."],
+["Neue Bücher sind teuer.","Nominativ • Plural",["Nominativ • Plural","Akkusativ • Plural","Dativ • Plural","Nominativ • Feminin"],"Neue Bücher sind teuer.","Nove knjige su skupe."],
+["Ich kaufe neue Bücher.","Akkusativ • Plural",["Nominativ • Plural","Akkusativ • Plural","Dativ • Plural","Akkusativ • Feminin"],"Ich kaufe neue Bücher.","Kupujem nove knjige."],
+["Mit neuen Büchern lerne ich viel.","Dativ • Plural",["Nominativ • Plural","Akkusativ • Plural","Dativ • Plural","Dativ • Feminin"],"Mit neuen Büchern lerne ich viel.","Mnogo učim uz nove knjige."]
+];
+
+const orderData=[
+{sr:"Sveža kafa je ukusna.",words:["Frischer","Kaffee","schmeckt","gut."],ans:"Frischer Kaffee schmeckt gut."},
+{sr:"Pijem svežu kafu.",words:["Ich","trinke","frischen","Kaffee."],ans:"Ich trinke frischen Kaffee."},
+{sr:"Sa svežom kafom radim bolje.",words:["Mit","frischem","Kaffee","arbeite","ich","besser."],ans:"Mit frischem Kaffee arbeite ich besser."},
+{sr:"Hladno mleko je u frižideru.",words:["Kalte","Milch","steht","im","Kühlschrank."],ans:"Kalte Milch steht im Kühlschrank."},
+{sr:"Kupujem hladno mleko.",words:["Ich","kaufe","kalte","Milch."],ans:"Ich kaufe kalte Milch."},
+{sr:"Sa hladnim mlekom kafa je ukusna.",words:["Mit","kalter","Milch","schmeckt","der","Kaffee","gut."],ans:"Mit kalter Milch schmeckt der Kaffee gut."},
+{sr:"Svež hleb je na stolu.",words:["Frisches","Brot","liegt","auf","dem","Tisch."],ans:"Frisches Brot liegt auf dem Tisch."},
+{sr:"Kupujem svež hleb.",words:["Ich","kaufe","frisches","Brot."],ans:"Ich kaufe frisches Brot."},
+{sr:"Nove knjige su zanimljive.",words:["Neue","Bücher","sind","interessant."],ans:"Neue Bücher sind interessant."},
+{sr:"Čitam nove knjige.",words:["Ich","lese","neue","Bücher."],ans:"Ich lese neue Bücher."},
+{sr:"Sa novim prijateljima govorim nemački.",words:["Mit","neuen","Freunden","spreche","ich","Deutsch."],ans:"Mit neuen Freunden spreche ich Deutsch."},
+{sr:"Dobar čaj je zdrav.",words:["Guter","Tee","ist","gesund."],ans:"Guter Tee ist gesund."}
+];
+
+const examples=[
+["Frischer Kaffee schmeckt gut.","Sveža kafa je ukusna.","Nom. Maskulin"],
+["Guter Wein ist teuer.","Dobro vino je skupo.","Nom. Maskulin"],
+["Alter Mann wartet draußen.","Star čovek čeka napolju.","Nom. Maskulin"],
+["Kalter Wind kommt aus dem Norden.","Hladan vetar dolazi sa severa.","Nom. Maskulin"],
+["Ich trinke frischen Kaffee.","Pijem svežu kafu.","Akk. Maskulin"],
+["Ich kaufe guten Wein.","Kupujem dobro vino.","Akk. Maskulin"],
+["Ich sehe alten Mann.","Vidim starog čoveka.","Akk. Maskulin"],
+["Ich spüre kalten Wind.","Osećam hladan vetar.","Akk. Maskulin"],
+["Mit frischem Kaffee arbeite ich besser.","Bolje radim uz svežu kafu.","Dat. Maskulin"],
+["Mit gutem Wein feiern wir.","Slavimo uz dobro vino.","Dat. Maskulin"],
+["Mit altem Freund spreche ich oft.","Često razgovaram sa starim prijateljem.","Dat. Maskulin"],
+["Bei kaltem Wind bleibe ich zu Hause.","Po hladnom vetru ostajem kod kuće.","Dat. Maskulin"],
+["Kalte Milch steht im Kühlschrank.","Hladno mleko je u frižideru.","Nom. Feminin"],
+["Frische Luft ist gesund.","Svež vazduh je zdrav.","Nom. Feminin"],
+["Schöne Musik macht mich glücklich.","Lepa muzika me čini srećnim.","Nom. Feminin"],
+["Neue Tasche liegt hier.","Nova torba je ovde.","Nom. Feminin"],
+["Ich kaufe kalte Milch.","Kupujem hladno mleko.","Akk. Feminin"],
+["Ich brauche frische Luft.","Potreban mi je svež vazduh.","Akk. Feminin"],
+["Ich höre schöne Musik.","Slušam lepu muziku.","Akk. Feminin"],
+["Ich kaufe neue Tasche.","Kupujem novu torbu.","Akk. Feminin"],
+["Mit kalter Milch schmeckt es besser.","Sa hladnim mlekom je ukusnije.","Dat. Feminin"],
+["Bei frischer Luft gehe ich spazieren.","Šetam na svežem vazduhu.","Dat. Feminin"],
+["Mit schöner Musik lerne ich leichter.","Lakše učim uz lepu muziku.","Dat. Feminin"],
+["Mit neuer Tasche gehe ich zur Arbeit.","Sa novom torbom idem na posao.","Dat. Feminin"],
+["Frisches Brot liegt auf dem Tisch.","Svež hleb je na stolu.","Nom. Neutrum"],
+["Gutes Essen ist wichtig.","Dobra hrana je važna.","Nom. Neutrum"],
+["Kaltes Wasser ist gesund.","Hladna voda je zdrava.","Nom. Neutrum"],
+["Neues Handy ist teuer.","Nov telefon je skup.","Nom. Neutrum"],
+["Ich kaufe frisches Brot.","Kupujem svež hleb.","Akk. Neutrum"],
+["Wir essen gutes Essen.","Jedemo dobru hranu.","Akk. Neutrum"],
+["Ich trinke kaltes Wasser.","Pijem hladnu vodu.","Akk. Neutrum"],
+["Er kauft neues Handy.","On kupuje nov telefon.","Akk. Neutrum"],
+["Mit frischem Brot essen wir Käse.","Sa svežim hlebom jedemo sir.","Dat. Neutrum"],
+["Mit gutem Essen bin ich zufrieden.","Zadovoljan sam dobrom hranom.","Dat. Neutrum"],
+["Mit kaltem Wasser wasche ich mich.","Umivam se hladnom vodom.","Dat. Neutrum"],
+["Mit neuem Handy mache ich Fotos.","Novim telefonom pravim fotografije.","Dat. Neutrum"],
+["Neue Bücher sind interessant.","Nove knjige su zanimljive.","Nom. Plural"],
+["Ich lese neue Bücher.","Čitam nove knjige.","Akk. Plural"],
+["Mit neuen Büchern lerne ich viel.","Mnogo učim uz nove knjige.","Dat. Plural"],
+["Mit netten Kollegen arbeite ich gern.","Rado radim sa ljubaznim kolegama.","Dat. Plural"]
+];
+
+function buildMC(prefix,data){
+  let i=0,done=0,good=0,locked=false,current="";
+  function render(){
+    locked=false;const row=data[i];current=row[3];
+    $(prefix+"No").textContent=`Zadatak ${i+1} / ${data.length}`;
+    $(prefix+"Q").innerHTML=row[0].replace("___",'<span class="blank">?</span>');
+    $(prefix+"Fb").textContent="";$(prefix+"Fb").className="feedback";
+    if($(prefix+"Tr"))$(prefix+"Tr").innerHTML=`<div class="label">Prevod</div><div class="text">${row[4]}</div>`;
+    const box=$(prefix+"Opts");box.innerHTML="";
+    shuffle(row[2]).forEach(op=>{
+      const b=document.createElement("button");b.className="opt";b.textContent=op;
+      b.onclick=()=>{
+        if(locked)return;locked=true;done++;total.done++;
+        $(prefix+"Q").innerHTML=row[0].replace("___",`<span class="blank">${op}</span>`);
+        if(op===row[1]){
+          b.classList.add("correct");good++;total.good++;
+          $(prefix+"Fb").textContent="✓ Tačno!";$(prefix+"Fb").className="feedback ok";speak(row[3]);
+        }else{
+          b.classList.add("wrong");$(prefix+"Fb").textContent="✗ Tačno: "+row[1];$(prefix+"Fb").className="feedback no";
+        }
+        $(prefix+"Done").textContent=done;$(prefix+"Good").textContent=good;
+        let p=Math.round(done/data.length*100);$(prefix+"Pct").textContent=p+"%";ring(prefix+"Ring",p);updateAll();
+      };
+      box.appendChild(b);
+    });
+  }
+  $(prefix+"Next").onclick=()=>{i=(i+1)%data.length;render()};
+  $(prefix+"Speak").onclick=()=>speak(current);
+  if($(prefix+"Show"))$(prefix+"Show").onclick=()=>{
+    const row=data[i];$(prefix+"Q").innerHTML=row[0].replace("___",`<span class="blank">${row[1]}</span>`);
+    $(prefix+"Fb").textContent="Rešenje: "+row[3];$(prefix+"Fb").className="feedback ok";
+  };
+  render();
+}
+buildMC("end",endingData);
+buildMC("fill",fillData);
+
+let ci=0,cd=0,cg=0,clock=false,ccur="";
+function renderCase(){
+  clock=false;const row=caseData[ci];ccur=row[3];
+  $("caseNo").textContent=`Zadatak ${ci+1} / ${caseData.length}`;
+  $("caseQ").textContent=row[0];$("caseFb").textContent="";$("caseFb").className="feedback";
+  $("caseTr").innerHTML=`<div class="label">Prevod</div><div class="text">${row[4]}</div>`;
+  $("caseOpts").innerHTML="";
+  shuffle(row[2]).forEach(op=>{
+    const b=document.createElement("button");b.className="opt";b.textContent=op;
+    b.onclick=()=>{
+      if(clock)return;clock=true;cd++;total.done++;
+      if(op===row[1]){b.classList.add("correct");cg++;total.good++;$("caseFb").textContent="✓ Tačno!";$("caseFb").className="feedback ok";speak(row[3])}
+      else{b.classList.add("wrong");$("caseFb").textContent="✗ Tačno: "+row[1];$("caseFb").className="feedback no"}
+      $("caseDone").textContent=cd;$("caseGood").textContent=cg;let p=Math.round(cd/caseData.length*100);$("casePct").textContent=p+"%";ring("caseRing",p);updateAll();
+    };$("caseOpts").appendChild(b);
+  });
+}
+$("caseNext").onclick=()=>{ci=(ci+1)%caseData.length;renderCase()};
+$("caseSpeak").onclick=()=>speak(ccur);
+renderCase();
+
+let oi=0,selected=[];
+function renderOrder(){
+  selected=[];const row=orderData[oi];
+  $("orderNo").textContent=`Zadatak ${oi+1} / ${orderData.length}`;
+  $("orderHint").textContent=row.sr;$("orderFb").textContent="";$("orderFb").className="feedback";
+  $("orderTr").innerHTML='<div class="label">Zadatak</div><div class="text">Klikni reči pravilnim redom. Klik na plavu reč vraća je nazad.</div>';
+  $("answerLine").innerHTML="";$("wordBank").innerHTML="";
+  shuffle(row.words.map((w,i)=>({w,i}))).forEach(o=>{
+    const b=document.createElement("button");b.className="word";b.textContent=o.w;
+    b.onclick=()=>{selected.push({w:o.w,el:b});b.classList.add("used");drawOrder()};
+    $("wordBank").appendChild(b);
+  });
+}
+function drawOrder(){
+  $("answerLine").innerHTML="";
+  selected.forEach((o,i)=>{
+    const t=document.createElement("span");t.className="token";t.textContent=o.w;
+    t.onclick=()=>{o.el.classList.remove("used");selected.splice(i,1);drawOrder()};
+    $("answerLine").appendChild(t);
+  });
+}
+$("orderCheck").onclick=()=>{
+  const user=selected.map(x=>x.w).join(" "),ans=orderData[oi].ans;total.done++;
+  if(user===ans){$("orderFb").textContent="✓ Tačno!";$("orderFb").className="feedback ok";total.good++;speak(ans)}
+  else{$("orderFb").textContent="✗ Pokušaj ponovo.";$("orderFb").className="feedback no"}
+  updateAll();
+};
+$("orderReset").onclick=renderOrder;
+$("orderShow").onclick=()=>{$("orderFb").textContent="Rešenje: "+orderData[oi].ans;$("orderFb").className="feedback ok"};
+$("orderSpeak").onclick=()=>speak(orderData[oi].ans);
+$("orderNext").onclick=()=>{oi=(oi+1)%orderData.length;renderOrder()};
+renderOrder();
+
+function renderExamples(filter=""){
+  $("exTable").innerHTML="";
+  examples.filter(x=>x.join(" ").toLowerCase().includes(filter.toLowerCase())).forEach(x=>{
+    const tr=document.createElement("tr");
+    tr.innerHTML=`<td>${x[0]}</td><td>${x[1]}</td><td><span class="tag">${x[2]}</span></td><td><button class="btn audio">🔊</button></td>`;
+    tr.querySelector("button").onclick=()=>speak(x[0]);$("exTable").appendChild(tr);
+  });
+}
+$("exSearch").oninput=e=>renderExamples(e.target.value);renderExamples();
+
+const testData=[
+endingData[0],endingData[4],endingData[8],endingData[9],
+fillData[0],fillData[1],fillData[2],fillData[6],fillData[10],fillData[11],
+["___ Mann wartet draußen. (alt)","Alter",["Alter","Alte","Altes","Alten"],"Alter Mann wartet draußen.","Star čovek čeka napolju."],
+["Ich sehe ___ Mann. (alt)","alten",["alter","alte","altes","alten"],"Ich sehe alten Mann.","Vidim starog čoveka."],
+["Mit ___ Mann spreche ich. (alt)","altem",["altem","alter","alten","altes"],"Mit altem Mann spreche ich.","Razgovaram sa starim čovekom."],
+["___ Wasser ist gesund. (kalt)","Kaltes",["Kalter","Kalte","Kaltes","Kalten"],"Kaltes Wasser ist gesund.","Hladna voda je zdrava."],
+["Ich trinke ___ Wasser. (kalt)","kaltes",["kalter","kalte","kaltes","kalten"],"Ich trinke kaltes Wasser.","Pijem hladnu vodu."],
+["Mit ___ Wasser wasche ich mich. (kalt)","kaltem",["kaltem","kalter","kalten","kaltes"],"Mit kaltem Wasser wasche ich mich.","Umivam se hladnom vodom."],
+["___ Kollegen arbeiten hier. (nett)","Nette",["Netter","Nette","Nettes","Netten"],"Nette Kollegen arbeiten hier.","Ljubazne kolege rade ovde."],
+["Ich sehe ___ Kollegen. (nett)","nette",["netter","nette","nettes","netten"],"Ich sehe nette Kollegen.","Vidim ljubazne kolege."],
+["Mit ___ Kollegen arbeite ich gern. (nett)","netten",["nettem","netter","netten","nette"],"Mit netten Kollegen arbeite ich gern.","Rado radim sa ljubaznim kolegama."],
+["Dativ, srednji rod: gut___ Essen","-em",["-em","-er","-en","-es"],"Mit gutem Essen bin ich zufrieden.","Zadovoljan sam dobrom hranom."]
+];
+
+let ti=0,td=0,tg=0,tlock=false,tcur="";
+function renderTest(){
+  if(ti>=20){
+    $("testNo").textContent="Rezultat";$("testQ").textContent="Test je završen.";$("testOpts").innerHTML="";$("testTr").innerHTML="";
+    let p=Math.round(tg/20*100);$("testPct").textContent=p+"%";ring("testRing",p);
+    $("testResult").innerHTML=`Rezultat: <b>${tg}/20</b> (${p}%). ${p>=85?"Odlično poznaješ jaku deklinaciju!":p>=65?"Vrlo dobro — ponovi posebno Dativ.":"Vrati se na tabelu nastavaka i uradi vežbe još jednom."}`;
+    return;
+  }
+  tlock=false;const row=testData[ti];tcur=row[3];
+  $("testNo").textContent=`Pitanje ${ti+1} / 20`;
+  $("testQ").innerHTML=row[0].replace("___",'<span class="blank">?</span>');
+  $("testFb").textContent="";$("testFb").className="feedback";
+  $("testTr").innerHTML=`<div class="label">Prevod</div><div class="text">${row[4]}</div>`;
+  $("testOpts").innerHTML="";
+  shuffle(row[2]).forEach(op=>{
+    const b=document.createElement("button");b.className="opt";b.textContent=op;
+    b.onclick=()=>{
+      if(tlock)return;tlock=true;td++;total.done++;
+      $("testQ").innerHTML=row[0].replace("___",`<span class="blank">${op}</span>`);
+      if(op===row[1]){b.classList.add("correct");tg++;total.good++;$("testFb").textContent="✓ Tačno!";$("testFb").className="feedback ok";speak(row[3])}
+      else{b.classList.add("wrong");$("testFb").textContent="✗ Tačno: "+row[1];$("testFb").className="feedback no"}
+      $("testDone").textContent=td;$("testGood").textContent=tg;let p=Math.round(td/20*100);$("testPct").textContent=p+"%";ring("testRing",p);updateAll();
+    };$("testOpts").appendChild(b);
+  });
+}
+$("testNext").onclick=()=>{if(!tlock&&ti<20)return;ti++;renderTest()};
+$("testSpeak").onclick=()=>speak(tcur);
+renderTest();updateAll();
+</script>
+</body>
+</html>
