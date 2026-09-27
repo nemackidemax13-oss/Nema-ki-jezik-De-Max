@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="sr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<title>DE-MAX • trotzdem Trainer</title>
+<style>
+  :root{
+    --red:#c90000;
+    --red2:#e10b0b;
+    --blue:#0759a6;
+    --blue2:#0f6bc2;
+    --ink:#172033;
+    --muted:#667085;
+    --bg:#f4f7fb;
+    --card:#ffffff;
+    --ok:#16803c;
+    --bad:#b42318;
+    --line:#e6eaf0;
+    --chip:#edf4ff;
+    --shadow:0 12px 32px rgba(20,45,80,.10);
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0;
+    font-family:Inter,ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+    background:
+      radial-gradient(circle at 90% 0%, rgba(7,89,166,.08), transparent 26%),
+      radial-gradient(circle at 10% 0%, rgba(201,0,0,.08), transparent 24%),
+      var(--bg);
+    color:var(--ink);
+  }
+  .app{max-width:980px;margin:0 auto;min-height:100vh;padding:0 14px 40px}
+  header{
+    position:sticky;top:0;z-index:10;
+    margin:0 -14px 16px;
+    padding:14px 16px 12px;
+    color:#fff;
+    background:linear-gradient(110deg,var(--red),#a90000 45%,var(--blue));
+    box-shadow:0 6px 20px rgba(0,0,0,.16);
+  }
+  .top{max-width:980px;margin:auto;display:flex;align-items:center;justify-content:space-between;gap:12px}
+  .brand{font-weight:900;letter-spacing:.4px;font-size:14px;opacity:.96}
+  h1{margin:4px 0 0;font-size:clamp(24px,5vw,42px);line-height:1.03}
+  .subtitle{margin-top:5px;font-weight:700;opacity:.9;font-size:13px}
+  .progressBox{min-width:142px;text-align:right}
+  .score{font-weight:900;font-size:14px}
+  .bar{height:8px;background:rgba(255,255,255,.28);border-radius:999px;overflow:hidden;margin-top:7px}
+  .bar>i{display:block;height:100%;width:0;background:#fff;border-radius:999px;transition:.25s}
+  .hero{
+    background:linear-gradient(180deg,#fff,#fbfdff);
+    border:1px solid var(--line);
+    border-radius:22px;
+    box-shadow:var(--shadow);
+    overflow:hidden;
+    margin-bottom:16px;
+  }
+  .heroTitle{background:var(--red);color:#fff;padding:14px 18px;font-size:21px;font-weight:900}
+  .rule{padding:18px;display:grid;gap:12px}
+  .ruleGrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+  .ruleCard{border:1px solid var(--line);border-radius:16px;padding:14px;background:#fff}
+  .ruleCard strong{display:block;color:var(--blue);font-size:15px;margin-bottom:4px}
+  .example{margin-top:6px;padding:11px 12px;border-left:5px solid var(--red);background:#fff7f7;border-radius:10px;font-weight:800}
+  .tabs{display:flex;gap:8px;overflow:auto;padding:3px 0 12px;scrollbar-width:none}
+  .tabs::-webkit-scrollbar{display:none}
+  .tab{
+    flex:0 0 auto;border:0;border-radius:999px;padding:11px 14px;
+    background:#e9eef5;color:#263449;font-weight:900;cursor:pointer;
+  }
+  .tab.active{background:var(--blue);color:#fff}
+  .panel{display:none}.panel.active{display:block}
+  .card{
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:22px;
+    box-shadow:var(--shadow);
+    padding:18px;
+    margin-bottom:14px;
+  }
+  .card h2{margin:0 0 6px;font-size:21px}
+  .help{color:var(--muted);font-size:14px;margin:0 0 16px}
+  .qnum{font-weight:900;color:var(--red);font-size:13px;text-transform:uppercase;letter-spacing:.3px}
+  .question{font-size:clamp(19px,3.2vw,26px);font-weight:900;line-height:1.28;margin:7px 0 14px}
+  .options{display:grid;gap:9px}
+  .option,.action,.chip,.smallBtn{
+    border:0;border-radius:14px;font:inherit;font-weight:800;cursor:pointer;transition:.16s;
+  }
+  .option{
+    text-align:left;padding:13px 14px;background:#f3f6fa;border:2px solid transparent;color:var(--ink)
+  }
+  .option:hover{transform:translateY(-1px);background:#edf3fb}
+  .option.correct{background:#e9f8ee;border-color:#37a45a;color:#0b6127}
+  .option.wrong{background:#fff0ef;border-color:#dc6a60;color:#8d1f18}
+  .feedback{min-height:24px;margin-top:10px;font-weight:900}
+  .feedback.ok{color:var(--ok)} .feedback.bad{color:var(--bad)}
+  .row{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-top:12px}
+  .action{padding:12px 16px;background:var(--blue);color:#fff}
+  .action.red{background:var(--red)}
+  .action.ghost{background:#eef2f7;color:#344054}
+  .action:disabled{opacity:.45;cursor:not-allowed}
+  .chips{display:flex;flex-wrap:wrap;gap:8px;padding:12px;border:1px dashed #bdc7d6;border-radius:16px;background:#fafcff;min-height:64px}
+  .chip{padding:10px 12px;background:var(--chip);color:#123d70;border:1px solid #cfe0f4}
+  .chip.used{opacity:.35;pointer-events:none}
+  .answerArea{min-height:68px;border:2px solid #dbe3ee;background:#fff;border-radius:16px;padding:10px;display:flex;align-items:flex-start;gap:7px;flex-wrap:wrap}
+  .answerWord{padding:10px 12px;background:#0f6bc2;color:#fff;border-radius:12px;font-weight:900;cursor:pointer}
+  .translate{
+    width:100%;padding:14px 15px;border-radius:14px;border:2px solid #dce3ec;
+    font:inherit;font-weight:700;outline:none;
+  }
+  .translate:focus{border-color:#72a9de;box-shadow:0 0 0 4px rgba(15,107,194,.1)}
+  .mini{font-size:13px;color:var(--muted);margin-top:7px}
+  .legend{display:flex;gap:10px;flex-wrap:wrap;margin-top:8px;font-size:13px;font-weight:800}
+  .badge{padding:7px 9px;border-radius:999px;background:#f2f4f7}
+  .blue{color:var(--blue)} .redtxt{color:var(--red)}
+  .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+  .stat{padding:14px;border-radius:16px;background:#f7f9fc;text-align:center}
+  .stat b{display:block;font-size:24px;color:var(--blue)}
+  .done{padding:20px;text-align:center}
+  .done .big{font-size:50px}
+  .footer{font-size:12px;color:#7b8493;text-align:center;padding:8px}
+  @media(max-width:700px){
+    .app{padding:0 10px 28px}
+    header{margin:0 -10px 12px;padding:12px 12px 10px}
+    .top{align-items:flex-start}
+    .progressBox{min-width:112px}
+    .ruleGrid{grid-template-columns:1fr}
+    .card{padding:15px;border-radius:18px}
+    .stats{grid-template-columns:1fr}
+  }
+</style>
+</head>
+<body>
+<div class="app">
+<header>
+  <div class="top">
+    <div>
+      <div class="brand">DE-MAX • Deutsch Trainer</div>
+      <h1>trotzdem</h1>
+      <div class="subtitle">ipak • uprkos tome</div>
+    </div>
+    <div class="progressBox">
+      <div class="score" id="scoreTop">0 / 0 tačno</div>
+      <div class="bar"><i id="progressBar"></i></div>
+    </div>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="heroTitle">Pravilo za „trotzdem“</div>
+  <div class="rule">
+    <div class="ruleGrid">
+      <div class="ruleCard">
+        <strong>1. trotzdem na prvom mestu</strong>
+        Tada posle <b>trotzdem</b> odmah dolazi glagol.
+        <div class="example">Es regnet. <span class="redtxt">Trotzdem</span> <span class="blue">fahren</span> wir in die Berge.</div>
+      </div>
+      <div class="ruleCard">
+        <strong>2. trotzdem u sredini rečenice</strong>
+        Subjekat ostaje na prvom mestu, glagol na drugom.
+        <div class="example">Es regnet. Wir <span class="blue">fahren</span> <span class="redtxt">trotzdem</span> in die Berge.</div>
+      </div>
+    </div>
+    <div class="mini"><b>Važno:</b> „trotzdem“ je priloški veznik / Konjunktionaladverb. Ako je na poziciji 1, pravi se inverzija: <b>Trotzdem + glagol + subjekat ...</b></div>
+    <div class="legend">
+      <span class="badge">trotzdem = ipak</span>
+      <span class="badge">trotzdem = uprkos tome</span>
+      <span class="badge">pozicija 1 → inverzija</span>
+    </div>
+  </div>
+</section>
+
+<nav class="tabs">
+  <button class="tab active" data-panel="quiz">1. Izaberi</button>
+  <button class="tab" data-panel="order">2. Složi rečenicu</button>
+  <button class="tab" data-panel="connect">3. Spoji sa trotzdem</button>
+  <button class="tab" data-panel="translate">4. Prevod</button>
+  <button class="tab" data-panel="results">Rezultat</button>
+</nav>
+
+<section id="quiz" class="panel active"></section>
+<section id="order" class="panel"></section>
+<section id="connect" class="panel"></section>
+<section id="translate" class="panel"></section>
+<section id="results" class="panel"></section>
+
+<div class="footer">DE-MAX • Vežbaj red reči i inverziju sa „trotzdem“</div>
+</div>
+
+<script>
+const quizData = [
+  {q:"Es regnet stark. Wir gehen trotzdem spazieren.", a:["Trotzdem gehen wir spazieren.","Trotzdem wir gehen spazieren.","Wir trotzdem gehen spazieren.","Wir gehen spazieren trotzdem weil."], c:0, full:"Trotzdem gehen wir spazieren."},
+  {q:"Ich bin müde. Ich lerne trotzdem weiter.", a:["Trotzdem ich lerne weiter.","Trotzdem lerne ich weiter.","Ich trotzdem lerne weiter.","Trotzdem weiter ich lerne."], c:1, full:"Trotzdem lerne ich weiter."},
+  {q:"Er hat wenig Zeit. Er kommt trotzdem zu uns.", a:["Er trotzdem kommt zu uns.","Trotzdem er kommt zu uns.","Er kommt trotzdem zu uns.","Er kommt zu uns weil trotzdem."], c:2, full:"Er kommt trotzdem zu uns."},
+  {q:"Das Auto ist alt. Es fährt trotzdem noch sehr gut.", a:["Trotzdem fährt es noch sehr gut.","Trotzdem es fährt noch sehr gut.","Es trotzdem fährt noch sehr gut.","Es fährt noch trotzdem sehr gut weil."], c:0, full:"Trotzdem fährt es noch sehr gut."},
+  {q:"Sie ist krank. Sie arbeitet trotzdem heute.", a:["Sie trotzdem arbeitet heute.","Trotzdem arbeitet sie heute.","Trotzdem sie arbeitet heute.","Sie heute trotzdem arbeitet."], c:1, full:"Trotzdem arbeitet sie heute."},
+  {q:"Es ist kalt. Die Kinder spielen trotzdem draußen.", a:["Die Kinder trotzdem spielen draußen.","Trotzdem die Kinder spielen draußen.","Die Kinder spielen trotzdem draußen.","Trotzdem draußen die Kinder spielen."], c:2, full:"Die Kinder spielen trotzdem draußen."},
+  {q:"Ich habe keinen Hunger. Ich esse trotzdem etwas.", a:["Trotzdem esse ich etwas.","Trotzdem ich esse etwas.","Ich trotzdem esse etwas.","Ich esse etwas trotzdem weil."], c:0, full:"Trotzdem esse ich etwas."},
+  {q:"Der Weg ist lang. Wir laufen trotzdem zu Fuß.", a:["Wir trotzdem laufen zu Fuß.","Trotzdem laufen wir zu Fuß.","Trotzdem wir laufen zu Fuß.","Wir laufen zu Fuß trotzdem weil."], c:1, full:"Trotzdem laufen wir zu Fuß."},
+  {q:"Der Film war langweilig. Wir haben ihn trotzdem bis zum Ende gesehen.", a:["Trotzdem wir haben ihn bis zum Ende gesehen.","Wir trotzdem haben ihn bis zum Ende gesehen.","Wir haben ihn trotzdem bis zum Ende gesehen.","Trotzdem ihn wir haben bis zum Ende gesehen."], c:2, full:"Wir haben ihn trotzdem bis zum Ende gesehen."},
+  {q:"Es schneit. Der Bus fährt trotzdem pünktlich.", a:["Trotzdem fährt der Bus pünktlich.","Trotzdem der Bus fährt pünktlich.","Der Bus trotzdem fährt pünktlich.","Der Bus fährt pünktlich trotzdem weil."], c:0, full:"Trotzdem fährt der Bus pünktlich."},
+  {q:"Sie versteht die Aufgabe nicht. Sie versucht es trotzdem noch einmal.", a:["Sie trotzdem versucht es noch einmal.","Trotzdem versucht sie es noch einmal.","Trotzdem sie versucht es noch einmal.","Sie versucht noch trotzdem es einmal."], c:1, full:"Trotzdem versucht sie es noch einmal."},
+  {q:"Er verdient nicht viel. Er reist trotzdem jedes Jahr.", a:["Er trotzdem reist jedes Jahr.","Trotzdem er reist jedes Jahr.","Er reist trotzdem jedes Jahr.","Trotzdem jedes Jahr er reist."], c:2, full:"Er reist trotzdem jedes Jahr."},
+  {q:"Es ist spät. Ich rufe ihn trotzdem noch an.", a:["Trotzdem rufe ich ihn noch an.","Trotzdem ich rufe ihn noch an.","Ich trotzdem rufe ihn noch an.","Ich rufe ihn noch an trotzdem weil."], c:0, full:"Trotzdem rufe ich ihn noch an."},
+  {q:"Anna hat Angst. Sie geht trotzdem allein nach Hause.", a:["Sie trotzdem geht allein nach Hause.","Trotzdem geht sie allein nach Hause.","Trotzdem sie geht allein nach Hause.","Sie geht allein trotzdem nach Hause weil."], c:1, full:"Trotzdem geht sie allein nach Hause."},
+  {q:"Wir haben wenig Geld. Wir kaufen trotzdem ein Geschenk.", a:["Wir trotzdem kaufen ein Geschenk.","Trotzdem wir kaufen ein Geschenk.","Wir kaufen trotzdem ein Geschenk.","Trotzdem ein Geschenk wir kaufen."], c:2, full:"Wir kaufen trotzdem ein Geschenk."},
+  {q:"Der Computer ist langsam. Ich benutze ihn trotzdem jeden Tag.", a:["Trotzdem benutze ich ihn jeden Tag.","Trotzdem ich benutze ihn jeden Tag.","Ich trotzdem benutze ihn jeden Tag.","Ich benutze ihn jeden Tag trotzdem weil."], c:0, full:"Trotzdem benutze ich ihn jeden Tag."},
+  {q:"Die Prüfung ist schwer. Ich möchte sie trotzdem versuchen.", a:["Ich trotzdem möchte sie versuchen.","Trotzdem möchte ich sie versuchen.","Trotzdem ich möchte sie versuchen.","Ich möchte trotzdem sie versuchen weil."], c:1, full:"Trotzdem möchte ich sie versuchen."},
+  {q:"Es gibt viel Verkehr. Wir kommen trotzdem rechtzeitig an.", a:["Wir trotzdem kommen rechtzeitig an.","Trotzdem wir kommen rechtzeitig an.","Wir kommen trotzdem rechtzeitig an.","Trotzdem rechtzeitig wir kommen an."], c:2, full:"Wir kommen trotzdem rechtzeitig an."},
+  {q:"Er hat Fieber. Er will trotzdem zur Arbeit gehen.", a:["Trotzdem will er zur Arbeit gehen.","Trotzdem er will zur Arbeit gehen.","Er trotzdem will zur Arbeit gehen.","Er will zur Arbeit trotzdem gehen weil."], c:0, full:"Trotzdem will er zur Arbeit gehen."},
+  {q:"Das Wetter ist schlecht. Wir machen trotzdem einen Ausflug.", a:["Wir trotzdem machen einen Ausflug.","Trotzdem machen wir einen Ausflug.","Trotzdem wir machen einen Ausflug.","Wir machen einen Ausflug trotzdem weil."], c:1, full:"Trotzdem machen wir einen Ausflug."}
+];
+
+const orderData = [
+  ["Trotzdem","gehen","wir","heute","spazieren."],
+  ["Trotzdem","lernt","Mia","für","die Prüfung."],
+  ["Wir","fahren","trotzdem","ans Meer."],
+  ["Trotzdem","kommt","er","pünktlich","zur Arbeit."],
+  ["Ich","kaufe","das Buch","trotzdem."],
+  ["Trotzdem","spielen","die Kinder","im Park."],
+  ["Sie","macht","trotzdem","weiter."],
+  ["Trotzdem","trinkt","er","einen Kaffee."],
+  ["Wir","besuchen","sie","trotzdem","morgen."],
+  ["Trotzdem","steht","Paul","früh","auf."],
+  ["Ich","gehe","trotzdem","zur Schule."],
+  ["Trotzdem","bleibt","der Laden","heute","geöffnet."],
+  ["Sie","fährt","trotzdem","mit dem Fahrrad."],
+  ["Trotzdem","nimmt","er","an dem Kurs","teil."],
+  ["Wir","warten","trotzdem","noch zehn Minuten."],
+  ["Trotzdem","kocht","sie","heute","selbst."],
+  ["Ich","versuche","es","trotzdem","noch einmal."],
+  ["Trotzdem","kaufen","sie","die Wohnung."],
+  ["Er","kommt","trotzdem","mit uns."],
+  ["Trotzdem","beginnt","das Spiel","pünktlich."],
+  ["Wir","gehen","trotzdem","ins Kino."],
+  ["Trotzdem","arbeitet","sie","am Wochenende."],
+  ["Er","hilft","mir","trotzdem."],
+  ["Trotzdem","fliegen","wir","morgen","nach Berlin."],
+  ["Die Kinder","machen","trotzdem","ihre Hausaufgaben."]
+];
+
+const connectData = [
+  {left:"Es regnet.", right:"Wir fahren in die Berge.", ans:"Trotzdem fahren wir in die Berge."},
+  {left:"Ich bin sehr müde.", right:"Ich lerne weiter.", ans:"Trotzdem lerne ich weiter."},
+  {left:"Das Restaurant ist teuer.", right:"Wir essen dort.", ans:"Trotzdem essen wir dort."},
+  {left:"Er ist krank.", right:"Er geht zur Arbeit.", ans:"Trotzdem geht er zur Arbeit."},
+  {left:"Sie hat wenig Zeit.", right:"Sie hilft mir.", ans:"Trotzdem hilft sie mir."},
+  {left:"Es ist sehr kalt.", right:"Die Kinder spielen draußen.", ans:"Trotzdem spielen die Kinder draußen."},
+  {left:"Der Weg ist weit.", right:"Wir gehen zu Fuß.", ans:"Trotzdem gehen wir zu Fuß."},
+  {left:"Ich habe keinen Hunger.", right:"Ich esse ein Stück Kuchen.", ans:"Trotzdem esse ich ein Stück Kuchen."},
+  {left:"Der Film ist langweilig.", right:"Wir sehen ihn bis zum Ende.", ans:"Trotzdem sehen wir ihn bis zum Ende."},
+  {left:"Er hat Angst.", right:"Er spricht vor der Gruppe.", ans:"Trotzdem spricht er vor der Gruppe."},
+  {left:"Das Auto ist alt.", right:"Es fährt noch gut.", ans:"Trotzdem fährt es noch gut."},
+  {left:"Wir haben wenig Geld.", right:"Wir fahren in den Urlaub.", ans:"Trotzdem fahren wir in den Urlaub."},
+  {left:"Sie versteht nicht alles.", right:"Sie macht weiter.", ans:"Trotzdem macht sie weiter."},
+  {left:"Es ist schon spät.", right:"Ich rufe ihn an.", ans:"Trotzdem rufe ich ihn an."},
+  {left:"Der Test ist schwer.", right:"Ich versuche es.", ans:"Trotzdem versuche ich es."}
+];
+
+const translateData = [
+  {sr:"Pada kiša. Ipak idemo u šetnju.", de:"Es regnet. Trotzdem gehen wir spazieren."},
+  {sr:"Umoran sam. Ipak nastavljam da učim.", de:"Ich bin müde. Trotzdem lerne ich weiter."},
+  {sr:"Ona je bolesna. Ipak ide na posao.", de:"Sie ist krank. Trotzdem geht sie zur Arbeit."},
+  {sr:"Hladno je. Ipak deca igraju napolju.", de:"Es ist kalt. Trotzdem spielen die Kinder draußen."},
+  {sr:"Nemamo mnogo novca. Ipak kupujemo poklon.", de:"Wir haben nicht viel Geld. Trotzdem kaufen wir ein Geschenk."},
+  {sr:"Put je dug. Ipak idemo peške.", de:"Der Weg ist lang. Trotzdem gehen wir zu Fuß."},
+  {sr:"Film je dosadan. Ipak ga gledamo do kraja.", de:"Der Film ist langweilig. Trotzdem sehen wir ihn bis zum Ende."},
+  {sr:"Kasno je. Ipak ga zovem.", de:"Es ist spät. Trotzdem rufe ich ihn an."},
+  {sr:"Auto je star. Ipak još dobro vozi.", de:"Das Auto ist alt. Trotzdem fährt es noch gut."},
+  {sr:"Test je težak. Ipak pokušavam.", de:"Der Test ist schwer. Trotzdem versuche ich es."}
+];
+
+let state = {
+  score:0, attempts:0,
+  quizIndex:0, quizDone:new Set(),
+  orderIndex:0, orderDone:new Set(),
+  connectIndex:0, connectDone:new Set(),
+  trIndex:0, trDone:new Set()
+};
+
+function speak(text){
+  if(!("speechSynthesis" in window)) return;
+  speechSynthesis.cancel();
+  const u=new SpeechSynthesisUtterance(text);
+  u.lang="de-DE"; u.rate=.88;
+  speechSynthesis.speak(u);
+}
+
+function totalItems(){return quizData.length+orderData.length+connectData.length+translateData.length}
+function completed(){return state.quizDone.size+state.orderDone.size+state.connectDone.size+state.trDone.size}
+function updateTop(){
+  document.getElementById("scoreTop").textContent=`${state.score} / ${state.attempts} tačno`;
+  document.getElementById("progressBar").style.width=`${Math.round(completed()/totalItems()*100)}%`;
+  renderResults();
+}
+
+document.querySelectorAll(".tab").forEach(btn=>{
+  btn.addEventListener("click",()=>{
+    document.querySelectorAll(".tab").forEach(b=>b.classList.remove("active"));
+    document.querySelectorAll(".panel").forEach(p=>p.classList.remove("active"));
+    btn.classList.add("active");
+    document.getElementById(btn.dataset.panel).classList.add("active");
+    window.scrollTo({top:0,behavior:"smooth"});
+  });
+});
+
+function renderQuiz(){
+  const d=quizData[state.quizIndex];
+  const root=document.getElementById("quiz");
+  root.innerHTML=`
+  <div class="card">
+    <div class="qnum">Zadatak ${state.quizIndex+1} / ${quizData.length}</div>
+    <h2>Izaberi pravilnu rečenicu</h2>
+    <p class="help">Sada odgovor nije uvek samo „trotzdem“. Izaberi celu rečenicu sa pravilnim redom reči.</p>
+    <div class="question">${d.q}</div>
+    <div class="options" id="quizOpts"></div>
+    <div class="feedback" id="quizFb"></div>
+    <div class="row">
+      <button class="action ghost" id="quizPrev">← Prethodno</button>
+      <button class="action" id="quizNext">Sledeće →</button>
+      <button class="action red" onclick="speak('${d.full.replaceAll("'","\\'")}')">🔊 Izgovor</button>
+    </div>
+  </div>`;
+  const opts=root.querySelector("#quizOpts");
+  d.a.forEach((x,i)=>{
+    const b=document.createElement("button");
+    b.className="option"; b.textContent=x;
+    b.onclick=()=>{
+      if(state.quizDone.has(state.quizIndex)) return;
+      state.attempts++;
+      if(i===d.c){state.score++;b.classList.add("correct");root.querySelector("#quizFb").textContent="Tačno!";root.querySelector("#quizFb").className="feedback ok";speak(d.full)}
+      else{b.classList.add("wrong");opts.children[d.c].classList.add("correct");root.querySelector("#quizFb").innerHTML=`Nije tačno. Rešenje: <b>${d.a[d.c]}</b>`;root.querySelector("#quizFb").className="feedback bad";speak(d.full)}
+      state.quizDone.add(state.quizIndex); updateTop();
+    };
+    opts.appendChild(b);
+  });
+  root.querySelector("#quizPrev").onclick=()=>{state.quizIndex=(state.quizIndex-1+quizData.length)%quizData.length;renderQuiz()};
+  root.querySelector("#quizNext").onclick=()=>{state.quizIndex=(state.quizIndex+1)%quizData.length;renderQuiz()};
+}
+
+function shuffle(a){return a.map(v=>[Math.random(),v]).sort((x,y)=>x[0]-y[0]).map(x=>x[1])}
+let currentOrderPool=[];
+let currentBuilt=[];
+
+function renderOrder(reset=true){
+  const words=orderData[state.orderIndex];
+  if(reset){currentOrderPool=shuffle(words.map((w,i)=>({w,i})));currentBuilt=[]}
+  const root=document.getElementById("order");
+  root.innerHTML=`
+  <div class="card">
+    <div class="qnum">Zadatak ${state.orderIndex+1} / ${orderData.length}</div>
+    <h2>Složi rečenicu</h2>
+    <p class="help">Klikni reči pravilnim redosledom. Ako „trotzdem“ stoji prvo: <b>trotzdem + glagol + subjekat</b>.</p>
+    <div class="answerArea" id="built"></div>
+    <div class="chips" id="pool"></div>
+    <div class="feedback" id="orderFb"></div>
+    <div class="row">
+      <button class="action" id="checkOrder">Proveri</button>
+      <button class="action ghost" id="clearOrder">Obriši</button>
+      <button class="action ghost" id="prevOrder">← Prethodno</button>
+      <button class="action" id="nextOrder">Sledeće →</button>
+    </div>
+  </div>`;
+  drawOrder();
+  root.querySelector("#checkOrder").onclick=checkOrder;
+  root.querySelector("#clearOrder").onclick=()=>{currentBuilt=[];drawOrder();root.querySelector("#orderFb").textContent=""};
+  root.querySelector("#prevOrder").onclick=()=>{state.orderIndex=(state.orderIndex-1+orderData.length)%orderData.length;renderOrder(true)};
+  root.querySelector("#nextOrder").onclick=()=>{state.orderIndex=(state.orderIndex+1)%orderData.length;renderOrder(true)};
+}
+
+function drawOrder(){
+  const root=document.getElementById("order");
+  const built=root.querySelector("#built"), pool=root.querySelector("#pool");
+  built.innerHTML=""; pool.innerHTML="";
+  currentBuilt.forEach(obj=>{
+    const s=document.createElement("span");s.className="answerWord";s.textContent=obj.w;
+    s.onclick=()=>{currentBuilt=currentBuilt.filter(x=>x!==obj);drawOrder()};
+    built.appendChild(s);
+  });
+  currentOrderPool.forEach(obj=>{
+    const b=document.createElement("button");b.className="chip";b.textContent=obj.w;
+    if(currentBuilt.includes(obj)) b.classList.add("used");
+    b.onclick=()=>{if(!currentBuilt.includes(obj)){currentBuilt.push(obj);drawOrder()}};
+    pool.appendChild(b);
+  });
+}
+
+function normalize(s){return s.toLowerCase().replace(/[.,!?]/g,"").replace(/\s+/g," ").trim()}
+function checkOrder(){
+  const target=orderData[state.orderIndex].join(" ");
+  const got=currentBuilt.map(x=>x.w).join(" ");
+  const fb=document.getElementById("orderFb");
+  if(state.orderDone.has(state.orderIndex)){fb.textContent="Ovaj zadatak je već urađen.";return}
+  state.attempts++;
+  if(normalize(got)===normalize(target)){
+    state.score++;fb.textContent="Tačno!";fb.className="feedback ok";speak(target)
+  }else{
+    fb.innerHTML=`Pokušaj ponovo. Rešenje: <b>${target}</b>`;fb.className="feedback bad";speak(target)
+  }
+  state.orderDone.add(state.orderIndex);updateTop();
+}
+
+function renderConnect(){
+  const d=connectData[state.connectIndex];
+  const root=document.getElementById("connect");
+  root.innerHTML=`
+  <div class="card">
+    <div class="qnum">Zadatak ${state.connectIndex+1} / ${connectData.length}</div>
+    <h2>Spoji dve rečenice sa „trotzdem“</h2>
+    <p class="help">Napravi drugu rečenicu tako da počinje sa <b>Trotzdem</b>.</p>
+    <div class="question">${d.left}<br>${d.right}</div>
+    <input class="translate" id="connectInput" placeholder="Trotzdem ..." autocomplete="off" />
+    <div class="feedback" id="connectFb"></div>
+    <div class="row">
+      <button class="action" id="connectCheck">Proveri</button>
+      <button class="action ghost" id="connectShow">Prikaži rešenje</button>
+      <button class="action ghost" id="connectPrev">← Prethodno</button>
+      <button class="action" id="connectNext">Sledeće →</button>
+    </div>
+  </div>`;
+  const inp=root.querySelector("#connectInput");
+  root.querySelector("#connectCheck").onclick=()=>{
+    if(state.connectDone.has(state.connectIndex)) return;
+    state.attempts++;
+    const fb=root.querySelector("#connectFb");
+    if(normalize(inp.value)===normalize(d.ans)){
+      state.score++;fb.textContent="Tačno!";fb.className="feedback ok";speak(d.ans)
+    }else{
+      fb.innerHTML=`Nije potpuno tačno. Rešenje: <b>${d.ans}</b>`;fb.className="feedback bad";speak(d.ans)
+    }
+    state.connectDone.add(state.connectIndex);updateTop();
+  };
+  root.querySelector("#connectShow").onclick=()=>{inp.value=d.ans;speak(d.ans)};
+  root.querySelector("#connectPrev").onclick=()=>{state.connectIndex=(state.connectIndex-1+connectData.length)%connectData.length;renderConnect()};
+  root.querySelector("#connectNext").onclick=()=>{state.connectIndex=(state.connectIndex+1)%connectData.length;renderConnect()};
+  inp.addEventListener("keydown",e=>{if(e.key==="Enter")root.querySelector("#connectCheck").click()});
+}
+
+function renderTranslate(){
+  const d=translateData[state.trIndex];
+  const root=document.getElementById("translate");
+  root.innerHTML=`
+  <div class="card">
+    <div class="qnum">Zadatak ${state.trIndex+1} / ${translateData.length}</div>
+    <h2>Prevedi na nemački</h2>
+    <p class="help">Koristi „trotzdem“ i pravilnu inverziju.</p>
+    <div class="question">${d.sr}</div>
+    <input class="translate" id="trInput" placeholder="Napiši nemačku rečenicu..." autocomplete="off" />
+    <div class="feedback" id="trFb"></div>
+    <div class="row">
+      <button class="action" id="trCheck">Proveri</button>
+      <button class="action ghost" id="trShow">Prikaži rešenje</button>
+      <button class="action ghost" id="trPrev">← Prethodno</button>
+      <button class="action" id="trNext">Sledeće →</button>
+    </div>
+  </div>`;
+  const inp=root.querySelector("#trInput");
+  root.querySelector("#trCheck").onclick=()=>{
+    if(state.trDone.has(state.trIndex)) return;
+    state.attempts++;
+    const fb=root.querySelector("#trFb");
+    if(normalize(inp.value)===normalize(d.de)){
+      state.score++;fb.textContent="Tačno!";fb.className="feedback ok";speak(d.de)
+    }else{
+      fb.innerHTML=`Rešenje: <b>${d.de}</b>`;fb.className="feedback bad";speak(d.de)
+    }
+    state.trDone.add(state.trIndex);updateTop();
+  };
+  root.querySelector("#trShow").onclick=()=>{inp.value=d.de;speak(d.de)};
+  root.querySelector("#trPrev").onclick=()=>{state.trIndex=(state.trIndex-1+translateData.length)%translateData.length;renderTranslate()};
+  root.querySelector("#trNext").onclick=()=>{state.trIndex=(state.trIndex+1)%translateData.length;renderTranslate()};
+  inp.addEventListener("keydown",e=>{if(e.key==="Enter")root.querySelector("#trCheck").click()});
+}
+
+function renderResults(){
+  const root=document.getElementById("results");
+  if(!root) return;
+  const pct=state.attempts?Math.round(state.score/state.attempts*100):0;
+  root.innerHTML=`
+  <div class="card">
+    <h2>Rezultat</h2>
+    <p class="help">Ukupan pregled rada u aplikaciji.</p>
+    <div class="stats">
+      <div class="stat"><b>${state.score}</b>tačnih odgovora</div>
+      <div class="stat"><b>${state.attempts}</b>urađenih zadataka</div>
+      <div class="stat"><b>${pct}%</b>uspešnost</div>
+    </div>
+    <div class="done">
+      <div class="big">${completed()===totalItems()?"🏆":"🎯"}</div>
+      <h2>${completed()} / ${totalItems()} zadataka završeno</h2>
+      <p class="help">Vežbaj dok ti red reči sa „trotzdem“ ne postane automatski.</p>
+      <button class="action red" onclick="resetAll()">Ponovi sve</button>
+    </div>
+  </div>`;
+}
+
+function resetAll(){
+  state={score:0,attempts:0,quizIndex:0,quizDone:new Set(),orderIndex:0,orderDone:new Set(),connectIndex:0,connectDone:new Set(),trIndex:0,trDone:new Set()};
+  renderQuiz();renderOrder(true);renderConnect();renderTranslate();updateTop();
+  document.querySelector('[data-panel="quiz"]').click();
+}
+
+renderQuiz();renderOrder(true);renderConnect();renderTranslate();updateTop();
+</script>
+</body>
+</html>
