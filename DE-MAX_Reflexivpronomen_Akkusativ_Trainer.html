@@ -1,0 +1,695 @@
+<!DOCTYPE html>
+<html lang="sr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DE-MAX • Reflexivpronomen im Akkusativ</title>
+<style>
+:root{
+  --navy:#062b68;
+  --blue:#0759c7;
+  --blue2:#0c78ee;
+  --sky:#eaf5ff;
+  --line:#bddcff;
+  --white:#ffffff;
+  --text:#0a2555;
+  --green:#0a9b57;
+  --red:#e83b38;
+  --gold:#ffc928;
+  --shadow:0 18px 50px rgba(4,42,100,.16);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;
+  font-family:Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+  color:var(--text);
+  background:
+    radial-gradient(circle at 15% 0%, rgba(66,163,255,.20), transparent 25%),
+    radial-gradient(circle at 100% 20%, rgba(5,89,199,.12), transparent 25%),
+    linear-gradient(180deg,#f8fcff 0,#eef7ff 55%,#f8fcff 100%);
+}
+button{font:inherit}
+.app{
+  width:min(1180px,100%);
+  margin:auto;
+  padding:18px 16px 70px;
+}
+.hero{
+  position:relative;
+  overflow:hidden;
+  border-radius:32px;
+  background:linear-gradient(135deg,#03265f 0%,#0759c7 56%,#0a78ed 100%);
+  color:#fff;
+  padding:28px;
+  box-shadow:var(--shadow);
+  border:1px solid rgba(255,255,255,.2);
+}
+.hero:before,.hero:after{
+  content:"";
+  position:absolute;
+  border-radius:999px;
+  background:rgba(255,255,255,.10);
+}
+.hero:before{width:260px;height:260px;right:-90px;top:-100px}
+.hero:after{width:160px;height:160px;right:140px;bottom:-90px}
+.brand{
+  display:flex;align-items:center;justify-content:space-between;gap:18px;position:relative;z-index:2
+}
+.logo{
+  display:flex;align-items:center;gap:12px;font-weight:900;letter-spacing:.5px
+}
+.logo-badge{
+  width:54px;height:54px;border-radius:18px;background:#fff;color:var(--blue);
+  display:grid;place-items:center;font-weight:1000;font-size:20px;
+  box-shadow:inset 0 0 0 3px rgba(4,89,199,.10),0 8px 24px rgba(0,0,0,.12)
+}
+.logo small{display:block;font-weight:700;opacity:.82;letter-spacing:2px;font-size:11px}
+.pill{
+  background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.22);
+  padding:10px 14px;border-radius:999px;font-weight:800;font-size:13px;backdrop-filter:blur(8px)
+}
+.hero h1{
+  font-size:clamp(34px,7vw,70px);line-height:.98;margin:30px 0 12px;max-width:880px;
+  letter-spacing:-2px;position:relative;z-index:2
+}
+.hero h1 span{color:#bfe4ff}
+.hero p{
+  margin:0;max-width:800px;font-size:clamp(15px,2vw,20px);line-height:1.55;opacity:.95;position:relative;z-index:2
+}
+.topstats{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:26px;position:relative;z-index:2
+}
+.stat{
+  background:rgba(255,255,255,.13);border:1px solid rgba(255,255,255,.18);border-radius:18px;
+  padding:14px 16px
+}
+.stat b{display:block;font-size:22px}
+.stat span{font-size:12px;opacity:.85}
+.nav{
+  display:flex;gap:8px;overflow:auto;padding:16px 2px 6px;scrollbar-width:none
+}
+.nav::-webkit-scrollbar{display:none}
+.nav button{
+  border:1px solid var(--line);background:#fff;color:var(--text);padding:11px 15px;border-radius:14px;
+  white-space:nowrap;font-weight:850;cursor:pointer;box-shadow:0 6px 18px rgba(4,42,100,.07)
+}
+.nav button.active{background:var(--blue);color:#fff;border-color:var(--blue)}
+.section{display:none;margin-top:18px}
+.section.active{display:block}
+.card{
+  background:rgba(255,255,255,.96);border:1px solid var(--line);border-radius:28px;padding:22px;
+  box-shadow:var(--shadow)
+}
+.card + .card{margin-top:16px}
+.card-head{
+  display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:18px
+}
+.card-head h2{margin:0;font-size:clamp(24px,4vw,34px);letter-spacing:-.5px}
+.kicker{
+  display:inline-flex;align-items:center;gap:8px;background:#e9f4ff;color:#0759c7;
+  padding:8px 11px;border-radius:999px;font-size:12px;font-weight:900;text-transform:uppercase;letter-spacing:.8px
+}
+.rulegrid{
+  display:grid;grid-template-columns:1.05fr 1fr;gap:16px
+}
+.rulebox{
+  background:linear-gradient(180deg,#f8fcff,#eef7ff);border:1px solid var(--line);border-radius:22px;overflow:hidden
+}
+.rulebox .title{
+  background:linear-gradient(90deg,var(--navy),var(--blue));color:#fff;padding:15px 17px;font-weight:900
+}
+.pronouns{
+  display:grid;grid-template-columns:1fr 1fr
+}
+.pronouns .col{padding:14px 16px}
+.pronouns .col:first-child{border-right:1px solid var(--line)}
+.pronouns h3{margin:0 0 8px;color:var(--blue);font-size:18px}
+.row{
+  display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px dashed #d7e9fb;font-weight:750
+}
+.row:last-child{border-bottom:0}
+.pn{
+  display:inline-block;background:#fff4a8;color:#173264;border-radius:9px;padding:4px 9px;font-weight:950
+}
+.example-list{padding:14px 16px}
+.example{
+  padding:12px 0;border-bottom:1px dashed #d7e9fb
+}
+.example:last-child{border-bottom:0}
+.example b{color:var(--blue)}
+.exercise-wrap{display:grid;grid-template-columns:1fr 290px;gap:16px}
+.questionbox{
+  min-height:280px;
+  display:flex;flex-direction:column;justify-content:center;
+  background:linear-gradient(145deg,#ffffff,#f4faff);border:1px solid var(--line);border-radius:24px;padding:22px
+}
+.qnum{font-size:13px;font-weight:900;color:#5b7ea9;text-transform:uppercase;letter-spacing:.8px}
+.question{font-size:clamp(26px,5vw,43px);line-height:1.25;font-weight:900;margin:12px 0 20px}
+.blank{
+  display:inline-block;min-width:110px;border-bottom:4px solid var(--blue);color:var(--red);text-align:center;padding:0 8px
+}
+.choices{display:flex;flex-wrap:wrap;gap:10px}
+.choice{
+  border:2px solid #cce3fb;background:#fff;color:var(--text);padding:13px 17px;border-radius:15px;font-weight:900;
+  cursor:pointer;transition:.18s;min-width:90px
+}
+.choice:hover{transform:translateY(-2px);border-color:var(--blue);box-shadow:0 8px 20px rgba(5,89,199,.12)}
+.choice.correct{background:#e7fff2;border-color:#45c987;color:#087946}
+.choice.wrong{background:#fff0f0;border-color:#f08c8c;color:#c52929}
+.feedback{min-height:28px;margin-top:14px;font-weight:850}
+.feedback.ok{color:var(--green)}
+.feedback.no{color:var(--red)}
+.sidepanel{
+  border:1px solid var(--line);border-radius:24px;padding:16px;background:linear-gradient(180deg,#eef7ff,#fff)
+}
+.progress-ring{
+  width:120px;height:120px;border-radius:50%;margin:4px auto 14px;
+  display:grid;place-items:center;background:conic-gradient(var(--blue) 0deg,#d8ebff 0deg)
+}
+.progress-ring:after{
+  content:"";width:88px;height:88px;background:#fff;border-radius:50%;position:absolute
+}
+.progress-ring span{position:relative;z-index:2;font-weight:950;font-size:24px}
+.sidepanel h3{text-align:center;margin:6px 0 14px}
+.mini{
+  display:grid;grid-template-columns:1fr 1fr;gap:8px
+}
+.mini div{background:#fff;border:1px solid var(--line);border-radius:13px;padding:10px;text-align:center}
+.mini b{display:block;font-size:20px}
+.actions{display:flex;gap:10px;margin-top:16px;flex-wrap:wrap}
+.btn{
+  border:0;border-radius:14px;padding:12px 17px;font-weight:900;cursor:pointer
+}
+.btn.primary{background:linear-gradient(90deg,var(--navy),var(--blue));color:#fff}
+.btn.ghost{background:#eef7ff;color:var(--blue);border:1px solid var(--line)}
+.btn.speak{background:#fff8d6;color:#5f4a00;border:1px solid #f6df74}
+.wordbank{
+  display:flex;flex-wrap:wrap;gap:10px;margin-top:12px;min-height:58px
+}
+.word{
+  border:2px solid #cfe6fb;background:#fff;color:var(--text);border-radius:13px;padding:10px 13px;
+  font-weight:900;cursor:pointer
+}
+.word.used{opacity:.35;pointer-events:none}
+.answerline{
+  min-height:70px;border:2px dashed #a9d1f5;border-radius:18px;padding:12px;display:flex;flex-wrap:wrap;gap:9px;align-items:center;
+  background:#f7fbff
+}
+.answerline .token{background:var(--blue);color:#fff;border-radius:12px;padding:9px 12px;font-weight:850;cursor:pointer}
+.table{
+  width:100%;border-collapse:separate;border-spacing:0 9px
+}
+.table th{text-align:left;font-size:12px;text-transform:uppercase;letter-spacing:.8px;color:#6787ab;padding:0 12px 4px}
+.table td{background:#f7fbff;border-top:1px solid #d9ebfb;border-bottom:1px solid #d9ebfb;padding:13px 12px;font-weight:750}
+.table td:first-child{border-left:1px solid #d9ebfb;border-radius:14px 0 0 14px}
+.table td:last-child{border-right:1px solid #d9ebfb;border-radius:0 14px 14px 0}
+.tag{
+  display:inline-block;padding:4px 8px;border-radius:999px;background:#e8f3ff;color:#0759c7;font-size:11px;font-weight:900
+}
+.search{
+  width:100%;border:1px solid var(--line);border-radius:16px;padding:13px 15px;font:inherit;font-weight:700;outline:none;
+  box-shadow:inset 0 2px 8px rgba(4,42,100,.04)
+}
+.search:focus{border-color:var(--blue);box-shadow:0 0 0 4px rgba(5,89,199,.08)}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.note{
+  background:#fff9d9;border:1px solid #f5dd7c;border-radius:18px;padding:14px 16px;color:#594800;font-weight:700
+}
+.footer{
+  margin-top:26px;text-align:center;color:#6d89a8;font-size:13px
+}
+@media (max-width:800px){
+  .app{padding:10px 10px 50px}
+  .hero{border-radius:24px;padding:22px 18px}
+  .brand{align-items:flex-start}
+  .pill{display:none}
+  .topstats{grid-template-columns:1fr}
+  .rulegrid,.exercise-wrap,.two{grid-template-columns:1fr}
+  .sidepanel{order:-1}
+  .progress-ring{width:92px;height:92px}
+  .progress-ring:after{width:66px;height:66px}
+  .progress-ring span{font-size:19px}
+  .card{padding:16px;border-radius:22px}
+  .questionbox{min-height:260px;padding:17px}
+  .question{font-size:29px}
+  .table{font-size:14px}
+}
+</style>
+</head>
+<body>
+<div class="app">
+  <header class="hero">
+    <div class="brand">
+      <div class="logo">
+        <div class="logo-badge">DM</div>
+        <div>DE-MAX<small>DEUTSCH TRAINER</small></div>
+      </div>
+      <div class="pill">A1–A2 • Interaktivne vežbe</div>
+    </div>
+    <h1>Reflexivpronomen <span>im Akkusativ</span></h1>
+    <p>Povratne zamenice u akuzativu: <b>mich, dich, sich, uns, euch, sich</b>. Vežbaj izbor tačne zamenice, dopunjavanje rečenica, slaganje reči i najvažnije povratne glagole.</p>
+    <div class="topstats">
+      <div class="stat"><b id="heroDone">0</b><span>urađenih zadataka</span></div>
+      <div class="stat"><b id="heroCorrect">0</b><span>tačnih odgovora</span></div>
+      <div class="stat"><b id="heroPercent">0%</b><span>ukupna uspešnost</span></div>
+    </div>
+  </header>
+
+  <nav class="nav">
+    <button class="active" data-tab="pravilo">📘 Pravilo</button>
+    <button data-tab="izbor">✅ Izaberi zamenicu</button>
+    <button data-tab="dopuni">✍️ Dopuni</button>
+    <button data-tab="redosled">🧩 Redosled reči</button>
+    <button data-tab="glagoli">📚 Povratni glagoli</button>
+    <button data-tab="test">🏁 Završni test</button>
+  </nav>
+
+  <section id="pravilo" class="section active">
+    <div class="card">
+      <div class="card-head">
+        <div>
+          <div class="kicker">Osnova</div>
+          <h2>Povratne zamenice u akuzativu</h2>
+        </div>
+      </div>
+      <div class="rulegrid">
+        <div class="rulebox">
+          <div class="title">Zamenice po licima</div>
+          <div class="pronouns">
+            <div class="col">
+              <h3>Singular</h3>
+              <div class="row"><span>ich</span><span class="pn">mich</span></div>
+              <div class="row"><span>du</span><span class="pn">dich</span></div>
+              <div class="row"><span>er / sie / es</span><span class="pn">sich</span></div>
+            </div>
+            <div class="col">
+              <h3>Plural</h3>
+              <div class="row"><span>wir</span><span class="pn">uns</span></div>
+              <div class="row"><span>ihr</span><span class="pn">euch</span></div>
+              <div class="row"><span>sie / Sie</span><span class="pn">sich</span></div>
+            </div>
+          </div>
+        </div>
+        <div class="rulebox">
+          <div class="title">Primeri</div>
+          <div class="example-list">
+            <div class="example"><b>Ich interessiere mich</b> für Musik.<br><small>Interesujem se za muziku.</small></div>
+            <div class="example"><b>Du konzentrierst dich</b> gut.<br><small>Dobro se koncentrišeš.</small></div>
+            <div class="example"><b>Wir treffen uns</b> heute.<br><small>Mi se danas sastajemo.</small></div>
+            <div class="example"><b>Ihr beeilt euch</b> jeden Morgen.<br><small>Vi žurite svakog jutra.</small></div>
+          </div>
+        </div>
+      </div>
+      <div class="note" style="margin-top:16px">
+        Zapamti: povratna zamenica se menja prema licu subjekta. Za <b>er/sie/es</b> i <b>sie/Sie</b> koristi se <b>sich</b>.
+      </div>
+    </div>
+  </section>
+
+  <section id="izbor" class="section">
+    <div class="card">
+      <div class="card-head">
+        <div><div class="kicker">Vežba 1</div><h2>Izaberi tačnu zamenicu</h2></div>
+      </div>
+      <div class="exercise-wrap">
+        <div class="questionbox">
+          <div class="qnum" id="choiceNo">Zadatak 1</div>
+          <div class="question" id="choiceQuestion"></div>
+          <div class="choices" id="choiceButtons"></div>
+          <div class="feedback" id="choiceFeedback"></div>
+          <div class="actions">
+            <button class="btn primary" id="nextChoice">Sledeće →</button>
+            <button class="btn speak" id="speakChoice">🔊 Izgovor</button>
+          </div>
+        </div>
+        <div class="sidepanel">
+          <div class="progress-ring" id="choiceRing"><span id="choicePct">0%</span></div>
+          <h3>Napredak</h3>
+          <div class="mini">
+            <div><b id="choiceDone">0</b><span>urađeno</span></div>
+            <div><b id="choiceGood">0</b><span>tačno</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="dopuni" class="section">
+    <div class="card">
+      <div class="card-head">
+        <div><div class="kicker">Vežba 2</div><h2>Dopuni rečenicu</h2></div>
+      </div>
+      <div class="exercise-wrap">
+        <div class="questionbox">
+          <div class="qnum" id="fillNo">Zadatak 1</div>
+          <div class="question" id="fillQuestion"></div>
+          <div class="choices" id="fillButtons"></div>
+          <div class="feedback" id="fillFeedback"></div>
+          <div class="actions">
+            <button class="btn primary" id="nextFill">Sledeće →</button>
+            <button class="btn ghost" id="showFill">Prikaži rešenje</button>
+            <button class="btn speak" id="speakFill">🔊 Izgovor</button>
+          </div>
+        </div>
+        <div class="sidepanel">
+          <div class="progress-ring" id="fillRing"><span id="fillPct">0%</span></div>
+          <h3>Napredak</h3>
+          <div class="mini">
+            <div><b id="fillDone">0</b><span>urađeno</span></div>
+            <div><b id="fillGood">0</b><span>tačno</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="redosled" class="section">
+    <div class="card">
+      <div class="card-head">
+        <div><div class="kicker">Vežba 3</div><h2>Složi pravilan red reči</h2></div>
+      </div>
+      <div class="questionbox">
+        <div class="qnum" id="orderNo">Zadatak 1</div>
+        <div class="question" style="font-size:24px" id="orderHint"></div>
+        <div class="answerline" id="answerLine"></div>
+        <div class="wordbank" id="wordBank"></div>
+        <div class="feedback" id="orderFeedback"></div>
+        <div class="actions">
+          <button class="btn primary" id="checkOrder">Proveri</button>
+          <button class="btn ghost" id="resetOrder">Ponovo</button>
+          <button class="btn ghost" id="showOrder">Rešenje</button>
+          <button class="btn speak" id="speakOrder">🔊 Izgovor</button>
+          <button class="btn primary" id="nextOrder">Sledeće →</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="glagoli" class="section">
+    <div class="card">
+      <div class="card-head">
+        <div><div class="kicker">Rečnik</div><h2>Najvažniji povratni glagoli</h2></div>
+      </div>
+      <input id="verbSearch" class="search" placeholder="Pretraži glagol ili prevod…">
+      <div style="overflow:auto;margin-top:12px">
+        <table class="table">
+          <thead><tr><th>Nemački</th><th>Prevod</th><th>Primer</th><th>Nivo</th></tr></thead>
+          <tbody id="verbTable"></tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section id="test" class="section">
+    <div class="card">
+      <div class="card-head">
+        <div><div class="kicker">Mini test</div><h2>Završni test</h2></div>
+      </div>
+      <div class="two">
+        <div class="questionbox">
+          <div class="qnum" id="testNo">Pitanje 1 / 15</div>
+          <div class="question" id="testQuestion"></div>
+          <div class="choices" id="testButtons"></div>
+          <div class="feedback" id="testFeedback"></div>
+          <div class="actions">
+            <button class="btn primary" id="nextTest">Sledeće →</button>
+            <button class="btn speak" id="speakTest">🔊 Izgovor</button>
+          </div>
+        </div>
+        <div class="sidepanel">
+          <div class="progress-ring" id="testRing"><span id="testPct">0%</span></div>
+          <h3>Rezultat testa</h3>
+          <div class="mini">
+            <div><b id="testDone">0</b><span>od 15</span></div>
+            <div><b id="testGood">0</b><span>tačno</span></div>
+          </div>
+          <div class="note" id="testResult" style="margin-top:12px">Odgovori na svih 15 pitanja.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="footer">DE-MAX • Reflexivpronomen im Akkusativ • Interaktivna vežba</div>
+</div>
+
+<script>
+const pronouns = ["mich","dich","sich","uns","euch"];
+const choiceData = [
+  ["Ich interessiere ___ für Musik.","mich","Ich interessiere mich für Musik."],
+  ["Du konzentrierst ___ heute sehr gut.","dich","Du konzentrierst dich heute sehr gut."],
+  ["Er erinnert ___ an seinen Lehrer.","sich","Er erinnert sich an seinen Lehrer."],
+  ["Wir treffen ___ heute im Café.","uns","Wir treffen uns heute im Café."],
+  ["Ihr beeilt ___ jeden Morgen.","euch","Ihr beeilt euch jeden Morgen."],
+  ["Sie freut ___ auf den Urlaub.","sich","Sie freut sich auf den Urlaub."],
+  ["Ich wasche ___ jeden Morgen.","mich","Ich wasche mich jeden Morgen."],
+  ["Du fühlst ___ heute besser.","dich","Du fühlst dich heute besser."],
+  ["Das Kind setzt ___ auf den Stuhl.","sich","Das Kind setzt sich auf den Stuhl."],
+  ["Wir unterhalten ___ auf Deutsch.","uns","Wir unterhalten uns auf Deutsch."],
+  ["Ihr erholt ___ am Wochenende.","euch","Ihr erholt euch am Wochenende."],
+  ["Meine Eltern entspannen ___ im Garten.","sich","Meine Eltern entspannen sich im Garten."],
+  ["Ich freue ___ auf das Wochenende.","mich","Ich freue mich auf das Wochenende."],
+  ["Du interessierst ___ für Sport.","dich","Du interessierst dich für Sport."],
+  ["Anna schminkt ___ am Morgen.","sich","Anna schminkt sich am Morgen."],
+  ["Wir verabschieden ___ von unseren Freunden.","uns","Wir verabschieden uns von unseren Freunden."],
+  ["Ihr zieht ___ schnell an.","euch","Ihr zieht euch schnell an."],
+  ["Herr Müller stellt ___ vor.","sich","Herr Müller stellt sich vor."],
+  ["Ich ruhe ___ nach der Arbeit aus.","mich","Ich ruhe mich nach der Arbeit aus."],
+  ["Du ärgerst ___ über den Lärm.","dich","Du ärgerst dich über den Lärm."]
+];
+
+const fillData = [
+  ["Ich interessiere ___ für Sprachen.","mich","Ich interessiere mich für Sprachen."],
+  ["Wir treffen ___ um acht Uhr.","uns","Wir treffen uns um acht Uhr."],
+  ["Du konzentrierst ___ nicht gut.","dich","Du konzentrierst dich nicht gut."],
+  ["Er erinnert ___ an seinen Lehrer.","sich","Er erinnert sich an seinen Lehrer."],
+  ["Ihr beeilt ___ jeden Morgen.","euch","Ihr beeilt euch jeden Morgen."],
+  ["Ich dusche ___ am Abend.","mich","Ich dusche mich am Abend."],
+  ["Sie setzt ___ neben ihre Freundin.","sich","Sie setzt sich neben ihre Freundin."],
+  ["Wir freuen ___ auf die Ferien.","uns","Wir freuen uns auf die Ferien."],
+  ["Du ziehst ___ schnell an.","dich","Du ziehst dich schnell an."],
+  ["Die Kinder waschen ___ die Hände.","sich","Die Kinder waschen sich die Hände."],
+  ["Ich melde ___ für den Kurs an.","mich","Ich melde mich für den Kurs an."],
+  ["Ihr unterhaltet ___ lange.","euch","Ihr unterhaltet euch lange."],
+  ["Frau Klein entschuldigt ___ beim Lehrer.","sich","Frau Klein entschuldigt sich beim Lehrer."],
+  ["Wir sehen ___ morgen wieder.","uns","Wir sehen uns morgen wieder."],
+  ["Du ruhst ___ nach der Arbeit aus.","dich","Du ruhst dich nach der Arbeit aus."]
+];
+
+const orderData = [
+  {hint:"Složi: Ja se interesujem za muziku.", words:["Ich","interessiere","mich","für","Musik."], ans:"Ich interessiere mich für Musik."},
+  {hint:"Složi: Mi se danas sastajemo u kafiću.", words:["Wir","treffen","uns","heute","im","Café."], ans:"Wir treffen uns heute im Café."},
+  {hint:"Složi: Ti se dobro koncentrišeš.", words:["Du","konzentrierst","dich","gut."], ans:"Du konzentrierst dich gut."},
+  {hint:"Složi: On se seća svog učitelja.", words:["Er","erinnert","sich","an","seinen","Lehrer."], ans:"Er erinnert sich an seinen Lehrer."},
+  {hint:"Složi: Vi žurite svakog jutra.", words:["Ihr","beeilt","euch","jeden","Morgen."], ans:"Ihr beeilt euch jeden Morgen."},
+  {hint:"Složi: Radujemo se odmoru.", words:["Wir","freuen","uns","auf","den","Urlaub."], ans:"Wir freuen uns auf den Urlaub."},
+  {hint:"Složi: Ja se prijavljujem za kurs.", words:["Ich","melde","mich","für","den","Kurs","an."], ans:"Ich melde mich für den Kurs an."},
+  {hint:"Složi: Ti se odmaraš posle posla.", words:["Du","ruhst","dich","nach","der","Arbeit","aus."], ans:"Du ruhst dich nach der Arbeit aus."},
+  {hint:"Složi: Ona se oblači brzo.", words:["Sie","zieht","sich","schnell","an."], ans:"Sie zieht sich schnell an."},
+  {hint:"Složi: Mi razgovaramo na nemačkom.", words:["Wir","unterhalten","uns","auf","Deutsch."], ans:"Wir unterhalten uns auf Deutsch."}
+];
+
+const verbs = [
+["sich interessieren für","interesovati se za","Ich interessiere mich für Deutsch.","A1"],
+["sich freuen auf","radovati se nečemu što dolazi","Wir freuen uns auf den Urlaub.","A1"],
+["sich freuen über","radovati se nečemu","Sie freut sich über das Geschenk.","A2"],
+["sich erinnern an","sećati se","Er erinnert sich an seine Schule.","A2"],
+["sich konzentrieren auf","koncentrisati se na","Du konzentrierst dich auf die Aufgabe.","A2"],
+["sich treffen","sastati se","Wir treffen uns im Café.","A1"],
+["sich beeilen","žuriti","Ihr beeilt euch.","A1"],
+["sich waschen","umiti/oprati se","Ich wasche mich.","A1"],
+["sich duschen","tuširati se","Er duscht sich am Morgen.","A1"],
+["sich anziehen","obući se","Sie zieht sich schnell an.","A1"],
+["sich ausziehen","skinuti se","Das Kind zieht sich aus.","A1"],
+["sich setzen","sesti","Setz dich bitte!","A1"],
+["sich fühlen","osećati se","Ich fühle mich gut.","A1"],
+["sich ausruhen","odmarati se","Wir ruhen uns aus.","A1"],
+["sich entspannen","opustiti se","Sie entspannt sich am Abend.","A2"],
+["sich unterhalten","razgovarati","Wir unterhalten uns lange.","A2"],
+["sich anmelden","prijaviti se","Ich melde mich für den Kurs an.","A1"],
+["sich abmelden","odjaviti se","Er meldet sich vom Kurs ab.","A2"],
+["sich vorstellen","predstaviti se","Ich stelle mich kurz vor.","A1"],
+["sich verabschieden","oprostiti se","Wir verabschieden uns.","A2"],
+["sich entschuldigen","izviniti se","Er entschuldigt sich beim Lehrer.","A2"],
+["sich ärgern über","ljutiti se zbog","Ich ärgere mich über den Lärm.","A2"],
+["sich wundern über","čuditi se","Sie wundert sich über die Nachricht.","A2"],
+["sich vorbereiten auf","pripremati se za","Wir bereiten uns auf die Prüfung vor.","A2"],
+["sich kümmern um","brinuti se o","Er kümmert sich um die Kinder.","A2"],
+["sich entscheiden für","odlučiti se za","Ich entscheide mich für den Kurs.","A2"],
+["sich gewöhnen an","naviknuti se na","Sie gewöhnt sich an die Stadt.","B1"],
+["sich beschweren über","žaliti se na","Er beschwert sich über den Service.","B1"],
+["sich bewerben um","konkurisati za","Ich bewerbe mich um die Stelle.","B1"],
+["sich beschäftigen mit","baviti se","Wir beschäftigen uns mit Grammatik.","B1"],
+["sich informieren über","informisati se o","Sie informiert sich über den Kurs.","A2"],
+["sich verabreden","dogovoriti sastanak","Wir verabreden uns für Freitag.","A2"],
+["sich verlieben in","zaljubiti se u","Er verliebt sich in Anna.","B1"],
+["sich fürchten vor","plašiti se","Das Kind fürchtet sich vor Hunden.","A2"],
+["sich schämen für","stideti se","Er schämt sich für den Fehler.","B1"],
+["sich bewegen","kretati se","Ich bewege mich jeden Tag.","A1"],
+["sich drehen","okrenuti se","Sie dreht sich um.","A2"],
+["sich rasieren","brijati se","Er rasiert sich morgens.","A1"],
+["sich schminken","šminkati se","Sie schminkt sich.","A1"],
+["sich kämmen","češljati se","Ich kämme mich.","A1"]
+];
+
+const testData = [...choiceData.slice(0,10), ...fillData.slice(10,15)];
+
+let totals={done:0,good:0};
+function updateHero(){
+  document.getElementById("heroDone").textContent=totals.done;
+  document.getElementById("heroCorrect").textContent=totals.good;
+  document.getElementById("heroPercent").textContent=totals.done?Math.round(totals.good/totals.done*100)+"%":"0%";
+}
+function speak(text){
+  if(!("speechSynthesis" in window)) return;
+  speechSynthesis.cancel();
+  const u=new SpeechSynthesisUtterance(text);
+  u.lang="de-DE";u.rate=.88;
+  speechSynthesis.speak(u);
+}
+function setRing(id,pct){
+  const el=document.getElementById(id);
+  el.style.background=`conic-gradient(var(--blue) ${pct*3.6}deg,#d8ebff 0deg)`;
+}
+document.querySelectorAll(".nav button").forEach(btn=>{
+  btn.onclick=()=>{
+    document.querySelectorAll(".nav button").forEach(b=>b.classList.remove("active"));
+    document.querySelectorAll(".section").forEach(s=>s.classList.remove("active"));
+    btn.classList.add("active");
+    document.getElementById(btn.dataset.tab).classList.add("active");
+  };
+});
+
+function shuffle(a){return [...a].sort(()=>Math.random()-.5)}
+
+function setupChoice(prefix,data){
+  let i=0,done=0,good=0,locked=false;
+  const q=document.getElementById(prefix+"Question"), no=document.getElementById(prefix+"No");
+  const buttons=document.getElementById(prefix+"Buttons"), fb=document.getElementById(prefix+"Feedback");
+  const doneEl=document.getElementById(prefix+"Done"), goodEl=document.getElementById(prefix+"Good");
+  const pctEl=document.getElementById(prefix+"Pct"), ringId=prefix+"Ring";
+  let currentSentence="";
+  function render(){
+    locked=false;fb.textContent="";fb.className="feedback";
+    no.textContent=`Zadatak ${i+1} / ${data.length}`;
+    const [question,ans,full]=data[i];
+    currentSentence=full;
+    q.innerHTML=question.replace("___",'<span class="blank">?</span>');
+    buttons.innerHTML="";
+    shuffle(pronouns).forEach(p=>{
+      const b=document.createElement("button");b.className="choice";b.textContent=p;
+      b.onclick=()=>{
+        if(locked)return; locked=true; done++; totals.done++;
+        q.innerHTML=question.replace("___",`<span class="blank">${p}</span>`);
+        if(p===ans){b.classList.add("correct");good++;totals.good++;fb.textContent="✓ Tačno!";fb.classList.add("ok");speak(full)}
+        else{b.classList.add("wrong");fb.textContent=`✗ Tačno je: ${ans}`;fb.classList.add("no")}
+        doneEl.textContent=done;goodEl.textContent=good;
+        const pct=Math.round(done/data.length*100);pctEl.textContent=pct+"%";setRing(ringId,pct);updateHero();
+      };
+      buttons.appendChild(b)
+    })
+  }
+  document.getElementById("next"+prefix[0].toUpperCase()+prefix.slice(1)).onclick=()=>{i=(i+1)%data.length;render()};
+  const speakBtn=document.getElementById("speak"+prefix[0].toUpperCase()+prefix.slice(1));
+  if(speakBtn)speakBtn.onclick=()=>speak(currentSentence);
+  const showBtn=document.getElementById("show"+prefix[0].toUpperCase()+prefix.slice(1));
+  if(showBtn)showBtn.onclick=()=>{
+    const [question,ans,full]=data[i];
+    q.innerHTML=question.replace("___",`<span class="blank">${ans}</span>`);
+    fb.textContent="Rešenje: "+full;fb.className="feedback ok";
+  };
+  render();
+}
+setupChoice("choice",choiceData);
+setupChoice("fill",fillData);
+
+let oi=0, selected=[];
+function renderOrder(){
+  selected=[];
+  const item=orderData[oi];
+  document.getElementById("orderNo").textContent=`Zadatak ${oi+1} / ${orderData.length}`;
+  document.getElementById("orderHint").textContent=item.hint;
+  document.getElementById("orderFeedback").textContent="";
+  const bank=document.getElementById("wordBank"), line=document.getElementById("answerLine");
+  bank.innerHTML="";line.innerHTML="";
+  shuffle(item.words.map((w,idx)=>({w,idx}))).forEach(obj=>{
+    const b=document.createElement("button");b.className="word";b.textContent=obj.w;b.dataset.idx=obj.idx;
+    b.onclick=()=>{selected.push({w:obj.w,el:b});b.classList.add("used");drawSelected()};
+    bank.appendChild(b)
+  });
+}
+function drawSelected(){
+  const line=document.getElementById("answerLine");line.innerHTML="";
+  selected.forEach((x,idx)=>{
+    const t=document.createElement("span");t.className="token";t.textContent=x.w;
+    t.onclick=()=>{x.el.classList.remove("used");selected.splice(idx,1);drawSelected()};
+    line.appendChild(t)
+  })
+}
+document.getElementById("checkOrder").onclick=()=>{
+  const item=orderData[oi], user=selected.map(x=>x.w).join(" ");
+  const fb=document.getElementById("orderFeedback");
+  totals.done++;
+  if(user===item.ans){fb.textContent="✓ Tačno!";fb.className="feedback ok";totals.good++;speak(item.ans)}
+  else{fb.textContent="✗ Pokušaj još jednom.";fb.className="feedback no"}
+  updateHero();
+};
+document.getElementById("resetOrder").onclick=renderOrder;
+document.getElementById("showOrder").onclick=()=>{
+  const item=orderData[oi];
+  document.getElementById("orderFeedback").textContent="Rešenje: "+item.ans;
+  document.getElementById("orderFeedback").className="feedback ok";
+};
+document.getElementById("nextOrder").onclick=()=>{oi=(oi+1)%orderData.length;renderOrder()};
+document.getElementById("speakOrder").onclick=()=>speak(orderData[oi].ans);
+renderOrder();
+
+function renderVerbs(filter=""){
+  const tb=document.getElementById("verbTable");tb.innerHTML="";
+  verbs.filter(v=>v.join(" ").toLowerCase().includes(filter.toLowerCase())).forEach(v=>{
+    const tr=document.createElement("tr");
+    tr.innerHTML=`<td>${v[0]}</td><td>${v[1]}</td><td>${v[2]}</td><td><span class="tag">${v[3]}</span></td>`;
+    tb.appendChild(tr)
+  })
+}
+document.getElementById("verbSearch").oninput=e=>renderVerbs(e.target.value);
+renderVerbs();
+
+let ti=0,td=0,tg=0,tlocked=false,tSentence="";
+function renderTest(){
+  if(ti>=15){
+    document.getElementById("testQuestion").innerHTML="Test je završen.";
+    document.getElementById("testButtons").innerHTML="";
+    document.getElementById("testNo").textContent="Rezultat";
+    const pct=Math.round(tg/15*100);
+    document.getElementById("testResult").innerHTML=`Osvojeno: <b>${tg}/15</b> (${pct}%). ${pct>=80?"Odlično!":pct>=60?"Dobro, ponovi još nekoliko primera.":"Vrati se na vežbe i pokušaj ponovo."}`;
+    document.getElementById("testPct").textContent=pct+"%";setRing("testRing",pct);
+    return;
+  }
+  tlocked=false;
+  const [question,ans,full]=testData[ti];
+  tSentence=full;
+  document.getElementById("testNo").textContent=`Pitanje ${ti+1} / 15`;
+  document.getElementById("testQuestion").innerHTML=question.replace("___",'<span class="blank">?</span>');
+  document.getElementById("testFeedback").textContent="";
+  const box=document.getElementById("testButtons");box.innerHTML="";
+  shuffle(pronouns).forEach(p=>{
+    const b=document.createElement("button");b.className="choice";b.textContent=p;
+    b.onclick=()=>{
+      if(tlocked)return;tlocked=true;td++;totals.done++;
+      document.getElementById("testQuestion").innerHTML=question.replace("___",`<span class="blank">${p}</span>`);
+      const fb=document.getElementById("testFeedback");
+      if(p===ans){b.classList.add("correct");tg++;totals.good++;fb.textContent="✓ Tačno!";fb.className="feedback ok";speak(full)}
+      else{b.classList.add("wrong");fb.textContent=`✗ Tačno je: ${ans}`;fb.className="feedback no"}
+      document.getElementById("testDone").textContent=td;document.getElementById("testGood").textContent=tg;
+      const prog=Math.round(td/15*100);document.getElementById("testPct").textContent=prog+"%";setRing("testRing",prog);updateHero();
+    };box.appendChild(b)
+  })
+}
+document.getElementById("nextTest").onclick=()=>{if(!tlocked && ti<15)return;ti++;renderTest()};
+document.getElementById("speakTest").onclick=()=>speak(tSentence);
+renderTest();
+updateHero();
+</script>
+</body>
+</html>
