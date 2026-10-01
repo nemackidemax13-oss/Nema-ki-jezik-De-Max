@@ -236,7 +236,7 @@ button{
     </form>
 
     <section id="result" class="result" aria-live="polite">
-      <div class="ok" id="resultTitle">✓ Prijava je uspešno poslata. Hvala!. Hvala!</div>
+      <div class="ok" id="resultTitle">✓ Prijava je uspešno poslata. Hvala!</div>
       <div class="summary" id="summary"></div>
     </section>
 
@@ -310,7 +310,7 @@ form.addEventListener('submit', async (e) => {
     if (!response.ok) throw new Error('Slanje nije uspelo');
 
     renderSummary(data);
-    resultTitle.textContent = '✓ Prijava je uspešno poslata. Hvala!. Hvala! Hvala!';
+    resultTitle.textContent = '✓ Prijava je uspešno poslata. Hvala!';
     result.classList.add('show');
     result.scrollIntoView({behavior:'smooth',block:'nearest'});
   } catch (err) {
