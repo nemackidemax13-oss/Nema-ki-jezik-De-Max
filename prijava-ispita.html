@@ -1,0 +1,246 @@
+<!doctype html>
+<html lang="sr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0f57c8">
+<title>De-Max Tutin — Prijava ispita</title>
+<meta name="description" content="De-Max Tutin — prijava ispita nemačkog jezika A1, A2, B1 i B2.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="De-Max Tutin — Prijava ispita">
+<meta property="og:description" content="Prijava ispita nemačkog jezika A1, A2, B1 i B2 — Beograd ili Novi Pazar.">
+<meta property="og:url" content="https://nemackidemax13-oss.github.io/Nema-ki-jezik-De-Max/prijava-ispita.html">
+<meta property="og:image" content="https://raw.githubusercontent.com/nemackidemax13-oss/Nema-ki-jezik-De-Max/main/demax-logo-share.jpg?v=6">
+<meta property="og:image:secure_url" content="https://raw.githubusercontent.com/nemackidemax13-oss/Nema-ki-jezik-De-Max/main/demax-logo-share.jpg?v=6">
+<meta property="og:image:type" content="image/jpeg">
+<meta property="og:image:width" content="1080">
+<meta property="og:image:height" content="1080">
+<meta property="og:image:alt" content="De-Max Tutin logo">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="De-Max Tutin — Prijava ispita">
+<meta name="twitter:description" content="Prijava ispita nemačkog jezika A1, A2, B1 i B2.">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/nemackidemax13-oss/Nema-ki-jezik-De-Max/main/demax-logo-share.jpg?v=6">
+<link rel="image_src" href="https://raw.githubusercontent.com/nemackidemax13-oss/Nema-ki-jezik-De-Max/main/demax-logo-share.jpg?v=6">
+<style>
+:root{
+  --blue:#0f57c8;--blue2:#0b3e96;--red:#e31b23;--ink:#172033;
+  --muted:#667085;--line:#dbe3f0;--white:#fff;--shadow:0 18px 48px rgba(23,32,51,.14);
+}
+*{box-sizing:border-box}
+html{min-height:100%;background:#eef4ff}
+body{
+  margin:0;min-height:100%;
+  font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;
+  color:var(--ink);
+  background:
+    radial-gradient(circle at 8% 0%,rgba(15,87,200,.14),transparent 32%),
+    radial-gradient(circle at 100% 8%,rgba(227,27,35,.10),transparent 30%),
+    linear-gradient(180deg,#f8fbff 0%,#eef4ff 100%);
+}
+.page{max-width:760px;margin:0 auto;padding:18px 14px 40px}
+.card{background:rgba(255,255,255,.97);border:1px solid var(--line);border-radius:28px;box-shadow:var(--shadow);overflow:hidden}
+.hero{position:relative;padding:24px 20px 20px;text-align:center;background:linear-gradient(145deg,#fff,#f4f8ff);border-bottom:1px solid var(--line)}
+.hero:before{content:"";position:absolute;left:0;top:0;width:100%;height:6px;background:linear-gradient(90deg,#111 0 22%,#e31b23 22% 62%,#f0cf16 62% 100%)}
+.logo{width:150px;height:150px;border-radius:50%;object-fit:contain;display:block;margin:4px auto 14px;background:#fff;border:4px solid #fff;box-shadow:0 10px 28px rgba(0,0,0,.12)}
+.kicker{display:inline-flex;align-items:center;padding:7px 12px;border-radius:999px;background:#eaf2ff;color:var(--blue2);font-size:12px;font-weight:900;letter-spacing:.08em;text-transform:uppercase}
+h1{font-size:clamp(26px,6.5vw,40px);line-height:1.08;margin:12px 0 8px;color:#101828}
+.lead{margin:0 auto;max-width:590px;color:var(--muted);font-size:15px;line-height:1.55}
+.form{padding:20px}
+.section-title{font-size:13px;font-weight:900;letter-spacing:.08em;text-transform:uppercase;color:var(--blue2);margin:2px 0 10px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.field{margin-bottom:15px}
+label.main{display:block;font-size:14px;font-weight:800;margin:0 0 7px}
+.req{color:var(--red)}
+input[type=text],input[type=tel],input[type=email]{
+  width:100%;height:50px;border:1.5px solid var(--line);border-radius:14px;
+  padding:0 14px;font-size:16px;color:var(--ink);background:#fff;outline:none;
+  transition:.2s border-color,.2s box-shadow;
+}
+input:focus{border-color:#7aa8ef;box-shadow:0 0 0 4px rgba(15,87,200,.10)}
+.divider{height:1px;background:var(--line);margin:17px 0}
+.options{display:grid;grid-template-columns:repeat(4,1fr);gap:9px}
+.options.two{grid-template-columns:repeat(2,1fr)}
+.option input{position:absolute;opacity:0;pointer-events:none}
+.option span{
+  min-height:50px;display:flex;align-items:center;justify-content:center;text-align:center;
+  border:1.5px solid var(--line);border-radius:14px;background:#fff;color:#344054;
+  font-weight:900;padding:9px 8px;cursor:pointer;transition:.18s;
+}
+.option input:checked + span{color:#fff;border-color:var(--blue);background:linear-gradient(135deg,var(--blue),#2876e6);box-shadow:0 8px 18px rgba(15,87,200,.20)}
+.option.red input:checked + span{background:linear-gradient(135deg,#d8161f,#f13b43);border-color:#d8161f}
+.note{display:flex;gap:10px;align-items:flex-start;padding:12px 13px;margin:3px 0 18px;background:#f8fafc;border:1px solid #e7ecf4;border-radius:14px;color:#475467;font-size:13px;line-height:1.45}
+.actions{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+button{min-height:52px;border:0;border-radius:15px;font-weight:900;font-size:15px;cursor:pointer}
+.primary{color:#fff;background:linear-gradient(135deg,var(--red),#ff4950);box-shadow:0 10px 24px rgba(227,27,35,.22)}
+.secondary{color:var(--blue2);background:#edf4ff;border:1px solid #d4e3fb}
+.result{display:none;margin:0 20px 20px;border-radius:20px;padding:22px;background:linear-gradient(180deg,#f4fff7,#effaf2);border:1px solid #bfe9ca;text-align:center}
+.result.show{display:block}
+.ok{font-size:22px;font-weight:900;color:#147a37}
+.contact-footer{margin:4px 20px 20px;padding:16px;border:1px solid var(--line);border-radius:18px;background:linear-gradient(145deg,#f8fbff,#fff);display:grid;gap:10px}
+.contact-title{font-size:13px;font-weight:900;color:var(--blue2);letter-spacing:.06em;text-transform:uppercase;text-align:center}
+.contact-links{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.contact-link{min-height:48px;display:flex;align-items:center;justify-content:center;text-align:center;padding:9px 8px;border-radius:13px;text-decoration:none;font-weight:800;font-size:13px;color:#344054;background:#fff;border:1px solid #dbe3f0}
+.contact-link.instagram{color:#b51f69}.contact-link.facebook{color:#0f57c8}.contact-link.phone{color:#147a37}
+.footer{text-align:center;color:#8090a8;font-size:12px;padding:0 20px 18px}
+@media(max-width:560px){
+  .page{padding:0 0 26px}.card{border-radius:0;border-left:0;border-right:0}.hero{padding:20px 16px 17px}
+  .logo{width:132px;height:132px;margin:2px auto 12px}.form{padding:17px 14px}.grid{grid-template-columns:1fr}
+  .options{grid-template-columns:repeat(2,1fr);gap:8px}.option span{min-height:48px;font-size:15px}
+  .actions{grid-template-columns:1fr}.result{margin:0 14px 18px}.contact-footer{margin:4px 14px 18px;padding:14px}.contact-links{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+<main class="page">
+  <section class="card">
+    <header class="hero">
+      <img class="logo" src="https://raw.githubusercontent.com/nemackidemax13-oss/Nema-ki-jezik-De-Max/main/demax-logo-share.jpg?v=6" alt="De-Max Tutin logo">
+      <div class="kicker">De-Max Tutin • prijava ispita</div>
+      <h1>Prijava ispita</h1>
+      <p class="lead">Popunite podatke kandidata, izaberite nivo ispita i mesto polaganja.</p>
+    </header>
+
+    <form id="examForm" class="form" autocomplete="on">
+      <input type="text" name="_honey" tabindex="-1" autocomplete="off" style="position:absolute;left:-9999px;opacity:0" aria-hidden="true">
+
+      <div class="section-title">Podaci kandidata</div>
+
+      <div class="grid">
+        <div class="field">
+          <label class="main" for="ime">Ime kandidata <span class="req">*</span></label>
+          <input id="ime" name="Ime kandidata" type="text" placeholder="Unesite ime" required>
+        </div>
+        <div class="field">
+          <label class="main" for="prezime">Prezime kandidata <span class="req">*</span></label>
+          <input id="prezime" name="Prezime kandidata" type="text" placeholder="Unesite prezime" required>
+        </div>
+      </div>
+
+      <div class="grid">
+        <div class="field">
+          <label class="main" for="telefon">Broj telefona kandidata <span class="req">*</span></label>
+          <input id="telefon" name="Broj telefona kandidata" type="tel" placeholder="npr. +381 6x xxx xx xx" required>
+        </div>
+        <div class="field">
+          <label class="main" for="email">E-mail adresa kandidata <span class="req">*</span></label>
+          <input id="email" name="E-mail adresa kandidata" type="email" placeholder="ime@primer.com" required>
+        </div>
+      </div>
+
+      <div class="grid">
+        <div class="field">
+          <label class="main" for="rodjenje">Mesto rođenja kandidata <span class="req">*</span></label>
+          <input id="rodjenje" name="Mesto rođenja kandidata" type="text" placeholder="Unesite mesto rođenja" required>
+        </div>
+        <div class="field">
+          <label class="main" for="stanovanje">Mesto stanovanja kandidata <span class="req">*</span></label>
+          <input id="stanovanje" name="Mesto stanovanja kandidata" type="text" placeholder="Unesite mesto stanovanja" required>
+        </div>
+      </div>
+
+      <div class="field">
+        <label class="main" for="drzavljanstvo">Državljanstvo kandidata <span class="req">*</span></label>
+        <input id="drzavljanstvo" name="Državljanstvo kandidata" type="text" placeholder="Unesite državljanstvo" required>
+      </div>
+
+      <div class="divider"></div>
+
+      <div class="field">
+        <div class="section-title">Nivo za prijavu ispita</div>
+        <div class="options">
+          <label class="option"><input type="radio" name="Nivo ispita" value="A1" required><span>A1</span></label>
+          <label class="option"><input type="radio" name="Nivo ispita" value="A2"><span>A2</span></label>
+          <label class="option"><input type="radio" name="Nivo ispita" value="B1"><span>B1</span></label>
+          <label class="option"><input type="radio" name="Nivo ispita" value="B2"><span>B2</span></label>
+        </div>
+      </div>
+
+      <div class="field">
+        <div class="section-title">Mesto polaganja ispita</div>
+        <div class="options two">
+          <label class="option red"><input type="radio" name="Mesto polaganja" value="Beograd" required><span>📍 Beograd</span></label>
+          <label class="option red"><input type="radio" name="Mesto polaganja" value="Novi Pazar"><span>📍 Novi Pazar</span></label>
+        </div>
+      </div>
+
+      <div class="note">
+        <span>ℹ️</span>
+        <span>Proverite podatke pre slanja prijave. Sva polja označena zvezdicom su obavezna.</span>
+      </div>
+
+      <div class="actions">
+        <button class="primary" id="submitBtn" type="submit">✉ Pošalji prijavu ispita</button>
+        <button class="secondary" type="reset">Obriši podatke</button>
+      </div>
+    </form>
+
+    <section id="result" class="result" aria-live="polite">
+      <div class="ok" id="resultTitle">✓ Hvala na prijavi!</div>
+    </section>
+
+    <div class="contact-footer">
+      <div class="contact-title">Kontaktirajte De-Max Tutin</div>
+      <div class="contact-links">
+        <a class="contact-link instagram" href="https://www.instagram.com/nemacki_demax_tutin/" target="_blank" rel="noopener">📸 Instagram<br>@nemacki_demax_tutin</a>
+        <a class="contact-link facebook" href="https://www.facebook.com/" target="_blank" rel="noopener">📘 Facebook<br>Nemački jezik De-Max Tutin</a>
+        <a class="contact-link phone" href="tel:+381628490970">📞 Telefon<br>062-849-09-70</a>
+      </div>
+    </div>
+    <div class="footer">DE-MAX TUTIN • Prijava ispita nemačkog jezika</div>
+  </section>
+</main>
+
+<script>
+const form=document.getElementById('examForm');
+const result=document.getElementById('result');
+const resultTitle=document.getElementById('resultTitle');
+const submitBtn=document.getElementById('submitBtn');
+const FORM_ENDPOINT='https://formsubmit.co/ajax/nemackidemax13@gmail.com';
+
+form.addEventListener('submit',async(e)=>{
+  e.preventDefault();
+  if(!form.reportValidity()) return;
+
+  const fd=new FormData(form);
+  if(fd.get('_honey')) return;
+
+  const ime=fd.get('Ime kandidata') || '';
+  const prezime=fd.get('Prezime kandidata') || '';
+  const nivo=fd.get('Nivo ispita') || '';
+  const mesto=fd.get('Mesto polaganja') || '';
+
+  fd.append('_subject',`Nova De-Max prijava ispita — ${ime} ${prezime} — ${nivo} — ${mesto}`);
+  fd.append('_template','table');
+
+  submitBtn.disabled=true;
+  submitBtn.textContent='Šaljem prijavu…';
+  result.classList.remove('show');
+
+  try{
+    const response=await fetch(FORM_ENDPOINT,{
+      method:'POST',
+      headers:{'Accept':'application/json'},
+      body:fd
+    });
+    if(!response.ok) throw new Error('Slanje nije uspelo');
+
+    resultTitle.textContent='✓ Hvala na prijavi!';
+    result.classList.add('show');
+    result.scrollIntoView({behavior:'smooth',block:'nearest'});
+    form.reset();
+  }catch(err){
+    resultTitle.textContent='⚠ Prijava trenutno nije poslata. Pokušajte ponovo.';
+    result.classList.add('show');
+    result.scrollIntoView({behavior:'smooth',block:'nearest'});
+  }finally{
+    submitBtn.disabled=false;
+    submitBtn.textContent='✉ Pošalji prijavu ispita';
+  }
+});
+
+form.addEventListener('reset',()=>{
+  if(resultTitle.textContent.startsWith('⚠')) result.classList.remove('show');
+});
+</script>
+</body>
+</html>
