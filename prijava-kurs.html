@@ -259,7 +259,6 @@ const summary = document.getElementById('summary');
 const copyBtn = document.getElementById('copyBtn');
 const submitBtn = document.getElementById('submitBtn');
 const FORM_ENDPOINT = 'https://formsubmit.co/ajax/nemackidemax13@gmail.com';
-const WHATSAPP_NUMBER = '381628490970';
 
 function esc(s) {
   return String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c]));
@@ -274,19 +273,6 @@ function renderSummary(data) {
     <div class="row"><span>Pohađanje</span><b>${esc(data.format)}</b></div>
     <div class="row"><span>Početak</span><b>${data.termin}</b></div>
   `;
-}
-
-function makeWhatsAppUrl(data) {
-  const message =
-`DE-MAX TUTIN — NOVA PRIJAVA ZA KURS
-
-Ime i prezime: ${data.ime} ${data.prezime}
-Telefon: ${data.telefon}
-Nivo: ${data.nivo}
-Kurs: ${data.tempo}
-Pohađanje: ${data.format}
-Početak: ${data.termin}`;
-  return `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
 }
 
 form.addEventListener('submit', async (e) => {
@@ -324,14 +310,9 @@ form.addEventListener('submit', async (e) => {
     if (!response.ok) throw new Error('Slanje nije uspelo');
 
     renderSummary(data);
-    resultTitle.textContent = '✓ Prijava je poslata na mejl — otvaram WhatsApp…';
+    resultTitle.textContent = '✓ Prijava je uspešno poslata na mejl';
     result.classList.add('show');
     result.scrollIntoView({behavior:'smooth',block:'nearest'});
-
-    const whatsappUrl = makeWhatsAppUrl(data);
-    setTimeout(() => {
-      window.location.href = whatsappUrl;
-    }, 700);
   } catch (err) {
     summary.innerHTML = '<div class="row"><span>Pokušajte ponovo ili nas kontaktirajte direktno.</span></div>';
     resultTitle.textContent = '⚠ Prijava trenutno nije poslata';
