@@ -236,9 +236,8 @@ button{
     </form>
 
     <section id="result" class="result" aria-live="polite">
-      <div class="ok" id="resultTitle">✓ Prijava je uspešno poslata</div>
+      <div class="ok" id="resultTitle">✓ Uspešno ste se prijavili. Hvala!</div>
       <div class="summary" id="summary"></div>
-      <button class="copy" id="copyBtn" type="button">Kopiraj podatke prijave</button>
     </section>
 
     <div class="contact-footer">
@@ -258,7 +257,6 @@ const form = document.getElementById('courseForm');
 const result = document.getElementById('result');
 const resultTitle = document.getElementById('resultTitle');
 const summary = document.getElementById('summary');
-const copyBtn = document.getElementById('copyBtn');
 const submitBtn = document.getElementById('submitBtn');
 const FORM_ENDPOINT = 'https://formsubmit.co/ajax/nemackidemax13@gmail.com';
 
@@ -331,25 +329,6 @@ form.addEventListener('reset', () => {
   summary.innerHTML = '';
 });
 
-copyBtn.addEventListener('click', async () => {
-  const fd = new FormData(form);
-  const txt =
-`DE-MAX TUTIN — PRIJAVA ZA KURS
-Ime i prezime: ${fd.get('ime') || ''} ${fd.get('prezime') || ''}
-Telefon: ${fd.get('telefon') || '—'}
-Nivo: ${fd.get('nivo') || ''}
-Kurs: ${fd.get('tempo') || ''}
-Pohađanje: ${fd.get('format') || ''}
-Početak: 19.10.2026.`;
-  try {
-    await navigator.clipboard.writeText(txt);
-    const old = copyBtn.textContent;
-    copyBtn.textContent = '✓ Kopirano';
-    setTimeout(() => copyBtn.textContent = old, 1500);
-  } catch (e) {
-    alert(txt);
-  }
-});
 </script>
 </body>
 </html>
