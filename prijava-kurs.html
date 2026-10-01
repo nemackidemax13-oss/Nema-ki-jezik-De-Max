@@ -107,6 +107,21 @@ button{
 .primary{color:#fff;background:linear-gradient(135deg,var(--red),#ff4950);box-shadow:0 10px 24px rgba(227,27,35,.22)}
 .secondary{color:var(--blue2);background:#edf4ff;border:1px solid #d4e3fb}
 .footer{text-align:center;color:#8090a8;font-size:12px;padding:0 20px 18px}
+.contact-footer{
+  margin:4px 20px 20px;padding:16px;border:1px solid var(--line);border-radius:18px;
+  background:linear-gradient(145deg,#f8fbff,#ffffff);display:grid;gap:10px;
+}
+.contact-title{font-size:13px;font-weight:900;color:var(--blue2);letter-spacing:.06em;text-transform:uppercase;text-align:center}
+.contact-links{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.contact-link{
+  min-height:48px;display:flex;align-items:center;justify-content:center;gap:7px;text-align:center;
+  padding:9px 8px;border-radius:13px;text-decoration:none;font-weight:800;font-size:13px;
+  color:#344054;background:#fff;border:1px solid #dbe3f0;transition:.18s;
+}
+.contact-link:hover{transform:translateY(-1px);box-shadow:0 7px 16px rgba(23,32,51,.08)}
+.contact-link.instagram{color:#b51f69}
+.contact-link.facebook{color:#0f57c8}
+.contact-link.phone{color:#147a37}
 .result{
   display:none;margin:0 20px 20px;border-radius:20px;padding:18px;
   background:linear-gradient(180deg,#f4fff7,#effaf2);border:1px solid #bfe9ca;
@@ -129,6 +144,9 @@ button{
   .option span{min-height:46px;font-size:14px}
   .actions{grid-template-columns:1fr}
   .result{margin:0 14px 18px}
+  .contact-footer{margin:4px 14px 18px;padding:14px}
+  .contact-links{grid-template-columns:1fr}
+  .contact-link{font-size:14px}
 }
 </style>
 </head>
@@ -206,6 +224,14 @@ button{
       <button class="copy" id="copyBtn" type="button">Kopiraj podatke prijave</button>
     </section>
 
+    <div class="contact-footer">
+      <div class="contact-title">Kontaktirajte De‑Max Tutin</div>
+      <div class="contact-links">
+        <a class="contact-link instagram" href="https://www.instagram.com/nemacki_demax_tutin/" target="_blank" rel="noopener">📸 Instagram<br>@nemacki_demax_tutin</a>
+        <a class="contact-link facebook" href="https://www.facebook.com/" target="_blank" rel="noopener">📘 Facebook<br>Nemački jezik De‑Max Tutin</a>
+        <a class="contact-link phone" href="tel:+381628490970">📞 Telefon<br>062-849-09-70</a>
+      </div>
+    </div>
     <div class="footer">DE‑MAX TUTIN • Kurs nemačkog jezika • 19.10.2026.</div>
   </section>
 </main>
