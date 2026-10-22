@@ -1,0 +1,20 @@
+{
+  "id": "./",
+  "name": "DE-MAX Evidencija učenika V16",
+  "short_name": "DE-MAX",
+  "description": "Evidencija učenika, nastave i uplata",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f4f7fc",
+  "theme_color": "#2563eb",
+  "lang": "sr",
+  "icons": [
+    {
+      "src": "./icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
