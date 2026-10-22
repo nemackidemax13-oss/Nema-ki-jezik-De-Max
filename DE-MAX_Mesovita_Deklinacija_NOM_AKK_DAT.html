@@ -1,0 +1,267 @@
+<!doctype html>
+<html lang="sr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0c4eb6">
+<title>DE-MAX • Mešovita pridevska deklinacija</title>
+<style>
+:root{--blue:#0c4eb6;--navy:#0a347a;--ink:#163c70;--muted:#6780a2;--soft:#f3f8ff;--line:#dce8fa;--orange:#ff862f;--red:#d92e37;--green:#149550;--violet:#8a43bd;--shadow:0 9px 25px rgba(9,57,120,.075)}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;font:15px/1.45 system-ui,-apple-system,"Segoe UI",Arial,sans-serif;color:var(--ink);background:#edf5ff}
+button,input{font:inherit}button{touch-action:manipulation}button:focus-visible,input:focus-visible,summary:focus-visible{outline:3px solid #ffab61;outline-offset:2px}
+.app{max-width:630px;margin:0 auto;min-height:100dvh;background:#fff;box-shadow:0 0 36px #14478012}
+header{position:sticky;z-index:5;top:0;background:#fffffff5;border-bottom:1px solid var(--line);backdrop-filter:blur(10px)}
+.top{padding:10px 14px;display:flex;gap:11px;align-items:center;justify-content:space-between}
+.brand{display:flex;gap:10px;align-items:center;min-width:0}.logo{flex:0 0 auto;width:59px;height:46px;border-radius:12px;display:grid;place-content:center;background:linear-gradient(135deg,#ffad4b,#ed6320);color:#fff;font-size:15px;line-height:1;font-weight:1000;letter-spacing:-.6px;box-shadow:0 5px 11px #f68f3052}.logo span{font-size:9px;letter-spacing:1px;text-align:center;margin-top:3px}
+.brandcopy{min-width:0}.brandcopy h1{font-size:16px;line-height:1.15;margin:0;color:#093878}.brandcopy small{display:block;color:var(--muted);font-size:11px;font-weight:750;margin-top:3px}
+.score{flex:0 0 auto;text-align:right;color:#0b498f;font-size:19px;font-weight:950;line-height:1.1}.score small{display:block;color:var(--muted);font-size:10px;font-weight:750}
+.progress-track{height:5px;background:#edf4ff}.progress-fill{height:100%;width:0%;background:linear-gradient(90deg,#ff8d31,#175ece);transition:width .2s}
+main{padding:12px 13px calc(100px + env(safe-area-inset-bottom))}
+.hero{background:linear-gradient(125deg,#125dc8,#062d79);border-radius:19px;padding:14px 16px;color:white;box-shadow:0 8px 20px #0c4eb62e;margin-bottom:12px}
+.hero .eyebrow{font-weight:850;font-size:10px;letter-spacing:1.2px;opacity:.85}.hero h2{margin:2px 0 2px;font-size:24px;line-height:1.14}.hero p{margin:0;color:#d9eaff;font-size:13px;font-weight:650}.pill-row{display:flex;gap:6px;margin-top:10px;flex-wrap:wrap}.pill{padding:4px 9px;background:#ffffff1d;border:1px solid #ffffff32;border-radius:100px;color:#fff;font-size:11px;font-weight:800}
+.theory{border:1px solid var(--line);border-radius:16px;background:#f8fbff;margin-bottom:12px;box-shadow:var(--shadow)}.theory summary{list-style:none;cursor:pointer;padding:11px 13px;display:flex;justify-content:space-between;align-items:center;font-size:13px;font-weight:900;color:var(--navy)}.theory summary::-webkit-details-marker{display:none}.theory summary:after{content:'⌄';font-size:20px;line-height:10px;color:#1555ad;transition:.2s}.theory[open] summary:after{transform:rotate(180deg)}.theory-inner{padding:0 12px 13px}.theory p{margin:6px 0 9px;font-size:13px;color:#456487}.theory p strong{color:#093878}
+.table-scroll{overflow-x:auto}.ref{border-collapse:separate;border-spacing:0;width:100%;font-size:12px;white-space:nowrap;border:1px solid #d9e7fb;border-radius:11px;overflow:hidden}.ref th,.ref td{padding:7px 4px;text-align:center;border-right:1px solid #dce8fa;border-bottom:1px solid #dce8fa}.ref th:last-child,.ref td:last-child{border-right:0}.ref tr:last-child td{border-bottom:0}.ref thead th{background:#0b4cac;color:white}.ref tbody th{color:white}.ref .nom{background:var(--red)}.ref .akk{background:var(--blue)}.ref .dat{background:var(--green)}.end{color:#dc2834;font-size:14px;font-weight:950}.examples{margin:10px 0 0;display:grid;gap:5px}.examples div{border-radius:9px;background:#fff;padding:7px 9px;border:1px solid var(--line);font-size:12px}.examples b{color:#d92736}.hint{font-size:12px;color:#4b6582!important;line-height:1.5}
+.defintro{padding:10px 11px;border-radius:11px;background:white;border:1px solid #d9e8fa;margin:0 0 8px;font-size:12px;line-height:1.5;color:#375a81}.defintro b{color:#0d4ca1}.defgrid{display:grid;gap:7px;margin-bottom:8px}.defrow{border-radius:10px;background:#fff;padding:10px 11px;border:1px solid #d9e8fa;line-height:1.45;font-size:12px;color:#375a81}.defheading{font-size:13px;font-weight:950;margin-bottom:5px}.nomText{color:#d52232}.akkText{color:#1153b6}.datText{color:#0e8849}.defde{margin-top:5px;font-weight:850;color:#143d73}.defde b{color:#de293a}.defsr{margin-top:2px;color:#c13743;font-size:11px;font-weight:700}
+.tabs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px;margin-bottom:11px}.tab{min-height:43px;background:#f7faff;border:1px solid #d5e5ff;border-radius:11px;color:var(--navy);font-size:12px;line-height:1.2;font-weight:850;padding:5px;cursor:pointer}.tab.active{background:linear-gradient(180deg,#2379e9,#0c51b7);color:white;border-color:#0c51b7;box-shadow:0 4px 11px #1258ba24}
+.card{padding:14px;border:1px solid #d7e6fc;background:#fff;border-radius:19px;box-shadow:var(--shadow);min-height:290px}
+.card-top{display:flex;align-items:center;gap:9px;justify-content:space-between}.mode-title{color:#0d4da0;background:#ecf4ff;padding:5px 9px;font-size:12px;font-weight:950;border-radius:9px}.counter{color:var(--muted);font-size:12px;font-weight:850}
+.prompt{font-size:21px;font-weight:950;line-height:1.35;margin:15px 0 5px;color:#103c80;overflow-wrap:anywhere}.prompt mark{background:#e9f2ff;color:var(--navy);border-radius:6px;padding:0 3px}.small-prompt{font-size:18px}.sub{color:var(--muted);font-size:13px;margin:0 0 13px;font-weight:650}.case-tag{display:inline-block;border-radius:30px;font-size:10px;padding:3px 7px;vertical-align:middle;color:white;font-weight:900;margin-right:4px}.case-tag.nom{background:var(--red)}.case-tag.akk{background:var(--blue)}.case-tag.dat{background:var(--green)}
+.answers{display:grid;gap:8px}.answer{border:1px solid #d6e5fb;background:#f9fbff;color:#173e74;border-radius:12px;min-height:45px;padding:10px 12px;font-size:15px;text-align:left;font-weight:790;cursor:pointer}.answer:active{transform:scale(.99)}.answer.correct{background:#e9fff3;border-color:#9bd9b5;color:#0a7e40}.answer.wrong{background:#fff1f1;border-color:#f7bdc0;color:#b02731}.answer:disabled{cursor:default;opacity:1}
+.input{width:100%;border:2px solid #d8e5f8;border-radius:12px;outline:none;padding:12px;font-size:16px;font-weight:800;color:#143d77}.input:focus{border-color:#2276e3}.actions{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}.action{border-radius:11px;min-height:44px;padding:8px 10px;font-weight:900;cursor:pointer}.action.primary{background:#1163cc;color:white;border:0}.action.secondary{background:#eef5ff;color:#0a4ca1;border:1px solid #d5e6ff}
+.feedback{display:none;border-radius:12px;margin-top:13px;padding:10px 12px;line-height:1.5;font-size:13px;font-weight:790}.feedback.good{display:block;background:#eafdf2;border:1px solid #b4e5c7;color:#0e7140}.feedback.bad{display:block;background:#fff4f3;border:1px solid #f8cbcc;color:#b12436}.translation{display:block;font-weight:650;font-size:12px;color:#bc333e;margin-top:4px}.explanation{display:block;color:#5a7089;font-weight:650;margin-top:5px}.listen{border:1px solid #b5d7fb;background:#fff;color:#064c9e;border-radius:9px;padding:4px 7px;margin-left:6px;cursor:pointer}
+.wordpool,.sentencebuild{padding:10px;border:1px dashed #b5cff3;background:#f7faff;border-radius:12px;min-height:52px;display:flex;gap:6px;align-items:center;flex-wrap:wrap;margin:8px 0}.sentencebuild{border:2px solid #d5e5fa;background:white}.word{padding:7px 9px;border-radius:9px;background:#fff;color:#16467f;border:1px solid #cddff8;font-weight:850;cursor:pointer;font-size:14px}.word.used{opacity:.25;pointer-events:none}.word.selected{background:#135fc5;color:white}.empty-note{color:#91a5bd;font-size:12px;font-weight:700}
+.footer{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:min(100%,630px);z-index:6;display:flex;gap:8px;padding:9px 13px calc(9px + env(safe-area-inset-bottom));border-top:1px solid #dce8fa;background:#ffffffed;backdrop-filter:blur(10px)}.footer button{flex:1;border:0;border-radius:12px;min-height:46px;font-size:14px;font-weight:950;cursor:pointer}.reset{background:#fff1ec;color:#c14e20!important;border:1px solid #ffe1d1!important}.next{background:linear-gradient(180deg,#1a73e5,#0a51b5);color:white}.footer .finish{background:linear-gradient(180deg,#20a861,#138344)}
+.summary{padding:9px 12px;background:#f3f9ff;border:1px solid #deebfa;margin-top:12px;border-radius:11px;color:#385b84;font-weight:750;font-size:12px}.summary b{color:#0d4dae}
+@media(min-width:560px){.tabs{grid-template-columns:repeat(6,minmax(0,1fr))}.hero{padding:18px}.hero h2{font-size:27px}.card{min-height:310px}}
+@media(max-width:375px){.top{padding:8px 10px}.brandcopy h1{font-size:14px}.logo{width:49px;height:42px;font-size:13px}.score{font-size:17px}.hero h2{font-size:21px}.tab{font-size:11px;min-height:40px}.prompt{font-size:19px}.card{padding:11px}.pill{font-size:10px}}
+@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important}}
+</style>
+</head>
+<body>
+<div class="app">
+<header>
+  <div class="top">
+    <div class="brand"><div class="logo" aria-label="De-Max">DE-MAX<span>DEUTSCH</span></div><div class="brandcopy"><h1>Mešovita deklinacija</h1><small>Neodređeni član • A2</small></div></div>
+    <div class="score"><span id="score">0</span> / <span id="total">0</span><small>tačnih zadataka</small></div>
+  </div>
+  <div class="progress-track"><div id="progress" class="progress-fill"></div></div>
+</header>
+<main>
+  <section class="hero">
+    <div class="eyebrow">DE-MAX • ADJEKTIVDEKLINATION</div>
+    <h2>Mešovita pridevska deklinacija</h2>
+    <p>Vežbaj nastavke uz ein, kein, mein, dein i druge prisvojne reči.</p>
+    <div class="pill-row"><span class="pill">Nominativ</span><span class="pill">Akuzativ</span><span class="pill">Dativ</span></div>
+  </section>
+  <details class="theory definitions" id="definitions">
+    <summary>📗 Definicije i značenje padeža</summary>
+    <div class="theory-inner">
+      <div class="defintro"><b>Šta je pridevska deklinacija?</b> Promena nastavka prideva prema rodu, broju i padežu imenice uz koju stoji.</div>
+      <div class="defintro"><b>Mešovita pridevska deklinacija (gemischte Adjektivdeklination)</b> koristi se posle neodređenog člana <b>ein/eine</b>, odričnog člana <b>kein/keine</b> i prisvojnih reči <b>mein, dein, sein, ihr, unser, euer, Ihr</b>.</div>
+      <div class="defgrid">
+        <div class="defrow"><div class="defheading nomText">NOMINATIV · Wer? Was?</div><div><b>Ko? Šta?</b> — subjekat: ko ili šta vrši radnju ili se opisuje.</div><div class="defde">Ein gut<b>er</b> Lehrer erklärt die Regel.</div><div class="defsr">Jedan dobar nastavnik objašnjava pravilo.</div></div>
+        <div class="defrow"><div class="defheading akkText">AKUZATIV · Wen? Was?</div><div><b>Koga? Šta?</b> — najčešće direktni objekat; koristi se i posle predloga <b>für, ohne, durch, gegen, um</b>.</div><div class="defde">Ich sehe einen gut<b>en</b> Lehrer.</div><div class="defsr">Vidim jednog dobrog nastavnika.</div></div>
+        <div class="defrow"><div class="defheading datText">DATIV · Wem?</div><div><b>Kome? Čemu?</b> — najčešće indirektni objekat; koristi se i posle predloga <b>mit, bei, zu, aus, von, nach, seit</b>.</div><div class="defde">Ich helfe einem gut<b>en</b> Lehrer.</div><div class="defsr">Pomažem jednom dobrom nastavniku.</div></div>
+      </div>
+      <div class="defintro"><b>Kako se bira nastavak?</b> U nominativu muškog roda obično <b>-er</b> (ein guter Mann), u nominativu i akuzativu srednjeg roda <b>-es</b> (ein gutes Kind), u nominativu i akuzativu ženskog roda <b>-e</b> (eine gute Frau). U ostalim ovde prikazanim oblicima — <b>-en</b>. U množini uz mein/kein nastavak je <b>-en</b>.</div>
+    </div>
+  </details>
+  <details class="theory" id="theory">
+    <summary>📘 Pravila i tabela nastavaka</summary>
+    <div class="theory-inner">
+      <p>Mešovita deklinacija dolazi posle <strong>ein, kein, mein, dein, sein, ihr, unser, euer, Ihr</strong>. Ako član ne pokazuje jasno rod i padež, pridev nosi jak nastavak; u ostalim oblicima najčešće dobija <strong>-e</strong> ili <strong>-en</strong>.</p>
+      <div class="table-scroll"><table class="ref"><thead><tr><th>Padež</th><th>Muški</th><th>Ženski</th><th>Srednji</th><th>Množina*</th></tr></thead><tbody>
+        <tr><th class="nom">NOM</th><td>ein gut<span class="end">er</span></td><td>eine gut<span class="end">e</span></td><td>ein gut<span class="end">es</span></td><td>meine gut<span class="end">en</span></td></tr>
+        <tr><th class="akk">AKK</th><td>einen gut<span class="end">en</span></td><td>eine gut<span class="end">e</span></td><td>ein gut<span class="end">es</span></td><td>meine gut<span class="end">en</span></td></tr>
+        <tr><th class="dat">DAT</th><td>einem gut<span class="end">en</span></td><td>einer gut<span class="end">en</span></td><td>einem gut<span class="end">en</span></td><td>meinen gut<span class="end">en</span></td></tr>
+        
+      </tbody></table></div>
+      <p class="hint">* <strong>ein</strong> nema množinu. Zato se u množini koristi npr. <strong>meine</strong> ili <strong>keine</strong>. Obrati pažnju i na imenicu: u <strong>dativu množine</strong> najčešće se dodaje <strong>-n</strong> (npr. mit meinen guten Freunden).</p>
+      <div class="examples">
+        <div>♂ <b>ein guter Mann</b> · <b>einen guten Mann</b> · <b>einem guten Mann</b></div>
+        <div>♀ <b>eine schöne Frau</b> · <b>einer schönen Frau</b></div>
+        <div>◇ <b>ein kleines Kind</b> · <b>mit einem kleinen Kind</b></div>
+        <div>◈ <b>meine guten Freunde</b> · <b>meinen guten Freunden</b></div>
+      </div>
+    </div>
+  </details>
+  <nav class="tabs" aria-label="Vrste vežbi">
+    <button class="tab active" data-mode="ending">1. Nastavak</button>
+    <button class="tab" data-mode="form">2. Oblik</button>
+    <button class="tab" data-mode="case">3. Padež</button>
+    <button class="tab" data-mode="fill">4. Upiši</button>
+    <button class="tab" data-mode="order">5. Složi</button>
+    <button class="tab" data-mode="translate">6. Prevod</button>
+  </nav>
+  <section class="card" aria-live="polite">
+    <div class="card-top"><span id="badge" class="mode-title">Izaberi nastavak</span><span id="counter" class="counter"></span></div>
+    <div id="exercise"></div>
+    <div id="feedback" class="feedback" role="status" aria-live="polite"></div>
+  </section>
+  <div class="summary"><b>Kako se boduje?</b> Svaki tačno urađen zadatak donosi 1 bod. Rezultat se pamti na ovom uređaju, a „Ponovo“ vraća sve na početak.</div>
+</main>
+<div class="footer"><button id="resetBtn" class="reset">↻ Ponovo</button><button id="nextBtn" class="next">Sledeće →</button></div>
+</div>
+<script>
+"use strict";
+const byId=(id)=>document.getElementById(id);
+const CASE_NAMES={nom:"Nominativ",akk:"Akuzativ",dat:"Dativ"};
+const caseBadge=(c)=>`<span class="case-tag ${c}">${c.toUpperCase()}</span>`;
+const clean=(s)=>String(s).trim().replace(/\s+/g," ").replace(/\s+([,.!?])/g,"$1").normalize('NFC').toLocaleLowerCase('de-DE');
+const shuffle=(a)=>{const x=[...a];for(let i=x.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[x[i],x[j]]=[x[j],x[i]]}return x};
+const ending=[];
+const paradigms={
+ m:{noun:["Mann","Mann","Mann"],gender:"muški",article:["ein","einen","einem"],ends:["er","en","en"]},
+ f:{noun:["Frau","Frau","Frau"],gender:"ženski",article:["eine","eine","einer"],ends:["e","e","en"]},
+ n:{noun:["Kind","Kind","Kind"],gender:"srednji",article:["ein","ein","einem"],ends:["es","es","en"]},
+ p:{noun:["Freunde","Freunde","Freunden"],gender:"množina",article:["meine","meine","meinen"],ends:["en","en","en"]}
+};
+const caseKeys=["nom","akk","dat"];
+for(const [g,item] of Object.entries(paradigms)){
+ for(let ci=0;ci<3;ci++){
+  const a=item.article[ci],e=item.ends[ci],noun=item.noun[ci];
+  ending.push({c:caseKeys[ci],q:`${a} gut___ ${noun}`,a:e,full:`${a} gut${e} ${noun}`,sr:`${CASE_NAMES[caseKeys[ci]]} • ${item.gender} rod`});
+ }
+}
+ending.push(
+ {c:"nom",q:"ein alt___ Hund",a:"er",full:"ein alter Hund",sr:"jedan star pas"},
+ {c:"akk",q:"mein rot___ Kleid",a:"es",full:"mein rotes Kleid",sr:"moja crvena haljina"},
+ {c:"dat",q:"bei einer nett___ Nachbarin",a:"en",full:"bei einer netten Nachbarin",sr:"kod jedne ljubazne komšinice"},
+ {c:"nom",q:"unsere neu___ Bücher",a:"en",full:"unsere neuen Bücher",sr:"naše nove knjige"},
+ {c:"nom",q:"mein neu___ Laptop",a:"er",full:"mein neuer Laptop",sr:"moj novi laptop"},
+ {c:"akk",q:"keinen alt___ Tisch",a:"en",full:"keinen alten Tisch",sr:"nijedan stari sto"},
+ {c:"nom",q:"dein schön___ Haus",a:"es",full:"dein schönes Haus",sr:"tvoja lepa kuća"},
+ {c:"akk",q:"eine rot___ Jacke",a:"e",full:"eine rote Jacke",sr:"jedna crvena jakna"},
+ {c:"dat",q:"mit unserem klein___ Hund",a:"en",full:"mit unserem kleinen Hund",sr:"sa našim malim psom"},
+ {c:"nom",q:"keine teuer___ Schuhe",a:"en",full:"keine teuren Schuhe",sr:"nikakve skupe cipele"},
+ {c:"dat",q:"mit meinen nett___ Kolleginnen",a:"en",full:"mit meinen netten Kolleginnen",sr:"sa mojim ljubaznim koleginicama"},
+ {c:"akk",q:"unseren neu___ Lehrer",a:"en",full:"unseren neuen Lehrer",sr:"našeg novog nastavnika"}
+);
+const FORM=[
+ {q:"Das ist … (ein / neu / Computer)",a:"ein neuer Computer",o:["ein neuer Computer","ein neuen Computer","einen neuen Computer"],sr:"Ovo je novi računar."},
+ {q:"Ich brauche … (ein / neu / Computer)",a:"einen neuen Computer",o:["ein neuer Computer","einen neuen Computer","einem neuen Computer"],sr:"Potreban mi je novi računar."},
+ {q:"Ich arbeite mit … (ein / neu / Computer)",a:"einem neuen Computer",o:["einem neues Computer","einem neuen Computer","einen neuen Computer"],sr:"Radim na novom računaru."},
+ {q:"Das ist … (eine / schön / Tasche)",a:"eine schöne Tasche",o:["eine schöner Tasche","einer schönen Tasche","eine schöne Tasche"],sr:"Ovo je lepa torba."},
+ {q:"Ich kaufe … (eine / schön / Tasche)",a:"eine schöne Tasche",o:["eine schönen Tasche","eine schöne Tasche","einen schönen Tasche"],sr:"Kupujem lepu torbu."},
+ {q:"Ich helfe … (meine / alt / Mutter)",a:"meiner alten Mutter",o:["meine alte Mutter","meiner alten Mutter","meinem alten Mutter"],sr:"Pomažem svojoj staroj majci."},
+ {q:"Das ist … (ein / klein / Kind)",a:"ein kleines Kind",o:["ein kleiner Kind","ein kleinen Kind","ein kleines Kind"],sr:"Ovo je malo dete."},
+ {q:"Ich sehe … (ein / klein / Kind)",a:"ein kleines Kind",o:["ein kleines Kind","einen kleinen Kind","ein kleine Kind"],sr:"Vidim malo dete."},
+ {q:"Ich spiele mit … (ein / klein / Kind)",a:"einem kleinen Kind",o:["einem kleines Kind","ein kleines Kind","einem kleinen Kind"],sr:"Igram se sa malim detetom."},
+ {q:"Das sind … (meine / gut / Freunde)",a:"meine guten Freunde",o:["meine gute Freunde","meinen guten Freunde","meine guten Freunde"],sr:"Ovo su moji dobri prijatelji."},
+ {q:"Ich besuche … (meine / gut / Freunde)",a:"meine guten Freunde",o:["meine guten Freunde","meine gute Freunde","meinen guten Freunden"],sr:"Posećujem svoje dobre prijatelje."},
+ {q:"Ich spreche mit … (meine / gut / Freunde)",a:"meinen guten Freunden",o:["meine guten Freunde","meinen guten Freunden","meinen gute Freunde"],sr:"Razgovaram sa svojim dobrim prijateljima."},
+ {q:"Das ist … (kein / schwer / Problem)",a:"kein schweres Problem",o:["kein schweren Problem","kein schweres Problem","keine schwere Problem"],sr:"To nije težak problem."},
+ {q:"Er hat … (kein / alt / Auto)",a:"kein altes Auto",o:["kein altes Auto","keinen alten Auto","kein alte Auto"],sr:"On nema star automobil."},
+ {q:"Wir sehen … (kein / groß / Häuser)",a:"keine großen Häuser",o:["keine große Häuser","keinen großen Häuser","keine großen Häuser"],sr:"Ne vidimo velike kuće."},
+ {q:"Sie schreibt mit … (ihr / rot / Stift)",a:"ihrem roten Stift",o:["ihren roten Stift","ihrem roten Stift","ihrem roter Stift"],sr:"Ona piše svojom crvenom olovkom."},
+ {q:"Wir besuchen … (unser / lieb / Onkel, AKK)",a:"unseren lieben Onkel",o:["unser lieber Onkel","unseren lieben Onkel","unserem lieben Onkel"],sr:"Posećujemo našeg dragog ujaka."},
+ {q:"Er fährt mit … (sein / schnell / Fahrrad, DAT)",a:"seinem schnellen Fahrrad",o:["sein schnelles Fahrrad","seinem schnellen Fahrrad","seinem schnellem Fahrrad"],sr:"On se vozi svojim brzim biciklom."}
+];
+const CASES=[
+ {q:"<mark>Ein guter Lehrer</mark> erklärt die Regel.",a:"Nominativ",sr:"Dobar nastavnik objašnjava pravilo."},
+ {q:"Ich kenne <mark>einen guten Lehrer</mark>.",a:"Akuzativ",sr:"Poznajem dobrog nastavnika."},
+ {q:"Ich danke <mark>einem guten Lehrer</mark>.",a:"Dativ",sr:"Zahvaljujem dobrom nastavniku."},
+ {q:"Ich sehe <mark>keinen alten Hund</mark>.",a:"Akuzativ",sr:"Ne vidim nijednog starog psa."},
+ {q:"<mark>Meine neue Tasche</mark> ist rot.",a:"Nominativ",sr:"Moja nova torba je crvena."},
+ {q:"Ich kaufe <mark>eine neue Tasche</mark>.",a:"Akuzativ",sr:"Kupujem novu torbu."},
+ {q:"Sie hilft <mark>einer netten Frau</mark>.",a:"Dativ",sr:"Ona pomaže jednoj ljubaznoj ženi."},
+ {q:"<mark>Eine kleine Katze</mark> schläft.",a:"Nominativ",sr:"Jedna mala mačka spava."},
+ {q:"<mark>Ein kleines Mädchen</mark> lacht.",a:"Nominativ",sr:"Jedna mala devojčica se smeje."},
+ {q:"Wir sehen <mark>ein kleines Haus</mark>.",a:"Akuzativ",sr:"Vidimo malu kuću."},
+ {q:"Er spricht mit <mark>einem kleinen Kind</mark>.",a:"Dativ",sr:"On razgovara sa malim detetom."},
+ {q:"Wir fahren mit <mark>unserem neuen Auto</mark>.",a:"Dativ",sr:"Vozimo se našim novim automobilom."},
+ {q:"<mark>Meine guten Freunde</mark> kommen heute.",a:"Nominativ",sr:"Moji dobri prijatelji dolaze danas."},
+ {q:"Sie trifft <mark>ihre alten Freunde</mark>.",a:"Akuzativ",sr:"Ona sreće svoje stare prijatelje."},
+ {q:"Ich fahre mit <mark>meinen netten Kollegen</mark>.",a:"Dativ",sr:"Putujem sa svojim ljubaznim kolegama."},
+ {q:"Ich kaufe <mark>meine roten Schuhe</mark>.",a:"Akuzativ",sr:"Kupujem svoje crvene cipele."}
+];
+const FILL=[
+ {q:"Das ist ein ____ Mantel.",base:"neu • nominativ, muški rod",a:"neuer",full:"Das ist ein neuer Mantel.",sr:"Ovo je novi kaput."},
+ {q:"Ich habe einen ____ Mantel.",base:"neu • akuzativ, muški rod",a:"neuen",full:"Ich habe einen neuen Mantel.",sr:"Imam novi kaput."},
+ {q:"Ich spreche mit einem ____ Mann.",base:"nett • dativ, muški rod",a:"netten",full:"Ich spreche mit einem netten Mann.",sr:"Razgovaram sa ljubaznim muškarcem."},
+ {q:"Ich brauche keinen ____ Tisch.",base:"alt • akuzativ, muški rod",a:"alten",full:"Ich brauche keinen alten Tisch.",sr:"Ne treba mi nijedan stari sto."},
+ {q:"Eine ____ Frau kommt.",base:"jung • nominativ, ženski rod",a:"junge",full:"Eine junge Frau kommt.",sr:"Dolazi jedna mlada žena."},
+ {q:"Ich sehe meine ____ Schwester.",base:"klein • akuzativ, ženski rod",a:"kleine",full:"Ich sehe meine kleine Schwester.",sr:"Vidim svoju mlađu sestru."},
+ {q:"Er hilft seiner ____ Oma.",base:"alt • dativ, ženski rod",a:"alten",full:"Er hilft seiner alten Oma.",sr:"Pomaže svojoj staroj baki."},
+ {q:"Meine ____ Tasche ist blau.",base:"neu • nominativ, ženski rod",a:"neue",full:"Meine neue Tasche ist blau.",sr:"Moja nova torba je plava."},
+ {q:"Ein ____ Kind spielt draußen.",base:"klein • nominativ, srednji rod",a:"kleines",full:"Ein kleines Kind spielt draußen.",sr:"Malo dete se igra napolju."},
+ {q:"Wir kaufen ein ____ Auto.",base:"modern • akuzativ, srednji rod",a:"modernes",full:"Wir kaufen ein modernes Auto.",sr:"Kupujemo moderan automobil."},
+ {q:"Sie fährt mit ihrem ____ Auto.",base:"neu • dativ, srednji rod",a:"neuen",full:"Sie fährt mit ihrem neuen Auto.",sr:"Ona se vozi svojim novim automobilom."},
+ {q:"Wir spielen mit einem ____ Kind.",base:"klein • dativ, srednji rod",a:"kleinen",full:"Wir spielen mit einem kleinen Kind.",sr:"Igramo se sa jednim malim detetom."},
+ {q:"Meine ____ Freunde kommen.",base:"gut • nominativ, množina",a:"guten",full:"Meine guten Freunde kommen.",sr:"Dolaze moji dobri prijatelji."},
+ {q:"Ich besuche meine ____ Eltern.",base:"lieb • akuzativ, množina",a:"lieben",full:"Ich besuche meine lieben Eltern.",sr:"Posećujem svoje drage roditelje."},
+ {q:"Er spricht mit seinen ____ Freunden.",base:"alt • dativ, množina",a:"alten",full:"Er spricht mit seinen alten Freunden.",sr:"Razgovara sa svojim starim prijateljima."},
+ {q:"Keine ____ Kinder fehlen heute.",base:"klein • nominativ, množina",a:"kleinen",full:"Keine kleinen Kinder fehlen heute.",sr:"Nijedno malo dete danas ne izostaje."},
+ {q:"Kein ____ Schüler fehlt heute.",base:"neu • nominativ, muški rod",a:"neuer",full:"Kein neuer Schüler fehlt heute.",sr:"Nijedan novi učenik danas ne izostaje."},
+ {q:"Ich habe keine ____ Schuhe.",base:"schwarz • akuzativ, množina",a:"schwarzen",full:"Ich habe keine schwarzen Schuhe.",sr:"Nemam crne cipele."},
+ {q:"Wir essen mit unseren ____ Nachbarn.",base:"nett • dativ, množina",a:"netten",full:"Wir essen mit unseren netten Nachbarn.",sr:"Jedemo sa našim ljubaznim komšijama."},
+ {q:"Sie trägt eine ____ Jacke.",base:"rot • akuzativ, ženski rod",a:"rote",full:"Sie trägt eine rote Jacke.",sr:"Ona nosi crvenu jaknu."}
+];
+const ORDER=[
+ {tokens:["Ein","netter","Mann","wartet","hier."],a:"Ein netter Mann wartet hier.",sr:"Jedan ljubazan muškarac čeka ovde."},
+ {tokens:["Ich","habe","einen","neuen","Computer."],a:"Ich habe einen neuen Computer.",sr:"Imam novi računar."},
+ {tokens:["Sie","kauft","eine","rote","Jacke."],a:"Sie kauft eine rote Jacke.",sr:"Ona kupuje crvenu jaknu."},
+ {tokens:["Wir","sehen","ein","kleines","Haus."],a:"Wir sehen ein kleines Haus.",sr:"Vidimo malu kuću."},
+ {tokens:["Mein","guter","Freund","kommt","morgen."],a:"Mein guter Freund kommt morgen.",sr:"Moj dobar prijatelj dolazi sutra."},
+ {tokens:["Er","spricht","mit","einer","netten","Frau."],a:"Er spricht mit einer netten Frau.",sr:"Razgovara sa jednom ljubaznom ženom."},
+ {tokens:["Ich","fahre","mit","meinem","neuen","Auto."],a:"Ich fahre mit meinem neuen Auto.",sr:"Vozim se svojim novim automobilom."},
+ {tokens:["Meine","alten","Freunde","besuchen","mich."],a:"Meine alten Freunde besuchen mich.",sr:"Posećuju me moji stari prijatelji."},
+ {tokens:["Ich","spiele","mit","meinen","kleinen","Kindern."],a:"Ich spiele mit meinen kleinen Kindern.",sr:"Igram se sa svojom malom decom."},
+ {tokens:["Das","ist","kein","großes","Problem."],a:"Das ist kein großes Problem.",sr:"To nije veliki problem."},
+ {tokens:["Sie","hat","keinen","alten","Hund."],a:"Sie hat keinen alten Hund.",sr:"Ona nema starog psa."},
+ {tokens:["Wir","brauchen","keine","teuren","Schuhe."],a:"Wir brauchen keine teuren Schuhe.",sr:"Ne trebaju nam skupe cipele."},
+ {tokens:["Ich","besuche","meinen","alten","Freund."],a:"Ich besuche meinen alten Freund.",sr:"Posećujem svog starog prijatelja."},
+ {tokens:["Wir","helfen","einer","alten","Frau."],a:"Wir helfen einer alten Frau.",sr:"Pomažemo jednoj staroj ženi."}
+];
+const TRANSLATE=[
+ {sr:"Jedan dobar muškarac dolazi.",a:"Ein guter Mann kommt.",o:["Ein gute Mann kommt.","Ein guter Mann kommt.","Einen guten Mann kommt."]},
+ {sr:"Vidim jednog dobrog muškarca.",a:"Ich sehe einen guten Mann.",o:["Ich sehe ein guter Mann.","Ich sehe einen guten Mann.","Ich sehe einem guten Mann."]},
+ {sr:"Pomažem jednom dobrom čoveku.",a:"Ich helfe einem guten Mann.",o:["Ich helfe einen guten Mann.","Ich helfe einem guten Mann.","Ich helfe ein guter Mann."]},
+ {sr:"Ovo je moja nova knjiga.",a:"Das ist mein neues Buch.",o:["Das ist mein neues Buch.","Das ist mein neuen Buch.","Das ist meine neue Buch."]},
+ {sr:"Kupujem jednu lepu haljinu.",a:"Ich kaufe ein schönes Kleid.",o:["Ich kaufe eine schöne Kleid.","Ich kaufe ein schönen Kleid.","Ich kaufe ein schönes Kleid."]},
+ {sr:"Jedna ljubazna žena radi ovde.",a:"Eine nette Frau arbeitet hier.",o:["Eine nette Frau arbeitet hier.","Eine netten Frau arbeitet hier.","Einer netten Frau arbeitet hier."]},
+ {sr:"Poznajem jednu ljubaznu ženu.",a:"Ich kenne eine nette Frau.",o:["Ich kenne einer netten Frau.","Ich kenne eine nette Frau.","Ich kenne einen netten Frau."]},
+ {sr:"Razgovaram sa jednom ljubaznom ženom.",a:"Ich spreche mit einer netten Frau.",o:["Ich spreche mit eine nette Frau.","Ich spreche mit einer netten Frau.","Ich spreche mit einen netten Frau."]},
+ {sr:"Moj novi telefon je skup.",a:"Mein neues Handy ist teuer.",o:["Mein neuer Handy ist teuer.","Mein neues Handy ist teuer.","Mein neuen Handy ist teuer."]},
+ {sr:"Ona ima jedan mali automobil.",a:"Sie hat ein kleines Auto.",o:["Sie hat ein kleines Auto.","Sie hat einen kleinen Auto.","Sie hat ein kleine Auto."]},
+ {sr:"Vozim se svojim novim automobilom.",a:"Ich fahre mit meinem neuen Auto.",o:["Ich fahre mit mein neues Auto.","Ich fahre mit meinem neuen Auto.","Ich fahre mit meinen neuen Auto."]},
+ {sr:"Ovo su moji dobri prijatelji.",a:"Das sind meine guten Freunde.",o:["Das sind meine gute Freunde.","Das sind meine guten Freunde.","Das sind meinen guten Freunde."]},
+ {sr:"Vidim svoje dobre prijatelje.",a:"Ich sehe meine guten Freunde.",o:["Ich sehe meine guten Freunde.","Ich sehe meinen guten Freunde.","Ich sehe meine gute Freunde."]},
+ {sr:"Razgovaram sa svojim dobrim prijateljima.",a:"Ich spreche mit meinen guten Freunden.",o:["Ich spreche mit meine gute Freunde.","Ich spreche mit meinen guten Freunden.","Ich spreche mit meiner guten Freunde."]},
+ {sr:"Nemam crnu torbu.",a:"Ich habe keine schwarze Tasche.",o:["Ich habe keine schwarzen Tasche.","Ich habe kein schwarze Tasche.","Ich habe keine schwarze Tasche."]},
+ {sr:"Ona razgovara sa svojom ljubaznom učiteljicom.",a:"Sie spricht mit ihrer netten Lehrerin.",o:["Sie spricht mit ihre nette Lehrerin.","Sie spricht mit ihrer netten Lehrerin.","Sie spricht mit ihren nette Lehrerin."]}
+];
+const LISTS={ending,form:FORM,case:CASES,fill:FILL,order:ORDER,translate:TRANSLATE};
+const MODES=Object.keys(LISTS);
+const LABELS={ending:"✓ Izaberi nastavak",form:"🧩 Izaberi ceo oblik",case:"🎯 Prepoznaj padež",fill:"✍️ Upiši pridev",order:"↕ Složi rečenicu",translate:"🌍 Izaberi prevod"};
+const TOTAL=MODES.reduce((acc,m)=>acc+LISTS[m].length,0);
+let state={mode:"ending",idx:Object.fromEntries(MODES.map(m=>[m,0])),solved:Object.fromEntries(MODES.map(m=>[m,new Set()])),score:0};
+try{const saved=JSON.parse(localStorage.getItem("demax-mixed-adj-v2")||"null");if(saved && MODES.includes(saved.mode) && saved.idx && saved.solved){for(const m of MODES){const ids=Array.isArray(saved.solved[m])?saved.solved[m].filter(i=>Number.isInteger(i)&&i>=0&&i<LISTS[m].length):[];state.solved[m]=new Set(ids);state.idx[m]=Math.max(0,Math.min(LISTS[m].length-1,Number(saved.idx[m])||0))}state.mode=saved.mode;state.score=MODES.reduce((n,m)=>n+state.solved[m].size,0)}}catch(e){}
+function save(){try{localStorage.setItem("demax-mixed-adj-v2",JSON.stringify({mode:state.mode,idx:state.idx,solved:Object.fromEntries(MODES.map(m=>[m,[...state.solved[m]]]))}))}catch(e){}}
+function progress(){byId("score").textContent=state.score;byId("total").textContent=TOTAL;byId("progress").style.width=(100*state.score/TOTAL)+"%";byId("nextBtn").textContent=state.score===TOTAL?"Sve završeno ✓":"Sledeće →";byId("nextBtn").classList.toggle("finish",state.score===TOTAL)}
+function pass(mode,i){if(!state.solved[mode].has(i)){state.solved[mode].add(i);state.score++;save();progress()}}
+function fb(ok,html){const f=byId("feedback");f.className="feedback "+(ok?"good":"bad");f.innerHTML=html;f.querySelectorAll(".listen").forEach(b=>b.onclick=()=>speak(decodeURIComponent(b.dataset.say||"")));requestAnimationFrame(()=>{const footer=document.querySelector(".footer").getBoundingClientRect();const card=f.getBoundingClientRect();if(card.bottom>footer.top-8)window.scrollBy({top:card.bottom-footer.top+14,behavior:"smooth"})})}
+function clearFb(){byId("feedback").className="feedback";byId("feedback").textContent=""}
+function audioButton(s){return `<button type="button" class="listen" title="Izgovor" aria-label="Slušaj nemački" data-say="${encodeURIComponent(s)}">🔊</button>`}
+function success(mode,i,de,sr,explanation=""){pass(mode,i);fb(true,`✅ Tačno! <strong>${de}</strong>${audioButton(de.replace(/<[^>]+>/g,""))}<span class="translation">${sr}</span>${explanation?`<span class="explanation">${explanation}</span>`:""}`);speak(de.replace(/<[^>]+>/g,""))}
+function speak(t){if(!("speechSynthesis" in window))return;try{window.speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(t);u.lang="de-DE";u.rate=.89;window.speechSynthesis.speak(u)}catch(e){}}
+function buildChoices(options,answer,onCorrect){const pool=byId("exercise");pool.querySelectorAll(".answer").forEach(button=>{button.onclick=()=>{if(button.disabled)return;if(button.textContent.trim()===answer){button.classList.add("correct");pool.querySelectorAll(".answer").forEach(btn=>btn.disabled=true);onCorrect()}else{button.classList.add("wrong");fb(false,"❌ Nije tačno. Pokušaj ponovo i obrati pažnju na član, padež i nastavak.")}}})}
+function renderEnding(){const i=state.idx.ending,x=ending[i];byId("exercise").innerHTML=`<div class="prompt">${caseBadge(x.c)} ${x.q}</div><p class="sub">Izaberi odgovarajući nastavak prideva.</p><div class="answers">${shuffle(["er","e","es","en"]).map(s=>`<button class="answer">-${s}</button>`).join("")}</div>`;buildChoices([],`-${x.a}`,()=>success("ending",i,x.full,x.sr,`Nastavak: -${x.a}.`))}
+function renderForm(){const i=state.idx.form,x=FORM[i];byId("exercise").innerHTML=`<div class="prompt small-prompt">${x.q}</div><p class="sub">Izaberi ispravan ceo oblik.</p><div class="answers">${shuffle(x.o).map(v=>`<button class="answer">${v}</button>`).join("")}</div>`;buildChoices([],x.a,()=>success("form",i,x.a,x.sr))}
+function renderCase(){const i=state.idx.case,x=CASES[i];byId("exercise").innerHTML=`<div class="prompt small-prompt">${x.q}</div><p class="sub">U kom padežu je označena grupa reči?</p><div class="answers">${["Nominativ","Akuzativ","Dativ"].map(c=>`<button class="answer">${c}</button>`).join("")}</div>`;buildChoices([],x.a,()=>success("case",i,x.q,x.sr))}
+function renderFill(){const i=state.idx.fill,x=FILL[i];byId("exercise").innerHTML=`<div class="prompt small-prompt">${x.q}</div><p class="sub">Pridev: <b>${x.base}</b><br>Upiši ceo oblik prideva (npr. <b>guter</b>).</p><input class="input" id="userInput" type="text" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="Unesi pridev…"><div class="actions"><button class="action secondary" id="hintBtn">Pomoć</button><button class="action primary" id="checkBtn">Proveri</button></div>`;
+ byId("checkBtn").onclick=()=>{if(clean(byId("userInput").value)===clean(x.a))success("fill",i,x.full,x.sr);else fb(false,"❌ Nije tačno. Proveri padež i rod, pa pokušaj ponovo.")};
+ byId("hintBtn").onclick=()=>fb(false,`💡 Pridev počinje sa <b>${x.a.slice(0,Math.max(1,x.a.length-2))}…</b>. Razmisli koji nastavak treba.`);
+ byId("userInput").addEventListener("keydown",e=>{if(e.key==="Enter")byId("checkBtn").click()});}
+function renderOrder(){const i=state.idx.order,x=ORDER[i],tokens=shuffle(x.tokens);byId("exercise").innerHTML=`<div class="prompt small-prompt">Složi pravilnu rečenicu.</div><p class="sub">Klikni reči redom. Dodirni dodatu reč da je vratiš.</p><div class="sentencebuild" id="built"><span class="empty-note">Ovde sastavi rečenicu…</span></div><div class="wordpool" id="wordpool">${tokens.map((w,k)=>`<button class="word" data-k="${k}">${w}</button>`).join("")}</div><div class="actions"><button class="action secondary" id="clearBtn">Obriši</button><button class="action primary" id="checkBtn">Proveri</button></div>`;
+ let selected=[];const buttons=[...byId("wordpool").querySelectorAll(".word")];function draw(){byId("built").innerHTML=selected.length?selected.map((j,k)=>`<button class="word selected" data-pos="${k}">${tokens[j]}</button>`).join(""):`<span class="empty-note">Ovde sastavi rečenicu…</span>`;byId("built").querySelectorAll(".word").forEach(b=>b.onclick=()=>{selected.splice(Number(b.dataset.pos),1);draw()});buttons.forEach((b,j)=>b.classList.toggle("used",selected.includes(j)))}
+ buttons.forEach((b,k)=>b.onclick=()=>{if(selected.includes(k))return;selected.push(k);draw()});byId("clearBtn").onclick=()=>{selected=[];draw();clearFb()};byId("checkBtn").onclick=()=>{if(clean(selected.map(j=>tokens[j]).join(" "))===clean(x.a))success("order",i,x.a,x.sr);else fb(false,"❌ Redosled reči nije tačan. Pokušaj ponovo.")};}
+function renderTranslate(){const i=state.idx.translate,x=TRANSLATE[i];byId("exercise").innerHTML=`<div class="prompt small-prompt">${x.sr}</div><p class="sub">Izaberi tačan prevod na nemački.</p><div class="answers">${shuffle(x.o).map(v=>`<button class="answer">${v}</button>`).join("")}</div>`;buildChoices([],x.a,()=>success("translate",i,x.a,x.sr))}
+function render(){save();progress();clearFb();byId("badge").textContent=LABELS[state.mode];byId("counter").textContent=`${state.idx[state.mode]+1} / ${LISTS[state.mode].length}`;document.querySelectorAll(".tab").forEach(t=>{const on=t.dataset.mode===state.mode;t.classList.toggle("active",on);t.setAttribute("aria-current",on?"true":"false")});const renderers={ending:renderEnding,form:renderForm,case:renderCase,fill:renderFill,order:renderOrder,translate:renderTranslate};renderers[state.mode]();}
+document.querySelectorAll(".tab").forEach(tab=>tab.addEventListener("click",()=>{state.mode=tab.dataset.mode;render()}));
+byId("nextBtn").onclick=()=>{const i=state.idx[state.mode];if(i+1<LISTS[state.mode].length)state.idx[state.mode]++;else{const next=(MODES.indexOf(state.mode)+1)%MODES.length;state.mode=MODES[next];state.idx[state.mode]=0}render()};
+byId("resetBtn").onclick=()=>{if(!confirm("Da li želiš da obrišeš rezultat i počneš sve vežbe ispočetka?"))return;state={mode:"ending",idx:Object.fromEntries(MODES.map(m=>[m,0])),solved:Object.fromEntries(MODES.map(m=>[m,new Set()])),score:0};render()};
+render();
+</script>
+</body>
+</html>
