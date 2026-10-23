@@ -315,7 +315,7 @@ html,body{max-width:100%;overflow-x:clip}
  .mobile-quick .btn{min-height:39px;font-size:12px}
 }
 </style>
-<link rel="manifest" href="./manifest.webmanifest">
+<link rel="manifest" href="./manifest.json">
 <meta name="application-name" content="DE-MAX Evidencija">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="DE-MAX">
@@ -567,7 +567,7 @@ body{background:var(--bg)}
  </nav>
  <div class="sidebar-note"><strong>Privatna evidencija</strong>Podaci se čuvaju u ovom pregledaču, na ovom uređaju. Redovno preuzimaj rezervnu kopiju. Uspomene se čuvaju zasebno na uređaju.</div>
 </aside>
-<main class="main"><div class="topbar"><div><div class="eyebrow">DE-MAX • Evidencija kurseva</div><h1 class="page-title" id="view-title">Pregled nastave</h1><p class="subtext" id="view-description">Svi kursevi i učenici na jednom mestu.</p></div><div class="actions"><button class="btn dmx-install-button" id="dmx-install-pwa" type="button" title="Instaliraj DE-MAX aplikaciju">⬇ Instaliraj</button><button class="btn student-green" data-action="new-student">＋ Učenik</button><button class="btn primary" data-action="new-course">＋ Novi kurs</button></div></div><div id="view-root"></div><p class="privacy-banner">🔒 Aplikacija ne šalje podatke na internet. Evidencija je sačuvana samo u ovom pregledaču. Brisanje podataka pregledača može izbrisati evidenciju — redovno napravi JSON rezervnu kopiju.</p></main>
+<main class="main"><div class="topbar"><div><div class="eyebrow">DE-MAX • Evidencija kurseva</div><h1 class="page-title" id="view-title">Pregled nastave</h1><p class="subtext" id="view-description">Svi kursevi i učenici na jednom mestu.</p></div><div class="actions"><button class="btn student-green" data-action="new-student">＋ Učenik</button><button class="btn primary" data-action="new-course">＋ Novi kurs</button></div></div><div class="dmx19-install-panel" id="dmx-install-panel" role="region" aria-label="Instalacija DE-MAX aplikacije"><span class="dmx19-install-copy"><strong>DE-MAX na Desktopu</strong> — otvaraj kao zasebnu Windows aplikaciju, bez Chrome kartica.</span><button class="dmx19-install-btn" id="dmx-install-pwa" type="button">⬇ Instaliraj DE-MAX</button></div><div id="view-root"></div><p class="privacy-banner">🔒 Aplikacija ne šalje podatke na internet. Evidencija je sačuvana samo u ovom pregledaču. Brisanje podataka pregledača može izbrisati evidenciju — redovno napravi JSON rezervnu kopiju.</p></main>
 </div>
 <div id="modal-root"></div><div class="toast hidden" id="toast" role="status" aria-live="polite"></div><input type="file" id="memory-upload" accept="image/*,video/*" multiple class="hidden"><input type="file" id="import-file" accept=".json,application/json" class="hidden">
 <script>
@@ -2028,25 +2028,42 @@ body[data-view="finance"] .dmx16-finance-pages{flex:0 0 auto}
 @media(max-width:600px){.dmx17-date-editor{gap:4px}.dmx17-date-button{flex-basis:36px;width:36px;min-height:36px}}
 </style>
 
-<style id="dmx-v18-install-style">
-#dmx-install-pwa{background:#e8f3ff;color:#1653ab;border:1px solid #b9d6ff;white-space:nowrap;font-weight:750}
-#dmx-install-pwa:hover{background:#d4e8ff}
-#dmx-install-pwa[hidden]{display:none!important}
-@media(max-width:720px){#dmx-install-pwa{font-size:12px;padding:8px 9px}}
+<style id="dmx19-install-css">
+.dmx19-install-panel{display:flex;align-items:center;justify-content:space-between;gap:14px;margin:2px 0 12px;padding:10px 15px;border:1px solid #cbdcf8;background:#e7f0ff;border-radius:14px;font-size:14px;color:#173d78;line-height:1.4}
+.dmx19-install-btn{cursor:pointer;background:#1766db;color:#fff;border:0;border-radius:11px;padding:11px 17px;white-space:nowrap;font-size:14px;font-weight:800;box-shadow:0 3px 9px rgba(19,83,165,.15)}
+.dmx19-install-btn:hover{background:#0e4da9}
+.dmx19-install-btn:focus-visible{outline:3px solid #e48613;outline-offset:3px}
+.dmx19-install-panel[hidden]{display:none!important}
+@media(max-width:750px){.dmx19-install-panel{flex-wrap:wrap;padding:9px 11px;font-size:12px}.dmx19-install-btn{padding:10px 12px;width:100%}}
 </style>
-<script id="dmx-v18-install-script">
+<script id="dmx19-install-js">
 (()=>{
-  const button=document.getElementById('dmx-install-pwa');
-  if(!button)return;
-  let deferredPrompt=null;
-  const isInstalled=()=>window.matchMedia&&window.matchMedia('(display-mode: standalone)').matches;
-  if(isInstalled())button.hidden=true;
-  window.addEventListener('beforeinstallprompt',event=>{event.preventDefault();deferredPrompt=event;button.hidden=isInstalled()});
-  window.addEventListener('appinstalled',()=>{deferredPrompt=null;button.hidden=true});
-  button.addEventListener('click',async()=>{
-    if(deferredPrompt){const prompt=deferredPrompt;deferredPrompt=null;button.disabled=true;try{await prompt.prompt();await prompt.userChoice}catch(e){console.warn('DE-MAX instalacija',e)}button.disabled=false;button.hidden=isInstalled();return}
-    alert('Ako Chrome ne prikaže prozor za instalaciju, otvori meni (⋮) → Cast, save, and share → Install page as app.');
-  });
+ const button=document.getElementById('dmx-install-pwa');
+ const panel=document.getElementById('dmx-install-panel');
+ if(!button||!panel)return;
+ const installed=()=>window.matchMedia&&window.matchMedia('(display-mode: standalone)').matches;
+ let installEvent=null;
+ if(installed())panel.hidden=true;
+ window.addEventListener('beforeinstallprompt', e=>{
+   e.preventDefault();
+   installEvent=e;
+   if(!installed())button.textContent='⬇ Instaliraj DE-MAX';
+ });
+ window.addEventListener('appinstalled',()=>{installEvent=null;panel.hidden=true});
+ button.addEventListener('click',async()=>{
+   if(installed()){panel.hidden=true;return}
+   if(installEvent){
+     const e=installEvent;installEvent=null;button.disabled=true;
+     try{
+       await e.prompt();
+       const choice=await e.userChoice;
+       if(choice&&choice.outcome==='accepted'){panel.hidden=true}
+     }catch(error){console.warn('DE-MAX instalacija:',error)}
+     finally{button.disabled=false}
+     return;
+   }
+   alert('Chrome trenutno ne prikazuje zahtev za instalaciju. Pokušaj ⋮ → Cast, save, and share → Install page as app. Ako te stavke nema, u Microsoft Edge-u otvori istu adresu, zatim ⋯ → Apps → Install this site as an app. Aplikacija će se otvarati u zasebnom prozoru.');
+ });
 })();
 </script>
 </body>
