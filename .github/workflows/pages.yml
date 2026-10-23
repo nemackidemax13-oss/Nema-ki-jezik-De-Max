@@ -4,7 +4,7 @@ on:
     branches: ["main"]
   workflow_dispatch:
 permissions:
-  contents: read
+  contents: write
   pages: write
   id-token: write
 concurrency:
@@ -19,6 +19,26 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v6
+      - name: Generate white DE-MAX install icons
+        run: |
+          python3 -m pip install --quiet pillow
+          python3 - <<'PY'
+          from PIL import Image
+          from pathlib import Path
+          folder = Path('DE-MAX-Evidencija')
+          source = Image.open(folder / 'beli-logo-original.png').convert('RGB')
+          for size in (192, 512):
+              source.resize((size,size), Image.Resampling.LANCZOS).save(folder / f'favicon-beli-{size}.png', optimize=True)
+          PY
+      - name: Keep app icons in the repository
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add DE-MAX-Evidencija/favicon-beli-192.png DE-MAX-Evidencija/favicon-beli-512.png
+          if ! git diff --cached --quiet; then
+            git commit -m "Restore white DE-MAX desktop application icon"
+            git push origin HEAD:main
+          fi
       - name: Setup Pages
         uses: actions/configure-pages@v5
       - name: Upload site

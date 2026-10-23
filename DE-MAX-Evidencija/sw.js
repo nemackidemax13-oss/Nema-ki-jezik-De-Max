@@ -1,4 +1,4 @@
-const CACHE='demax-evidencija-v19-20261024';const FILES=['./','./index.html','./icon.svg','./favicon-192.png','./favicon-512.png','./manifest.json'];
+const CACHE='demax-evidencija-v20-beli-logo-20261024';const FILES=['./','./index.html','./icon.svg','./favicon-beli-192.png','./favicon-beli-512.png','./manifest.json'];
 self.addEventListener('install',event=>{event.waitUntil(caches.open(CACHE).then(cache=>cache.addAll(FILES)));self.skipWaiting()});
 self.addEventListener('activate',event=>{event.waitUntil(caches.keys().then(keys=>Promise.all(keys.filter(k=>k.startsWith('demax-evidencija-v')&&k!==CACHE).map(k=>caches.delete(k)))));self.clients.claim()});
 self.addEventListener('fetch',event=>{
