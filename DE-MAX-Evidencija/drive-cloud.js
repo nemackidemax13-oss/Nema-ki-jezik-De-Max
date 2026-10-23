@@ -21,7 +21,7 @@ function report(message,state='offline'){
  const label=get('dmx-direct-lastsaved');if(label)label.textContent=lastSaved?'Poslednje potvrđeno čuvanje na Google Drive: '+lastSaved:'Još nije potvrđeno čuvanje na Google Drive.';
  const dot=get('dmx-direct-dot');if(dot){dot.textContent=state==='ok'?'●':state==='busy'?'◌':state==='error'?'!':'○';dot.style.color=state==='ok'?'#16904a':state==='error'?'#c62a3a':'#6484af'}
 }
-function hasAccess(){return !!token&&Date.now()<validUntil}
+function hasAccess(){const ok=!!token&&Date.now()<validUntil;if(token&&!ok){token='';paused=true;report('Google prijava je istekla. Obnovi povezivanje da nastaviš automatsko čuvanje.','error')}return ok}
 function checkData(d){return !!d&&typeof d==='object'&&HAS_DATA.every(k=>Array.isArray(d[k]))}
 function localData(){
  const raw=localStorage.getItem(DATA_KEY)||'';
@@ -120,7 +120,11 @@ async function uploadOnce(force=false){
  report('Uspešno sačuvano direktno na Google Drive.','ok');
 }
 function schedule(delay=1300){
- if(!hasAccess()||paused)return;
+ if(!hasAccess()){
+  if(currentClient||localStorage.getItem(CLIENT_KEY))report('Promena sačuvana samo lokalno – poveži Google nalog za čuvanje na Drive.','error');
+  return;
+ }
+ if(paused)return;
  queued=true;clearTimeout(timer);timer=setTimeout(()=>{void flush()},delay);
 }
 async function flush(){
