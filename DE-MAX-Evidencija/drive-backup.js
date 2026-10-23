@@ -23,7 +23,7 @@ function setStatus(message,mode='offline'){
 }
 function records(){
  const raw=localStorage.getItem(DATA_KEY);
- if(!raw)throw Error('Evidencija na ovom uređaju nije pronađena.');
+ if(!raw){const data={students:[],courses:[],enrollments:[],attendance:[],purchases:[],schedules:[],applications:[],exams:[],certificates:[],embassy:[],payments:[]};return {raw:JSON.stringify(data),data}}
  let data;try{data=JSON.parse(raw)}catch{throw Error('Evidencija nije ispravan JSON.')}
  if(!data||!VALID.every(k=>Array.isArray(data[k])))throw Error('Evidencija nije potpuna.');
  return {raw,data};
