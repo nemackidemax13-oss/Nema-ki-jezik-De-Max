@@ -173,7 +173,7 @@ function installUI(){
  if(!nav)return;
  const open=document.createElement('button');
  open.type='button';open.className='nav-btn';open.id='dmx-drive-open';
- open.innerHTML='<span class="nav-icon" aria-hidden="true">☁</span><span>Google Drive kopija <span class="dmx-cloud-dot">○</span></span>';
+ open.innerHTML='<span class="nav-icon" aria-hidden="true">☁</span><span>Drive folder (računar) <span class="dmx-cloud-dot">○</span></span>';
  nav.appendChild(open);
  const div=document.createElement('div');div.id='dmx-drive-modal';div.hidden=true;div.innerHTML=
  '<div class="dmx-drive-panel" role="dialog" aria-modal="true" aria-labelledby="dmx-drive-title">'+
