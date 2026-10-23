@@ -8,9 +8,10 @@ const SCOPE='https://www.googleapis.com/auth/drive.file';
 const BASE='https://www.googleapis.com/drive/v3/files';
 const UPLOAD='https://www.googleapis.com/upload/drive/v3/files';
 const MAIN='DE_MAX_EVIDENCIJA_AKTUELNA.json';
-const FOLDER_NOTE='U Google Drive-u, u delu „Moj disk“, potraži fajl „'+MAIN+'“.';
+const FOLDER_NAME='DE-MAX Evidencija';
+const FOLDER_NOTE='Kopije se čuvaju u folderu „'+FOLDER_NAME+'“ na Google Drive-u. Aplikacija sama pravi taj folder pri prvom povezivanju.';
 const HAS_DATA=['students','courses','enrollments','attendance'];
-let token='',validUntil=0,cloudFile=null,cloudVersion='',currentClient='';
+let token='',validUntil=0,cloudFile=null,cloudVersion='',currentClient='',folderId=null;
 let active=false,queued=false,timer=null,paused=false,lastUploaded='',lastSaved='',status='Nije povezano',mode='offline';
 const get=id=>document.getElementById(id);
 const nowText=()=>new Intl.DateTimeFormat('sr-RS',{dateStyle:'short',timeStyle:'short'}).format(new Date());
@@ -49,9 +50,30 @@ async function api(url,options={}){
  }
  return res;
 }
+async function ensureFolder(){
+ if(folderId)return folderId;
+ // drive.file can see app-created items. Manually created folders may need the Google Picker.
+ const q="name = '"+FOLDER_NAME.replace(/'/g,"\\'")+"' and mimeType = 'application/vnd.google-apps.folder' and trashed = false";
+ const url=BASE+'?spaces=drive&pageSize=100&fields='+encodeURIComponent('files(id,name,mimeType,modifiedTime),nextPageToken')+'&q='+encodeURIComponent(q);
+ const found=await (await api(url)).json();
+ let selected=(found.files||[]).find(f=>f.name===FOLDER_NAME&&f.mimeType==='application/vnd.google-apps.folder');
+ if(!selected){
+   const created=await api(BASE+'?fields=id,name,mimeType',{
+     method:'POST',headers:{'Content-Type':'application/json;charset=UTF-8'},
+     body:JSON.stringify({name:FOLDER_NAME,mimeType:'application/vnd.google-apps.folder'})
+   });
+   selected=await created.json();
+ }
+ if(!selected?.id)throw Error('Google Drive nije vratio ID foldera.');
+ folderId=selected.id;
+ const link=get('dmx-direct-folder-link');
+ if(link){link.href='https://drive.google.com/drive/u/0/folders/'+encodeURIComponent(folderId);link.hidden=false;}
+ return folderId;
+}
 async function listByName(name){
- const q="name = '"+name.replace(/'/g,"\\'")+"' and trashed = false";
- const url=BASE+'?spaces=drive&pageSize=50&fields='+encodeURIComponent('files(id,name,mimeType,modifiedTime),nextPageToken')+'&q='+encodeURIComponent(q);
+ const id=await ensureFolder();
+ const q="name = '"+name.replace(/'/g,"\\'")+"' and '"+id+"' in parents and trashed = false";
+ const url=BASE+'?spaces=drive&pageSize=100&fields='+encodeURIComponent('files(id,name,mimeType,modifiedTime),nextPageToken')+'&q='+encodeURIComponent(q);
  const r=await api(url);const j=await r.json();
  return (j.files||[]).filter(f=>f.name===name&&f.mimeType!=='application/vnd.google-apps.folder');
 }
@@ -69,10 +91,11 @@ async function fileBody(id){
  return parsed;
 }
 async function createFile(name,content){
+ const parent=await ensureFolder();
  const bound='demax_'+Math.random().toString(36).slice(2)+Date.now();
  const body=new Blob([
   '--'+bound+'\r\nContent-Type: application/json; charset=UTF-8\r\n\r\n',
-  JSON.stringify({name,mimeType:'application/json'})+'\r\n',
+  JSON.stringify({name,mimeType:'application/json',parents:[parent]})+'\r\n',
   '--'+bound+'\r\nContent-Type: application/json; charset=UTF-8\r\n\r\n',
   content+'\r\n','--'+bound+'--'
  ]);
@@ -117,7 +140,7 @@ async function uploadOnce(force=false){
  else uploaded=await updateFile(cloudFile.id,txt);
  cloudFile=uploaded;cloudVersion=uploaded.modifiedTime||'';
  lastUploaded=raw;lastSaved=nowText();
- report('Uspešno sačuvano direktno na Google Drive.','ok');
+ report('Sačuvano u folder „'+FOLDER_NAME+'“ na Google Drive-u.','ok');
 }
 function schedule(delay=1300){
  if(!hasAccess()){
@@ -137,6 +160,7 @@ async function flush(){
 }
 async function beginSession(){
  paused=true;queued=false;clearTimeout(timer);
+ await ensureFolder();
  const {data,raw}=localData();
  const remote=await newestByName(MAIN);
  if(remote){
@@ -215,6 +239,7 @@ async function saveNow(){
 async function restore(){
  if(!hasAccess()){report('Najpre poveži Google nalog.','error');return}
  try{
+  await ensureFolder();
   const found=await newestByName(MAIN);
   if(!found)throw Error('Nema DE-MAX kopije na Drive-u.');
   const remoteDoc=await fileBody(found.id),data=unwrap(remoteDoc);
@@ -239,9 +264,10 @@ function addUI(){
  '<section class="dmx-direct-panel" role="dialog" aria-modal="true" aria-labelledby="dmx-direct-title">'+
  '<button class="dmx-direct-close" id="dmx-direct-close" type="button" aria-label="Zatvori">×</button>'+
  '<h2 id="dmx-direct-title">☁ Google Drive – direktno čuvanje</h2>'+
- '<p><strong>Nije potrebna instalacija.</strong> Nakon jednokratnog povezivanja, DE-MAX čuva evidenciju direktno na tvoj Google Drive dok je aplikacija otvorena i Google dozvola važeća.</p>'+
+ '<p><strong>Nije potrebna instalacija.</strong> Nakon povezivanja, DE-MAX automatski pravi folder <strong>DE-MAX Evidencija</strong> na tvom Google Drive-u i u njemu čuva kopije dok je aplikacija otvorena i Google dozvola važeća.</p>'+
  '<div class="dmx-direct-status" id="dmx-direct-status" role="status">Nije povezano</div>'+
  '<div class="dmx-direct-last" id="dmx-direct-lastsaved">Još nije potvrđeno čuvanje na Google Drive.</div>'+
+ '<a id="dmx-direct-folder-link" href="https://drive.google.com/drive/my-drive" target="_blank" rel="noopener noreferrer" hidden>📂 Otvori DE-MAX folder na Google Drive-u</a>'+
  '<label class="dmx-direct-label" for="dmx-direct-client">Google OAuth Client ID (jednokratno podešavanje)</label>'+
  '<input id="dmx-direct-client" type="text" autocomplete="off" spellcheck="false" placeholder="1234567890-xxxx.apps.googleusercontent.com">'+
  '<div class="dmx-direct-buttons">'+
@@ -256,7 +282,7 @@ function addUI(){
  '<li>U Clients napravi <strong>OAuth client ID → Web application</strong>. Kao <strong>Authorized JavaScript origin</strong> unesi <code>https://nemackidemax13-oss.github.io</code>.</li>'+
  '<li>Kopiraj samo <strong>Client ID</strong> u polje iznad i klikni „Poveži Google nalog“.</li></ol>'+
  '<p>Ne unosi nikakav Client Secret ili Google lozinku u DE-MAX. Token se drži samo u memoriji pregledača.</p>'+
- '<p class="dmx-direct-foot">'+FOLDER_NOTE+' Rezervna kopija sadrži učenike, prijave, uplate i kurseve; fotografije/video u „Uspomenama“ nisu uključeni. U aplikaciji je aktivna i lokalna kopija. Za veće arhive i dalje preuzimaj rezervne kopije u delu „Podaci“.</p>'+
+ '<p class="dmx-direct-foot">'+FOLDER_NOTE+' Ako si folder ranije napravio ručno, zbog ograničenih Google dozvola može se pojaviti novi folder istog naziva koji je kreirala aplikacija. Rezervna kopija sadrži učenike, prijave, uplate i kurseve; fotografije/video u „Uspomenama“ nisu uključeni. Sačuvana je i lokalna kopija. Za veće arhive i dalje preuzimaj rezervne kopije u delu „Podaci“.</p>'+
  '<p class="dmx-direct-foot"><strong>Napomena:</strong> Posle isteka Google pristupa ili zatvaranja aplikacije moraš ponovo da klikneš „Poveži Google nalog“. Sinhronizacija ne funkcioniše u pozadini kada je aplikacija zatvorena.</p>'+
  '</div></section>';
  document.body.appendChild(dialog);
@@ -266,7 +292,7 @@ function addUI(){
  '.dmx-direct-panel h2{font-size:22px;margin:0 36px 12px 0}.dmx-direct-panel p,.dmx-direct-panel li{font-size:13px;line-height:1.5;margin:8px 0}'+
  '.dmx-direct-close{position:absolute;right:12px;top:12px;width:36px;height:36px;border:0;border-radius:50%;background:#eef1f8;font-size:25px;cursor:pointer}'+
  '.dmx-direct-status{padding:10px 12px;background:#e8f1ff;border-radius:9px;font-size:13px;font-weight:700;margin:12px 0 4px}'+
- '.dmx-direct-last{font-size:12px;color:#62718c;margin-bottom:12px}.dmx-direct-label{display:block;font-weight:750;font-size:13px;margin-bottom:7px}'+
+ '.dmx-direct-last{font-size:12px;color:#62718c;margin-bottom:9px}#dmx-direct-folder-link{display:inline-block;color:#0b5dbc;text-decoration:underline;font-size:13px;margin-bottom:13px}#dmx-direct-folder-link[hidden]{display:none}.dmx-direct-label{display:block;font-weight:750;font-size:13px;margin-bottom:7px}'+
  '#dmx-direct-client{box-sizing:border-box;display:block;width:100%;font-size:13px;padding:11px 12px;border-radius:8px;border:1px solid #adbcd4}'+
  '.dmx-direct-buttons{display:grid;grid-template-columns:1.35fr 1fr 1fr;gap:9px;margin:12px 0}'+
  '.dmx-direct-buttons button{cursor:pointer;border:0;border-radius:9px;font-weight:700;padding:12px 9px;background:#e5eefc;color:#19478f}'+
