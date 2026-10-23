@@ -11,13 +11,13 @@
   "lang": "sr",
   "icons": [
     {
-      "src": "./favicon-beli-192.png",
+      "src": "./favicon-beli-v21-192.png",
       "sizes": "192x192",
       "type": "image/png",
       "purpose": "any"
     },
     {
-      "src": "./favicon-beli-512.png",
+      "src": "./favicon-beli-v21-512.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any"
