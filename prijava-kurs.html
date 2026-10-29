@@ -379,7 +379,7 @@ function prepareApplication(data) {
     'Tempo: ' + data.tempo,
     'Pohađanje: ' + data.format,
     'Početak: ' + data.termin
-  ].join('\\n');
+  ].join('\n');
   emailFallback.href = 'mailto:nemackidemax13@gmail.com?subject=' +
     encodeURIComponent(subject) + '&body=' + encodeURIComponent(body);
 }
