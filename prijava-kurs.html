@@ -150,6 +150,7 @@ button{
 .result.error .ok{color:#a82222}
 .fallback-actions{display:grid;gap:10px;margin-top:14px}
 .fallback-actions[hidden]{display:none}
+.fallback-actions button[hidden]{display:none}
 .fallback-email{min-height:52px;display:flex;align-items:center;justify-content:center;text-align:center;border-radius:15px;padding:12px;background:#178540;color:#fff;font-weight:800;text-decoration:none}
 .ok{font-size:18px;font-weight:900;color:#147a37;margin-bottom:10px}
 .summary{display:grid;gap:8px;font-size:14px}
@@ -278,6 +279,9 @@ const nativeSubmitBtn = document.getElementById('nativeSubmitBtn');
 const emailFallback = document.getElementById('emailFallback');
 const submissionSubject = document.getElementById('submissionSubject');
 const submissionStartDate = document.getElementById('submissionStartDate');
+// Once the Worker is deployed and configured, registrations use it automatically.
+const WORKER_ENDPOINT = 'https://demax-prijave.nemackidemax13.workers.dev/prijava';
+// Temporary backward-compatible service until the Worker is operational.
 const FORM_ENDPOINT = 'https://formsubmit.co/ajax/nemackidemax13@gmail.com';
 const courseDate = document.getElementById('courseDate');
 const courseInfo = document.getElementById('courseInfo');
@@ -353,6 +357,26 @@ function renderSummary(data) {
   `;
 }
 
+async function workerIsReady() {
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), 3500);
+  try {
+    const healthUrl = new URL('/health', WORKER_ENDPOINT);
+    const response = await fetch(healthUrl.toString(), {
+      method: 'GET',
+      cache: 'no-store',
+      signal: controller.signal
+    });
+    if (!response.ok) return false;
+    const status = await response.json();
+    return status.ok === true && status.configured === true;
+  } catch {
+    return false;
+  } finally {
+    clearTimeout(timeout);
+  }
+}
+
 function collectApplication() {
   const fd = new FormData(form);
   if (fd.get('_honey')) return null;
@@ -397,21 +421,42 @@ form.addEventListener('submit', async (e) => {
   submitBtn.textContent = 'Šaljem prijavu…';
   result.classList.remove('show', 'error');
   fallbackActions.hidden = true;
+  nativeSubmitBtn.hidden = false;
 
+  let usedWorker = false;
   try {
-    // FormSubmit AJAX dokumentacija preporučuje JSON i proveru success polja.
-    const response = await fetch(FORM_ENDPOINT, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-      body: JSON.stringify(payload)
-    });
-    if (!response.ok) throw new Error('HTTP ' + response.status);
-    const reply = await response.json();
-    if (reply.success !== true && reply.success !== 'true') {
-      if (/activat|actived/i.test(String(reply.message || ''))) {
-        throw new Error('ACTIVATION_REQUIRED');
+    // Seamlessly switch from FormSubmit to our independent Worker when live.
+    usedWorker = await workerIsReady();
+    let response;
+    if (usedWorker) {
+      response = await fetch(WORKER_ENDPOINT, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+        body: JSON.stringify({
+          ime: data.ime,
+          prezime: data.prezime,
+          telefon: data.telefon === '—' ? '' : data.telefon,
+          nivo: data.nivo,
+          tempo: data.tempo,
+          format: data.format,
+          _honey: payload._honey || ''
+        })
+      });
+      if (!response.ok) throw new Error('Worker HTTP ' + response.status);
+      const reply = await response.json();
+      if (reply.ok !== true) throw new Error(String(reply.error || 'WORKER_NIJE_POTVRDIO'));
+    } else {
+      // Compatibility mode only; automatically stops being used when Worker is ready.
+      response = await fetch(FORM_ENDPOINT, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+      if (!response.ok) throw new Error('FormSubmit HTTP ' + response.status);
+      const reply = await response.json();
+      if (reply.success !== true && reply.success !== 'true') {
+        throw new Error(String(reply.message || 'SERVIS_NIJE_POTVRDIO'));
       }
-      throw new Error(String(reply.message || 'SERVIS_NIJE_POTVRDIO'));
     }
 
     renderSummary(data);
@@ -420,15 +465,17 @@ form.addEventListener('submit', async (e) => {
     result.classList.add('show');
     result.scrollIntoView({behavior:'smooth',block:'nearest'});
   } catch (err) {
-    const activationNeeded = err && err.message === 'ACTIVATION_REQUIRED';
     resultTitle.textContent = '⚠ Slanje prijave nije potvrđeno';
-    summary.textContent = activationNeeded
-      ? 'Formular čeka potvrdu prijemne mejl adrese. Možete poslati prijavu direktno mejlom.'
-      : 'Servis za slanje trenutno ne može da potvrdi prijavu. Podaci su sačuvani u formularu. Izaberite rezervno slanje ili nam pošaljite mejl.';
+    summary.textContent = usedWorker
+      ? 'Cloudflare servis trenutno ne može da potvrdi slanje. Podaci su ostali u formularu. Pošaljite prijavu direktno mejlom.'
+      : 'Servis za slanje trenutno ne može da potvrdi prijavu. Podaci su ostali u formularu. Pokušajte rezervno ili pošaljite prijavu mejlom.';
+    // Don't automatically re-send an unconfirmed Worker request: it could duplicate a real registration.
+    nativeSubmitBtn.hidden = usedWorker;
     fallbackActions.hidden = false;
     result.classList.add('error', 'show');
     result.scrollIntoView({behavior:'smooth',block:'nearest'});
     console.warn('De-Max prijava nije potvrđena:', err);
+
   } finally {
     submitBtn.disabled = false;
     submitBtn.textContent = '✉ Pošalji prijavu';
@@ -448,6 +495,7 @@ nativeSubmitBtn.addEventListener('click', () => {
 form.addEventListener('reset', () => {
   result.classList.remove('show', 'error');
   fallbackActions.hidden = true;
+  nativeSubmitBtn.hidden = false;
   summary.innerHTML = '';
   window.setTimeout(syncCourseOptions, 0);
 });
