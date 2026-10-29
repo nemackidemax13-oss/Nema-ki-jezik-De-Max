@@ -146,6 +146,11 @@ button{
   background:linear-gradient(180deg,#f4fff7,#effaf2);border:1px solid #bfe9ca;
 }
 .result.show{display:block}
+.result.error{background:#fff8f7;border-color:#f2cbc6}
+.result.error .ok{color:#a82222}
+.fallback-actions{display:grid;gap:10px;margin-top:14px}
+.fallback-actions[hidden]{display:none}
+.fallback-email{min-height:52px;display:flex;align-items:center;justify-content:center;text-align:center;border-radius:15px;padding:12px;background:#178540;color:#fff;font-weight:800;text-decoration:none}
 .ok{font-size:18px;font-weight:900;color:#147a37;margin-bottom:10px}
 .summary{display:grid;gap:8px;font-size:14px}
 .row{display:flex;justify-content:space-between;gap:16px;padding-bottom:8px;border-bottom:1px dashed #cfe4d5}
@@ -180,8 +185,12 @@ button{
       <div class="datebox" id="courseDate" aria-live="polite">📅 Online A1/A2/B1: 16.11.2026. • U učionici A1: 23.11.2026.</div>
     </header>
 
-    <form id="courseForm" class="form" autocomplete="on">
+    <form id="courseForm" class="form" autocomplete="on" method="POST" action="https://formsubmit.co/nemackidemax13@gmail.com">
       <input type="text" name="_honey" tabindex="-1" autocomplete="off" style="position:absolute;left:-9999px;opacity:0" aria-hidden="true">
+      <input type="hidden" name="_url" value="https://nemackidemax13-oss.github.io/Nema-ki-jezik-De-Max/prijava-kurs.html">
+      <input type="hidden" name="_template" value="table">
+      <input type="hidden" id="submissionSubject" name="_subject" value="Nova De-Max prijava za kurs">
+      <input type="hidden" id="submissionStartDate" name="Početak kursa" value="">
       <div class="section-title">Lični podaci</div>
       <div class="grid">
         <div class="field">
@@ -240,6 +249,10 @@ button{
     <section id="result" class="result" aria-live="polite">
       <div class="ok" id="resultTitle">✓ Prijava je uspešno poslata. Hvala!</div>
       <div class="summary" id="summary"></div>
+      <div class="fallback-actions" id="fallbackActions" hidden>
+        <button class="secondary" id="nativeSubmitBtn" type="button">Pošalji preko rezervnog formulara</button>
+        <a class="fallback-email" id="emailFallback" href="mailto:nemackidemax13@gmail.com">✉ Pošalji prijavu mejlom</a>
+      </div>
     </section>
 
     <div class="contact-footer">
@@ -260,6 +273,11 @@ const result = document.getElementById('result');
 const resultTitle = document.getElementById('resultTitle');
 const summary = document.getElementById('summary');
 const submitBtn = document.getElementById('submitBtn');
+const fallbackActions = document.getElementById('fallbackActions');
+const nativeSubmitBtn = document.getElementById('nativeSubmitBtn');
+const emailFallback = document.getElementById('emailFallback');
+const submissionSubject = document.getElementById('submissionSubject');
+const submissionStartDate = document.getElementById('submissionStartDate');
 const FORM_ENDPOINT = 'https://formsubmit.co/ajax/nemackidemax13@gmail.com';
 const courseDate = document.getElementById('courseDate');
 const courseInfo = document.getElementById('courseInfo');
@@ -335,58 +353,101 @@ function renderSummary(data) {
   `;
 }
 
+function collectApplication() {
+  const fd = new FormData(form);
+  if (fd.get('_honey')) return null;
+  return {
+    ime: (fd.get('ime') || '').toString().trim(),
+    prezime: (fd.get('prezime') || '').toString().trim(),
+    telefon: (fd.get('telefon') || '').toString().trim() || '—',
+    nivo: fd.get('nivo') || '',
+    tempo: fd.get('tempo') || '',
+    format: fd.get('format') || '',
+    termin: fd.get('format') === 'Učionica' ? '23.11.2026.' : '16.11.2026.'
+  };
+}
+
+function prepareApplication(data) {
+  submissionSubject.value = 'Nova De-Max prijava — ' + data.ime + ' ' + data.prezime + ' — ' + data.nivo;
+  submissionStartDate.value = data.termin;
+  const subject = 'Prijava za kurs — ' + data.ime + ' ' + data.prezime;
+  const body = [
+    'Prijava za kurs nemačkog jezika De-Max Tutin',
+    'Ime i prezime: ' + data.ime + ' ' + data.prezime,
+    'Telefon: ' + data.telefon,
+    'Nivo: ' + data.nivo,
+    'Tempo: ' + data.tempo,
+    'Pohađanje: ' + data.format,
+    'Početak: ' + data.termin
+  ].join('\\n');
+  emailFallback.href = 'mailto:nemackidemax13@gmail.com?subject=' +
+    encodeURIComponent(subject) + '&body=' + encodeURIComponent(body);
+}
+
 form.addEventListener('submit', async (e) => {
   e.preventDefault();
   if (!form.reportValidity()) return;
-
   syncCourseOptions();
-  const fd = new FormData(form);
-  if (fd.get('_honey')) return;
+  const data = collectApplication();
+  if (!data) return;
+  prepareApplication(data);
 
-  const data = {
-    ime: fd.get('ime'),
-    prezime: fd.get('prezime'),
-    telefon: fd.get('telefon') || '—',
-    nivo: fd.get('nivo'),
-    tempo: fd.get('tempo'),
-    format: fd.get('format'),
-    termin: fd.get('format') === 'Učionica' ? '23.11.2026.' : '16.11.2026.'
-  };
-
-  fd.append('_subject', `Nova De-Max prijava — ${data.ime} ${data.prezime} — ${data.nivo}`);
-  fd.append('_template', 'table');
-  fd.append('Početak kursa', data.termin);
-
+  const payload = Object.fromEntries(new FormData(form).entries());
   submitBtn.disabled = true;
   submitBtn.textContent = 'Šaljem prijavu…';
-  result.classList.remove('show');
+  result.classList.remove('show', 'error');
+  fallbackActions.hidden = true;
 
   try {
+    // FormSubmit AJAX dokumentacija preporučuje JSON i proveru success polja.
     const response = await fetch(FORM_ENDPOINT, {
       method: 'POST',
-      headers: { 'Accept': 'application/json' },
-      body: fd
+      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+      body: JSON.stringify(payload)
     });
-
-    if (!response.ok) throw new Error('Slanje nije uspelo');
+    if (!response.ok) throw new Error('HTTP ' + response.status);
+    const reply = await response.json();
+    if (reply.success !== true && reply.success !== 'true') {
+      if (/activat|actived/i.test(String(reply.message || ''))) {
+        throw new Error('ACTIVATION_REQUIRED');
+      }
+      throw new Error(String(reply.message || 'SERVIS_NIJE_POTVRDIO'));
+    }
 
     renderSummary(data);
     resultTitle.textContent = '✓ Prijava je uspešno poslata. Hvala!';
+    result.classList.remove('error');
     result.classList.add('show');
     result.scrollIntoView({behavior:'smooth',block:'nearest'});
   } catch (err) {
-    summary.innerHTML = '<div class="row"><span>Pokušajte ponovo ili nas kontaktirajte direktno.</span></div>';
-    resultTitle.textContent = '⚠ Prijava trenutno nije poslata';
-    result.classList.add('show');
+    const activationNeeded = err && err.message === 'ACTIVATION_REQUIRED';
+    resultTitle.textContent = '⚠ Slanje prijave nije potvrđeno';
+    summary.textContent = activationNeeded
+      ? 'Formular čeka potvrdu prijemne mejl adrese. Možete poslati prijavu direktno mejlom.'
+      : 'Servis za slanje trenutno ne može da potvrdi prijavu. Podaci su sačuvani u formularu. Izaberite rezervno slanje ili nam pošaljite mejl.';
+    fallbackActions.hidden = false;
+    result.classList.add('error', 'show');
     result.scrollIntoView({behavior:'smooth',block:'nearest'});
+    console.warn('De-Max prijava nije potvrđena:', err);
   } finally {
     submitBtn.disabled = false;
     submitBtn.textContent = '✉ Pošalji prijavu';
   }
 });
 
+// Rezervni POST: standardni HTML formular, bez AJAX/CORS zavisnosti.
+nativeSubmitBtn.addEventListener('click', () => {
+  if (!form.reportValidity()) return;
+  syncCourseOptions();
+  const data = collectApplication();
+  if (!data) return;
+  prepareApplication(data);
+  form.submit();
+});
+
 form.addEventListener('reset', () => {
-  result.classList.remove('show');
+  result.classList.remove('show', 'error');
+  fallbackActions.hidden = true;
   summary.innerHTML = '';
   window.setTimeout(syncCourseOptions, 0);
 });
