@@ -450,9 +450,9 @@ form.addEventListener('submit', async (e) => {
   try {
     // Uvek prvo pokusaj FormSubmit. Web3Forms se koristi samo bez potvrde primarnog servisa.
     try {
-      // Prekini cekanje nakon 8 sekundi i pokusaj rezervni servis.
+      // Prekini cekanje nakon 4 sekunde i pokusaj rezervni servis.
       const controller = new AbortController();
-      const timeout = setTimeout(() => controller.abort(), 8000);
+      const timeout = setTimeout(() => controller.abort(), 4000);
       let primaryResponse;
       try {
         primaryResponse = await fetch(FORM_ENDPOINT, {
