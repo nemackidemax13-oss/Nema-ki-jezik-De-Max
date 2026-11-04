@@ -2037,7 +2037,7 @@ document.addEventListener('submit',e=>{
   if(anchor)anchor.insertAdjacentElement('beforebegin',b);else nav.appendChild(b);
  }
  const st=document.createElement('style');
- st.textContent='.dmx-translation-info{padding:14px 16px;border:1px solid #dce8fa;background:#f8fbff;border-radius:14px;font-size:13px;color:#475c7b;margin-bottom:14px}.dmx-translation-drop{padding:30px 20px;border:2px dashed #b9cfea;border-radius:16px;text-align:center;background:#fff;cursor:pointer;margin-bottom:14px}.dmx-translation-drop.drag-active{border-color:#18975c;background:#edfbf2}.dmx-translation-drop strong{display:block;font-size:17px;color:#233653}.dmx-translation-drop p{color:#6c7b90;font-size:12px;margin:6px 0 15px}.dmx-translation-list{display:flex;flex-direction:column;gap:10px}.dmx-translation-row{background:#fff;border:1px solid #e4eaf2;border-radius:13px;padding:14px;display:flex;align-items:center;justify-content:space-between;gap:12px}.dmx-translation-name{font-weight:800;color:#24334b;overflow-wrap:anywhere}.dmx-translation-meta{font-size:12px;color:#65768d;margin-top:4px}.dmx-translation-actions{display:flex;gap:6px;flex-wrap:wrap;align-items:center}.dmx-translation-actions .btn{padding:7px 10px;min-height:35px}.dmx-translation-search{max-width:450px;margin-bottom:16px}.dmx-trans-status{height:35px;max-width:125px;font-size:12px;padding:4px 6px}.dmx-translation-empty{padding:30px;text-align:center;color:#78859b;border:1px dashed #c9d5e7;border-radius:12px;background:white}@media(max-width:760px){.dmx-translation-row{align-items:flex-start;flex-direction:column}.dmx-translation-actions{width:100%}.dmx-translation-drop{padding:20px 12px}}';
+ st.textContent='.dmx-translation-info{padding:14px 16px;border:1px solid #dce8fa;background:#f8fbff;border-radius:14px;font-size:13px;color:#475c7b;margin-bottom:14px}.dmx-translation-drop{padding:30px 20px;border:2px dashed #b9cfea;border-radius:16px;text-align:center;background:#fff;cursor:pointer;margin-bottom:14px}.dmx-translation-drop.drag-active{border-color:#18975c;background:#edfbf2}.dmx-translation-drop strong{display:block;font-size:17px;color:#233653}.dmx-translation-drop p{color:#6c7b90;font-size:12px;margin:6px 0 15px}.dmx-translation-list{display:flex;flex-direction:column;gap:10px}.dmx-translation-row{background:#fff;border:1px solid #e4eaf2;border-radius:13px;padding:14px;display:flex;align-items:center;justify-content:space-between;gap:12px}.dmx-translation-title-editor{display:flex;flex-direction:column;gap:5px;margin-top:9px;max-width:440px}.dmx-translation-title-editor label{font-size:12px;font-weight:800;color:#425572}.dmx-translation-title-editor input{width:100%;min-width:180px;border:1px solid #cfd9e7;border-radius:9px;padding:8px 10px;font-size:13px;background:#fff}.dmx-translation-title-editor input:focus{border-color:#ef791f}.dmx-translation-name{font-weight:800;color:#24334b;overflow-wrap:anywhere}.dmx-translation-meta{font-size:12px;color:#65768d;margin-top:4px}.dmx-translation-actions{display:flex;gap:6px;flex-wrap:wrap;align-items:center}.dmx-translation-actions .btn{padding:7px 10px;min-height:35px}.dmx-translation-search{max-width:450px;margin-bottom:16px}.dmx-trans-status{height:35px;max-width:125px;font-size:12px;padding:4px 6px}.dmx-translation-empty{padding:30px;text-align:center;color:#78859b;border:1px dashed #c9d5e7;border-radius:12px;background:white}@media(max-width:760px){.dmx-translation-row{align-items:flex-start;flex-direction:column}.dmx-translation-actions{width:100%}.dmx-translation-drop{padding:20px 12px}}';
  document.head.appendChild(st);
 })();
 let dmxTranslationsSearch='',dmxTranslationsDBPromise=null;
@@ -2094,8 +2094,8 @@ dmxTransFileInput.multiple=true;dmxTransFileInput.className='hidden';dmxTransFil
 document.body.appendChild(dmxTransFileInput);
 function dmxTranslationsHTML(){
  return '<div class="dmx-translation-info"><strong>Prevodi – arhiva dokumenata.</strong> Ubaci Word (.doc, .docx) ili PDF (.pdf), prati status i preuzmi original kad god ti zatreba. Datoteke ostaju u ovom pregledaču na ovom uređaju; nisu uključene u JSON rezervnu kopiju i ne prevode se automatski.</div>'
- +'<div class="dmx-translation-drop" id="dmx-translation-drop"><strong>📑 Dodaj Word ili PDF dokument</strong><p>Izaberi više datoteka odjednom ili ih prevuci ovde. Maksimalno 50 MB po datoteci.</p><label for="dmx-translation-files" class="btn green" role="button" tabindex="0">＋ Ubaci dokumente</label></div>'
- +'<label class="field-search dmx-translation-search"><span>⌕</span><input id="dmx-translation-search" type="search" placeholder="Pretraži dokumente..." value="'+esc(dmxTranslationsSearch)+'"></label>'
+ +'<div class="dmx-translation-drop" id="dmx-translation-drop"><strong>📑 Dodaj Word ili PDF dokument</strong><p>Izaberi više datoteka odjednom ili ih prevuci ovde. Maksimalno 50 MB po datoteci.</p><div style="max-width:430px;margin:0 auto 15px;text-align:left"><label for="dmx-translation-new-title" style="display:block;font-size:13px;font-weight:800;margin-bottom:6px">Naziv prevoda (opciono)</label><input id="dmx-translation-new-title" class="form-control" style="width:100%" maxlength="200" placeholder="Npr. Prevod diplome – Amina Hadžić"></div><label for="dmx-translation-files" class="btn green" role="button" tabindex="0">＋ Ubaci dokumente</label></div>'
+ +'<label class="field-search dmx-translation-search"><span>⌕</span><input id="dmx-translation-search" type="search" placeholder="Pretraži po nazivu prevoda ili imenu fajla..." value="'+esc(dmxTranslationsSearch)+'"></label>'
  +'<div id="dmx-translation-results"><div class="dmx-translation-empty">Učitavanje dokumenata...</div></div>';
 }
 async function dmxTranslationsRefresh(){
@@ -2105,13 +2105,13 @@ async function dmxTranslationsRefresh(){
   const records=await dmxTranslationsAll();
   if(view!=='translations'||!document.getElementById('dmx-translation-results'))return;
   const q=dmxTranslationsSearch.trim().toLocaleLowerCase('sr');
-  const filtered=records.filter(r=>String(r.filename||'').toLocaleLowerCase('sr').includes(q)).sort((a,b)=>String(b.createdAt||'').localeCompare(String(a.createdAt||'')));
+  const filtered=records.filter(r=>(String(r.filename||'')+' '+String(r.title||'')).toLocaleLowerCase('sr').includes(q)).sort((a,b)=>String(b.createdAt||'').localeCompare(String(a.createdAt||'')));
   if(!filtered.length){target.innerHTML='<div class="dmx-translation-empty">'+(q?'Nema dokumenata koji odgovaraju pretrazi.':'Još nema dokumenata. Klikni „Ubaci dokumente” da dodaš Word ili PDF.')+'</div>';return;}
   target.innerHTML='<div class="dmx-translation-list">'+filtered.map(r=>{
    const type=String(r.filename).toLowerCase().endsWith('.pdf')?'PDF':'Word';
    const date=r.createdAt?new Date(r.createdAt).toLocaleDateString('sr-RS'):'';
    const size=(Number(r.size||r.blob?.size||0)/(1024*1024)).toFixed(2);
-   return '<article class="dmx-translation-row"><div><div class="dmx-translation-name">'+(type==='PDF'?'📕':'📘')+' '+esc(r.filename)+'</div><div class="dmx-translation-meta">'+type+' · '+size+' MB · Dodato: '+esc(date)+'</div></div>'
+   return '<article class="dmx-translation-row"><div><div class="dmx-translation-name">'+(type==='PDF'?'📕':'📘')+' '+esc(r.filename)+'</div><div class="dmx-translation-title-editor"><label for="dmx-trans-title-'+esc(r.id)+'">Naziv / opis prevoda</label><input id="dmx-trans-title-'+esc(r.id)+'" data-trans-title="'+esc(r.id)+'" maxlength="200" placeholder="Unesi naziv prevoda za pretragu" value="'+esc(r.title||'')+'"></div><div class="dmx-translation-meta">'+type+' · '+size+' MB · Dodato: '+esc(date)+'</div></div>'
     +'<div class="dmx-translation-actions"><select class="form-control dmx-trans-status" data-trans-status="'+esc(r.id)+'" aria-label="Status prevoda">'+dmxTranslationsStatuses.map(t=>'<option value="'+esc(t)+'"'+(r.status===t?' selected':'')+'>'+esc(t)+'</option>').join('')+'</select>'
     +(type==='PDF'?'<button class="btn soft sm" data-action="translation-open" data-id="'+esc(r.id)+'">Otvori</button>':'')
     +'<button class="btn soft sm" data-action="translation-download" data-id="'+esc(r.id)+'">↓ Preuzmi</button><button class="btn danger sm" data-action="translation-delete" data-id="'+esc(r.id)+'">Obriši</button></div></article>';
@@ -2119,15 +2119,16 @@ async function dmxTranslationsRefresh(){
  }catch(err){target.innerHTML='<div class="dmx-translation-empty">Dokumenti nisu dostupni. Proveri dozvole pregledača.</div>';toast('Prevodi: '+(err.message||err),true);}
 }
 async function dmxTranslationsUpload(files){
+ const newTitle=String(document.getElementById('dmx-translation-new-title')?.value||'').trim().slice(0,200);
  let ok=0,skipped=0;const arr=Array.from(files||[]).slice(0,25);
  for(const file of arr){
   if(!/\.(pdf|doc|docx)$/i.test(file.name)||file.size<=0||file.size>50*1024*1024){skipped++;continue;}
   try{
-   await dmxTranslationsPut({id:uid(),filename:String(file.name).slice(0,200),blob:file,mime:file.type||'',size:file.size,status:'Za prevod',createdAt:new Date().toISOString()});
+   await dmxTranslationsPut({id:uid(),filename:String(file.name).slice(0,200),blob:file,mime:file.type||'',size:file.size,title:newTitle,status:'Za prevod',createdAt:new Date().toISOString()});
    ok++;
   }catch(err){toast('Čuvanje nije uspelo: '+(err.message||'nema prostora'),true);break;}
  }
- if(ok)toast('Sačuvano dokumenata: '+ok);
+ if(ok){toast('Sačuvano dokumenata: '+ok);const titleInput=document.getElementById('dmx-translation-new-title');if(titleInput)titleInput.value='';}
  if(skipped)toast('Preskočene su nepodržane, prazne ili prevelike datoteke: '+skipped,true);
  if(view==='translations')dmxTranslationsRefresh();
 }
@@ -2183,6 +2184,10 @@ document.addEventListener('click',async e=>{
 document.addEventListener('change',async e=>{
  const sel=e.target.closest('select[data-trans-status]');if(!sel)return;
  try{const r=await dmxTranslationsOne(sel.dataset.transStatus);if(!r)return;r.status=dmxTranslationsStatuses.includes(sel.value)?sel.value:'Za prevod';await dmxTranslationsPut(r);toast('Status prevoda je sačuvan.');}catch(err){toast('Status nije sačuvan: '+(err.message||err),true);}
+},true);
+document.addEventListener('change',async e=>{
+ const field=e.target.closest?.('input[data-trans-title]');if(!field)return;
+ try{const record=await dmxTranslationsOne(field.dataset.transTitle);if(!record)return;record.title=String(field.value||'').trim().slice(0,200);await dmxTranslationsPut(record);toast('Naziv prevoda je sačuvan.');if(dmxTranslationsSearch.trim())dmxTranslationsRefresh();}catch(err){toast('Naziv nije sačuvan: '+(err.message||err),true);}
 },true);
 document.addEventListener('input',e=>{
  if(e.target.id==='dmx-translation-search'){dmxTranslationsSearch=e.target.value;dmxTranslationsRefresh();}
