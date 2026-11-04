@@ -900,8 +900,10 @@ function ensureAdvancedData(){
 }
 function ddDE(s){return isoOk(s)?new Date(s+'T12:00:00').toLocaleDateString('de-DE',{day:'2-digit',month:'2-digit',year:'numeric'}):'—'}
 function certificateBodyText(rec){
- const student=(rec.studentName||'____________').trim();
- return `Hiermit wird bestätigt, dass ${student} an unserem Deutschkurs der Niveaustufe ${rec.level} teilgenommen und insgesamt ${rec.hours||''} Unterrichtsstunden absolviert hat.`;
+ const student=(rec.studentName||'________________________').trim();
+ const level=rec.level||'__________';
+ const hours=rec.hours||'__________';
+ return `Hiermit bestätigen wir, dass ${student} erfolgreich an unserem Deutschkurs der Niveaustufe ${level} im Zeitraum vom ________________ bis zum ________________ teilgenommen hat.\n\nDie teilnehmende Person hat insgesamt ${hours} Unterrichtsstunden absolviert.`;
 }
 function levelBlock(level){return certText[level]||certText.A1}
 const oldLoad=load;
