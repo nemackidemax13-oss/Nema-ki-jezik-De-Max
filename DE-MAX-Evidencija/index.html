@@ -2037,7 +2037,7 @@ document.addEventListener('submit',e=>{
   if(anchor)anchor.insertAdjacentElement('beforebegin',b);else nav.appendChild(b);
  }
  const st=document.createElement('style');
- st.textContent='.dmx-translation-info{padding:14px 16px;border:1px solid #dce8fa;background:#f8fbff;border-radius:14px;font-size:13px;color:#475c7b;margin-bottom:14px}.dmx-translation-drop{padding:30px 20px;border:2px dashed #b9cfea;border-radius:16px;text-align:center;background:#fff;cursor:pointer;margin-bottom:14px}.dmx-translation-drop.drag-active{border-color:#18975c;background:#edfbf2}.dmx-translation-drop strong{display:block;font-size:17px;color:#233653}.dmx-translation-drop p{color:#6c7b90;font-size:12px;margin:6px 0 15px}.dmx-translation-list{display:flex;flex-direction:column;gap:10px}.dmx-translation-row{background:#fff;border:1px solid #e4eaf2;border-radius:13px;padding:14px;display:flex;align-items:center;justify-content:space-between;gap:12px}.dmx-translation-title-editor{display:flex;flex-direction:column;gap:5px;margin-top:9px;max-width:440px}.dmx-translation-title-editor label{font-size:12px;font-weight:800;color:#425572}.dmx-translation-title-editor input{width:100%;min-width:180px;border:1px solid #cfd9e7;border-radius:9px;padding:8px 10px;font-size:13px;background:#fff}.dmx-translation-title-editor input:focus{border-color:#ef791f}.dmx-translation-name{font-weight:800;color:#24334b;overflow-wrap:anywhere}.dmx-translation-meta{font-size:12px;color:#65768d;margin-top:4px}.dmx-translation-actions{display:flex;gap:6px;flex-wrap:wrap;align-items:center}.dmx-translation-actions .btn{padding:7px 10px;min-height:35px}.dmx-translation-search{max-width:450px;margin-bottom:16px}.dmx-trans-status{height:35px;max-width:125px;font-size:12px;padding:4px 6px}.dmx-translation-empty{padding:30px;text-align:center;color:#78859b;border:1px dashed #c9d5e7;border-radius:12px;background:white}@media(max-width:760px){.dmx-translation-row{align-items:flex-start;flex-direction:column}.dmx-translation-actions{width:100%}.dmx-translation-drop{padding:20px 12px}}';
+ st.textContent='body[data-view="translations"] #view-root{overflow-y:auto!important;overflow-x:hidden!important;display:block!important;overscroll-behavior:contain;scrollbar-width:thin;padding-bottom:35px}body[data-view="translations"] .main{min-height:0}body[data-view="translations"] #dmx-translation-results{padding-bottom:22px}.dmx-translation-folder{background:#fff;border:1px solid #dae3f0;border-radius:14px;margin:0 0 10px;overflow:hidden}.dmx-translation-folder summary{cursor:pointer;list-style:none;display:flex;align-items:center;gap:10px;padding:13px 16px;font-weight:800;color:#283a55}.dmx-translation-folder summary::-webkit-details-marker{display:none}.dmx-translation-folder summary:before{content:"▸";font-size:16px;color:#d27b1e}.dmx-translation-folder[open] summary:before{content:"▾"}.dmx-translation-folder summary .dmx-folder-number{border-radius:8px;background:#eaf1fe;color:#275dae;padding:5px 9px;white-space:nowrap}.dmx-translation-folder summary .dmx-folder-label{overflow-wrap:anywhere;min-width:0;flex:1}.dmx-translation-folder .dmx-translation-row{border:0;border-top:1px solid #e7ebf3;border-radius:0;box-shadow:none}.dmx-translation-staging{background:#f7fafc;border:1px solid #d5e2f0;padding:14px;border-radius:12px;margin:0 0 15px}.dmx-translation-staging-row{display:grid;grid-template-columns:minmax(0,1fr) minmax(180px,1fr);align-items:center;gap:10px;margin:9px 0}.dmx-translation-staging-row input{width:100%}.dmx-translation-staging-file{font-size:12px;overflow-wrap:anywhere}.dmx-translation-info{padding:14px 16px;border:1px solid #dce8fa;background:#f8fbff;border-radius:14px;font-size:13px;color:#475c7b;margin-bottom:14px}.dmx-translation-drop{padding:30px 20px;border:2px dashed #b9cfea;border-radius:16px;text-align:center;background:#fff;cursor:pointer;margin-bottom:14px}.dmx-translation-drop.drag-active{border-color:#18975c;background:#edfbf2}.dmx-translation-drop strong{display:block;font-size:17px;color:#233653}.dmx-translation-drop p{color:#6c7b90;font-size:12px;margin:6px 0 15px}.dmx-translation-list{display:flex;flex-direction:column;gap:10px}.dmx-translation-row{background:#fff;border:1px solid #e4eaf2;border-radius:13px;padding:14px;display:flex;align-items:center;justify-content:space-between;gap:12px}.dmx-translation-title-editor{display:flex;flex-direction:column;gap:5px;margin-top:9px;max-width:440px}.dmx-translation-title-editor label{font-size:12px;font-weight:800;color:#425572}.dmx-translation-title-editor input{width:100%;min-width:180px;border:1px solid #cfd9e7;border-radius:9px;padding:8px 10px;font-size:13px;background:#fff}.dmx-translation-title-editor input:focus{border-color:#ef791f}.dmx-translation-name{font-weight:800;color:#24334b;overflow-wrap:anywhere}.dmx-translation-meta{font-size:12px;color:#65768d;margin-top:4px}.dmx-translation-actions{display:flex;gap:6px;flex-wrap:wrap;align-items:center}.dmx-translation-actions .btn{padding:7px 10px;min-height:35px}.dmx-translation-search{max-width:450px;margin-bottom:16px}.dmx-trans-status{height:35px;max-width:125px;font-size:12px;padding:4px 6px}.dmx-translation-empty{padding:30px;text-align:center;color:#78859b;border:1px dashed #c9d5e7;border-radius:12px;background:white}@media(max-width:760px){.dmx-translation-staging-row{grid-template-columns:1fr}.dmx-translation-row{align-items:flex-start;flex-direction:column}.dmx-translation-actions{width:100%}.dmx-translation-drop{padding:20px 12px}}';
  document.head.appendChild(st);
 })();
 let dmxTranslationsSearch='',dmxTranslationsDBPromise=null;
@@ -2092,44 +2092,74 @@ const dmxTransFileInput=document.createElement('input');
 dmxTransFileInput.type='file';dmxTransFileInput.accept='.pdf,.doc,.docx,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document';
 dmxTransFileInput.multiple=true;dmxTransFileInput.className='hidden';dmxTransFileInput.id='dmx-translation-files';
 document.body.appendChild(dmxTransFileInput);
+let dmxTranslationsPending=[];
 function dmxTranslationsHTML(){
- return '<div class="dmx-translation-info"><strong>Prevodi – arhiva dokumenata.</strong> Ubaci Word (.doc, .docx) ili PDF (.pdf), prati status i preuzmi original kad god ti zatreba. Datoteke ostaju u ovom pregledaču na ovom uređaju; nisu uključene u JSON rezervnu kopiju i ne prevode se automatski.</div>'
- +'<div class="dmx-translation-drop" id="dmx-translation-drop"><strong>📑 Dodaj Word ili PDF dokument</strong><p>Izaberi više datoteka odjednom ili ih prevuci ovde. Maksimalno 50 MB po datoteci.</p><div style="max-width:430px;margin:0 auto 15px;text-align:left"><label for="dmx-translation-new-title" style="display:block;font-size:13px;font-weight:800;margin-bottom:6px">Naziv prevoda (opciono)</label><input id="dmx-translation-new-title" class="form-control" style="width:100%" maxlength="200" placeholder="Npr. Prevod diplome – Amina Hadžić"></div><label for="dmx-translation-files" class="btn green" role="button" tabindex="0">＋ Ubaci dokumente</label></div>'
- +'<label class="field-search dmx-translation-search"><span>⌕</span><input id="dmx-translation-search" type="search" placeholder="Pretraži po nazivu prevoda ili imenu fajla..." value="'+esc(dmxTranslationsSearch)+'"></label>'
+ return '<div class="dmx-translation-info"><strong>Prevodi – numerisani folderi.</strong> Svaki dokument dobija zaseban folder po redosledu unošenja i naziv koji možeš promeniti. Datoteke ostaju u ovom pregledaču na ovom uređaju; nisu uključene u JSON rezervnu kopiju.</div>'
+ +'<div class="dmx-translation-drop" id="dmx-translation-drop"><strong>📑 Dodaj Word ili PDF dokument</strong><p>Izaberi Word (.doc, .docx) ili PDF (.pdf). Svakom dokumentu posebno upiši naziv, pa sačuvaj. Najviše 50 MB po dokumentu.</p><label for="dmx-translation-files" class="btn green" role="button" tabindex="0">＋ Izaberi dokumente</label></div>'
+ +'<div id="dmx-translation-pending"></div>'
+ +'<label class="field-search dmx-translation-search"><span>⌕</span><input id="dmx-translation-search" type="search" placeholder="Pretraži po broju foldera, nazivu ili fajlu..." value="'+esc(dmxTranslationsSearch)+'"></label>'
  +'<div id="dmx-translation-results"><div class="dmx-translation-empty">Učitavanje dokumenata...</div></div>';
+}
+function dmxTranslationsStage(files){
+ const arr=Array.from(files||[]).filter(f=>/\.(pdf|doc|docx)$/i.test(f.name)&&f.size>0&&f.size<=50*1024*1024);
+ if(!arr.length){toast('Izaberi ispravan Word ili PDF dokument do 50 MB.',true);return;}
+ dmxTranslationsPending.push(...arr.slice(0,25).map(file=>({file,title:file.name.replace(/\.(pdf|doc|docx)$/i,'').replace(/[_-]+/g,' ').trim().slice(0,200)})));
+ dmxTranslationsDrawPending();
+}
+function dmxTranslationsDrawPending(){
+ const target=document.getElementById('dmx-translation-pending');if(!target)return;
+ if(!dmxTranslationsPending.length){target.innerHTML='';return;}
+ target.innerHTML='<div class="dmx-translation-staging"><strong>📂 Nazovi dokumente pre čuvanja</strong><p class="small muted">Za svaki dokument upiši naziv pod kojim želiš da ga kasnije pronađeš.</p>'
+ +dmxTranslationsPending.map((p,i)=>'<div class="dmx-translation-staging-row"><span class="dmx-translation-staging-file">📄 '+esc(p.file.name)+'</span><input class="form-control" data-pending-title="'+i+'" maxlength="200" aria-label="Naziv prevoda '+(i+1)+'" placeholder="Naziv prevoda" value="'+esc(p.title)+'"></div>').join('')
+ +'<div class="actions"><button type="button" class="btn green" data-action="translation-save-pending">✓ Sačuvaj dokumente</button><button type="button" class="btn danger" data-action="translation-cancel-pending">Otkaži</button></div></div>';
+}
+function dmxTranslationsWithNumbers(records){
+ const ordered=[...records].sort((a,b)=>String(a.createdAt||'').localeCompare(String(b.createdAt||''))||String(a.id).localeCompare(String(b.id)));
+ let max=ordered.reduce((m,r)=>Math.max(m,Number(r.folderNo)||0),0);
+ const used=new Set(ordered.map(r=>Number(r.folderNo)).filter(n=>n>0));
+ for(const r of ordered){if(Number(r.folderNo)>0)continue;let n=1;while(used.has(n))n++;r.folderNo=n;used.add(n);max=Math.max(max,n);}
+ return ordered;
 }
 async function dmxTranslationsRefresh(){
  const target=document.getElementById('dmx-translation-results');
  if(!target||view!=='translations')return;
  try{
-  const records=await dmxTranslationsAll();
+  const records=dmxTranslationsWithNumbers(await dmxTranslationsAll());
   if(view!=='translations'||!document.getElementById('dmx-translation-results'))return;
   const q=dmxTranslationsSearch.trim().toLocaleLowerCase('sr');
-  const filtered=records.filter(r=>(String(r.filename||'')+' '+String(r.title||'')).toLocaleLowerCase('sr').includes(q)).sort((a,b)=>String(b.createdAt||'').localeCompare(String(a.createdAt||'')));
-  if(!filtered.length){target.innerHTML='<div class="dmx-translation-empty">'+(q?'Nema dokumenata koji odgovaraju pretrazi.':'Još nema dokumenata. Klikni „Ubaci dokumente” da dodaš Word ili PDF.')+'</div>';return;}
+  const filtered=records.filter(r=>(String(r.filename||'')+' '+String(r.title||'')+' '+String(r.folderNo).padStart(3,'0')+' '+String(r.folderNo)).toLocaleLowerCase('sr').includes(q));
+  if(!filtered.length){target.innerHTML='<div class="dmx-translation-empty">'+(q?'Nema dokumenata koji odgovaraju pretrazi.':'Još nema dokumenata. Klikni „Izaberi dokumente” da dodaš Word ili PDF.')+'</div>';return;}
   target.innerHTML='<div class="dmx-translation-list">'+filtered.map(r=>{
    const type=String(r.filename).toLowerCase().endsWith('.pdf')?'PDF':'Word';
    const date=r.createdAt?new Date(r.createdAt).toLocaleDateString('sr-RS'):'';
    const size=(Number(r.size||r.blob?.size||0)/(1024*1024)).toFixed(2);
-   return '<article class="dmx-translation-row"><div><div class="dmx-translation-name">'+(type==='PDF'?'📕':'📘')+' '+esc(r.filename)+'</div><div class="dmx-translation-title-editor"><label for="dmx-trans-title-'+esc(r.id)+'">Naziv / opis prevoda</label><input id="dmx-trans-title-'+esc(r.id)+'" data-trans-title="'+esc(r.id)+'" maxlength="200" placeholder="Unesi naziv prevoda za pretragu" value="'+esc(r.title||'')+'"></div><div class="dmx-translation-meta">'+type+' · '+size+' MB · Dodato: '+esc(date)+'</div></div>'
+   const label=String(r.title||'').trim()||String(r.filename);
+   return '<details class="dmx-translation-folder"'+(q?' open':'')+'><summary><span class="dmx-folder-number">📁 '+String(r.folderNo).padStart(3,'0')+'</span><span class="dmx-folder-label">'+esc(label)+'</span><span class="muted small">'+type+'</span></summary>'
+    +'<article class="dmx-translation-row"><div style="min-width:0;flex:1"><div class="dmx-translation-name">'+(type==='PDF'?'📕':'📘')+' '+esc(r.filename)+'</div><div class="dmx-translation-title-editor"><label for="dmx-trans-title-'+esc(r.id)+'">Naziv prevoda – možeš menjati</label><input id="dmx-trans-title-'+esc(r.id)+'" data-trans-title="'+esc(r.id)+'" maxlength="200" placeholder="Naziv prevoda" value="'+esc(r.title||'')+'"></div><div class="dmx-translation-meta">'+type+' · '+size+' MB · Dodato: '+esc(date)+'</div></div>'
     +'<div class="dmx-translation-actions"><select class="form-control dmx-trans-status" data-trans-status="'+esc(r.id)+'" aria-label="Status prevoda">'+dmxTranslationsStatuses.map(t=>'<option value="'+esc(t)+'"'+(r.status===t?' selected':'')+'>'+esc(t)+'</option>').join('')+'</select>'
     +(type==='PDF'?'<button class="btn soft sm" data-action="translation-open" data-id="'+esc(r.id)+'">Otvori</button>':'')
-    +'<button class="btn soft sm" data-action="translation-download" data-id="'+esc(r.id)+'">↓ Preuzmi</button><button class="btn danger sm" data-action="translation-delete" data-id="'+esc(r.id)+'">Obriši</button></div></article>';
+    +'<button class="btn soft sm" data-action="translation-download" data-id="'+esc(r.id)+'">↓ Preuzmi</button><button class="btn danger sm" data-action="translation-delete" data-id="'+esc(r.id)+'">Obriši</button></div></article></details>';
   }).join('')+'</div>';
  }catch(err){target.innerHTML='<div class="dmx-translation-empty">Dokumenti nisu dostupni. Proveri dozvole pregledača.</div>';toast('Prevodi: '+(err.message||err),true);}
 }
-async function dmxTranslationsUpload(files){
- const newTitle=String(document.getElementById('dmx-translation-new-title')?.value||'').trim().slice(0,200);
- let ok=0,skipped=0;const arr=Array.from(files||[]).slice(0,25);
- for(const file of arr){
-  if(!/\.(pdf|doc|docx)$/i.test(file.name)||file.size<=0||file.size>50*1024*1024){skipped++;continue;}
+async function dmxTranslationsUpload(){
+ if(!dmxTranslationsPending.length)return;
+ const entries=[...dmxTranslationsPending];
+ let records=dmxTranslationsWithNumbers(await dmxTranslationsAll());
+ let max=Math.max(Number(localStorage.getItem('DMX_TRANSLATION_LAST_FOLDER')||0),...records.map(r=>Number(r.folderNo)||0),0);
+ let ok=0;
+ for(const item of entries){
+  const file=item.file;
   try{
-   await dmxTranslationsPut({id:uid(),filename:String(file.name).slice(0,200),blob:file,mime:file.type||'',size:file.size,title:newTitle,status:'Za prevod',createdAt:new Date().toISOString()});
+   const number=++max;
+   await dmxTranslationsPut({id:uid(),filename:String(file.name).slice(0,200),blob:file,mime:file.type||'',size:file.size,title:String(item.title||file.name).trim().slice(0,200),folderNo:number,status:'Za prevod',createdAt:new Date().toISOString()});
+   try{localStorage.setItem('DMX_TRANSLATION_LAST_FOLDER',String(number));}catch(e){}
    ok++;
   }catch(err){toast('Čuvanje nije uspelo: '+(err.message||'nema prostora'),true);break;}
  }
- if(ok){toast('Sačuvano dokumenata: '+ok);const titleInput=document.getElementById('dmx-translation-new-title');if(titleInput)titleInput.value='';}
- if(skipped)toast('Preskočene su nepodržane, prazne ili prevelike datoteke: '+skipped,true);
+ dmxTranslationsPending=entries.slice(ok);
+ dmxTranslationsDrawPending();
+ if(ok)toast('Sačuvano dokumenata: '+ok);
  if(view==='translations')dmxTranslationsRefresh();
 }
 const dmxPrevTopButtonsForTranslations=topButtonsForView;
@@ -2146,6 +2176,7 @@ render=function(){
  heading('Prevodi','Word i PDF dokumenti – evidencija i arhiva prevoda.');
  const root=document.getElementById('view-root');
  root.innerHTML=dmxTranslationsHTML();
+ dmxTranslationsDrawPending();
  dmxTranslationsRefresh();
 };
 document.addEventListener('keydown',e=>{
@@ -2156,13 +2187,15 @@ document.addEventListener('keydown',e=>{
 dmxTransFileInput.addEventListener('change',e=>{
  const files=Array.from(e.target.files||[]);
  e.target.value='';
- if(files.length)dmxTranslationsUpload(files);
+ if(files.length)dmxTranslationsStage(files);
 });
 document.addEventListener('click',async e=>{
  const b=e.target.closest('button[data-action^="translation-"]');if(!b)return;
  e.preventDefault();e.stopImmediatePropagation();
  const action=b.dataset.action,id=b.dataset.id;
  if(action==='translation-upload'){dmxTransFileInput.click();return;}
+ if(action==='translation-save-pending'){await dmxTranslationsUpload();return;}
+ if(action==='translation-cancel-pending'){dmxTranslationsPending=[];dmxTranslationsDrawPending();return;}
  if(action==='translation-delete'){
   if(!confirm('Trajno obrisati ovaj dokument sa ovog uređaja?'))return;
   try{await dmxTranslationsRemove(id);toast('Dokument je obrisan.');dmxTranslationsRefresh();}catch(err){toast(err.message,true);}
@@ -2191,6 +2224,7 @@ document.addEventListener('change',async e=>{
 },true);
 document.addEventListener('input',e=>{
  if(e.target.id==='dmx-translation-search'){dmxTranslationsSearch=e.target.value;dmxTranslationsRefresh();}
+ const pending=e.target.closest?.('input[data-pending-title]');if(pending&&dmxTranslationsPending[Number(pending.dataset.pendingTitle)])dmxTranslationsPending[Number(pending.dataset.pendingTitle)].title=pending.value;
 },true);
 document.addEventListener('dragover',e=>{
  const zone=e.target.closest?.('#dmx-translation-drop');if(!zone)return;
@@ -2202,7 +2236,7 @@ document.addEventListener('dragleave',e=>{
 document.addEventListener('drop',e=>{
  const zone=e.target.closest?.('#dmx-translation-drop');if(!zone)return;
  e.preventDefault();zone.classList.remove('drag-active');
- if(e.dataTransfer?.files?.length)dmxTranslationsUpload(e.dataTransfer.files);
+ if(e.dataTransfer?.files?.length)dmxTranslationsStage(e.dataTransfer.files);
 },true);
 
 load();render();
