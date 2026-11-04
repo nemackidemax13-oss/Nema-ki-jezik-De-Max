@@ -113,7 +113,7 @@ input:focus{border-color:#7aa8ef;box-shadow:0 0 0 4px rgba(15,87,200,.10)}
   background:linear-gradient(135deg,var(--blue),#2876e6);
   box-shadow:0 8px 18px rgba(15,87,200,.20);
 }
-.option.red input:checked + span{background:linear-gradient(135deg,#d8161f,#f13b43);border-color:#d8161f}
+.tempo-options .option input:checked + span{color:#392700;background:linear-gradient(135deg,#ffe8a0,#d9a52d);border-color:#b98612;box-shadow:0 8px 20px rgba(184,131,18,.28)}
 .divider{height:1px;background:var(--line);margin:17px 0}
 .note{
   display:flex;gap:10px;align-items:flex-start;padding:12px 13px;margin:2px 0 18px;
@@ -123,8 +123,11 @@ input:focus{border-color:#7aa8ef;box-shadow:0 0 0 4px rgba(15,87,200,.10)}
 button{
   min-height:52px;border:0;border-radius:15px;font-weight:900;font-size:15px;cursor:pointer;
 }
-.primary{color:#fff;background:linear-gradient(135deg,var(--red),#ff4950);box-shadow:0 10px 24px rgba(227,27,35,.22)}
-.secondary{color:var(--blue2);background:#edf4ff;border:1px solid #d4e3fb}
+.primary{color:#fff;background:linear-gradient(135deg,#148b3c,#20b65b);box-shadow:0 10px 24px rgba(20,139,60,.22)}
+.secondary{color:#fff;background:linear-gradient(135deg,#c91625,#f0444d);border:1px solid #ba1422}
+.primary:disabled{opacity:.75;cursor:wait}
+.sending-message{display:none;text-align:center;font-weight:800;color:#a66a00;background:#fff9e9;border:1px solid #f0d89c;border-radius:13px;padding:12px;margin-top:12px}
+.sending-message.show{display:block}
 .footer{text-align:center;color:#8090a8;font-size:12px;padding:0 20px 18px}
 .contact-footer{
   margin:4px 20px 20px;padding:16px;border:1px solid var(--line);border-radius:18px;
@@ -245,6 +248,7 @@ button{
         <button class="primary" id="submitBtn" type="submit">✉ Pošalji prijavu</button>
         <button class="secondary" type="reset">Obriši podatke</button>
       </div>
+      <div id="sendingMessage" class="sending-message" role="status" aria-live="polite">Molimo sačekajte dok se ne potvrdi prijava.</div>
     </form>
 
     <section id="result" class="result" aria-live="polite">
@@ -274,6 +278,7 @@ const result = document.getElementById('result');
 const resultTitle = document.getElementById('resultTitle');
 const summary = document.getElementById('summary');
 const submitBtn = document.getElementById('submitBtn');
+const sendingMessage = document.getElementById('sendingMessage');
 const fallbackActions = document.getElementById('fallbackActions');
 const nativeSubmitBtn = document.getElementById('nativeSubmitBtn');
 const emailFallback = document.getElementById('emailFallback');
@@ -443,6 +448,7 @@ form.addEventListener('submit', async (e) => {
   const payload = Object.fromEntries(new FormData(form).entries());
   submitBtn.disabled = true;
   submitBtn.textContent = 'Šaljem prijavu…';
+  sendingMessage.classList.add('show');
   result.classList.remove('show', 'error');
   fallbackActions.hidden = true;
   nativeSubmitBtn.hidden = false;
@@ -492,6 +498,7 @@ form.addEventListener('submit', async (e) => {
   } finally {
     submitBtn.disabled = false;
     submitBtn.textContent = '✉ Pošalji prijavu';
+    sendingMessage.classList.remove('show');
   }
 });
 
@@ -506,6 +513,7 @@ nativeSubmitBtn.addEventListener('click', () => {
 });
 
 form.addEventListener('reset', () => {
+  sendingMessage.classList.remove('show');
   result.classList.remove('show', 'error');
   fallbackActions.hidden = true;
   nativeSubmitBtn.hidden = false;
