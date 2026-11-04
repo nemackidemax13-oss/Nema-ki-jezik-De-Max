@@ -2094,7 +2094,7 @@ dmxTransFileInput.multiple=true;dmxTransFileInput.className='hidden';dmxTransFil
 document.body.appendChild(dmxTransFileInput);
 function dmxTranslationsHTML(){
  return '<div class="dmx-translation-info"><strong>Prevodi – arhiva dokumenata.</strong> Ubaci Word (.doc, .docx) ili PDF (.pdf), prati status i preuzmi original kad god ti zatreba. Datoteke ostaju u ovom pregledaču na ovom uređaju; nisu uključene u JSON rezervnu kopiju i ne prevode se automatski.</div>'
- +'<div class="dmx-translation-drop" id="dmx-translation-drop"><strong>📑 Dodaj Word ili PDF dokument</strong><p>Izaberi više datoteka odjednom ili ih prevuci ovde. Maksimalno 50 MB po datoteci.</p><button type="button" class="btn green" data-action="translation-upload">＋ Ubaci dokumente</button></div>'
+ +'<div class="dmx-translation-drop" id="dmx-translation-drop"><strong>📑 Dodaj Word ili PDF dokument</strong><p>Izaberi više datoteka odjednom ili ih prevuci ovde. Maksimalno 50 MB po datoteci.</p><label for="dmx-translation-files" class="btn green" role="button" tabindex="0">＋ Ubaci dokumente</label></div>'
  +'<label class="field-search dmx-translation-search"><span>⌕</span><input id="dmx-translation-search" type="search" placeholder="Pretraži dokumente..." value="'+esc(dmxTranslationsSearch)+'"></label>'
  +'<div id="dmx-translation-results"><div class="dmx-translation-empty">Učitavanje dokumenata...</div></div>';
 }
@@ -2133,7 +2133,7 @@ async function dmxTranslationsUpload(files){
 }
 const dmxPrevTopButtonsForTranslations=topButtonsForView;
 topButtonsForView=function(){
- if(view==='translations')return '<button class="btn soft dm-overview-red" data-view="overview">← Pregled</button><button class="btn green" data-action="translation-upload">＋ Ubaci Word / PDF</button>';
+ if(view==='translations')return '<button class="btn soft dm-overview-red" data-view="overview">← Pregled</button><label for="dmx-translation-files" class="btn green" role="button" tabindex="0">＋ Ubaci Word / PDF</label>';
  return dmxPrevTopButtonsForTranslations();
 };
 const dmxPrevRenderForTranslations=render;
@@ -2147,6 +2147,11 @@ render=function(){
  root.innerHTML=dmxTranslationsHTML();
  dmxTranslationsRefresh();
 };
+document.addEventListener('keydown',e=>{
+ if((e.key==='Enter'||e.key===' ')&&e.target.matches?.('label[for="dmx-translation-files"]')){
+  e.preventDefault();dmxTransFileInput.click();
+ }
+},true);
 dmxTransFileInput.addEventListener('change',e=>{
  const files=Array.from(e.target.files||[]);
  e.target.value='';
