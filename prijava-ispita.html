@@ -49,6 +49,7 @@ h1{font-size:clamp(26px,6.5vw,40px);line-height:1.08;margin:12px 0 8px;color:var
 .section-title{font-size:13px;font-weight:900;letter-spacing:.08em;text-transform:uppercase;color:var(--blue2);margin:2px 0 10px}
 .grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
 .field{margin-bottom:15px}
+.address-grid{grid-template-columns:minmax(0,2fr) minmax(120px,1fr)}
 label.main{display:block;font-size:14px;font-weight:800;margin:0 0 7px}
 .req{color:var(--red)}
 input[type=text],input[type=tel],input[type=email],input[type=date],select{
@@ -86,7 +87,7 @@ button{min-height:52px;border:0;border-radius:15px;font-weight:900;font-size:15p
 .footer{text-align:center;color:#8090a8;font-size:12px;padding:0 20px 18px}
 @media(max-width:560px){
   .page{padding:0 0 26px}.card{border-radius:0;border-left:0;border-right:0}.hero{padding:20px 16px 17px}
-  .logo{width:132px;height:132px;margin:2px auto 12px}.form{padding:17px 14px}.grid{grid-template-columns:1fr}
+  .logo{width:132px;height:132px;margin:2px auto 12px}.form{padding:17px 14px}.grid{grid-template-columns:1fr}.address-grid{grid-template-columns:minmax(0,2fr) minmax(100px,1fr);gap:8px}.address-grid label.main{font-size:12px}
   .options{grid-template-columns:repeat(2,1fr);gap:8px}.option span{min-height:48px;font-size:15px}
   .actions{grid-template-columns:1fr}.result{margin:0 14px 18px}.contact-footer{margin:4px 14px 18px;padding:14px}.contact-links{grid-template-columns:1fr}
 }
@@ -149,15 +150,17 @@ button{min-height:52px;border:0;border-radius:15px;font-weight:900;font-size:15p
             <input id="godinaRodjenja" name="Godina rođenja" type="text" inputmode="numeric" pattern="[0-9]{4}" maxlength="4" placeholder="Godina" aria-label="Godina rođenja" required>
           </div>
         </div>
+      </div>
+
+      <div class="grid address-grid">
         <div class="field">
           <label class="main" for="ulica">Ulica stanovanja kandidata <span class="req">*</span></label>
           <input id="ulica" name="Ulica stanovanja kandidata" type="text" autocomplete="address-line1" placeholder="Unesite naziv ulice" required>
         </div>
-      </div>
-
-      <div class="field">
-        <label class="main" for="brojKuce">Broj kuće <span class="req">*</span></label>
-        <input id="brojKuce" name="Broj kuće" type="text" placeholder="npr. 12 ili 12A" required>
+        <div class="field">
+          <label class="main" for="brojKuce">Broj kuće <span class="req">*</span></label>
+          <input id="brojKuce" name="Broj kuće" type="text" placeholder="npr. 12 ili 12A" required>
+        </div>
       </div>
 
       <div class="field">
