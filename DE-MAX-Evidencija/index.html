@@ -901,7 +901,7 @@ function ensureAdvancedData(){
 function ddDE(s){return isoOk(s)?new Date(s+'T12:00:00').toLocaleDateString('de-DE',{day:'2-digit',month:'2-digit',year:'numeric'}):'—'}
 function certificateBodyText(rec){
  const student=(rec.studentName||'____________').trim();
- return `Hiermit wird bestätigt, dass ${student} im Zeitraum vom ${ddDE(rec.startDate)} bis zum ${ddDE(rec.endDate)} an unserem Deutschkurs der Niveaustufe ${rec.level} teilgenommen und insgesamt ${rec.hours||''} Unterrichtsstunden absolviert hat.`;
+ return `Hiermit wird bestätigt, dass ${student} an unserem Deutschkurs der Niveaustufe ${rec.level} teilgenommen und insgesamt ${rec.hours||''} Unterrichtsstunden absolviert hat.`;
 }
 function levelBlock(level){return certText[level]||certText.A1}
 const oldLoad=load;
@@ -972,10 +972,10 @@ function certificateForm(id=''){
  const levelTpl=levelBlock(currentLevel);
  const studentName=r?.studentName||'';
  const body=r?.bodyText||certificateBodyText({studentName:studentName,startDate:r?.startDate||linkedCourse?.start||TODAY(),endDate:r?.endDate||linkedCourse?.end||TODAY(),level:currentLevel,hours:r?.hours||''});
- const form=`<form id="certificate-form" data-id="${esc(id)}"><div class="form-grid"><div class="form-group"><label>Broj potvrde *</label><input class="form-control" name="number" maxlength="50" required value="${esc(r?.number||certificateNumberDefault())}"></div><div class="form-group"><label>Datum *</label><input class="form-control" type="date" name="issueDate" required value="${esc(r?.issueDate||TODAY())}"></div><div class="form-group wide"><label for="cert-student-select">Učenik iz baze (opciono) – pronađi ili upiši ime</label><input class="form-control cert-student-search" type="search" list="cert-student-options" id="cert-student-select" maxlength="120" autocomplete="off" placeholder="Kucaj ime ili izaberi iz baze..." value="${esc(studentName)}"><input type="hidden" name="studentId" id="cert-student-id" value="${esc(r?.studentId||'')}"><datalist id="cert-student-options">${sortedStudents(db.students).map(s=>`<option value="${esc(name(s))}" label="${esc(s.phone||'DE-MAX učenik')}"></option>`).join('')}</datalist><div class="form-help">Crveno označeno polje omogućava pretragu ili unos novog imena.</div></div><div class="form-group wide"><label>Ime i prezime učenika *</label><input class="form-control" id="cert-student-name" name="studentName" maxlength="120" required value="${esc(studentName)}" placeholder="Ime Prezime"></div><div class="form-group"><label>Nivo kursa *</label><select class="form-control" name="level" id="cert-level">${opt([...levelOptions,['A1/A2','A1/A2 – Dva nivoa'],['A2/B1','A2/B1 – Dva nivoa'],['A1/A2/B1','A1/A2/B1 – Tri nivoa']],currentLevel)}</select></div><div class="form-group"><label>Broj časova *</label><input class="form-control" name="hours" maxlength="20" required value="${esc(r?.hours||'96')}" placeholder="96"></div><div class="form-group wide"><label>Naziv kursa</label><input class="form-control" name="courseTitle" id="cert-course-title" maxlength="120" value="${esc(r?.courseTitle || (linkedCourse?courseName(linkedCourse):''))}"></div><div class="form-group"><label>Period od *</label><input class="form-control" type="date" name="startDate" id="cert-start-date" required value="${esc(r?.startDate||linkedCourse?.start||TODAY())}"></div><div class="form-group"><label>Period do *</label><input class="form-control" type="date" name="endDate" id="cert-end-date" required value="${esc(r?.endDate||linkedCourse?.end||TODAY())}"></div><div class="form-group wide"><label>Glavni tekst potvrde *</label><textarea class="form-control" rows="5" name="bodyText" id="cert-body" required>${esc(body)}</textarea><div class="form-help">Predlog rečenice možeš ručno menjati.</div></div><div class="form-group wide"><label for="cert-level-title">Naslov nivoa – pojedinačni ili kombinovani nivoi</label><select class="form-control" name="levelTitle" id="cert-level-title">${opt(['A1','A2','B1','A1/A2','A2/B1','A1/A2/B1'].map(level=>[certText[level].title,certText[level].title]),r?.levelTitle||levelTpl.title)}</select></div><div class="form-group wide"><label>Opis nivoa</label><textarea class="form-control" rows="6" name="levelText" id="cert-level-text">${esc(r?.levelText||levelTpl.text)}</textarea></div></div><div class="cert-inline-actions"><button type="button" class="btn soft" data-action="cert-refresh-text">Ponudi tekst</button><button type="button" class="btn soft" data-action="close-modal">Otkaži</button><button type="submit" class="btn primary">Sačuvaj potvrdu</button></div></form>`;
+ const form=`<form id="certificate-form" data-id="${esc(id)}"><div class="form-grid"><div class="form-group"><label>Broj potvrde *</label><input class="form-control" name="number" maxlength="50" required value="${esc(r?.number||certificateNumberDefault())}"></div><div class="form-group"><label>Datum *</label><input class="form-control" type="date" name="issueDate" required value="${esc(r?.issueDate||TODAY())}"></div><div class="form-group wide"><label for="cert-student-select">Učenik iz baze (opciono) – pronađi ili upiši ime</label><input class="form-control cert-student-search" type="search" list="cert-student-options" id="cert-student-select" maxlength="120" autocomplete="off" placeholder="Kucaj ime ili izaberi iz baze..." value="${esc(studentName)}"><input type="hidden" name="studentId" id="cert-student-id" value="${esc(r?.studentId||'')}"><datalist id="cert-student-options">${sortedStudents(db.students).map(s=>`<option value="${esc(name(s))}" label="${esc(s.phone||'DE-MAX učenik')}"></option>`).join('')}</datalist><div class="form-help">Crveno označeno polje omogućava pretragu ili unos novog imena.</div></div><div class="form-group wide"><label>Ime i prezime učenika *</label><input class="form-control" id="cert-student-name" name="studentName" maxlength="120" required value="${esc(studentName)}" placeholder="Ime Prezime"></div><div class="form-group"><label>Nivo kursa *</label><select class="form-control" name="level" id="cert-level">${opt([...levelOptions,['A1/A2','A1/A2 – Dva nivoa'],['A2/B1','A2/B1 – Dva nivoa'],['A1/A2/B1','A1/A2/B1 – Tri nivoa']],currentLevel)}</select></div><div class="form-group"><label>Broj časova *</label><input class="form-control" name="hours" maxlength="20" required value="${esc(r?.hours||'96')}" placeholder="96"></div><div class="form-group wide"><label>Naziv kursa</label><input class="form-control" name="courseTitle" id="cert-course-title" maxlength="120" value="${esc(r?.courseTitle || (linkedCourse?courseName(linkedCourse):''))}"></div><input type="hidden" name="startDate" id="cert-start-date" value="${esc(r?.startDate||'')}"><input type="hidden" name="endDate" id="cert-end-date" value="${esc(r?.endDate||'')}"><div class="form-group wide"><label>Glavni tekst potvrde *</label><textarea class="form-control" rows="5" name="bodyText" id="cert-body" required>${esc(body)}</textarea><div class="form-help">Predlog rečenice možeš ručno menjati.</div></div><div class="form-group wide"><label for="cert-level-title">Naslov nivoa – pojedinačni ili kombinovani nivoi</label><select class="form-control" name="levelTitle" id="cert-level-title">${opt(['A1','A2','B1','A1/A2','A2/B1','A1/A2/B1'].map(level=>[certText[level].title,certText[level].title]),r?.levelTitle||levelTpl.title)}</select></div><div class="form-group wide"><label>Opis nivoa</label><textarea class="form-control" rows="6" name="levelText" id="cert-level-text">${esc(r?.levelText||levelTpl.text)}</textarea></div></div><div class="cert-inline-actions"><button type="button" class="btn soft" data-action="cert-refresh-text">Ponudi tekst</button><button type="button" class="btn soft" data-action="close-modal">Otkaži</button><button type="submit" class="btn primary">Sačuvaj potvrdu</button></div></form>`;
  openModal(r?'Izmeni potvrdu':'Nova potvrda','Popuni podatke, sačuvaj i preuzmi PDF.',form,'',true);
 }
-function certCourseSync(form){const cid=form.querySelector('[name="courseId"]').value;const c=getCourse(cid);if(!c)return;const title=form.querySelector('#cert-course-title');const level=form.querySelector('#cert-level');const sd=form.querySelector('#cert-start-date');const ed=form.querySelector('#cert-end-date');if(title&&!title.value.trim())title.value=courseName(c);if(level)level.value=c.level;if(sd)sd.value=c.start;if(ed)ed.value=c.end;certLevelSync(form,false);}
+function certCourseSync(form){const cid=form.querySelector('[name="courseId"]').value;const c=getCourse(cid);if(!c)return;const title=form.querySelector('#cert-course-title');const level=form.querySelector('#cert-level');const sd=form.querySelector('#cert-start-date');const ed=form.querySelector('#cert-end-date');if(title&&!title.value.trim())title.value=courseName(c);if(level)level.value=c.level;certLevelSync(form,false);}
 function certStudentSync(form){const query=form.querySelector('#cert-student-select')?.value.trim()||'';const student=sortedStudents(db.students).find(s=>name(s).toLocaleLowerCase('sr')===query.toLocaleLowerCase('sr'));const hidden=form.querySelector('#cert-student-id');if(hidden)hidden.value=student?.id||'';const target=form.querySelector('#cert-student-name');if(target)target.value=query;}
 function certTitleSync(form){const selected=form.querySelector('#cert-level-title')?.value;const match=Object.entries(certText).find(([,v])=>v.title===selected);if(!match)return;const level=form.querySelector('#cert-level');if(level)level.value=match[0];const text=form.querySelector('#cert-level-text');if(text)text.value=match[1].text;certRefreshBody(form)}
 function certLevelSync(form,updateText=true){const level=form.querySelector('#cert-level')?.value||'A1';const tpl=levelBlock(level);const title=form.querySelector('#cert-level-title');const text=form.querySelector('#cert-level-text');if(title)title.value=tpl.title;if(text)text.value=tpl.text;if(updateText)certRefreshBody(form)}
@@ -984,8 +984,8 @@ function saveCertificate(form){
  ensureAdvancedData();
  if(!form.reportValidity())return;
  const data=Object.fromEntries(new FormData(form).entries());
- if(!data.studentName.trim()||!data.number.trim()||!isoOk(data.issueDate)||!isoOk(data.startDate)||!isoOk(data.endDate))return toast('Proveri broj potvrde, ime i datume.',true);
- if(data.endDate<data.startDate)return toast('Datum završetka ne može biti pre datuma početka.',true);
+ if(!data.studentName.trim()||!data.number.trim()||!isoOk(data.issueDate))return toast('Proveri broj potvrde, ime i datum izdavanja.',true);
+ if(data.startDate&&data.endDate&&data.endDate<data.startDate)return toast('Datum završetka ne može biti pre datuma početka.',true);
  const id=form.dataset.id||uid();
  const rec={id,studentId:String(data.studentId||''),studentName:data.studentName.trim(),courseId:String(data.courseId||''),courseTitle:data.courseTitle.trim(),level:data.level,number:data.number.trim(),issueDate:data.issueDate,startDate:data.startDate,endDate:data.endDate,hours:String(data.hours||'').trim(),bodyText:data.bodyText.trim(),bodyHtml:dmxCleanRich(data.bodyHtml||''),levelTitle:data.levelTitle.trim(),levelText:data.levelText.trim(),createdAt:form.dataset.id?(db.certificates.find(x=>x.id===form.dataset.id)?.createdAt||new Date().toISOString()):new Date().toISOString()};
  const idx=db.certificates.findIndex(x=>x.id===id); if(idx>=0)db.certificates[idx]=rec; else db.certificates.unshift(rec);
@@ -1001,7 +1001,7 @@ function renderCertificates(){
  const q=certificateSearch.trim().toLocaleLowerCase('sr');
  const items=[...db.certificates].filter(r=>`${r.number} ${r.studentName} ${r.level} ${r.courseTitle}`.toLocaleLowerCase('sr').includes(q)).sort((a,b)=>String(b.issueDate).localeCompare(String(a.issueDate))||String(b.createdAt).localeCompare(String(a.createdAt)));
  const count=items.length;
- const pagedRes=count?paged('certificates',items,r=>`<div class="certificate-row"><div class="left"><div class="title">Potvrda ${esc(r.number)} · ${esc(r.studentName)}</div><div class="sub">${esc(r.level)}${r.courseTitle?` · ${esc(r.courseTitle)}`:''} · Datum: ${dd(r.issueDate)} · Period: ${dd(r.startDate)} – ${dd(r.endDate)} · ${esc(r.hours)} časova</div></div><div class="actions"><button class="btn soft sm" data-action="certificate-preview" data-id="${esc(r.id)}">Pregled</button><button class="btn soft sm" data-action="certificate-pdf" data-id="${esc(r.id)}">PDF</button><button class="btn soft sm" data-action="edit-certificate" data-id="${esc(r.id)}">Izmeni</button><button class="btn danger sm" data-action="delete-certificate" data-id="${esc(r.id)}">Obriši</button></div></div>`):null; return `<div class="certificate-note">Ovde čuvaš šablone potvrda za A1, A2 i B1. Kada popuniš obrazac, možeš odmah otvoriti pregled i preuzeti potvrdu u PDF-u.</div><div class="toolbar"><label class="field-search"><span>⌕</span><input type="search" id="certificate-search" placeholder="Broj potvrde, učenik, nivo..." value="${esc(certificateSearch)}"></label></div><div class="panel pad">${count?`<div class="certificate-list">${pagedRes.items}</div>${pagedRes.pager}`:emptyHTML('📄','Još nema potvrda','Kreiraj potvrdu pomoću zelenog dugmeta u vrhu.')}</div>`;
+ const pagedRes=count?paged('certificates',items,r=>`<div class="certificate-row"><div class="left"><div class="title">Potvrda ${esc(r.number)} · ${esc(r.studentName)}</div><div class="sub">${esc(r.level)}${r.courseTitle?` · ${esc(r.courseTitle)}`:''} · Datum: ${dd(r.issueDate)}${r.startDate&&r.endDate?` · Period: ${dd(r.startDate)} – ${dd(r.endDate)}`:''} · ${esc(r.hours)} časova</div></div><div class="actions"><button class="btn soft sm" data-action="certificate-preview" data-id="${esc(r.id)}">Pregled</button><button class="btn soft sm" data-action="certificate-pdf" data-id="${esc(r.id)}">PDF</button><button class="btn soft sm" data-action="edit-certificate" data-id="${esc(r.id)}">Izmeni</button><button class="btn danger sm" data-action="delete-certificate" data-id="${esc(r.id)}">Obriši</button></div></div>`):null; return `<div class="certificate-note">Ovde čuvaš šablone potvrda za A1, A2 i B1. Kada popuniš obrazac, možeš odmah otvoriti pregled i preuzeti potvrdu u PDF-u.</div><div class="toolbar"><label class="field-search"><span>⌕</span><input type="search" id="certificate-search" placeholder="Broj potvrde, učenik, nivo..." value="${esc(certificateSearch)}"></label></div><div class="panel pad">${count?`<div class="certificate-list">${pagedRes.items}</div>${pagedRes.pager}`:emptyHTML('📄','Još nema potvrda','Kreiraj potvrdu pomoću zelenog dugmeta u vrhu.')}</div>`;
 }
 function loadScript(url){return new Promise((resolve,reject)=>{const s=document.createElement('script');s.src=url;s.onload=resolve;s.onerror=()=>reject(Error('Ne mogu učitati dodatak za PDF.'));document.head.appendChild(s)})}
 let pdfLibPromise=null;
@@ -1281,29 +1281,44 @@ dmxV13Style.textContent=`
  `;
 document.head.appendChild(dmxV13Style);
 
-// The rich editor permits only bold markup and line breaks; never use arbitrary user HTML.
+// Certificate text formatting: only allowlisted fonts, colors and emphasis survive saving/PDF export.
+const dmxCertFonts={'Arial':'Arial, sans-serif','Georgia':'Georgia, serif','Times New Roman':'Times New Roman, serif','Verdana':'Verdana, sans-serif','Tahoma':'Tahoma, sans-serif'};
+const dmxCertColors={'#000000':'#000000','#cc232b':'#cc232b','#1b56b1':'#1b56b1'};
 function dmxCleanRich(raw){
- const template=document.createElement('template');template.innerHTML=String(raw||'').slice(0,18000);
+ const template=document.createElement('template');template.innerHTML=String(raw||'').slice(0,24000);
  const walk=(node)=>{
-   if(node.nodeType===Node.TEXT_NODE)return esc(node.textContent||'');
-   if(node.nodeType!==Node.ELEMENT_NODE)return '';
-   const tag=node.tagName.toLowerCase();
-   if(tag==='br')return '<br>';
-   const inner=[...node.childNodes].map(walk).join('');
-   if(tag==='strong'||tag==='b')return '<strong>'+inner+'</strong>';
-   if(tag==='div'||tag==='p')return inner+'<br>';
-   return inner;
+  if(node.nodeType===Node.TEXT_NODE)return esc(node.textContent||'');
+  if(node.nodeType!==Node.ELEMENT_NODE)return '';
+  const tag=node.tagName.toLowerCase();
+  if(tag==='br')return '<br>';
+  let inner=[...node.childNodes].map(walk).join('');
+  if(tag==='b'||tag==='strong')inner='<strong>'+inner+'</strong>';
+  if(tag==='i'||tag==='em')inner='<em>'+inner+'</em>';
+  if(tag==='u')inner='<u>'+inner+'</u>';
+  if(tag==='div'||tag==='p')inner+='<br>';
+  // Never copy arbitrary styles: font-family and colors must match trusted values.
+  const style=node.style;
+  if(style){
+   const weight=style.fontWeight;
+   if(weight==='bold'||weight==='bolder'||(+weight>=600))inner='<strong>'+inner+'</strong>';
+   if(style.fontStyle==='italic')inner='<em>'+inner+'</em>';
+   if(style.textDecorationLine&&style.textDecorationLine.includes('underline'))inner='<u>'+inner+'</u>';
+   const rgb=(style.color||'').toLowerCase().replace(/\s/g,'');
+   const normalized={'rgb(0,0,0)':'#000000','rgb(204,35,43)':'#cc232b','rgb(27,86,177)':'#1b56b1','red':'#cc232b','blue':'#1b56b1','black':'#000000'}[rgb]||rgb;
+   if(dmxCertColors[normalized])inner='<span style="color:'+dmxCertColors[normalized]+'">'+inner+'</span>';
+   const font=style.fontFamily?.replace(/["']/g,'').split(',')[0].trim();
+   if(dmxCertFonts[font])inner='<span style="font-family:'+dmxCertFonts[font]+'">'+inner+'</span>';
+  }
+  return inner;
  };
- return [...template.content.childNodes].map(walk).join('').replace(/(<br>\s*)+$/,'').slice(0,6000);
+ return [...template.content.childNodes].map(walk).join('').replace(/(<br>\s*)+$/,'').slice(0,10000);
 }
 function dmxCertificateRich(r){
- const raw=r.bodyHtml?dmxCleanRich(r.bodyHtml):esc(r.bodyText||certificateBodyText(r)).replace(/\n/g,'<br>');
- return raw;
+ return r.bodyHtml?dmxCleanRich(r.bodyHtml):esc(r.bodyText||certificateBodyText(r)).replace(/\n/g,'<br>');
 }
 function dmxSyncRich(form){
  const editor=form.querySelector('#dmx-cert-rich'),plain=form.querySelector('#cert-body'),html=form.querySelector('#dmx-cert-body-html');
  if(!editor||!plain||!html)return;
- // innerText accounts for visible line breaks; keep historical bodyText for exports.
  plain.value=editor.innerText.replace(/\u00a0/g,' ').trim();
  html.value=dmxCleanRich(editor.innerHTML);
 }
@@ -1312,26 +1327,51 @@ function dmxSetupRich(form,id){
  const rec=id?db.certificates.find(x=>x.id===id):null;
  const initial=rec?.bodyHtml?dmxCleanRich(rec.bodyHtml):esc(old.value).replace(/\n/g,'<br>');
  const group=old.closest('.form-group');
- const toolbar=document.createElement('div'); toolbar.className='dmx-certificate-boldbar';
- toolbar.innerHTML='<span class="small muted">Označi deo teksta, zatim klikni <strong>B</strong></span><button type="button" class="dmx-bold-control" data-action="cert-bold-text" title="Podebljaj označeni tekst" aria-label="Podebljaj označeni tekst"><strong>B</strong></button>';
- const editor=document.createElement('div'); editor.id='dmx-cert-rich';editor.className='form-control dmx-rich-editor';editor.contentEditable='true';editor.setAttribute('role','textbox');editor.setAttribute('aria-multiline','true');editor.setAttribute('aria-label','Glavni tekst potvrde');editor.innerHTML=initial;
+ const toolbar=document.createElement('div');toolbar.className='dmx-certificate-boldbar dmx-rich-toolbar';
+ toolbar.innerHTML='<label class="dmx-font-label">Font <select class="form-control dmx-font-select" data-rich-font><option>Arial</option><option>Georgia</option><option>Times New Roman</option><option>Verdana</option><option>Tahoma</option></select></label><button type="button" class="dmx-rich-btn" data-rich-command="bold" title="Podebljano / normalno"><b>B</b></button><button type="button" class="dmx-rich-btn" data-rich-command="italic" title="Kosi tekst"><i>I</i></button><button type="button" class="dmx-rich-btn" data-rich-command="underline" title="Podvučeno"><u>U</u></button><span class="dmx-color-label">Boja:</span><button type="button" class="dmx-color-btn" data-rich-color="#000000" title="Crna" aria-label="Crna boja" style="background:#000000"></button><button type="button" class="dmx-color-btn" data-rich-color="#cc232b" title="Crvena" aria-label="Crvena boja" style="background:#cc232b"></button><button type="button" class="dmx-color-btn" data-rich-color="#1b56b1" title="Plava" aria-label="Plava boja" style="background:#1b56b1"></button><button type="button" class="dmx-rich-btn" data-rich-clear title="Ukloni formatiranje označenog teksta">Normalno</button>';
+ const editor=document.createElement('div');editor.id='dmx-cert-rich';editor.className='form-control dmx-rich-editor';editor.contentEditable='true';editor.setAttribute('role','textbox');editor.setAttribute('aria-multiline','true');editor.setAttribute('aria-label','Glavni tekst potvrde');editor.innerHTML=initial;
  const store=document.createElement('input');store.type='hidden';store.name='bodyHtml';store.id='dmx-cert-body-html';
  old.required=false;old.style.display='none';
  group.insertBefore(toolbar,old);group.insertBefore(editor,old);group.insertBefore(store,old);
- const bold=toolbar.querySelector('[data-action="cert-bold-text"]');
  let savedRange=null;
- bold.addEventListener('mousedown',e=>{e.preventDefault();const sel=window.getSelection();if(sel&&sel.rangeCount&&editor.contains(sel.anchorNode))savedRange=sel.getRangeAt(0).cloneRange()});
- bold.addEventListener('click',e=>{e.preventDefault();editor.focus();if(savedRange){const sel=window.getSelection();sel.removeAllRanges();sel.addRange(savedRange);if(!savedRange.collapsed){const strong=document.createElement('strong');strong.appendChild(savedRange.extractContents());savedRange.insertNode(strong);sel.removeAllRanges();savedRange=null;dmxSyncRich(form);return}}document.execCommand('bold',false,null);savedRange=null;dmxSyncRich(form)});
+ editor.addEventListener('keyup',remember);editor.addEventListener('mouseup',remember);
+ function remember(){const sel=window.getSelection();if(sel&&sel.rangeCount&&editor.contains(sel.anchorNode))savedRange=sel.getRangeAt(0).cloneRange()}
+ function restore(){editor.focus();if(savedRange){const sel=window.getSelection();sel.removeAllRanges();sel.addRange(savedRange)}}
+ toolbar.addEventListener('mousedown',e=>{if(e.target.closest('button')){remember();e.preventDefault()}});
+ toolbar.addEventListener('click',e=>{
+  const btn=e.target.closest('button');if(!btn)return;
+  restore();
+  if(btn.dataset.richCommand)document.execCommand(btn.dataset.richCommand,false,null);
+  else if(btn.dataset.richColor)document.execCommand('foreColor',false,btn.dataset.richColor);
+  else if(btn.hasAttribute('data-rich-clear'))document.execCommand('removeFormat',false,null);
+  remember();dmxSyncRich(form);
+ });
+ toolbar.querySelector('[data-rich-font]').addEventListener('focus',remember);
+ toolbar.querySelector('[data-rich-font]').addEventListener('change',e=>{
+  restore();document.execCommand('fontName',false,e.target.value);remember();dmxSyncRich(form);
+ });
  editor.addEventListener('input',()=>dmxSyncRich(form));
  editor.addEventListener('blur',()=>dmxSyncRich(form));
  editor.addEventListener('paste',e=>{e.preventDefault();const text=e.clipboardData?.getData('text/plain')||'';document.execCommand('insertText',false,text)});
  dmxSyncRich(form);
 }
+const dmxRichStyles=document.createElement('style');
+dmxRichStyles.textContent=`
+ .dmx-rich-toolbar{display:flex!important;justify-content:flex-start!important;flex-wrap:wrap;gap:7px!important;align-items:center;margin:8px 0!important}
+ .dmx-font-label{display:flex;align-items:center;gap:6px;font-size:12px;font-weight:750}
+ .dmx-font-select{width:auto!important;min-width:115px;height:36px!important;padding:4px 7px!important}
+ .dmx-rich-btn{min-width:36px;min-height:35px;border:1px solid #cbd6e9;border-radius:8px;background:#f3f7ff;color:#1d3556;padding:5px 9px;font-weight:800}
+ .dmx-color-label{font-size:12px;color:#58647c;font-weight:750}
+ .dmx-color-btn{width:30px;height:30px;border:3px solid white;border-radius:50%;box-shadow:0 0 0 1px #b8c4d8;cursor:pointer}
+ .dmx-color-btn:focus-visible{outline:3px solid #ffbe40}
+ .dmx-rich-editor{min-height:145px!important;max-height:330px!important;overflow-y:auto!important}
+ .certificate-sheet .cert-body{white-space:normal}
+ `;
+document.head.appendChild(dmxRichStyles);
 const dmxPrevCertificateForm=certificateForm;
 certificateForm=function(id=''){
  dmxPrevCertificateForm(id);
- const form=document.querySelector('#certificate-form');if(!form)return;
- dmxSetupRich(form,id);
+ const form=document.querySelector('#certificate-form');if(form)dmxSetupRich(form,id);
 };
 const dmxPrevCertRefresh=certRefreshBody;
 certRefreshBody=function(form){
