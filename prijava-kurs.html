@@ -447,40 +447,23 @@ form.addEventListener('submit', async (e) => {
   fallbackActions.hidden = true;
   nativeSubmitBtn.hidden = false;
 
-  let usedWorker = false;
   try {
-    // Seamlessly switch from FormSubmit to our independent Worker when live.
-    usedWorker = await workerIsReady();
-    let response;
-    if (usedWorker) {
-      response = await fetch(WORKER_ENDPOINT, {
+    // Uvek prvo pokusaj FormSubmit. Web3Forms se koristi samo bez potvrde primarnog servisa.
+    try {
+      const primaryResponse = await fetch(FORM_ENDPOINT, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-        body: JSON.stringify({
-          ime: data.ime,
-          prezime: data.prezime,
-          telefon: data.telefon === '—' ? '' : data.telefon,
-          nivo: data.nivo,
-          tempo: data.tempo,
-          format: data.format,
-          _honey: payload._honey || ''
-        })
+        headers: { 'Accept': 'application/json' },
+        body: new FormData(form)
       });
-      if (!response.ok) throw new Error('Worker HTTP ' + response.status);
-      const reply = await response.json();
-      if (reply.ok !== true) throw new Error(String(reply.error || 'WORKER_NIJE_POTVRDIO'));
-    } else {
-      // Compatibility mode only; automatically stops being used when Worker is ready.
-      response = await fetch(FORM_ENDPOINT, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-        body: JSON.stringify(payload)
-      });
-      if (!response.ok) throw new Error('FormSubmit HTTP ' + response.status);
-      const reply = await response.json();
-      if (reply.success !== true && reply.success !== 'true') {
-        throw new Error(String(reply.message || 'SERVIS_NIJE_POTVRDIO'));
+      if (!primaryResponse.ok) throw new Error('FormSubmit HTTP ' + primaryResponse.status);
+      const primaryReply = await primaryResponse.json();
+      if (primaryReply.success !== true && primaryReply.success !== 'true') {
+        throw new Error(String(primaryReply.message || 'FORMSUBMIT_NIJE_POTVRDIO'));
       }
+    } catch (primaryError) {
+      console.warn('FormSubmit nije potvrdio slanje; pokusaj preko Web3Forms:', primaryError);
+      const backupData = new FormData(form);
+      await sendViaWeb3Forms(backupData, 'Nova De-Max prijava kursa — ' + data.ime + ' ' + data.prezime + ' — ' + data.nivo);
     }
 
     renderSummary(data);
@@ -489,28 +472,9 @@ form.addEventListener('submit', async (e) => {
     result.classList.add('show');
     result.scrollIntoView({behavior:'smooth',block:'nearest'});
   } catch (err) {
-    // Pri nedostupnom primarnom servisu koristi Web3Forms kao automatsku rezervu.
-    try {
-      console.warn('Primarni servis nije potvrdio prijavu; pokusaj Web3Forms:', err);
-      const backupData = new FormData(form);
-      backupData.set('Početak kursa', data.termin);
-      await sendViaWeb3Forms(backupData, 'Nova De-Max prijava kursa — ' + data.ime + ' ' + data.prezime + ' — ' + data.nivo);
-      renderSummary(data);
-      resultTitle.textContent = '✓ Prijava je uspešno poslata. Hvala!';
-      result.classList.remove('error');
-      result.classList.add('show');
-      fallbackActions.hidden = true;
-      result.scrollIntoView({behavior:'smooth',block:'nearest'});
-      return;
-    } catch (backupErr) {
-      console.warn('Web3Forms nije potvrdio rezervno slanje:', backupErr);
-    }
     resultTitle.textContent = '⚠ Slanje prijave nije potvrđeno';
-    summary.textContent = usedWorker
-      ? 'Cloudflare servis trenutno ne može da potvrdi slanje. Podaci su ostali u formularu. Pošaljite prijavu direktno mejlom.'
-      : 'Servis za slanje trenutno ne može da potvrdi prijavu. Podaci su ostali u formularu. Pokušajte rezervno ili pošaljite prijavu mejlom.';
-    // Don't automatically re-send an unconfirmed Worker request: it could duplicate a real registration.
-    nativeSubmitBtn.hidden = usedWorker;
+    summary.textContent = 'Ni FormSubmit ni Web3Forms nisu potvrdili slanje. Podaci su ostali u formularu. Možete poslati prijavu direktno mejlom.';
+    nativeSubmitBtn.hidden = true;
     fallbackActions.hidden = false;
     result.classList.add('error', 'show');
     result.scrollIntoView({behavior:'smooth',block:'nearest'});
