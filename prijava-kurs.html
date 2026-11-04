@@ -283,6 +283,30 @@ const submissionStartDate = document.getElementById('submissionStartDate');
 const WORKER_ENDPOINT = 'https://demax-prijave.nemackidemax13.workers.dev/prijava';
 // Temporary backward-compatible service until the Worker is operational.
 const FORM_ENDPOINT = 'https://formsubmit.co/ajax/nemackidemax13@gmail.com';
+
+// Web3Forms: nezavisni rezervni servis za oba originalna obrasca.
+const WEB3FORMS_ENDPOINT = 'https://api.web3forms.com/submit';
+const WEB3FORMS_ACCESS_KEY = '333bb0d4-704a-442b-897f-413be11c10f1';
+async function sendViaWeb3Forms(formData, subject) {
+  const backup = new FormData();
+  backup.set('access_key', WEB3FORMS_ACCESS_KEY);
+  backup.set('subject', subject);
+  backup.set('from_name', 'De-Max Tutin');
+  for (const [name, value] of formData.entries()) {
+    if (name === '_honey' || name === 'access_key' || name.startsWith('_')) continue;
+    if (typeof value === 'string') backup.append(name, value);
+  }
+  const response = await fetch(WEB3FORMS_ENDPOINT, {
+    method: 'POST',
+    headers: { Accept: 'application/json' },
+    body: backup
+  });
+  if (!response.ok) throw new Error('Web3Forms HTTP ' + response.status);
+  const reply = await response.json();
+  if (reply.success !== true) throw new Error(String(reply.message || 'WEB3FORMS_NIJE_POTVRDIO'));
+  return true;
+}
+
 const courseDate = document.getElementById('courseDate');
 const courseInfo = document.getElementById('courseInfo');
 const tempoOptions = document.getElementById('tempoOptions');
@@ -465,6 +489,22 @@ form.addEventListener('submit', async (e) => {
     result.classList.add('show');
     result.scrollIntoView({behavior:'smooth',block:'nearest'});
   } catch (err) {
+    // Pri nedostupnom primarnom servisu koristi Web3Forms kao automatsku rezervu.
+    try {
+      console.warn('Primarni servis nije potvrdio prijavu; pokusaj Web3Forms:', err);
+      const backupData = new FormData(form);
+      backupData.set('Početak kursa', data.termin);
+      await sendViaWeb3Forms(backupData, 'Nova De-Max prijava kursa — ' + data.ime + ' ' + data.prezime + ' — ' + data.nivo);
+      renderSummary(data);
+      resultTitle.textContent = '✓ Prijava je uspešno poslata. Hvala!';
+      result.classList.remove('error');
+      result.classList.add('show');
+      fallbackActions.hidden = true;
+      result.scrollIntoView({behavior:'smooth',block:'nearest'});
+      return;
+    } catch (backupErr) {
+      console.warn('Web3Forms nije potvrdio rezervno slanje:', backupErr);
+    }
     resultTitle.textContent = '⚠ Slanje prijave nije potvrđeno';
     summary.textContent = usedWorker
       ? 'Cloudflare servis trenutno ne može da potvrdi slanje. Podaci su ostali u formularu. Pošaljite prijavu direktno mejlom.'
