@@ -67,6 +67,8 @@ input:focus{border-color:#7aa8ef;box-shadow:0 0 0 4px rgba(15,87,200,.10)}
   font-weight:900;padding:9px 8px;cursor:pointer;transition:.18s;
 }
 .option input:checked + span{color:#fff;border-color:var(--blue);background:linear-gradient(135deg,var(--blue),#2876e6);box-shadow:0 8px 18px rgba(15,87,200,.20)}
+.option.red{position:relative}
+.option.red::after{content:"*";position:absolute;top:3px;right:11px;color:#e31b23;font-size:20px;font-weight:900;line-height:1;pointer-events:none;text-shadow:0 0 2px #fff,0 0 5px #fff}
 .option.red input:checked + span{background:linear-gradient(135deg,#d8161f,#f13b43);border-color:#d8161f}
 .note{display:flex;gap:10px;align-items:flex-start;padding:12px 13px;margin:3px 0 18px;background:#f8fafc;border:1px solid #e7ecf4;border-radius:14px;color:#475467;font-size:13px;line-height:1.45}
 .actions{display:grid;grid-template-columns:1fr 1fr;gap:10px}
@@ -178,8 +180,8 @@ button{min-height:52px;border:0;border-radius:15px;font-weight:900;font-size:15p
       <div class="field">
         <div class="section-title">Mesto polaganja ispita <span class="req">*</span></div>
         <div class="options two">
-          <label class="option red"><input type="radio" name="Mesto polaganja" value="Novi Pazar" required><span>📍 Novi Pazar <span class="req" style="color:inherit">*</span></span></label>
-          <label class="option red"><input type="radio" name="Mesto polaganja" value="Beograd"><span>📍 Beograd <span class="req" style="color:inherit">*</span></span></label>
+          <label class="option red"><input type="radio" name="Mesto polaganja" value="Novi Pazar" required><span>📍 Novi Pazar</span></label>
+          <label class="option red"><input type="radio" name="Mesto polaganja" value="Beograd"><span>📍 Beograd</span></label>
         </div>
       </div>
 
