@@ -225,6 +225,28 @@ const monthSelect=document.getElementById('mesecRodjenja');
 const yearSelect=document.getElementById('godinaRodjenja');
 
 const FORM_ENDPOINT='https://formsubmit.co/ajax/nemackidemax13@gmail.com';
+const WEB3FORMS_ENDPOINT='https://api.web3forms.com/submit';
+const WEB3FORMS_KEY='333bb0d4-704a-442b-897f-413be11c10f1';
+
+async function sendExamBackup(originalData, subject) {
+  const backup = new FormData();
+  backup.set('access_key', WEB3FORMS_KEY);
+  backup.set('subject', subject);
+  backup.set('from_name', 'De-Max Tutin');
+  for (const [name, value] of originalData.entries()) {
+    if (name.startsWith('_') || name === 'access_key') continue;
+    if (typeof value === 'string') backup.append(name, value);
+  }
+  const response = await fetch(WEB3FORMS_ENDPOINT, {
+    method: 'POST',
+    headers: {'Accept':'application/json'},
+    body: backup
+  });
+  if (!response.ok) throw new Error('Web3Forms HTTP ' + response.status);
+  const body = await response.json();
+  if (body.success !== true) throw new Error('Rezervni servis nije potvrdio prijavu');
+}
+
 
 form.addEventListener('submit',async(e)=>{
   e.preventDefault();
@@ -252,12 +274,21 @@ form.addEventListener('submit',async(e)=>{
   result.classList.remove('show');
 
   try{
-    const response=await fetch(FORM_ENDPOINT,{
-      method:'POST',
-      headers:{'Accept':'application/json'},
-      body:fd
-    });
-    if(!response.ok) throw new Error('Slanje nije uspelo');
+    try {
+      const response=await fetch(FORM_ENDPOINT,{
+        method:'POST',
+        headers:{'Accept':'application/json'},
+        body:fd
+      });
+      if(!response.ok) throw new Error('FormSubmit HTTP '+response.status);
+      const primaryResult=await response.json();
+      if(primaryResult.success !== true && primaryResult.success !== 'true') {
+        throw new Error('FormSubmit nije potvrdio prijavu');
+      }
+    } catch (primaryError) {
+      console.warn('FormSubmit nije potvrdio slanje. Koristi se Web3Forms.',primaryError);
+      await sendExamBackup(fd, 'Nova De-Max prijava ispita — '+ime+' '+prezime+' — '+nivo+' — '+mesto);
+    }
 
     resultTitle.textContent='✓ Hvala na prijavi!';
     result.classList.add('show');
