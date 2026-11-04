@@ -450,11 +450,20 @@ form.addEventListener('submit', async (e) => {
   try {
     // Uvek prvo pokusaj FormSubmit. Web3Forms se koristi samo bez potvrde primarnog servisa.
     try {
-      const primaryResponse = await fetch(FORM_ENDPOINT, {
-        method: 'POST',
-        headers: { 'Accept': 'application/json' },
-        body: new FormData(form)
-      });
+      // Prekini cekanje nakon 8 sekundi i pokusaj rezervni servis.
+      const controller = new AbortController();
+      const timeout = setTimeout(() => controller.abort(), 8000);
+      let primaryResponse;
+      try {
+        primaryResponse = await fetch(FORM_ENDPOINT, {
+          method: 'POST',
+          headers: { 'Accept': 'application/json' },
+          body: new FormData(form),
+          signal: controller.signal
+        });
+      } finally {
+        clearTimeout(timeout);
+      }
       if (!primaryResponse.ok) throw new Error('FormSubmit HTTP ' + primaryResponse.status);
       const primaryReply = await primaryResponse.json();
       if (primaryReply.success !== true && primaryReply.success !== 'true') {
@@ -463,7 +472,7 @@ form.addEventListener('submit', async (e) => {
     } catch (primaryError) {
       console.warn('FormSubmit nije potvrdio slanje; pokusaj preko Web3Forms:', primaryError);
       const backupData = new FormData(form);
-      await sendViaWeb3Forms(backupData, 'Nova De-Max prijava kursa — ' + data.ime + ' ' + data.prezime + ' — ' + data.nivo);
+      await sendViaWeb3Forms(backupData, '[Web3Forms] Nova De-Max prijava kursa — ' + data.ime + ' ' + data.prezime + ' — ' + data.nivo);
     }
 
     renderSummary(data);
