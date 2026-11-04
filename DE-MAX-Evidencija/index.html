@@ -1032,11 +1032,17 @@ function dmxCleanPrintLogo(){
     if(dx*dx+dy*dy>rad*rad){pixels[i+3]=0;continue}
     const red=pixels[i],green=pixels[i+1],blue=pixels[i+2];
     const min=Math.min(red,green,blue),max=Math.max(red,green,blue);
-    // Neutral grey highlights and paper grain become pure white.
-    // Colorful ring, red brand name, and dark lettering remain intact.
-    if(min>179&&max-min<25){
-     pixels[i]=255;pixels[i+1]=255;pixels[i+2]=255;pixels[i+3]=255;
+    const brightness=(red*0.2126+green*0.7152+blue*0.0722);
+    const colorful=(max-min>45&&max>115&&brightness<250);
+    // Clean printing master: keep the existing colored circular border
+    // and strongly colored lettering, but replace ALL neutral gradients,
+    // 3-D bevel shadows, grain, and gray interior background with pure white.
+    // Preserve only the original dark ink (as solid black) for sharp scanning.
+    if(!colorful){
+     const ink=brightness<76?0:255;
+     pixels[i]=ink;pixels[i+1]=ink;pixels[i+2]=ink;
     }
+    pixels[i+3]=255;
    }
   }
   ctx.putImageData(data,0,0);
@@ -1366,7 +1372,7 @@ dmxV13Style.textContent=`
  .pdf-stage.dmx-a4-stage .cert-contacts{color:#192331!important}
  .pdf-stage.dmx-a4-stage .cert-title p,.pdf-stage.dmx-a4-stage .cert-sign{color:#43536c!important}
  .pdf-stage.dmx-a4-stage .cert-head{border-bottom-color:#cdd6e3!important}
- .pdf-stage.dmx-a4-stage .cert-head img{border-radius:50%!important;box-shadow:none!important;background:#fff!important}
+ .pdf-stage.dmx-a4-stage .cert-head img{border-radius:50%!important;box-shadow:none!important;background:#fff!important;filter:none!important;border:0!important;outline:0!important}
  .pdf-stage.dmx-a4-stage .cert-badge{background:#fff!important;border:0!important;border-radius:0!important;box-shadow:none!important;color:#151515!important;padding:7px 1px!important}
  .pdf-stage.dmx-a4-stage .cert-level-box{background:#fff!important;border:0!important;border-top:1px solid #aaa!important;border-radius:0!important;box-shadow:none!important;padding:14px 0!important}
  .pdf-stage.dmx-a4-stage .cert-body{color:#101010!important;text-align:left!important;line-height:1.65!important}
