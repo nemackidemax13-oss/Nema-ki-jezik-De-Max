@@ -277,11 +277,19 @@ form.addEventListener('submit',async(e)=>{
 
   try{
     try {
-      const response=await fetch(FORM_ENDPOINT,{
-        method:'POST',
-        headers:{'Accept':'application/json'},
-        body:fd
-      });
+      const controller = new AbortController();
+      const timeout = setTimeout(() => controller.abort(), 4000);
+      let response;
+      try {
+        response = await fetch(FORM_ENDPOINT,{
+          method:'POST',
+          headers:{'Accept':'application/json'},
+          body:fd,
+          signal:controller.signal
+        });
+      } finally {
+        clearTimeout(timeout);
+      }
       if(!response.ok) throw new Error('FormSubmit HTTP '+response.status);
       const primaryResult=await response.json();
       if(primaryResult.success !== true && primaryResult.success !== 'true') {
