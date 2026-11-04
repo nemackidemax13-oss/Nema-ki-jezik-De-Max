@@ -903,7 +903,7 @@ function certificateBodyText(rec){
  const student=(rec.studentName||'________________________').trim();
  const level=rec.level||'__________';
  const hours=rec.hours||'__________';
- return `Hiermit bestätigen wir, dass ${student} erfolgreich an unserem Deutschkurs der Niveaustufe ${level} im Zeitraum vom ________________ bis zum ________________ teilgenommen hat.\n\nDie teilnehmende Person hat insgesamt ${hours} Unterrichtsstunden absolviert.`;
+ return `Hiermit bestätigen wir, dass ${student} erfolgreich an unserem Online-Deutschkurs der Niveaustufe ${level} im Zeitraum vom ________________ bis zum ________________ teilgenommen hat.\n\nDie teilnehmende Person hat insgesamt ${hours} Unterrichtsstunden absolviert.`;
 }
 function levelBlock(level){return certText[level]||certText.A1}
 const oldLoad=load;
