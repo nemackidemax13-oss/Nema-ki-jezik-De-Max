@@ -997,32 +997,62 @@ function certificatePreviewHTML(r){
  const courseLine=[r.courseTitle,r.level].filter(Boolean).join(' · ');
  return `<div class="cert-preview-wrap"><div class="certificate-sheet"><div class="cert-head"><img src="${DMX_ROUND_LOGO}" alt="DE-MAX Tutin"><div class="cert-school-details"><div class="cert-school">Zentrum für deutsche Sprache</div><div class="cert-school-name">DE-MAX TUTIN</div><div class="muted small" style="margin-top:5px">Seit 2013 an Ihrer Seite.</div></div><div class="cert-contacts"><span><strong>Adresse:</strong> Pešterska bb, 36320 Tutin, Serbien</span><span><strong>Telefon:</strong> +381 62 8490970</span><span><strong>E-Mail:</strong> nemackidemax13@gmail.com</span><span><strong>Bankverbindung:</strong> 200-3605600101988-10</span></div></div><div class="cert-meta"><div class="cert-badge"><strong>Bescheinigung Nr.</strong><br>${esc(r.number||'')}</div><div class="cert-badge"><strong>Datum</strong><br>${ddDE(r.issueDate)}</div></div><div class="cert-title"><h2>Bescheinigung</h2><p>Bescheinigung über die Teilnahme an einem Deutschsprachkurs</p></div><div class="cert-student">${esc(r.studentName||'')}</div><div class="cert-body">${dmxCertificateRich(r)}</div>${courseLine?`<div class="cert-badge" style="margin-bottom:16px"><strong>Deutschkurs</strong><br>${esc(courseLine)}</div>`:''}<div class="cert-level-box"><h3>${esc(r.levelTitle||levelBlock(r.level).title)}</h3><p>${esc(r.levelText||levelBlock(r.level).text)}</p></div><div class="cert-foot"><div class="cert-sign-area"><div class="cert-sign">Unterschrift der verantwortlichen Person</div></div></div></div></div>`;
 }
-function openCertificatePreview(id){const r=db.certificates.find(x=>x.id===id);if(!r)return;openModal('Pregled potvrde','Preuzimanje u PDF ili štampa',certificatePreviewHTML(r)+`<div class="cert-inline-actions"><button type="button" class="btn soft" data-action="certificate-pdf" data-id="${esc(id)}">↓ Preuzmi PDF</button><button type="button" class="btn primary" data-action="close-modal">Zatvori</button></div>`,'',true)}
+function openCertificatePreview(id){const r=db.certificates.find(x=>x.id===id);if(!r)return;openModal('Pregled potvrde','Preuzimanje u PDF ili štampa',certificatePreviewHTML(r)+`<div class="cert-inline-actions"><button type="button" class="btn soft" data-action="certificate-pdf" data-id="${esc(id)}">↓ Preuzmi PDF · HD</button><button type="button" class="btn green" data-action="certificate-print-vector" data-id="${esc(id)}">⎙ Štampaj / vektorski PDF</button><button type="button" class="btn primary" data-action="close-modal">Zatvori</button></div>`,'',true)}
 function renderCertificates(){
  ensureAdvancedData();
  const q=certificateSearch.trim().toLocaleLowerCase('sr');
  const items=[...db.certificates].filter(r=>`${r.number} ${r.studentName} ${r.level} ${r.courseTitle}`.toLocaleLowerCase('sr').includes(q)).sort((a,b)=>String(b.issueDate).localeCompare(String(a.issueDate))||String(b.createdAt).localeCompare(String(a.createdAt)));
  const count=items.length;
- const pagedRes=count?paged('certificates',items,r=>`<div class="certificate-row"><div class="left"><div class="title">Potvrda ${esc(r.number)} · ${esc(r.studentName)}</div><div class="sub">${esc(r.level)}${r.courseTitle?` · ${esc(r.courseTitle)}`:''} · Datum: ${dd(r.issueDate)}${r.startDate&&r.endDate?` · Period: ${dd(r.startDate)} – ${dd(r.endDate)}`:''} · ${esc(r.hours)} časova</div></div><div class="actions"><button class="btn soft sm" data-action="certificate-preview" data-id="${esc(r.id)}">Pregled</button><button class="btn soft sm" data-action="certificate-pdf" data-id="${esc(r.id)}">PDF</button><button class="btn soft sm" data-action="edit-certificate" data-id="${esc(r.id)}">Izmeni</button><button class="btn danger sm" data-action="delete-certificate" data-id="${esc(r.id)}">Obriši</button></div></div>`):null; return `<div class="certificate-note">Ovde čuvaš šablone potvrda za A1, A2 i B1. Kada popuniš obrazac, možeš odmah otvoriti pregled i preuzeti potvrdu u PDF-u.</div><div class="toolbar"><label class="field-search"><span>⌕</span><input type="search" id="certificate-search" placeholder="Broj potvrde, učenik, nivo..." value="${esc(certificateSearch)}"></label></div><div class="panel pad">${count?`<div class="certificate-list">${pagedRes.items}</div>${pagedRes.pager}`:emptyHTML('📄','Još nema potvrda','Kreiraj potvrdu pomoću zelenog dugmeta u vrhu.')}</div>`;
+ const pagedRes=count?paged('certificates',items,r=>`<div class="certificate-row"><div class="left"><div class="title">Potvrda ${esc(r.number)} · ${esc(r.studentName)}</div><div class="sub">${esc(r.level)}${r.courseTitle?` · ${esc(r.courseTitle)}`:''} · Datum: ${dd(r.issueDate)}${r.startDate&&r.endDate?` · Period: ${dd(r.startDate)} – ${dd(r.endDate)}`:''} · ${esc(r.hours)} časova</div></div><div class="actions"><button class="btn soft sm" data-action="certificate-preview" data-id="${esc(r.id)}">Pregled</button><button class="btn soft sm" data-action="certificate-pdf" data-id="${esc(r.id)}">PDF HD</button><button class="btn soft sm" data-action="edit-certificate" data-id="${esc(r.id)}">Izmeni</button><button class="btn danger sm" data-action="delete-certificate" data-id="${esc(r.id)}">Obriši</button></div></div>`):null; return `<div class="certificate-note">Ovde čuvaš šablone potvrda za A1, A2 i B1. Kada popuniš obrazac, možeš odmah otvoriti pregled i preuzeti potvrdu u PDF-u.</div><div class="toolbar"><label class="field-search"><span>⌕</span><input type="search" id="certificate-search" placeholder="Broj potvrde, učenik, nivo..." value="${esc(certificateSearch)}"></label></div><div class="panel pad">${count?`<div class="certificate-list">${pagedRes.items}</div>${pagedRes.pager}`:emptyHTML('📄','Još nema potvrda','Kreiraj potvrdu pomoću zelenog dugmeta u vrhu.')}</div>`;
 }
 function loadScript(url){return new Promise((resolve,reject)=>{const s=document.createElement('script');s.src=url;s.onload=resolve;s.onerror=()=>reject(Error('Ne mogu učitati dodatak za PDF.'));document.head.appendChild(s)})}
 let pdfLibPromise=null;
 function ensurePdfLib(){if(window.html2canvas&&window.jspdf)return Promise.resolve();if(pdfLibPromise)return pdfLibPromise;pdfLibPromise=Promise.all([loadScript('https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js'),loadScript('https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js')]);return pdfLibPromise}
 async function certificateToPDF(id){
- const rec=db.certificates.find(x=>x.id===id); if(!rec)return;
+ const rec=db.certificates.find(x=>x.id===id);if(!rec)return;
+ let stage=null;
  try{
   await ensurePdfLib();
-  const stage=document.createElement('div');stage.className='pdf-stage dmx-a4-stage';stage.innerHTML=certificatePreviewHTML(rec);document.body.appendChild(stage);
+  stage=document.createElement('div');stage.className='pdf-stage dmx-a4-stage';stage.innerHTML=certificatePreviewHTML(rec);
+  document.body.appendChild(stage);
   const node=stage.querySelector('.certificate-sheet');
-  const canvas=await html2canvas(node,{scale:2,useCORS:true,backgroundColor:'#ffffff'});
+  if(document.fonts?.ready)await document.fonts.ready;
+  await Promise.all([...node.querySelectorAll('img')].map(img=>img.decode?.().catch(()=>{})||Promise.resolve()));
+  // Fixed A4 at 96 CSS pixels/inch: scale 4 = approximately 384 dpi. No JPEG compression.
+  let canvas;
+  try{canvas=await html2canvas(node,{scale:4,useCORS:true,backgroundColor:'#ffffff',logging:false,imageTimeout:20000})}
+  catch(memoryError){canvas=await html2canvas(node,{scale:3,useCORS:true,backgroundColor:'#ffffff',logging:false,imageTimeout:20000})}
   const imgData=canvas.toDataURL('image/png');
-  const {jsPDF}=window.jspdf; const pdf=new jsPDF('p','pt','a4');
+  const {jsPDF}=window.jspdf;
+  const pdf=new jsPDF({orientation:'portrait',unit:'pt',format:'a4',compress:true});
   const pageW=pdf.internal.pageSize.getWidth(),pageH=pdf.internal.pageSize.getHeight();
-  pdf.addImage(imgData,'PNG',0,0,pageW,pageH);
-  pdf.save(`Potvrda_${(rec.number||'DEMAX').replace(/[\\/:*?"<>|]+/g,'_')}.pdf`);
-  stage.remove();
- }catch(err){toast('PDF nije mogao biti pripremljen. Pokušaj ponovo uz internet vezu.',true);console.error(err)}
+  pdf.setProperties({title:'DE-MAX Tutin – Bescheinigung '+(rec.number||''),subject:'Bescheinigung über die Teilnahme an einem Online-Deutschkurs',creator:'DE-MAX Evidencija'});
+  pdf.addImage(imgData,'PNG',0,0,pageW,pageH,undefined,'NONE');
+  pdf.save('Potvrda_'+(rec.number||'DEMAX').replace(/[\\/:*?"<>|]+/g,'_')+'_HD.pdf');
+ }catch(err){toast('PDF nije mogao biti pripremljen. Pokušaj ponovo ili koristi vektorsku štampu.',true);console.error(err)}
+ finally{if(stage)stage.remove()}
 }
+function certificatePrintVector(id){
+ const rec=db.certificates.find(x=>x.id===id);if(!rec)return;
+ // Browser print-to-PDF is vector-based: selectable sharp text, accurate font styles.
+ const printWindow=window.open('','_blank');
+ if(!printWindow){toast('Dozvoli iskačuće prozore za vektorsku štampu.',true);return}
+ try{
+  const styles=[...document.querySelectorAll('style')].map(el=>el.outerHTML).join('\n');
+  const doc='<!doctype html><html lang="de"><head><meta charset="utf-8"><title>DE-MAX | Potvrda '+esc(rec.number||'')+'</title>'+styles+
+  '<style>@page{size:A4 portrait;margin:0}html,body{margin:0!important;padding:0!important;width:210mm!important;background:#fff!important;print-color-adjust:exact;-webkit-print-color-adjust:exact}.pdf-stage.dmx-a4-stage{position:static!important;left:auto!important;top:auto!important;opacity:1!important;pointer-events:auto!important;z-index:auto!important}.pdf-stage.dmx-a4-stage .cert-preview-wrap{margin:0!important;padding:0!important;background:#fff!important;border:0!important}.pdf-stage.dmx-a4-stage .certificate-sheet{margin:0!important;box-shadow:none!important;border:none!important;border-radius:0!important;overflow:visible!important;box-sizing:border-box!important;width:210mm!important;min-width:210mm!important;max-width:210mm!important;height:297mm!important;min-height:297mm!important;max-height:297mm!important;padding:15mm 15mm 14mm!important}.certificate-sheet *{-webkit-print-color-adjust:exact;print-color-adjust:exact}.certificate-sheet .cert-body,.certificate-sheet .cert-level-box p{color:#151b27!important}.certificate-sheet .cert-level-box,.certificate-sheet .cert-badge{background:#fff!important}.cert-foot{margin-top:auto!important}.cert-sign-area{margin-top:18mm!important}@media print{html,body{overflow:visible!important}}</style></head><body><div class="pdf-stage dmx-a4-stage">'+certificatePreviewHTML(rec)+'</div></body></html>';
+  printWindow.document.open();printWindow.document.write(doc);printWindow.document.close();
+  printWindow.focus();
+  const runPrint=()=>{const img=printWindow.document.querySelector('.certificate-sheet img');const fonts=printWindow.document.fonts?.ready||Promise.resolve();Promise.all([fonts,img?.decode?.().catch(()=>{})||Promise.resolve()]).then(()=>{if(!printWindow.closed){printWindow.focus();printWindow.print()}})};
+  if(printWindow.document.readyState==='complete')runPrint();else printWindow.addEventListener('load',runPrint,{once:true});
+ }catch(err){console.error(err);toast('Nije moguće otvoriti prozor za štampu.',true);printWindow.close()}
+}
+document.addEventListener('click',e=>{
+ const btn=e.target.closest('button[data-action="certificate-print-vector"]');
+ if(!btn)return;
+ e.preventDefault();e.stopImmediatePropagation();certificatePrintVector(btn.dataset.id);
+},true);
+
 function monthLabel(isoMonth){const [y,m]=isoMonth.split('-').map(Number);return new Date(y,m-1,1).toLocaleDateString('sr-Latn-RS',{month:'long',year:'numeric'})}
 function monthShift(isoMonth,delta){const [y,m]=isoMonth.split('-').map(Number);const d=new Date(y,m-1+delta,1);return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-01`}
 function embassyCalendarHTML(){
@@ -1278,7 +1308,13 @@ dmxV13Style.textContent=`
  .pdf-stage.dmx-a4-stage .cert-preview-wrap{padding:0!important;background:#fff!important;border:0!important;width:794px!important;min-width:794px!important;height:1123px!important}
  .pdf-stage.dmx-a4-stage .certificate-sheet{width:794px!important;min-width:794px!important;height:1123px!important;max-height:1123px!important;min-height:1123px!important;box-sizing:border-box!important;border:0!important;border-radius:0!important;box-shadow:none!important;margin:0!important;padding:52px 56px 48px!important;display:flex!important;flex-direction:column!important;overflow:hidden!important}
  .pdf-stage.dmx-a4-stage .cert-foot{margin-top:auto!important;padding-top:30px!important}
- .pdf-stage.dmx-a4-stage .cert-level-box{break-inside:avoid!important}
+ .pdf-stage.dmx-a4-stage .certificate-sheet{box-shadow:none!important;background:#fff!important}
+ .pdf-stage.dmx-a4-stage .cert-badge,.pdf-stage.dmx-a4-stage .cert-level-box{background:#fff!important;border-color:#d6deeb!important}
+ .pdf-stage.dmx-a4-stage .cert-body,.pdf-stage.dmx-a4-stage .cert-level-box p{color:#151b27!important}
+ .pdf-stage.dmx-a4-stage .cert-contacts{color:#192331!important}
+ .pdf-stage.dmx-a4-stage .cert-title p,.pdf-stage.dmx-a4-stage .cert-sign{color:#43536c!important}
+ .pdf-stage.dmx-a4-stage .cert-head{border-bottom-color:#cdd6e3!important}
+  .pdf-stage.dmx-a4-stage .cert-level-box{break-inside:avoid!important}
  @media (max-width:600px){.dmx-course-buttons .btn{min-height:30px;font-size:11px;padding:5px 8px}.dmx-dateclock{font-size:11px;padding:5px 8px}.topbar .actions{gap:5px}}
  `;
 document.head.appendChild(dmxV13Style);
