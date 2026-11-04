@@ -2094,7 +2094,7 @@ dmxTransFileInput.multiple=true;dmxTransFileInput.className='hidden';dmxTransFil
 document.body.appendChild(dmxTransFileInput);
 function dmxTranslationsHTML(){
  return '<div class="dmx-translation-info"><strong>Prevodi – arhiva dokumenata.</strong> Ubaci Word (.doc, .docx) ili PDF (.pdf), prati status i preuzmi original kad god ti zatreba. Datoteke ostaju u ovom pregledaču na ovom uređaju; nisu uključene u JSON rezervnu kopiju i ne prevode se automatski.</div>'
- +'<div class="dmx-translation-drop" id="dmx-translation-drop"><strong>📑 Dodaj Word ili PDF dokument</strong><p>Izaberi više datoteka odjednom ili ih prevuci ovde. Maksimalno 50 MB po datoteci.</p><button type="button" class="btn green" data-action="dmx-trans-upload">＋ Ubaci dokumente</button></div>'
+ +'<div class="dmx-translation-drop" id="dmx-translation-drop"><strong>📑 Dodaj Word ili PDF dokument</strong><p>Izaberi više datoteka odjednom ili ih prevuci ovde. Maksimalno 50 MB po datoteci.</p><button type="button" class="btn green" data-action="translation-upload">＋ Ubaci dokumente</button></div>'
  +'<label class="field-search dmx-translation-search"><span>⌕</span><input id="dmx-translation-search" type="search" placeholder="Pretraži dokumente..." value="'+esc(dmxTranslationsSearch)+'"></label>'
  +'<div id="dmx-translation-results"><div class="dmx-translation-empty">Učitavanje dokumenata...</div></div>';
 }
@@ -2113,8 +2113,8 @@ async function dmxTranslationsRefresh(){
    const size=(Number(r.size||r.blob?.size||0)/(1024*1024)).toFixed(2);
    return '<article class="dmx-translation-row"><div><div class="dmx-translation-name">'+(type==='PDF'?'📕':'📘')+' '+esc(r.filename)+'</div><div class="dmx-translation-meta">'+type+' · '+size+' MB · Dodato: '+esc(date)+'</div></div>'
     +'<div class="dmx-translation-actions"><select class="form-control dmx-trans-status" data-trans-status="'+esc(r.id)+'" aria-label="Status prevoda">'+dmxTranslationsStatuses.map(t=>'<option value="'+esc(t)+'"'+(r.status===t?' selected':'')+'>'+esc(t)+'</option>').join('')+'</select>'
-    +(type==='PDF'?'<button class="btn soft sm" data-action="dmx-trans-open" data-id="'+esc(r.id)+'">Otvori</button>':'')
-    +'<button class="btn soft sm" data-action="dmx-trans-download" data-id="'+esc(r.id)+'">↓ Preuzmi</button><button class="btn danger sm" data-action="dmx-trans-delete" data-id="'+esc(r.id)+'">Obriši</button></div></article>';
+    +(type==='PDF'?'<button class="btn soft sm" data-action="translation-open" data-id="'+esc(r.id)+'">Otvori</button>':'')
+    +'<button class="btn soft sm" data-action="translation-download" data-id="'+esc(r.id)+'">↓ Preuzmi</button><button class="btn danger sm" data-action="translation-delete" data-id="'+esc(r.id)+'">Obriši</button></div></article>';
   }).join('')+'</div>';
  }catch(err){target.innerHTML='<div class="dmx-translation-empty">Dokumenti nisu dostupni. Proveri dozvole pregledača.</div>';toast('Prevodi: '+(err.message||err),true);}
 }
@@ -2133,7 +2133,7 @@ async function dmxTranslationsUpload(files){
 }
 const dmxPrevTopButtonsForTranslations=topButtonsForView;
 topButtonsForView=function(){
- if(view==='translations')return '<button class="btn soft dm-overview-red" data-view="overview">← Pregled</button><button class="btn green" data-action="dmx-trans-upload">＋ Ubaci Word / PDF</button>';
+ if(view==='translations')return '<button class="btn soft dm-overview-red" data-view="overview">← Pregled</button><button class="btn green" data-action="translation-upload">＋ Ubaci Word / PDF</button>';
  return dmxPrevTopButtonsForTranslations();
 };
 const dmxPrevRenderForTranslations=render;
@@ -2153,21 +2153,21 @@ dmxTransFileInput.addEventListener('change',e=>{
  if(files.length)dmxTranslationsUpload(files);
 });
 document.addEventListener('click',async e=>{
- const b=e.target.closest('button[data-action^="dmx-trans-"]');if(!b)return;
+ const b=e.target.closest('button[data-action^="translation-"]');if(!b)return;
  e.preventDefault();e.stopImmediatePropagation();
  const action=b.dataset.action,id=b.dataset.id;
- if(action==='dmx-trans-upload'){dmxTransFileInput.click();return;}
- if(action==='dmx-trans-delete'){
+ if(action==='translation-upload'){dmxTransFileInput.click();return;}
+ if(action==='translation-delete'){
   if(!confirm('Trajno obrisati ovaj dokument sa ovog uređaja?'))return;
   try{await dmxTranslationsRemove(id);toast('Dokument je obrisan.');dmxTranslationsRefresh();}catch(err){toast(err.message,true);}
   return;
  }
  // Open the PDF window during the actual click, before awaiting IndexedDB.
- const win=action==='dmx-trans-open'?window.open('','_blank'):null;
+ const win=action==='translation-open'?window.open('','_blank'):null;
  try{
   const r=await dmxTranslationsOne(id);if(!r){if(win)win.close();return;}
-  if(action==='dmx-trans-download'){blobDownload(r.blob,r.filename);return;}
-  if(action==='dmx-trans-open'){
+  if(action==='translation-download'){blobDownload(r.blob,r.filename);return;}
+  if(action==='translation-open'){
    if(!win){toast('Dozvoli iskačuće prozore za PDF pregled.',true);return;}
    const u=URL.createObjectURL(new Blob([r.blob],{type:'application/pdf'}));
    win.location.href=u;
