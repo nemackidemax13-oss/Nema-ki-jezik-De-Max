@@ -51,7 +51,7 @@ h1{font-size:clamp(26px,6.5vw,40px);line-height:1.08;margin:12px 0 8px;color:#10
 .field{margin-bottom:15px}
 label.main{display:block;font-size:14px;font-weight:800;margin:0 0 7px}
 .req{color:var(--red)}
-input[type=text],input[type=tel],input[type=email]{
+input[type=text],input[type=tel],input[type=email],input[type=date]{
   width:100%;height:50px;border:1.5px solid var(--line);border-radius:14px;
   padding:0 14px;font-size:16px;color:var(--ink);background:#fff;outline:none;
   transition:.2s border-color,.2s box-shadow;
@@ -136,6 +136,22 @@ button{min-height:52px;border:0;border-radius:15px;font-weight:900;font-size:15p
           <label class="main" for="stanovanje">Mesto stanovanja kandidata <span class="req">*</span></label>
           <input id="stanovanje" name="Mesto stanovanja kandidata" type="text" placeholder="Unesite mesto stanovanja" required>
         </div>
+      </div>
+
+      <div class="grid">
+        <div class="field">
+          <label class="main" for="datumRodjenja">Datum rođenja kandidata <span class="req">*</span></label>
+          <input id="datumRodjenja" name="Datum rođenja kandidata" type="date" autocomplete="bday" max="2026-11-04" required>
+        </div>
+        <div class="field">
+          <label class="main" for="ulica">Ulica stanovanja kandidata <span class="req">*</span></label>
+          <input id="ulica" name="Ulica stanovanja kandidata" type="text" autocomplete="address-line1" placeholder="Unesite naziv ulice" required>
+        </div>
+      </div>
+
+      <div class="field">
+        <label class="main" for="brojKuce">Broj kuće <span class="req">*</span></label>
+        <input id="brojKuce" name="Broj kuće" type="text" placeholder="npr. 12 ili 12A" required>
       </div>
 
       <div class="field">
