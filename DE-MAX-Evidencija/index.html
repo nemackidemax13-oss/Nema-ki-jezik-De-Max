@@ -997,17 +997,54 @@ function certificatePreviewHTML(r){
  const courseLine=[r.courseTitle,r.level].filter(Boolean).join(' · ');
  return `<div class="cert-preview-wrap"><div class="certificate-sheet"><div class="cert-head"><img src="${DMX_ROUND_LOGO}" alt="DE-MAX Tutin"><div class="cert-school-details"><div class="cert-school">Zentrum für deutsche Sprache</div><div class="cert-school-name">DE-MAX TUTIN</div><div class="muted small" style="margin-top:5px">Seit 2013 an Ihrer Seite.</div></div><div class="cert-contacts"><span><strong>Adresse:</strong> Pešterska bb, 36320 Tutin, Serbien</span><span><strong>Telefon:</strong> +381 62 8490970</span><span><strong>E-Mail:</strong> nemackidemax13@gmail.com</span><span><strong>Bankverbindung:</strong> 200-3605600101988-10</span></div></div><div class="cert-meta"><div class="cert-badge"><strong>Bescheinigung Nr.</strong><br>${esc(r.number||'')}</div><div class="cert-badge"><strong>Datum</strong><br>${ddDE(r.issueDate)}</div></div><div class="cert-title"><h2>Bescheinigung</h2><p>Bescheinigung über die Teilnahme an einem Deutschsprachkurs</p></div><div class="cert-student">${esc(r.studentName||'')}</div><div class="cert-body">${dmxCertificateRich(r)}</div>${courseLine?`<div class="cert-badge" style="margin-bottom:16px"><strong>Deutschkurs</strong><br>${esc(courseLine)}</div>`:''}<div class="cert-level-box"><h3>${esc(r.levelTitle||levelBlock(r.level).title)}</h3><p>${esc(r.levelText||levelBlock(r.level).text)}</p></div><div class="cert-foot"><div class="cert-sign-area"><div class="cert-sign">Unterschrift der verantwortlichen Person</div></div></div></div></div>`;
 }
-function openCertificatePreview(id){const r=db.certificates.find(x=>x.id===id);if(!r)return;openModal('Pregled potvrde','Za najčistiji PDF izaberi vektorsku štampu, pa Sačuvaj kao PDF.',certificatePreviewHTML(r)+`<div class="cert-inline-actions"><button type="button" class="btn green" data-action="certificate-print-vector" data-id="${esc(id)}">⎙ Najčistiji PDF / štampa</button><button type="button" class="btn soft" data-action="certificate-pdf" data-id="${esc(id)}">↓ Preuzmi PDF · HD</button><button type="button" class="btn primary" data-action="close-modal">Zatvori</button></div>`,'',true)}
+function openCertificatePreview(id){const r=db.certificates.find(x=>x.id===id);if(!r)return;openModal('Pregled potvrde','Za najčistiji PDF izaberi vektorsku štampu, pa Sačuvaj kao PDF.',certificatePreviewHTML(r)+`<div class="cert-inline-actions"><button type="button" class="btn green" data-action="certificate-print-vector" data-id="${esc(id)}">⎙ Najčistiji PDF / štampa</button><button type="button" class="btn primary" data-action="close-modal">Zatvori</button></div>`,'',true)}
 function renderCertificates(){
  ensureAdvancedData();
  const q=certificateSearch.trim().toLocaleLowerCase('sr');
  const items=[...db.certificates].filter(r=>`${r.number} ${r.studentName} ${r.level} ${r.courseTitle}`.toLocaleLowerCase('sr').includes(q)).sort((a,b)=>String(b.issueDate).localeCompare(String(a.issueDate))||String(b.createdAt).localeCompare(String(a.createdAt)));
  const count=items.length;
- const pagedRes=count?paged('certificates',items,r=>`<div class="certificate-row"><div class="left"><div class="title">Potvrda ${esc(r.number)} · ${esc(r.studentName)}</div><div class="sub">${esc(r.level)}${r.courseTitle?` · ${esc(r.courseTitle)}`:''} · Datum: ${dd(r.issueDate)}${r.startDate&&r.endDate?` · Period: ${dd(r.startDate)} – ${dd(r.endDate)}`:''} · ${esc(r.hours)} časova</div></div><div class="actions"><button class="btn soft sm" data-action="certificate-preview" data-id="${esc(r.id)}">Pregled</button><button class="btn green sm" data-action="certificate-print-vector" data-id="${esc(r.id)}">Najčistiji PDF</button><button class="btn soft sm" data-action="certificate-pdf" data-id="${esc(r.id)}">PDF HD</button><button class="btn soft sm" data-action="edit-certificate" data-id="${esc(r.id)}">Izmeni</button><button class="btn danger sm" data-action="delete-certificate" data-id="${esc(r.id)}">Obriši</button></div></div>`):null; return `<div class="certificate-note">Ovde čuvaš šablone potvrda za A1, A2 i B1. Kada popuniš obrazac, možeš odmah otvoriti pregled i preuzeti potvrdu u PDF-u.</div><div class="toolbar"><label class="field-search"><span>⌕</span><input type="search" id="certificate-search" placeholder="Broj potvrde, učenik, nivo..." value="${esc(certificateSearch)}"></label></div><div class="panel pad">${count?`<div class="certificate-list">${pagedRes.items}</div>${pagedRes.pager}`:emptyHTML('📄','Još nema potvrda','Kreiraj potvrdu pomoću zelenog dugmeta u vrhu.')}</div>`;
+ const pagedRes=count?paged('certificates',items,r=>`<div class="certificate-row"><div class="left"><div class="title">Potvrda ${esc(r.number)} · ${esc(r.studentName)}</div><div class="sub">${esc(r.level)}${r.courseTitle?` · ${esc(r.courseTitle)}`:''} · Datum: ${dd(r.issueDate)}${r.startDate&&r.endDate?` · Period: ${dd(r.startDate)} – ${dd(r.endDate)}`:''} · ${esc(r.hours)} časova</div></div><div class="actions"><button class="btn soft sm" data-action="certificate-preview" data-id="${esc(r.id)}">Pregled</button><button class="btn green sm" data-action="certificate-print-vector" data-id="${esc(r.id)}">Najčistiji PDF</button><button class="btn soft sm" data-action="edit-certificate" data-id="${esc(r.id)}">Izmeni</button><button class="btn danger sm" data-action="delete-certificate" data-id="${esc(r.id)}">Obriši</button></div></div>`):null; return `<div class="certificate-note">Ovde čuvaš šablone potvrda za A1, A2 i B1. Kada popuniš obrazac, možeš odmah otvoriti pregled i preuzeti potvrdu u PDF-u.</div><div class="toolbar"><label class="field-search"><span>⌕</span><input type="search" id="certificate-search" placeholder="Broj potvrde, učenik, nivo..." value="${esc(certificateSearch)}"></label></div><div class="panel pad">${count?`<div class="certificate-list">${pagedRes.items}</div>${pagedRes.pager}`:emptyHTML('📄','Još nema potvrda','Kreiraj potvrdu pomoću zelenog dugmeta u vrhu.')}</div>`;
 }
 function loadScript(url){return new Promise((resolve,reject)=>{const s=document.createElement('script');s.src=url;s.onload=resolve;s.onerror=()=>reject(Error('Ne mogu učitati dodatak za PDF.'));document.head.appendChild(s)})}
 let pdfLibPromise=null;
 function ensurePdfLib(){if(window.html2canvas&&window.jspdf)return Promise.resolve();if(pdfLibPromise)return pdfLibPromise;pdfLibPromise=Promise.all([loadScript('https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js'),loadScript('https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js')]);return pdfLibPromise}
+
+let dmxCleanPrintLogoPromise=null;
+function dmxCleanPrintLogo(){
+ if(dmxCleanPrintLogoPromise)return dmxCleanPrintLogoPromise;
+ dmxCleanPrintLogoPromise=(async()=>{
+  const source=new Image();
+  source.src=DMX_ROUND_LOGO;
+  if(source.decode)await source.decode();
+  else if(!source.complete)await new Promise((resolve,reject)=>{source.onload=resolve;source.onerror=reject});
+  const canvas=document.createElement('canvas');
+  canvas.width=source.naturalWidth;canvas.height=source.naturalHeight;
+  const ctx=canvas.getContext('2d',{willReadFrequently:true});
+  if(!ctx)return DMX_ROUND_LOGO;
+  ctx.drawImage(source,0,0);
+  const data=ctx.getImageData(0,0,canvas.width,canvas.height);
+  const pixels=data.data,w=canvas.width,h=canvas.height;
+  const cx=w/2,cy=h/2,rad=Math.min(w,h)/2;
+  for(let y=0;y<h;y++){
+   for(let x=0;x<w;x++){
+    const i=(y*w+x)*4,dx=x+.5-cx,dy=y+.5-cy;
+    // Remove all corners outside the original circular logo.
+    if(dx*dx+dy*dy>rad*rad){pixels[i+3]=0;continue}
+    const red=pixels[i],green=pixels[i+1],blue=pixels[i+2];
+    const min=Math.min(red,green,blue),max=Math.max(red,green,blue);
+    // Neutral grey highlights and paper grain become pure white.
+    // Colorful ring, red brand name, and dark lettering remain intact.
+    if(min>179&&max-min<25){
+     pixels[i]=255;pixels[i+1]=255;pixels[i+2]=255;pixels[i+3]=255;
+    }
+   }
+  }
+  ctx.putImageData(data,0,0);
+  return canvas.toDataURL('image/png');
+ })().catch(err=>{console.warn('Print logo cleanup unavailable',err);return DMX_ROUND_LOGO});
+ return dmxCleanPrintLogoPromise;
+}
+
 async function certificateToPDF(id){
  const rec=db.certificates.find(x=>x.id===id);if(!rec)return;
  let stage=null;
@@ -1016,6 +1053,8 @@ async function certificateToPDF(id){
   stage=document.createElement('div');stage.className='pdf-stage dmx-a4-stage';stage.innerHTML=certificatePreviewHTML(rec);
   document.body.appendChild(stage);
   const node=stage.querySelector('.certificate-sheet');
+  const logo=node.querySelector('.cert-head img');
+  if(logo)logo.src=await dmxCleanPrintLogo();
   if(document.fonts?.ready)await document.fonts.ready;
   await Promise.all([...node.querySelectorAll('img')].map(img=>img.decode?.().catch(()=>{})||Promise.resolve()));
   // Print-to-PDF is the recommended vector output; image PDF is a high-resolution fallback.
@@ -1047,7 +1086,16 @@ function certificatePrintVector(id){
   '<style>@page{size:A4 portrait;margin:0}html,body{margin:0!important;padding:0!important;width:210mm!important;background:#fff!important;print-color-adjust:exact;-webkit-print-color-adjust:exact}.pdf-stage.dmx-a4-stage{position:static!important;left:auto!important;top:auto!important;opacity:1!important;pointer-events:auto!important;z-index:auto!important}.pdf-stage.dmx-a4-stage .cert-preview-wrap{margin:0!important;padding:0!important;background:#fff!important;border:0!important}.pdf-stage.dmx-a4-stage .certificate-sheet{margin:0!important;box-shadow:none!important;border:none!important;border-radius:0!important;overflow:visible!important;box-sizing:border-box!important;width:210mm!important;min-width:210mm!important;max-width:210mm!important;height:297mm!important;min-height:297mm!important;max-height:297mm!important;padding:15mm 15mm 14mm!important}.certificate-sheet *{-webkit-print-color-adjust:exact;print-color-adjust:exact}.certificate-sheet .cert-body,.certificate-sheet .cert-level-box p{color:#151b27!important}.certificate-sheet .cert-level-box,.certificate-sheet .cert-badge{background:#fff!important}.cert-foot{margin-top:auto!important}.cert-sign-area{margin-top:18mm!important}@media print{html,body{overflow:visible!important}}.pdf-stage.dmx-a4-stage .cert-head{display:flex!important;flex-direction:row!important;align-items:center!important;gap:16px!important;border-bottom:1px solid #909090!important}.pdf-stage.dmx-a4-stage .cert-head img{width:90px!important;height:90px!important;object-fit:contain!important}.pdf-stage.dmx-a4-stage .cert-contacts{font-size:11px!important;line-height:1.5!important;color:#151515!important;text-align:right!important;flex:0 0 245px!important;max-width:245px!important}.pdf-stage.dmx-a4-stage .cert-school{color:#111!important}.pdf-stage.dmx-a4-stage .cert-school-name{color:#9c1218!important}.pdf-stage.dmx-a4-stage .cert-student{color:#0b0b0b!important;font-size:28px!important}.pdf-stage.dmx-a4-stage .cert-title h2{color:#101010!important}.pdf-stage.dmx-a4-stage .cert-title p{color:#272727!important}.pdf-stage.dmx-a4-stage .cert-body{font-size:15px!important;line-height:1.65!important;text-align:left!important;color:#0b0b0b!important;letter-spacing:normal!important}.pdf-stage.dmx-a4-stage .cert-badge{color:#161616!important;border:0!important;border-radius:0!important;background:#fff!important;padding:6px 1px!important;box-shadow:none!important}.pdf-stage.dmx-a4-stage .cert-level-box{color:#111!important;border:0!important;border-top:1px solid #aaa!important;border-radius:0!important;background:#fff!important;padding:14px 0!important;margin-top:19px!important;box-shadow:none!important}.pdf-stage.dmx-a4-stage .cert-level-box h3{color:#131313!important;font-size:17px!important}.pdf-stage.dmx-a4-stage .cert-level-box p{color:#171717!important;font-size:13.5px!important;line-height:1.55!important}.pdf-stage.dmx-a4-stage .cert-sign{border-top-color:#555!important;color:#202020!important}.pdf-stage.dmx-a4-stage .cert-school-details .muted{color:#262626!important}@media print{.pdf-stage.dmx-a4-stage .certificate-sheet{page-break-inside:avoid!important;break-inside:avoid!important}.pdf-stage.dmx-a4-stage .cert-head,.pdf-stage.dmx-a4-stage .cert-level-box{break-inside:avoid!important}}</style></head><body><div class="pdf-stage dmx-a4-stage">'+certificatePreviewHTML(rec)+'</div></body></html>';
   printWindow.document.open();printWindow.document.write(doc);printWindow.document.close();
   printWindow.focus();
-  const runPrint=()=>{const img=printWindow.document.querySelector('.certificate-sheet img');const fonts=printWindow.document.fonts?.ready||Promise.resolve();Promise.all([fonts,img?.decode?.().catch(()=>{})||Promise.resolve()]).then(()=>{if(!printWindow.closed){printWindow.focus();printWindow.print()}})};
+  const runPrint=async()=>{
+   const img=printWindow.document.querySelector('.certificate-sheet img');
+   try{
+    const cleanLogo=await dmxCleanPrintLogo();
+    if(img)img.src=cleanLogo;
+    const fonts=printWindow.document.fonts?.ready||Promise.resolve();
+    await Promise.all([fonts,img?.decode?.().catch(()=>{})||Promise.resolve()]);
+    if(!printWindow.closed){printWindow.focus();printWindow.print()}
+   }catch(err){console.error(err);if(!printWindow.closed)printWindow.print()}
+  };
   if(printWindow.document.readyState==='complete')runPrint();else printWindow.addEventListener('load',runPrint,{once:true});
  }catch(err){console.error(err);toast('Nije moguće otvoriti prozor za štampu.',true);printWindow.close()}
 }
@@ -1318,6 +1366,7 @@ dmxV13Style.textContent=`
  .pdf-stage.dmx-a4-stage .cert-contacts{color:#192331!important}
  .pdf-stage.dmx-a4-stage .cert-title p,.pdf-stage.dmx-a4-stage .cert-sign{color:#43536c!important}
  .pdf-stage.dmx-a4-stage .cert-head{border-bottom-color:#cdd6e3!important}
+ .pdf-stage.dmx-a4-stage .cert-head img{border-radius:50%!important;box-shadow:none!important;background:#fff!important}
  .pdf-stage.dmx-a4-stage .cert-badge{background:#fff!important;border:0!important;border-radius:0!important;box-shadow:none!important;color:#151515!important;padding:7px 1px!important}
  .pdf-stage.dmx-a4-stage .cert-level-box{background:#fff!important;border:0!important;border-top:1px solid #aaa!important;border-radius:0!important;box-shadow:none!important;padding:14px 0!important}
  .pdf-stage.dmx-a4-stage .cert-body{color:#101010!important;text-align:left!important;line-height:1.65!important}
