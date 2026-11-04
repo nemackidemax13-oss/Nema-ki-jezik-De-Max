@@ -1296,6 +1296,14 @@ function dmxCleanRich(raw){
   if(tag==='i'||tag==='em')inner='<em>'+inner+'</em>';
   if(tag==='u')inner='<u>'+inner+'</u>';
   if(tag==='div'||tag==='p')inner+='<br>';
+  // Browsers may generate <font face="..." color="..."> for formatting commands.
+  if(tag==='font'){
+   const rawColor=(node.getAttribute('color')||'').toLowerCase().replace(/\s/g,'');
+   const fontColor={'rgb(0,0,0)':'#000000','rgb(204,35,43)':'#cc232b','rgb(27,86,177)':'#1b56b1','red':'#cc232b','blue':'#1b56b1','black':'#000000'}[rawColor]||rawColor;
+   if(dmxCertColors[fontColor])inner='<span style="color:'+dmxCertColors[fontColor]+'">'+inner+'</span>';
+   const face=(node.getAttribute('face')||'').replace(/["']/g,'').split(',')[0].trim();
+   if(dmxCertFonts[face])inner='<span style="font-family:'+dmxCertFonts[face]+'">'+inner+'</span>';
+  }
   // Never copy arbitrary styles: font-family and colors must match trusted values.
   const style=node.style;
   if(style){
