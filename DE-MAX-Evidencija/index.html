@@ -993,9 +993,10 @@ function saveCertificate(form){
  const idx=db.certificates.findIndex(x=>x.id===id); if(idx>=0)db.certificates[idx]=rec; else db.certificates.unshift(rec);
  persist(); closeModal(); render(); toast('Potvrda je sačuvana.');
 }
+const DMX_CERT_PRINT_SVG="<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"1024\" height=\"1024\" viewBox=\"0 0 1024 1024\" role=\"img\" aria-label=\"DE-MAX Tutin logo\">\n<defs><linearGradient id=\"c\" x1=\"0\" y1=\"0.95\" x2=\"1\" y2=\"0\" gradientUnits=\"objectBoundingBox\"><stop offset=\"0\" stop-color=\"#FFD000\"/><stop offset=\".30\" stop-color=\"#FF8200\"/><stop offset=\".58\" stop-color=\"#FF071A\"/><stop offset=\"1\" stop-color=\"#D500AA\"/></linearGradient></defs>\n<circle cx=\"512\" cy=\"512\" r=\"500\" fill=\"#FFFFFF\" stroke=\"url(#c)\" stroke-width=\"14\"/>\n<path fill=\"#ED0808\" fill-rule=\"evenodd\" d=\"M337 515 L389 515 L408 490 L408 488 L356 488 L339 510Z M67 479 L67 481 L150 481 L158 483 L165 487 L172 499 L172 507 L169 515 L161 523 L154 526 L101 527 L100 492 L68 492 L69 556 L152 556 L167 554 L178 550 L189 542 L197 532 L202 521 L204 512 L204 496 L202 486 L197 475 L182 460 L168 454 L158 452 L89 452Z M408 555 L444 555 L460 499 L462 497 L464 498 L489 547 L495 553 L502 556 L514 555 L519 552 L525 545 L553 496 L555 497 L569 551 L572 556 L638 555 L684 486 L686 485 L710 520 L712 525 L674 526 L656 554 L767 554 L768 556 L811 556 L844 524 L847 524 L881 556 L930 556 L931 555 L872 503 L872 501 L926 451 L880 451 L848 482 L846 482 L814 451 L771 451 L770 453 L822 501 L823 504 L769 554 L766 552 L710 466 L702 456 L692 451 L681 451 L670 457 L606 551 L604 550 L602 540 L578 465 L575 459 L570 454 L564 451 L552 451 L544 455 L539 461 L509 514 L506 515 L474 458 L463 451 L451 451 L442 456 L438 461Z M221 451 L219 453 L219 554 L318 555 L334 533 L338 525 L252 525 L251 516 L256 514 L315 514 L332 492 L332 490 L253 490 L251 482 L253 480 L317 480 L335 456 L337 451Z M903 372 L898 353 L886 335 L871 323 L853 314 L824 306 L796 303 L762 303 L726 306 L659 319 L602 337 L574 348 L536 365 L495 386 L442 418 L424 430 L424 432 L489 432 L522 410 L552 393 L594 373 L625 361 L654 352 L698 342 L736 337 L767 336 L793 338 L817 343 L837 351 L858 366 L871 382 L878 397 L881 413 L878 438 L889 425 L897 409 L902 391Z\"/>\n<path fill=\"#0D0D0D\" fill-rule=\"evenodd\" d=\"M281 573 L273 588 L268 607 L267 627 L270 646 L274 658 L286 679 L299 693 L314 703 L307 691 L300 671 L298 660 L298 635 L302 617 L307 604 L315 589 L327 573Z M738 570 L730 571 L726 574 L722 582 L723 643 L731 640 L738 630Z M686 584 L707 585 L712 582 L718 574 L719 570 L686 570Z M528 584 L549 585 L557 579 L561 570 L528 570Z M487 570 L482 572 L478 576 L475 585 L506 586 L506 642 L509 643 L514 641 L521 634 L523 629 L523 581 L519 574 L512 570Z M754 571 L749 577 L749 642 L757 640 L764 631 L766 597 L812 642 L819 641 L821 637 L821 580 L819 576 L811 570 L805 570 L805 607 L803 608 L766 571 L761 569Z M567 578 L566 628 L568 633 L578 641 L616 642 L627 637 L631 632 L633 626 L634 585 L665 586 L665 642 L668 643 L674 640 L680 633 L681 580 L679 576 L673 571 L646 570 L640 573 L635 582 L633 583 L630 576 L626 572 L617 569 L617 622 L613 626 L585 626 L582 623 L582 570 L581 569 L574 571Z M809 299 L805 292 L788 277 L764 267 L745 263 L685 263 L644 270 L613 278 L568 293 L541 304 L491 328 L464 343 L406 381 L368 411 L345 432 L381 432 L403 413 L429 394 L468 369 L493 355 L562 323 L620 303 L675 290 L713 285 L766 286 L789 291Z\"/>\n<path fill=\"#FFD200\" fill-rule=\"evenodd\" d=\"M324 657 L328 673 L335 685 L345 695 L354 701 L374 709 L393 713 L438 714 L490 706 L539 693 L606 669 L653 647 L633 649 L536 671 L481 681 L447 684 L431 684 L404 681 L384 675 L370 668 L363 663 L349 647 L343 632 L342 613 L345 600 L350 589 L338 604 L329 623 L324 644Z\"/>\n</svg>";
 function certificatePreviewHTML(r){
  const courseLine=[r.courseTitle,r.level].filter(Boolean).join(' · ');
- return `<div class="cert-preview-wrap"><div class="certificate-sheet"><div class="cert-head"><img src="${DMX_ROUND_LOGO}" alt="DE-MAX Tutin"><div class="cert-school-details"><div class="cert-school">Zentrum für deutsche Sprache</div><div class="cert-school-name">DE-MAX TUTIN</div><div class="muted small" style="margin-top:5px">Seit 2013 an Ihrer Seite.</div></div><div class="cert-contacts"><span><strong>Adresse:</strong> Pešterska bb, 36320 Tutin, Serbien</span><span><strong>Telefon:</strong> +381 62 8490970</span><span><strong>E-Mail:</strong> nemackidemax13@gmail.com</span><span><strong>Bankverbindung:</strong> 200-3605600101988-10</span></div></div><div class="cert-meta"><div class="cert-badge"><strong>Bescheinigung Nr.</strong><br>${esc(r.number||'')}</div><div class="cert-badge"><strong>Datum</strong><br>${ddDE(r.issueDate)}</div></div><div class="cert-title"><h2>Bescheinigung</h2><p>Bescheinigung über die Teilnahme an einem Deutschsprachkurs</p></div><div class="cert-student">${esc(r.studentName||'')}</div><div class="cert-body">${dmxCertificateRich(r)}</div>${courseLine?`<div class="cert-badge" style="margin-bottom:16px"><strong>Deutschkurs</strong><br>${esc(courseLine)}</div>`:''}<div class="cert-level-box"><h3>${esc(r.levelTitle||levelBlock(r.level).title)}</h3><p>${esc(r.levelText||levelBlock(r.level).text)}</p></div><div class="cert-foot"><div class="cert-sign-area"><div class="cert-sign">Unterschrift der verantwortlichen Person</div></div></div></div></div>`;
+ return `<div class="cert-preview-wrap"><div class="certificate-sheet"><div class="cert-head">${DMX_CERT_PRINT_SVG}<div class="cert-school-details"><div class="cert-school">Zentrum für deutsche Sprache</div><div class="cert-school-name">DE-MAX TUTIN</div><div class="muted small" style="margin-top:5px">Seit 2013 an Ihrer Seite.</div></div><div class="cert-contacts"><span><strong>Adresse:</strong> Pešterska bb, 36320 Tutin, Serbien</span><span><strong>Telefon:</strong> +381 62 8490970</span><span><strong>E-Mail:</strong> nemackidemax13@gmail.com</span><span><strong>Bankverbindung:</strong> 200-3605600101988-10</span></div></div><div class="cert-meta"><div class="cert-badge"><strong>Bescheinigung Nr.</strong><br>${esc(r.number||'')}</div><div class="cert-badge"><strong>Datum</strong><br>${ddDE(r.issueDate)}</div></div><div class="cert-title"><h2>Bescheinigung</h2><p>Bescheinigung über die Teilnahme an einem Deutschsprachkurs</p></div><div class="cert-student">${esc(r.studentName||'')}</div><div class="cert-body">${dmxCertificateRich(r)}</div>${courseLine?`<div class="cert-badge" style="margin-bottom:16px"><strong>Deutschkurs</strong><br>${esc(courseLine)}</div>`:''}<div class="cert-level-box"><h3>${esc(r.levelTitle||levelBlock(r.level).title)}</h3><p>${esc(r.levelText||levelBlock(r.level).text)}</p></div><div class="cert-foot"><div class="cert-sign-area"><div class="cert-sign">Unterschrift der verantwortlichen Person</div></div></div></div></div>`;
 }
 function openCertificatePreview(id){const r=db.certificates.find(x=>x.id===id);if(!r)return;openModal('Pregled potvrde','Za najčistiji PDF izaberi vektorsku štampu, pa Sačuvaj kao PDF.',certificatePreviewHTML(r)+`<div class="cert-inline-actions"><button type="button" class="btn green" data-action="certificate-print-vector" data-id="${esc(id)}">⎙ Najčistiji PDF / štampa</button><button type="button" class="btn primary" data-action="close-modal">Zatvori</button></div>`,'',true)}
 function renderCertificates(){
@@ -1009,78 +1010,7 @@ function loadScript(url){return new Promise((resolve,reject)=>{const s=document.
 let pdfLibPromise=null;
 function ensurePdfLib(){if(window.html2canvas&&window.jspdf)return Promise.resolve();if(pdfLibPromise)return pdfLibPromise;pdfLibPromise=Promise.all([loadScript('https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js'),loadScript('https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js')]);return pdfLibPromise}
 
-let dmxCleanPrintLogoPromise=null;
-function dmxCleanPrintLogo(){
- if(dmxCleanPrintLogoPromise)return dmxCleanPrintLogoPromise;
- dmxCleanPrintLogoPromise=(async()=>{
-  const source=new Image();
-  source.src=DMX_ROUND_LOGO;
-  if(source.decode)await source.decode();
-  else if(!source.complete)await new Promise((resolve,reject)=>{source.onload=resolve;source.onerror=reject});
-  const canvas=document.createElement('canvas');
-  canvas.width=source.naturalWidth;canvas.height=source.naturalHeight;
-  const ctx=canvas.getContext('2d',{willReadFrequently:true});
-  if(!ctx)return DMX_ROUND_LOGO;
-  ctx.drawImage(source,0,0);
-  const data=ctx.getImageData(0,0,canvas.width,canvas.height);
-  const pixels=data.data,w=canvas.width,h=canvas.height;
-  const cx=w/2,cy=h/2,rad=Math.min(w,h)/2;
-  for(let y=0;y<h;y++){
-   for(let x=0;x<w;x++){
-    const i=(y*w+x)*4,dx=x+.5-cx,dy=y+.5-cy;
-    // Remove all corners outside the original circular logo.
-    if(dx*dx+dy*dy>rad*rad){pixels[i+3]=0;continue}
-    const red=pixels[i],green=pixels[i+1],blue=pixels[i+2];
-    const min=Math.min(red,green,blue),max=Math.max(red,green,blue);
-    const brightness=(red*0.2126+green*0.7152+blue*0.0722);
-    const colorful=(max-min>45&&max>115&&brightness<250);
-    // Clean printing master: keep the existing colored circular border
-    // and strongly colored lettering, but replace ALL neutral gradients,
-    // 3-D bevel shadows, grain, and gray interior background with pure white.
-    // Preserve only the original dark ink (as solid black) for sharp scanning.
-    if(!colorful){
-     const ink=brightness<76?0:255;
-     pixels[i]=ink;pixels[i+1]=ink;pixels[i+2]=ink;
-    }
-    pixels[i+3]=255;
-   }
-  }
-  ctx.putImageData(data,0,0);
-  return canvas.toDataURL('image/png');
- })().catch(err=>{console.warn('Print logo cleanup unavailable',err);return DMX_ROUND_LOGO});
- return dmxCleanPrintLogoPromise;
-}
-
-async function certificateToPDF(id){
- const rec=db.certificates.find(x=>x.id===id);if(!rec)return;
- let stage=null;
- try{
-  await ensurePdfLib();
-  stage=document.createElement('div');stage.className='pdf-stage dmx-a4-stage';stage.innerHTML=certificatePreviewHTML(rec);
-  document.body.appendChild(stage);
-  const node=stage.querySelector('.certificate-sheet');
-  const logo=node.querySelector('.cert-head img');
-  if(logo)logo.src=await dmxCleanPrintLogo();
-  if(document.fonts?.ready)await document.fonts.ready;
-  await Promise.all([...node.querySelectorAll('img')].map(img=>img.decode?.().catch(()=>{})||Promise.resolve()));
-  // Print-to-PDF is the recommended vector output; image PDF is a high-resolution fallback.
-  let canvas;let lastError;
-  const scales=window.innerWidth>=800?[6,4,3]:[4,3];
-  for(const scale of scales){
-   try{canvas=await html2canvas(node,{scale,useCORS:true,backgroundColor:'#ffffff',logging:false,imageTimeout:20000});break}
-   catch(err){lastError=err}
-  }
-  if(!canvas)throw lastError||new Error('Canvas render failed');
-  const imgData=canvas.toDataURL('image/png');
-  const {jsPDF}=window.jspdf;
-  const pdf=new jsPDF({orientation:'portrait',unit:'pt',format:'a4',compress:true});
-  const pageW=pdf.internal.pageSize.getWidth(),pageH=pdf.internal.pageSize.getHeight();
-  pdf.setProperties({title:'DE-MAX Tutin – Bescheinigung '+(rec.number||''),subject:'Bescheinigung über die Teilnahme an einem Online-Deutschkurs',creator:'DE-MAX Evidencija'});
-  pdf.addImage(imgData,'PNG',0,0,pageW,pageH,undefined,'NONE');
-  pdf.save('Potvrda_'+(rec.number||'DEMAX').replace(/[\\/:*?"<>|]+/g,'_')+'_HD.pdf');
- }catch(err){toast('PDF nije mogao biti pripremljen. Pokušaj ponovo ili koristi vektorsku štampu.',true);console.error(err)}
- finally{if(stage)stage.remove()}
-}
+const dmxVectorPrintStyle=document.createElement('style');dmxVectorPrintStyle.textContent="\n/* Certificate logo: native vector paths on solid white. No halftone, pixels or paper texture. */\n.cert-head svg{display:block;width:91px;height:91px;flex:0 0 91px;object-fit:contain;box-shadow:none!important;filter:none!important;background:#fff!important;}\n.pdf-stage.dmx-a4-stage .cert-head svg{display:block!important;width:90px!important;height:90px!important;flex:0 0 90px!important;filter:none!important;background:#fff!important;}\n.pdf-stage.dmx-a4-stage .cert-student,.pdf-stage.dmx-a4-stage .cert-body,.pdf-stage.dmx-a4-stage .cert-contacts{ text-shadow:none!important;filter:none!important; }\n.pdf-stage.dmx-a4-stage .cert-preview-wrap,.pdf-stage.dmx-a4-stage .certificate-sheet{background:#fff!important;filter:none!important;box-shadow:none!important;}\n@media print{.cert-head svg{width:90px!important;height:90px!important;flex:0 0 90px!important}.certificate-sheet *{text-shadow:none!important;}}\n";document.head.appendChild(dmxVectorPrintStyle);
 function certificatePrintVector(id){
  const rec=db.certificates.find(x=>x.id===id);if(!rec)return;
  // Browser print-to-PDF is vector-based: selectable sharp text, accurate font styles.
@@ -1143,7 +1073,6 @@ document.addEventListener('click',async e=>{
  if(action==='edit-certificate'){e.preventDefault();e.stopImmediatePropagation();certificateForm(id);return}
  if(action==='delete-certificate'){e.preventDefault();e.stopImmediatePropagation();if(!ask('Obrisati ovu potvrdu?'))return;db.certificates=db.certificates.filter(x=>x.id!==id);persist();closeModal();render();toast('Potvrda je obrisana.');return}
  if(action==='certificate-preview'){e.preventDefault();e.stopImmediatePropagation();openCertificatePreview(id);return}
- if(action==='certificate-pdf'){e.preventDefault();e.stopImmediatePropagation();await certificateToPDF(id);return}
  if(action==='cert-refresh-text'){e.preventDefault();e.stopImmediatePropagation();const form=document.getElementById('certificate-form'); if(form)certRefreshBody(form); return}
  if(action==='new-embassy'){e.preventDefault();e.stopImmediatePropagation();embassyForm();return}
  if(action==='edit-embassy'){e.preventDefault();e.stopImmediatePropagation();embassyForm(id);return}
