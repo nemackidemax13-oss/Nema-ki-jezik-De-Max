@@ -1,0 +1,247 @@
+<!doctype html><html lang="sr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#101a35"><title>DE-MAX • Der, die, das B1</title><style>
+:root{--bg:#0c142b;--card:#172343;--line:#324164;--txt:#f7faff;--muted:#b8c5dd;--gold:#ffc857;--green:#31da93;--red:#ff607a;--blue:#7db8ff}*{box-sizing:border-box}body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Arial,sans-serif;background:radial-gradient(circle at 50% -20%,#304d85,var(--bg) 60%);color:var(--txt);min-height:100dvh}button,select,input{font:inherit}button{cursor:pointer;touch-action:manipulation}.app{width:min(780px,100%);margin:auto;padding:14px 14px 28px}.top{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap}.brand{font-weight:1000;letter-spacing:.7px;font-size:21px;color:white;text-align:right}.brand b{color:var(--gold)}.kicker{color:var(--muted);font-size:12px;font-weight:750;letter-spacing:.5px}.topRight{margin-left:auto;text-align:right}.controls{display:flex;gap:7px;justify-content:flex-end;flex-wrap:wrap;margin-top:7px}.small{border:1px solid #4b628b;background:#17284d;border-radius:11px;padding:8px 10px;color:white;font-size:12px;font-weight:700}.small.on{border-color:var(--gold);color:var(--gold)}h1{font-size:clamp(25px,5.5vw,40px);text-align:center;margin:23px 0 5px}h1 em{font-style:normal;color:var(--gold)}.sub{text-align:center;color:var(--muted);margin:0 0 17px;font-size:14px}.panel{background:linear-gradient(155deg,#1c2c50,#111c37);border:1px solid var(--line);box-shadow:0 12px 38px #0003;border-radius:24px;padding:18px;margin:13px 0}.picker{display:grid;grid-template-columns:1fr 1fr;gap:10px}label{display:block;font-size:12px;color:var(--muted);margin:0 0 5px;font-weight:800}select,input{width:100%;padding:12px;border-radius:12px;background:#0c1933;border:1px solid #435577;color:white;outline:none}select:focus,input:focus{border-color:var(--gold)}.mode{display:flex;gap:8px;margin-top:15px}.mode button{flex:1;border:1px solid #42557b;background:#132344;color:#e9f1ff;padding:12px;border-radius:13px;font-weight:800}.mode button.selected{border:2px solid var(--gold);background:#3b3551;color:#ffe6a1}.primary{width:100%;padding:14px;border:none;background:linear-gradient(135deg,#32e7a1,#16b67c);border-radius:14px;color:#062923;font-size:17px;font-weight:900;margin-top:14px;box-shadow:0 5px 0 #0b684b}.primary:active{transform:translateY(3px);box-shadow:0 2px 0 #0b684b}.note{font-size:12px;color:var(--muted);text-align:center;line-height:1.5}.hidden{display:none!important}.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:7px}.stat{text-align:center;background:#101b37;border:1px solid #37496c;border-radius:14px;padding:10px 3px}.stat strong{display:block;font-size:20px;font-variant-numeric:tabular-nums}.stat span{font-size:11px;color:var(--muted)}.progress{height:9px;background:#0d1630;border-radius:20px;margin:17px 0;overflow:hidden}.progress div{width:0%;height:100%;background:linear-gradient(90deg,#37db9c,#ffe27b);transition:width .3s}.question{text-align:center;padding:13px 5px 4px}.qnum{font-size:13px;color:var(--gold);font-weight:800}.noun{font-size:clamp(34px,9vw,62px);font-weight:1000;letter-spacing:.4px;margin:10px 0 4px;overflow-wrap:anywhere}.trans{font-size:17px;color:#bdcbe7;margin:3px 0 13px}.article{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:14px}.article button{font-size:clamp(21px,5vw,30px);font-weight:1000;border-radius:17px;padding:20px 5px;border:2px solid #627299;color:white;background:#233456;box-shadow:0 5px 0 #0b1227;transition:transform .12s}.article button:nth-child(1){border-color:#6ba9f8}.article button:nth-child(2){border-color:#fa78a0}.article button:nth-child(3){border-color:#72dda4}.article button:active{transform:translateY(4px)}.article button.correct{background:#147954;border-color:#54ffc0;box-shadow:0 0 25px #2ae9a857}.article button.wrong{background:#972f4a;border-color:#ff8298;box-shadow:0 0 20px #fa456a6a}.article button:disabled{cursor:default}.feedback{min-height:65px;text-align:center;margin-top:15px;font-weight:850;font-size:18px}.feedback small{display:block;color:var(--muted);font-size:13px;font-weight:500;margin-top:4px}.bottomActions{display:flex;justify-content:space-between;gap:9px;margin-top:8px}.bottomActions button{flex:1;border:1px solid #455d84;border-radius:12px;padding:10px;color:white;background:#1d3157;font-weight:800}.leader h2,.results h2{margin:3px 0 12px;text-align:center}.leader ol{padding-left:25px}.leader li{margin:9px 0;color:#dce6fa}.leader li strong{color:var(--gold)}.results{text-align:center}.bigScore{font-size:52px;font-weight:1000;color:var(--gold)}.tag{font-size:12px;border:1px solid #536789;border-radius:25px;padding:5px 9px;display:inline-block;color:var(--muted)}.source{margin-top:17px;font-size:12px;color:#adbdd9;line-height:1.6}.source a{color:#91c4ff}.footer{text-align:center;color:#92a5cb;font-size:12px;margin-top:15px}.pop{position:fixed;inset:0;pointer-events:none;overflow:hidden;z-index:5}.piece{position:absolute;top:-20px;animation:fall 1.9s linear forwards;font-size:20px}@keyframes fall{to{transform:translate(var(--drift),110vh) rotate(720deg);opacity:0}}@media(max-width:420px){.app{padding:10px}.panel{padding:13px;border-radius:19px}.stats{gap:5px}.stat strong{font-size:18px}.picker{grid-template-columns:1fr 1fr}.small{padding:7px}.article button{padding:18px 3px}}
+
+/* DE-MAX mobile-first layout */
+html{overflow-x:hidden;-webkit-text-size-adjust:100%}body{overflow-x:hidden}button{min-height:42px} .app{max-width:780px}
+@media (max-width:600px){
+ .app{padding:9px 10px 16px;width:100%}
+ .top{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:start;gap:6px;flex-wrap:nowrap}
+ .top>div:first-child{padding-top:4px}.kicker{font-size:10px;line-height:1.45;letter-spacing:0}
+ .topRight{min-width:0;margin-left:0}.brand{font-size:17px;line-height:1.25;white-space:nowrap}
+ .controls{gap:4px;margin-top:5px;max-width:245px}.small{min-height:35px;padding:6px 7px;font-size:10px;border-radius:9px}
+ h1{font-size:clamp(23px,6.5vw,32px);margin:13px 0 3px;line-height:1.12}
+ .sub{font-size:11px;margin-bottom:8px}.panel{margin:8px 0;padding:12px;border-radius:17px}
+ .picker{gap:8px}label{font-size:10px;letter-spacing:.1px}select{font-size:13px;min-height:45px;padding:10px 7px}
+ .primary{font-size:16px;padding:12px;margin-top:12px;min-height:49px}.note{font-size:11px;line-height:1.35}
+ .stats{gap:5px;grid-template-columns:repeat(4,minmax(0,1fr))}.stat{padding:8px 2px;border-radius:10px;min-width:0}.stat strong{font-size:17px}.stat span{font-size:10px}
+ .progress{margin:10px 0;height:7px}.question{padding:4px 2px 0}.qnum{font-size:11px}.noun{font-size:clamp(30px,10vw,45px);margin:7px 0 2px;line-height:1.1}.trans{font-size:15px;margin:3px 0 9px}
+ .article{gap:7px;margin-top:10px}.article button{min-width:0;font-size:clamp(23px,7vw,31px);padding:15px 2px;border-radius:13px;min-height:65px}
+ .feedback{font-size:16px;min-height:55px;margin-top:10px}.feedback small{font-size:12px}
+ .bottomActions{gap:7px;margin-top:5px}.bottomActions button{font-size:12px;padding:9px 3px;min-height:43px}
+ .source{font-size:10px;line-height:1.4;margin-top:12px}.footer{font-size:10px;margin-top:10px}
+ .bigScore{font-size:43px}
+}
+@media (max-width:390px){.top{grid-template-columns:1fr}.top>div:first-child{display:none}.topRight{width:100%;display:flex;justify-content:space-between;align-items:center;gap:5px}.controls{margin-top:0;max-width:none;flex-wrap:nowrap}.small{font-size:9px;padding:5px}.brand{font-size:15px}.article button{min-height:60px}.picker{grid-template-columns:1fr 1fr}}
+@media (max-width:600px) and (max-height:740px){h1{margin-top:7px}.sub{margin-bottom:5px}.panel{padding:10px}.stat{padding:6px 2px}.noun{font-size:clamp(29px,9vw,40px)}.article button{min-height:58px;padding:10px 2px}.feedback{margin-top:7px;min-height:47px}.progress{margin:7px 0}}
+@media (prefers-reduced-motion:reduce){.progress div,.article button{transition:none}}
+@media(max-width:600px){#setup{min-height:calc(100dvh - 165px);display:flex;flex-direction:column}#startBtn{width:min(100%,340px);align-self:center;margin:auto auto;min-height:62px;font-size:19px;box-shadow:0 9px 30px #0006}#setup>.note:last-child{margin-top:0;text-align:center}}@media(max-width:600px) and (max-height:630px){#setup{min-height:calc(100dvh - 145px)}#startBtn{min-height:54px}}#stopBtn{background:#17284d;color:#fff;border:2px solid #a53e52;transition:background .12s,transform .12s}#stopBtn:active,#stopBtn:focus-visible{background:#e53950;color:#fff;transform:scale(.97)}#skipBtn{background:linear-gradient(135deg,#ffe28a,#f4b526);color:#342100;border:2px solid #ffe6a0;font-weight:900;box-shadow:0 3px 0 #98630d}#skipBtn:active{transform:translateY(2px);box-shadow:0 1px 0 #98630d}.picker-group{min-width:0}.picker-group>label{text-align:center;margin-bottom:8px}.arrow-select{display:flex;align-items:center;justify-content:space-between;gap:3px;width:100%;min-height:52px;padding:4px;background:#101e3b;border:1px solid #405680;border-radius:13px}.pick-arrow{display:flex;align-items:center;justify-content:center;flex:0 0 37px;min-width:0;min-height:42px;padding:0;border:1px solid #ff788b;border-radius:9px;background:linear-gradient(140deg,#ec445d,#b92042);color:#fff;font-size:21px;font-weight:900;box-shadow:0 2px 0 #651426;touch-action:manipulation}.pick-arrow:active{background:#ff6a7d;transform:translateY(1px);box-shadow:none}.pick-value{font-size:14px;font-weight:850;color:#fff;text-align:center;line-height:1.2;min-width:0;flex:1;white-space:nowrap}@media(max-width:480px){.picker{gap:6px}.arrow-select{padding:3px;min-height:46px}.pick-arrow{flex-basis:32px;min-height:40px;font-size:18px}.pick-value{font-size:12px}.picker-group>label{font-size:10px;margin-bottom:5px}}@media(max-width:350px){.pick-arrow{flex-basis:27px;font-size:16px}.pick-value{font-size:11px}}
+/* Bigger, touch-friendly DE-MAX mobile edition */
+@media(max-width:600px){
+ .app{padding:8px 11px 12px}
+ .top{display:block}
+ .topRight{display:flex;align-items:center;justify-content:space-between;gap:6px;flex-wrap:wrap;width:100%;margin:0}
+ .brand{font-size:19px}
+ .controls{display:flex;gap:5px;margin:0;max-width:none;justify-content:flex-end}
+ .controls .small{font-size:10px;min-height:39px;padding:6px 7px}
+ h1{font-size:clamp(34px,9vw,42px);margin:10px 0 4px;line-height:1.1}
+ .panel{padding:13px;border-radius:18px}
+ .picker{grid-template-columns:1fr;gap:14px;width:100%}
+ .picker-group>label{font-size:12px;margin-bottom:7px;letter-spacing:.3px}
+ .arrow-select{min-height:64px;padding:5px 8px;gap:8px;border-radius:15px}
+ .pick-arrow{flex:0 0 51px;min-height:51px;font-size:25px;border-radius:12px}
+ .pick-value{font-size:20px;font-weight:900;white-space:normal;line-height:1.1}
+ #startBtn{width:min(100%,360px);min-height:71px;font-size:21px;border-radius:17px}
+ #setup>.note{font-size:12px}
+ .stats{gap:6px}
+ .stat{padding:10px 3px}
+ .stat strong{font-size:21px}
+ .stat span{font-size:11px}
+ .question{padding:6px 2px 0}
+ .noun{font-size:clamp(40px,11vw,54px);line-height:1.12;margin:11px 0 4px}
+ .trans{font-size:17px;margin:6px 0 10px}
+ .article{gap:8px;margin-top:13px}
+ .article button{min-height:82px;padding:13px 3px;font-size:clamp(30px,8vw,39px)}
+ .feedback{font-size:17px;min-height:60px;margin-top:11px}
+ .bottomActions button{font-size:14px;min-height:51px}
+}
+@media(max-width:600px) and (max-height:690px){
+ h1{font-size:32px;margin:5px 0 2px}
+ .picker{gap:8px}
+ .picker-group>label{margin-bottom:3px}
+ .arrow-select{min-height:52px}
+ .pick-arrow{min-height:43px;flex-basis:46px}
+ .pick-value{font-size:18px}
+ #startBtn{min-height:58px;font-size:19px}
+ .article button{min-height:67px}
+ .noun{font-size:clamp(36px,10vw,45px)}
+ .feedback{min-height:45px}
+}
+@media(max-width:340px){.controls .small{font-size:9px;padding:5px}.arrow-select{gap:4px}.pick-arrow{flex-basis:44px}.pick-value{font-size:17px}}
+
+/* Fixed visible branding and sound controls on all mobile widths */
+.trust{display:none}
+@media(max-width:600px){
+ header.top{display:flex;justify-content:center;align-items:stretch;width:100%}
+ header.top .topRight{display:flex;flex-direction:column;align-items:center;justify-content:flex-start;gap:10px;width:100%;max-width:100%;margin:0}
+ .brandWrap{display:flex;flex-direction:column;align-items:center;justify-content:center;width:100%;text-align:center}
+ header.top .brand{font-size:clamp(25px,7.5vw,31px);font-weight:1000;letter-spacing:.7px;line-height:1.15;color:white;white-space:nowrap}
+ header.top .trust{display:block;font-size:clamp(12px,3.8vw,15px);font-weight:850;letter-spacing:.1px;color:#ffd06a;margin-top:3px}
+ header.top .controls{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));column-gap:6px;width:100%;max-width:100%;margin:0}
+ header.top .controls .small{display:flex;align-items:center;justify-content:center;width:100%;min-width:0;min-height:45px;padding:7px 3px;font-size:clamp(9px,2.7vw,12px);font-weight:850;line-height:1.1;white-space:nowrap;text-align:center}
+ #setup{min-height:calc(100dvh - 225px)}
+}
+@media(max-width:350px){
+ header.top .controls{column-gap:3px}
+ header.top .controls .small{font-size:9px;padding:6px 1px}
+}
+
+/* Single-screen mobile game; compact dynamically for shorter phones. */
+@media(max-width:600px) and (orientation:portrait){
+ html,body{height:100%;max-height:100%;overflow:hidden!important;overscroll-behavior:none}
+ body .app{height:100dvh;max-height:100dvh;min-height:0;overflow:hidden;display:flex;flex-direction:column;
+  padding:calc(6px + env(safe-area-inset-top,0px)) 10px calc(6px + env(safe-area-inset-bottom,0px))}
+ header.top{flex:0 0 auto}
+ header.top .topRight{gap:5px}
+ header.top .brand{font-size:clamp(22px,6.9vw,27px)}
+ header.top .trust{font-size:12px}
+ header.top .controls .small{min-height:38px;padding:5px 2px}
+ h1{flex:0 0 auto;font-size:clamp(29px,7.9vw,36px);margin:7px 0 5px;line-height:1.04}
+ .footer{display:none!important}
+ #setup:not(.hidden){flex:1 1 auto;min-height:0;max-height:none;margin:4px 0;padding:12px 12px 9px;overflow:hidden;
+ display:flex;flex-direction:column;justify-content:flex-start}
+ #setup .picker{gap:clamp(7px,1.7dvh,14px);flex:0 0 auto}
+ #setup .arrow-select{min-height:clamp(47px,8dvh,61px)}
+ #setup .pick-arrow{min-height:clamp(41px,7dvh,51px)}
+ #setup .note{margin:8px 0!important;font-size:11px;line-height:1.25}
+ #setup #startBtn{margin:auto auto;min-height:clamp(54px,9dvh,69px);font-size:clamp(17px,4.5vw,21px);
+ flex:0 0 auto}
+ #setup .note:last-child{margin:8px 0 0!important}
+ #game:not(.hidden){display:flex;flex:1 1 auto;flex-direction:column;min-height:0;max-height:100%;overflow:hidden}
+ #game>.stats{flex:0 0 auto;gap:5px}
+ #game .stat{padding:7px 2px}
+ #game .stat strong{font-size:clamp(16px,4.8vw,20px)}
+ #game .stat span{font-size:10px}
+ #game>.panel{flex:1 1 auto;min-height:0;margin:5px 0 0;padding:8px 10px 10px;
+ display:flex;flex-direction:column;justify-content:space-between;gap:2px;overflow:hidden}
+ #game #playerTurn{align-self:flex-start;font-size:11px;padding:3px 8px;min-height:0;line-height:1.2}
+ #game .progress{flex:0 0 auto;margin:5px 0;height:7px}
+ #game .question{padding:0;min-height:0;flex:0 1 auto}
+ #game .qnum{font-size:11px;line-height:1.1}
+ #game .noun{font-size:clamp(31px,10vw,48px);margin:4px 0 1px;line-height:1.04}
+ #game .trans{font-size:clamp(13px,3.8vw,17px);margin:2px 0 5px;line-height:1.15}
+ #game #sayBtn{min-height:35px;padding:4px 10px;font-size:11px}
+ #game .article{flex:0 0 auto;gap:7px;margin:7px 0 0}
+ #game .article button{min-height:clamp(53px,10dvh,78px);padding:7px 2px;font-size:clamp(26px,8vw,37px)}
+ #game .feedback{flex:0 1 auto;min-height:42px;margin:4px 0 0;font-size:clamp(13px,3.9vw,17px);line-height:1.15;display:flex;flex-direction:column;align-items:center;justify-content:center}
+ #game .feedback small{font-size:11px;margin-top:2px}
+ #game .bottomActions{flex:0 0 auto;margin:3px 0 0;gap:7px}
+ #game .bottomActions button{min-height:clamp(42px,7dvh,52px);font-size:13px;padding:5px 2px}
+ #result:not(.hidden){flex:1 1 auto;min-height:0;margin:5px 0;display:flex;flex-direction:column;justify-content:center;overflow:hidden}
+}
+@media(max-width:600px) and (max-height:680px) and (orientation:portrait){
+ header.top .topRight{gap:3px}
+ header.top .brand{font-size:23px}
+ header.top .trust{font-size:11px;margin-top:0}
+ header.top .controls .small{min-height:32px;font-size:10px}
+ h1{font-size:clamp(26px,7vw,30px);margin:5px 0 3px}
+ #game .stat{padding:5px 2px}
+ #game>.panel{padding:6px 9px}
+ #game #playerTurn{font-size:10px;padding:2px 6px}
+ #game .progress{height:5px;margin:3px 0}
+ #game .noun{font-size:clamp(30px,9vw,41px);margin:2px 0 0}
+ #game .trans{margin:1px 0 3px}
+ #game #sayBtn{min-height:30px}
+ #game .article button{min-height:clamp(47px,9dvh,63px)}
+ #game .feedback{min-height:34px}
+ #game .bottomActions button{min-height:39px}
+}
+@media(max-width:600px) and (max-height:570px) and (orientation:portrait){
+ header.top .brand{font-size:21px}
+ header.top .trust{font-size:10px}
+ header.top .controls .small{min-height:29px;font-size:9px}
+ #game #playerTurn{display:none}
+ #game .qnum{display:none}
+ #game .article button{min-height:45px}
+ #game .bottomActions button{min-height:37px}
+}
+.brand b{color:#fff!important}.brand{color:#fff!important}</style></head><body><div class="app"><header class="top"><div class="topRight"><div class="brandWrap"><div class="brand">DE-<b>MAX</b></div><div class="trust">Od 2013. sa Vama</div></div><div class="controls"><button id="musicBtn" class="small on" aria-label="Uključi ili isključi muziku">♫ Muzika: ON</button><button id="fxBtn" class="small on">🔊 Efekti: ON</button><button id="voiceBtn" class="small on">🗣 Izgovor: ON</button></div></div></header><h1><em>der • die • das</em> <span style="font-size:.44em;color:#b8c5dd;vertical-align:middle">B1</span></h1>
+<section id="setup" class="panel"><div class="picker"><div class="picker-group"><label id="lessonLabel">IZABERI CELINU</label><div class="arrow-select" role="group" aria-labelledby="lessonLabel"><button type="button" class="pick-arrow" data-picker="lesson" data-direction="-1" aria-label="Prethodna lekcija">❮</button><span class="pick-value" id="lessonText" aria-live="polite">Sve celine</span><button type="button" class="pick-arrow" data-picker="lesson" data-direction="1" aria-label="Sledeća lekcija">❯</button></div><input id="lesson" type="hidden" value="all"></div><div class="picker-group"><label id="roundCountLabel">BROJ PITANJA</label><div class="arrow-select" role="group" aria-labelledby="roundCountLabel"><button type="button" class="pick-arrow" data-picker="roundCount" data-direction="-1" aria-label="Manje pitanja">❮</button><span class="pick-value" id="roundCountText" aria-live="polite">20 pitanja</span><button type="button" class="pick-arrow" data-picker="roundCount" data-direction="1" aria-label="Više pitanja">❯</button></div><input id="roundCount" type="hidden" value="20"></div></div><p class="note" style="margin:14px 0 0">⏱ Za svako pitanje imaš <b>10 sekundi</b>.</p><button id="startBtn" class="primary">▶ POKRENI IGRU</button><p class="note">Tačan odgovor +100 bodova · brzina do +50 · niz tačnih +25 · pogrešan odgovor 0</p></section>
+<section id="game" class="hidden"><div class="stats"><div class="stat"><strong id="points">0</strong><span>Bodovi</span></div><div class="stat"><strong id="streak">0 🔥</strong><span>Niz</span></div><div class="stat"><strong id="clock">10s</strong><span>Vreme</span></div><div class="stat"><strong id="step">1/20</strong><span>Pitanje</span></div></div><section class="panel"><div id="playerTurn" class="tag">🎯 Pogodi član za 10 sekundi</div><div class="progress"><div id="bar"></div></div><div class="question"><div class="qnum">IZABERI TAČAN ČLAN</div><div id="noun" class="noun">Enttäuschung</div><div id="translation" class="trans">razočaranje</div><button id="sayBtn" class="small">🔉 Poslušaj reč</button></div><div class="article"><button data-a="der">der</button><button data-a="die">die</button><button data-a="das">das</button></div><div class="feedback" id="feedback" aria-live="polite">Koji je tačan član?</div><div class="bottomActions"><button id="stopBtn">⌂ Početna</button><button id="skipBtn">Preskoči →</button></div></section></section>
+<section id="result" class="panel results hidden"><h2>🏆 Rezultat igre</h2><div id="finalScore" class="bigScore">0</div><p id="resultText"></p><div id="versus"></div><button id="again" class="primary">↻ IGRAJ PONOVO</button><button id="home" class="small" style="margin-top:13px">← Izbor lekcije</button></section>
+
+<div class="footer">DE-MAX • Od 2013. sa Vama • Nemački B1</div></div><div id="confetti" class="pop"></div>
+<script>
+'use strict';
+// B1: imenice sa jednoznačnim singularnim članom iz De-Max B1 zbirke, podeljene na 7 tematskih celina.
+const RAW=["die|Enttäuschung|razočaranje;die|Freundschaft|prijateljstvo;die|Fröhlichkeit|veselje;die|Gemeinschaft|zajednica, društvo;die|Gewohnheit|navika, običaj;der|Humor|humor;der|Kuss|poljubac;der|Verlust|trošak, šteta, gubitak;das|Vertrauen|poverenje, pouzdanje;der|Zorn|gnev, srdžba;der|Bau|gradnja;der|Eindruck|utisak;der|Einfluss|uticaj;das|Kuvert|koverta;die|Mannschaft|ekipa;die|Stellung|pozicija, položaj;die|Vergangenheit|prošlost;der|Vergleich|poređenje;die|Vorstellung|predstavljanje;die|Werbung|reklama;die|Wirklichkeit|stvarnost;das|Wohl|dobrobit, blagostanje;der|Zweck|namera, svrha, cilj","das|Laufwerk|pogonski uređaj;der|Knopf|dugme;der|Kopierer|fotokopir aparat;das|Menü|meni;das|Netz|mreža, zamka;die|Steckdose|utičnica;der|Stecker|šteker;die|Taste|tipka, dirka;die|Verbindung|spoj;der|Alarm|alarm;das|Eigentum|vlasništvo, imovina;die|Frechheit|drskost, bezobraznost;der|Mülleimer|kanta za smeće;die|Nachfrage|potražnja, upit;der|Kunststoff|plastika;die|Sitzung|sednica, sastanak;die|Tatsache|činjenica, fakt;der|Witz|vic;der|Wohnblock|stambena zgrada, blok","das|Abgas|izduvni gas;das|Altenheim|starački dom;die|Bedienung|posluživanje, usluga;die|Darstellung|prikaz, opis;der|Druck|pritisak;die|Einzelheit|pojedinost, sitnica;die|Entfernung|razdaljina;der|Fortschritt|razvoj, napredak;der|Gang|brzina;die|Gaststätte|gostionica;der|Geschmack|ukus, sviđanje;das|Gesetz|zakon, propis, pravilo;der|Griff|kvaka, zahvat;der|Lautsprecher|zvučnik;die|Margarine|margarin;das|Mehl|brašno;die|Möglichkeit|mogućnost;der|Monitor|monitor;die|Reklame|reklama;das|Sprichwort|poslovica;die|Strecke|staza;das|Taschenbuch|notes, džepna knjiga;das|Urteil|presuda, sud;das|Verständnis|razumevanje, shvaćanje;die|Wirkung|delovanje;der|Zustand|stanje, situacija;der|Zweifel|dvojba, kolebanje, sumnja","die|Kontrolle|kontrola;die|Vorschrift|propis;die|Genehmigung|odobrenje, dopuštanje;die|Parkuhr|parkometar;das|Verbot|zabrana;die|Absicht|namera;der|Autor|autor;die|Autorin|autorka;die|Ehre|čast, slava;die|Gegenwart|sadašnjost;die|Geschwindigkeit|brzina;das|Gewürz|začin;die|Öffentlichkeit|javnost;die|Rolle|uloga;der|Sozialarbeiter|socijalni savetnik;die|Sozialarbeiterin|socijalna savetnica;der|Standpunkt|mišljenje, gledište;die|Ursache|razlog, povod, uzrok;die|Waffe|oružje;die|Zeile|red, niz","der|Beweis|dokaz;die|Erlaubnis|dozvola;der|Prozess|proces;der|Briefträger|poštar;der|Bürgersteig|trotoar, pločnik;der|Club|klub;die|Demonstration|demonstracija;das|Ereignis|događaj;der|Frieden|mir;das|Instrument|instrument;der|Kasten|kutija, sanduk, gajba;der|Nichtraucher|nepušač (m);die|Nichtraucherin|nepušač (ž);das|Parkhaus|javna garaža;die|Recherche|istraga, ispitivanje;der|Sinn|duh, smisao, čulo;die|Summe|suma;die|Tafel|tabla;das|Verhältnis|odnos;der|Wirt|gazda, domaćin;die|Wirtin|gazdarica, domaćica","die|Bevölkerung|stanovništvo;die|Bürgerinitiative|inicijativa stanovništva;die|Geschwindigkeitsbeschränkung|ograničenje brzine;die|Mehrheit|većina;der|Minister|ministar;die|Ministerin|ministarka;die|Mitbestimmung|suodluka;die|Opposition|opozicija;das|Parlament|parlament;der|Präsident|predsednik;der|Protest|protest;die|Regierung|vlada, vlast;der|Sitz|sedište;der|Skandal|skandal;die|Umwelt|okolina;die|Verwaltung|uprava, administracija;das|Volk|narod;die|Wahl|izbor, odabir;die|Ansicht|stav, pogled, mišljenje;der|Bericht|izveštaj;die|Bombe|bomba;die|Broschüre|brošura;das|Einkommen|prihod, zarada, plata;der|Hinweis|upozorenje, napomena;die|Kritik|kritika;der|Künstler|umetnik;die|Künstlerin|umetnica;die|Landwirtschaft|poljoprivreda;die|Mauer|zid;die|Reihenfolge|red, poredak, niz;die|Rettung|spas;der|Streit|svađa;das|System|sistem;der|Trend|trend;der|Versuch|pokušaj;die|Verbesserung|poboljšanje;der|Vortrag|izlaganje, predavanje;die|Zone|zona;der|Zusammenhang|sklop, veza","die|Demokratie|demokratija;der|Handel|trgovina;die|Reform|reforma;die|Staatsangehörigkeit|državljanstvo;die|Tradition|tradicija;das|Bundesland|zavezna država, pokrajina;die|Ernte|berba, žetva;das|Feld|polje, njiva, ravnica;die|Gegend|kraj;das|Gras|trava;der|Hafen|luka;das|Korn|zrno, pšenica;die|Aprikose|kajsija;die|Limonade|limunada;der|Pfannkuchen|palačinka;die|Pflaume|šljiva;der|Pilz|pečurka;die|Gastfreundschaft|gostoprimstvo;die|Grundlage|osnova, temelj, podloga;das|Heimweh|čežnja za domom;das|Leder|koža"];
+const LESSONS=RAW.map((str,li)=>str.split(';').map(x=>{let [a,n,t]=x.split('|');return {a,n,t,li}}));let mode='solo',music=true,fx=true,voice=true,ctx=null,musicTimer=null,timer=null,questions=[],index=0,answered=false,roundScores=[0,0],streaks=[0,0],startAt=0,limit=10,chosenLesson='all',active=false,players=['Igrač 1','Igrač 2'];const $=id=>document.getElementById(id);const choiceBtns=[...document.querySelectorAll('.article button')];function shuffle(a){a=[...a];for(let i=a.length-1;i>0;i--){let j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}function getAudio(){try{ctx=ctx||new (window.AudioContext||window.webkitAudioContext)();if(ctx.state==='suspended')ctx.resume();return ctx}catch{return null}}function note(freq,duration=.12,type='sine',vol=.07,when=0){let c=getAudio();if(!c)return;let o=c.createOscillator(),g=c.createGain(),t=c.currentTime+when;o.type=type;o.frequency.setValueAtTime(freq,t);g.gain.setValueAtTime(.0001,t);g.gain.exponentialRampToValueAtTime(vol,t+.013);g.gain.exponentialRampToValueAtTime(.0001,t+duration);o.connect(g).connect(c.destination);o.start(t);o.stop(t+duration+.02)}function sound(kind){if(!fx)return;let notes=kind==='good'?[523,659,784,1047]:kind==='bad'?[280,210]:kind==='win'?[392,523,659,784,1047,1318]:[440];notes.forEach((f,i)=>note(f,kind==='win'?.25:.13,kind==='bad'?'sawtooth':'sine',kind==='bad'?.033:.06,i*(kind==='win'?.12:.075)))}
+
+/* DE-MAX original clean synth-pop groove. No random-noise percussion or crackling samples. */
+let mStep=0,musicBus=null,musicNext=0;
+function musicNode(){
+ const c=getAudio();if(!c)return null;
+ if(!musicBus){
+  musicBus=c.createGain();musicBus.gain.value=.6;
+  const comp=c.createDynamicsCompressor();comp.threshold.value=-22;comp.knee.value=18;
+  comp.ratio.value=2;comp.attack.value=.015;comp.release.value=.22;
+  musicBus.connect(comp).connect(c.destination);
+ }
+ return {c,bus:musicBus};
+}
+function mTone(freq,t,dur,volume=.01,wave='sine',cutoff=1600,attack=.016){
+ const m=musicNode();if(!m)return;
+ const {c,bus}=m,o=c.createOscillator(),filter=c.createBiquadFilter(),g=c.createGain();
+ o.type=wave;o.frequency.setValueAtTime(freq,t);
+ filter.type='lowpass';filter.frequency.value=cutoff;filter.Q.value=.6;
+ const a=Math.min(attack,dur*.3);
+ g.gain.setValueAtTime(0,t);
+ g.gain.linearRampToValueAtTime(volume,t+a);
+ g.gain.exponentialRampToValueAtTime(.0001,t+dur);
+ o.connect(filter).connect(g).connect(bus);o.start(t);o.stop(t+dur+.02);
+}
+function mKick(t){
+ const m=musicNode();if(!m)return;
+ const {c,bus}=m,o=c.createOscillator(),g=c.createGain();
+ o.type='sine';o.frequency.setValueAtTime(124,t);o.frequency.exponentialRampToValueAtTime(53,t+.15);
+ g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(.062,t+.007);
+ g.gain.exponentialRampToValueAtTime(.0001,t+.26);
+ o.connect(g).connect(bus);o.start(t);o.stop(t+.27);
+}
+function mSnare(t){
+ mTone(185,t,.105,.016,'triangle',750,.006);
+ mTone(540,t,.045,.003,'sine',1500,.005);
+}
+function mTick(t,accent){
+ mTone(accent?1480:1100,t,.038,accent?.0022:.0013,'sine',2400,.005);
+}
+const songChords=[
+ {pad:[220,261.63,329.63],bass:110,arp:[329.63,392,440,523.25,440,392,329.63,392]},
+ {pad:[174.61,220,261.63],bass:87.31,arp:[349.23,440,523.25,440,349.23,329.63,261.63,349.23]},
+ {pad:[196,261.63,329.63],bass:130.81,arp:[392,523.25,659.25,523.25,392,440,523.25,392]},
+ {pad:[196,246.94,293.66],bass:98,arp:[392,493.88,587.33,493.88,392,349.23,392,493.88]}
+];
+function playSongStep(t,step){
+ const n=step%8,bar=Math.floor(step/8)%4,ch=songChords[bar];
+ if(n===0)ch.pad.forEach((f,i)=>mTone(f,t,2.11,.008,'sine',1350,.21+i*.025));
+ if(n%2===0){mKick(t);mTone(ch.bass,t,.40,.022,'triangle',650,.02)}
+ if(n===2||n===6)mSnare(t);
+ if(n%2===1)mTick(t,n===3||n===7);
+ if(n===1||n===3||n===5||n===7)mTone(ch.arp[n],t,.24,.010,'triangle',2000,.012);
+ if(n===0||n===4)mTone(ch.arp[n],t,.27,.005,'sine',1500,.06);
+}
+function toggleMusic(on){
+ music=!!on;
+ $('musicBtn').textContent=music?'♫ Muzika: ON':'♫ Muzika: OFF';
+ $('musicBtn').classList.toggle('on',music);
+ $('musicBtn').setAttribute('aria-pressed',String(music));
+ clearInterval(musicTimer);musicTimer=null;
+ const m=musicNode();if(!m)return;
+ const {c,bus}=m;
+ bus.gain.cancelScheduledValues(c.currentTime);
+ bus.gain.setTargetAtTime(music?.6:0,c.currentTime,.02);
+ if(!music)return;
+ const eighth=60/112/2;
+ musicNext=c.currentTime+.055;
+ const schedule=()=>{
+  if(!music||document.hidden)return;
+  while(musicNext<c.currentTime+.18){playSongStep(musicNext,mStep++);musicNext+=eighth}
+ };
+ schedule();
+ musicTimer=setInterval(()=>{
+  if(document.hidden){musicNext=c.currentTime+.06;return}
+  schedule();
+ },75);
+}
+function say(item){if(!voice||!('speechSynthesis'in window))return;try{speechSynthesis.cancel();let u=new SpeechSynthesisUtterance(item.a+' '+item.n);u.lang='de-DE';u.rate=.84;u.volume=.9;let voices=speechSynthesis.getVoices(),v=voices.find(v=>v.lang.toLowerCase().startsWith('de'));if(v)u.voice=v;speechSynthesis.speak(u)}catch{}}function ui(){let pl=mode==='duel'?index%2:0;$('points').textContent=roundScores[pl];$('streak').textContent=streaks[pl]+' 🔥';$('step').textContent=(index+1)+'/'+questions.length;$('bar').style.width=100*index/questions.length+'%';$('playerTurn').textContent='🎯 Pogodi član za 10 sekundi';$('noun').textContent=questions[index].n;$('translation').textContent=questions[index].t;$('feedback').textContent='Koji je tačan član?';$('feedback').style.color='';answered=false;choiceBtns.forEach(b=>{b.disabled=false;b.classList.remove('correct','wrong')});startAt=Date.now();updateClock();clearInterval(timer);timer=setInterval(()=>{if(!active||answered)return;updateClock();if(limit&&Date.now()-startAt>=limit*1000)answer('')},100)}function updateClock(){let left=limit?Math.max(0,limit-(Date.now()-startAt)/1000):null;$('clock').textContent=left===null?'∞':Math.ceil(left)+'s';$('clock').style.color=left!==null&&left<5?'#ff8298':''}function burst(){let b=$('confetti');b.innerHTML='';for(let i=0;i<22;i++){let e=document.createElement('span');e.className='piece';e.textContent=['⭐','✨','🎉','💛','💚'][i%5];e.style.left=Math.random()*100+'vw';e.style.setProperty('--drift',(Math.random()*160-80)+'px');e.style.animationDelay=(Math.random()*.4)+'s';b.append(e)}setTimeout(()=>b.innerHTML='',2400)}function answer(a){if(answered||!active)return;answered=true;clearInterval(timer);let q=questions[index],pl=mode==='duel'?index%2:0,ok=q.a===a,elapsed=(Date.now()-startAt)/1000;choiceBtns.forEach(b=>{b.disabled=true;if(b.dataset.a===q.a)b.classList.add('correct');else if(b.dataset.a===a)b.classList.add('wrong')});if(ok){streaks[pl]++;let bonus=limit?Math.max(0,Math.round(50*(1-elapsed/limit))):0,combo=streaks[pl]>=3?25:0,add=100+bonus+combo;roundScores[pl]+=add;$('feedback').innerHTML='✅ Tačno! +'+add+' poena<small>'+q.a+' '+q.n+' · '+q.t+(combo?' · 🔥 bonus za niz!':'')+'</small>';$('feedback').style.color='#65f6b5';sound('good');if(streaks[pl]%5===0)burst()}else{streaks[pl]=0;$('feedback').innerHTML=(a?'❌ Netačno!':'⌛ Vreme je isteklo!')+'<small>Tačno je: <b>'+q.a+' '+q.n+'</b> · '+q.t+'</small>';$('feedback').style.color='#ff8099';sound('bad')}say(q);$('points').textContent=roundScores[pl];$('streak').textContent=streaks[pl]+' 🔥';setTimeout(()=>{if(!active)return;index++;if(index>=questions.length)finish();else ui()},1250)}function start(){document.body.classList.add('playing');if(music&&!musicTimer)toggleMusic(true);getAudio();chosenLesson=$('lesson').value;let data=chosenLesson==='all'?LESSONS.flat():LESSONS[+chosenLesson];let unique=[...new Map(data.map(x=>[x.a+' '+x.n,x])).values()];questions=shuffle(unique);let size=$('roundCount').value;if(size!=='all'){if(mode==='duel')size=Number(size)*2;questions=questions.slice(0,Number(size))}index=0;roundScores=[0,0];streaks=[0,0];limit=10;active=true;$('setup').classList.add('hidden');$('result').classList.add('hidden');$('game').classList.remove('hidden');if(window.innerWidth>600)$('game').scrollIntoView({behavior:'smooth',block:'start'});ui();sound('good')}function finish(){document.body.classList.remove('playing');active=false;clearInterval(timer);$('game').classList.add('hidden');$('result').classList.remove('hidden');let text='';if(mode==='duel'){let win=roundScores[0]===roundScores[1]?'🤝 Nerešeno!':('🏆 Pobednik: '+players[roundScores[0]>roundScores[1]?0:1]);text=win;$('finalScore').textContent=roundScores[0]+' : '+roundScores[1];$('versus').textContent=''+' protiv '+players[1]}else{$('finalScore').textContent=roundScores[0];text=roundScores[0]>=questions.length*125?'🥇 Fantastično znanje!':'👏 Bravo! Vežbanjem postaješ sve bolji.';$('versus').textContent=''}$('resultText').textContent=text;burst();sound('win');if(window.innerWidth>600)$('result').scrollIntoView({behavior:'smooth',block:'start'})}function home(){document.body.classList.remove('playing');active=false;clearInterval(timer);$('game').classList.add('hidden');$('result').classList.add('hidden');$('setup').classList.remove('hidden');if(window.innerWidth>600)$('setup').scrollIntoView({behavior:'smooth',block:'start'})}document.addEventListener('pointerdown',()=>{if(music&&!musicTimer)toggleMusic(true)},{once:true});$('musicBtn').onclick=()=>toggleMusic(!music);$('fxBtn').onclick=()=>{fx=!fx;$('fxBtn').textContent='🔊 Efekti: '+(fx?'ON':'OFF');$('fxBtn').classList.toggle('on',fx);if(fx)sound('good')};$('voiceBtn').onclick=()=>{voice=!voice;$('voiceBtn').textContent='🗣 Izgovor: '+(voice?'ON':'OFF');$('voiceBtn').classList.toggle('on',voice);if(!voice&&'speechSynthesis'in window)speechSynthesis.cancel()};$('startBtn').onclick=start;$('again').onclick=start;$('home').onclick=home;$('stopBtn').onclick=home;$('skipBtn').onclick=()=>answer('');$('sayBtn').onclick=()=>say(questions[index]);choiceBtns.forEach(b=>b.onclick=()=>answer(b.dataset.a));
+const pickerOptions={lesson:[['all','Sve celine'],['0','1. celina'],['1','2. celina'],['2','3. celina'],['3','4. celina'],['4','5. celina'],['5','6. celina'],['6','7. celina']],roundCount:[['10','10 pitanja'],['20','20 pitanja'],['30','30 pitanja'],['all','Sve imenice']]};document.querySelectorAll('.pick-arrow').forEach(button=>{button.addEventListener('click',()=>{const id=button.dataset.picker,arr=pickerOptions[id],hidden=$(id);const current=Math.max(0,arr.findIndex(x=>x[0]===hidden.value));const dir=Number(button.dataset.direction);const next=arr[(current+dir+arr.length)%arr.length];hidden.value=next[0];$(id+'Text').textContent=next[1]})});
+</script></body></html>
